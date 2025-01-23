@@ -34,13 +34,13 @@ export default function MasterSkill() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-start gap-8">
         {/* Left Content */}
         <div>
-          <h2 className="text-red-500 text-sm font-semibold uppercase mb-2">
+          <h2 className="text-red-500 text-base font-extrabold  mb-2">
             What's New
           </h2>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-black mb-4">
             {masterskillData.heading}
           </h1>
-          <p className="text-gray-600 text-lg mb-8">{masterskillData.desc}</p>
+          <p className="text-gray-600 text-lg mb-8 leading-6">{masterskillData.desc}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 ">
             {/* Features */}
             {masterskillData.features.map((feature) => (
@@ -49,7 +49,7 @@ export default function MasterSkill() {
                   <img src={feature.img} alt={feature.text} />
                 </div>
                 <div>
-                  <h4 className="text-[14px] font-medium  text-[#685f78]">
+                  <h4 className="text-[14px] font-medium   text-[#685f78]">
                     {feature.text}
                   </h4>
                 </div>
