@@ -22,11 +22,11 @@ const CoursesFilterCards = () => {
             <input
               type="checkbox"
               id={category.name}
-              className="h-4 w-4 text-blue-600 border-gray-300  border border-orange-600  rounded focus:ring-blue-500"
+              className="h-4 w-4 text-blue-600     border-orange-600  rounded focus:ring-blue-500"
             />
             <label
               htmlFor={category.name}
-              className="ml-2   text-gray-700  text-base "
+              className="ml-2   text-[#8C8598]  text-base "
             >
               {category.name} ({category.count})
             </label>
