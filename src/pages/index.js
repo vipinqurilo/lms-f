@@ -1,5 +1,6 @@
 import FeaturedCard from "@/components/FeaturedCard";
 import Footer from "@/components/Footer";
+import MasterSkill from "@/components/home/MasterSkill";
 import Navbar from "@/components/Navbar";
 
 const Home = () => {
@@ -7,13 +8,8 @@ const Home = () => {
     <>
       <Navbar />
       <main className="p-4 font-nunito">
-        <h1 className="text-3xl font-bold text-center">
-          Welcome to Tutor Website Builder
-        </h1>
-        <p className="text-center mt-4">
-          Explore courses and find your perfect tutor.
-        </p>
-        <FeaturedCard />
+        {/* <FeaturedCard /> */}
+        <MasterSkill />
       </main>
       <Footer />
     </>
