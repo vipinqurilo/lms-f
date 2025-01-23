@@ -1,12 +1,12 @@
-import LoginForm from "@/container/login/LoginForm";
 import SlideShow from "@/container/login/SlideShow";
+import RegisterForm from "@/container/register/RegisterForm";
 import React from "react";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <div className="w-full flex items-center font-nunito !h-screen">
       <SlideShow />
-      <LoginForm />
+      <RegisterForm />
     </div>
   );
 }
