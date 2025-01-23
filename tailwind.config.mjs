@@ -8,8 +8,15 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: "#e36760",
+        secondary: "#eda256",
+        dark: "#392b3c",
+        light: "#ede8ec",
         background: "var(--background)",
         foreground: "var(--foreground)",
+      },
+      fontFamily: {
+        nunito: ["Nunito Sans", "sans-serif"],
       },
     },
   },
