@@ -1,6 +1,8 @@
 import FeaturedCard from "@/components/FeaturedCard";
 import Footer from "@/components/Footer";
 import MasterSkill from "@/components/home/MasterSkill";
+import Mentor from "@/components/home/Mentor";
+import UnlimitedAccess from "@/components/home/UnlimitedAccess";
 import Navbar from "@/components/Navbar";
 
 const Home = () => {
@@ -9,7 +11,8 @@ const Home = () => {
       <Navbar />
       <main className="p-4 font-nunito">
         {/* <FeaturedCard /> */}
-        <MasterSkill />
+        {/* <Mentor /> */}
+        <UnlimitedAccess/>
       </main>
       <Footer />
     </>
