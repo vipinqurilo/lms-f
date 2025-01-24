@@ -108,7 +108,7 @@ import { MdOutlineKeyboardArrowUp } from "react-icons/md";const Faq = () => {
           {questions.map((item, index) => (
             <div key={item.id} className="border rounded-md overflow-hidden">
               <button
-                className="w-full flex justify-between items-center py-9   px-8 bg-white"
+                className="w-full flex justify-between items-center h-24   px-8 bg-white"
                 onClick={() => toggleQuestion(item.id)}
               >
                 <span className="font-medium text-black text-lg">
