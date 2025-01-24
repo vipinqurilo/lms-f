@@ -1,5 +1,6 @@
 import FeaturedCard from "@/components/FeaturedCard";
 import Footer from "@/components/Footer";
+import HeroSection from "@/components/home/HeroSection";
 import MasterSkill from "@/components/home/MasterSkill";
 import Mentor from "@/components/home/Mentor";
 import UnlimitedAccess from "@/components/home/UnlimitedAccess";
@@ -12,7 +13,8 @@ const Home = () => {
       <main className="p-4 font-nunito">
         {/* <FeaturedCard /> */}
         {/* <Mentor /> */}
-        <UnlimitedAccess/>
+        {/* <UnlimitedAccess/> */}
+        <HeroSection />
       </main>
       <Footer />
     </>
