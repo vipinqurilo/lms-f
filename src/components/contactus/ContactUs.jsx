@@ -41,7 +41,7 @@ const ContactUs = () => {
       </div>
 
       {/* Contact Form Section */}
-      <div className="bg-white w-11/12 flex flex-wrap p-10 justify-between items-center border-t-8 border-black shadow-lg">
+      <div className="bg-white w-11/12 flex flex-wrap p-10 justify-between items-center border-t-4 border-black shadow-lg">
         {/* Left Section */}
         <div className="w-4/12 p-5 ml-8">
           {contactDetails.map((detail, index) => (
