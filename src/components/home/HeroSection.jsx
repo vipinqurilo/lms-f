@@ -53,12 +53,17 @@ export default function HeroSection() {
           </div>
 
           {/* Stats */}
+          <div className="w-1/2 md:mt-4 text-gray-500 font-bold text-xl">Trusted by over 15K Users worldwide since 2024</div>
           <div className="flex justify-center lg:justify-start items-center gap-8 mt-6">
             <div className="text-center">
-              <h2 className="md:text-4xl text-3xl font-bold text-black">1000+</h2>
+              <h2 className="md:text-4xl text-3xl font-bold text-black">
+                1000+
+              </h2>
             </div>
             <div className="text-center">
-              <h2 className="md:text-4xl text-2xl font-bold text-gray-900">4.4</h2>
+              <h2 className="md:text-4xl text-2xl font-bold text-gray-900">
+                4.4
+              </h2>
             </div>
           </div>
         </div>
