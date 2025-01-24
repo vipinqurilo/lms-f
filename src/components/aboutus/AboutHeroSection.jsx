@@ -1,5 +1,6 @@
 import React from "react";
 import Loveclients from "./loveclients";
+import MeetOurTeam from "./MeetOurTeam";
  const AboutHeroSection = () => {
   return (
     <div>
@@ -55,6 +56,7 @@ import Loveclients from "./loveclients";
   </div>
    
    <Loveclients/>
+   <MeetOurTeam/>
 
 
     </div>
