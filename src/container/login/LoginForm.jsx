@@ -1,6 +1,7 @@
 import InputField from "@/components/login/InputField";
 import LoginOptions from "@/components/login/LoginOptions";
 import LogoHeader from "@/components/login/LogoHeader";
+import SubmitButton from "@/components/login/SubmitButton";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -58,9 +59,7 @@ const LoginForm = () => {
             </button>
           </div>
 
-          <button className="w-full py-3 bg-secondary hover:bg-primary transition-custom rounded text-lg text-white">
-            Login
-          </button>
+          <SubmitButton text={"Login"} />
         </form>
       </div>
       <LoginOptions type={"login"} />

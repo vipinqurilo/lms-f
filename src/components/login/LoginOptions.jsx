@@ -4,7 +4,7 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa6";
 
 const LoginOptions = ({ type }) => {
   return (
-    <div className="w-full py-5 bg-primary/10 flex flex-col items-center text-center space-y-4">
+    <div className="w-full py-5 bg-secondary/10 flex flex-col items-center text-center space-y-4">
       <p className="text-gray-500">
         Or {type === "login" ? "Login" : "Register"} in with
       </p>

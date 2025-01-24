@@ -46,7 +46,12 @@ const SlideShow = () => {
   const nextRef = useRef(null);
 
   return (
-    <div className="hidden lg:!block w-1/2 h-full bg-gradient-to-tr from-primary/20 to-primary/10 px-5">
+    <div
+      className="hidden lg:!block w-1/2 h-full bg-cover bg-center bg-no-repeat px-5"
+      style={{
+        backgroundImage: `url("/assets/about/bgImage.svg")`,
+      }}
+    >
       <Swiper
         spaceBetween={0}
         slidesPerView={1}
@@ -60,7 +65,7 @@ const SlideShow = () => {
           clickable: true,
           enabled: true,
           renderBullet: (index, className) => {
-            return `<span class="${className} !bg-primary !w-10 !h-2 !rounded-lg custom-bullet"></span>`;
+            return `<span class="${className} !bg-secondary !w-10 !h-2 !rounded-lg custom-bullet"></span>`;
           },
         }}
         modules={[Autoplay, Pagination]}
@@ -83,9 +88,7 @@ const SlideShow = () => {
                   className="object-contain object-center"
                 />
               </div>
-              <h6 className="mt-8 font-bold text-3xl capitalize">
-                {slide.h6}
-              </h6>
+              <h6 className="mt-8 font-bold text-3xl capitalize">{slide.h6}</h6>
               <p className="text-center">{slide?.des}</p>
             </div>
           </SwiperSlide>
