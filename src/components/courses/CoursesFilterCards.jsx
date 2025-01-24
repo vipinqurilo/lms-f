@@ -1,6 +1,7 @@
 import React from "react";
 
 const CoursesFilterCards = () => {
+  
   const categories = [
     { name: "Backend", count: 3 },
     { name: "CSS", count: 2 },
