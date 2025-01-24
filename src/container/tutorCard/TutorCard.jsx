@@ -5,7 +5,7 @@ import AvailabilityCalendar from "./AvailabilityCalendar";
 
 const TutorCard = () => {
   const [activeTab, setActiveTab] = useState("Availability");
-  
+
   return (
     <div className="bg-white group shadow-lg h-[354px] transition-all duration-500 hover:shadow-2xl hover:scale-[100.1%] hover:-translate-y-[2px] rounded-lg max-w-[85%] mx-auto flex">
       {/* Price & Buttons */}
