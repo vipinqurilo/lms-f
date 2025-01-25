@@ -1,5 +1,5 @@
 import React from "react";
-// import bgimage from "/assets/home/bgimage.png"
+import { FaArrowRight } from "react-icons/fa6";
 
 export default function HeroSection() {
   const data = {
@@ -46,36 +46,38 @@ export default function HeroSection() {
         <h3 className="text-xl font-semibold border-b-2 text-white mb-4">
           Trusted by over 15K Users worldwide since 2024
         </h3>
-        <h1 className="text-4xl lg:text-5xl md:mx-40 font-bold text-white leading-tight mb-6">
+        <h1 className="text-4xl lg:text-5xl md:mx-40 font-bold text-white leading-tight md:mt-2 mb-6">
           Unlock Knowledge,{" "}
-          <span className="text-orange-500">Elevate Your </span>Future Achieve
+          <span className="text-orange-500">Elevate Your </span>Future, Achieve
           Success
         </h1>
         <div className="flex gap-4 mt-6">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full shadow-md">
+          <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">
             Join as Student
           </button>
-          <button className="bg-white text-orange-500 hover:bg-gray-100 px-6 py-3 rounded-full shadow-md">
+          <button className="bg-white text-orange-500 hover:bg-gray-100 px-6 py-2 rounded-full shadow-md">
             Find a Tutor
           </button>
         </div>
 
         {/* Search Bar */}
         <div className="relative w-full md:block hidden lg:w-3/4 mt-10 md:py-8 ">
-          <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-lg">
+          <div className="flex items-center bg-white rounded-full px-4 py-1 shadow-lg">
             <input
               type="text"
               placeholder="Trusted by over 15K Users worldwide since 2024"
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
-            <select className="bg-orange-100 rounded-full px-4 py-2 text-black outline-none mx-2">
+            <select className="bg-orange-100 rounded-full px-4 py-1 text-black outline-none mx-2">
               <option>Category</option>
               <option>Programming</option>
               <option>Design</option>
               <option>Marketing</option>
             </select>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">
-              <span className="hidden sm:inline">Search</span>
+            <button className="bg-orange-500 hover:bg-orange-600 text-white  p-2 rounded-full shadow-md">
+              <span className="hidden sm:inline">
+                <FaArrowRight />
+              </span>
               <span className="sm:hidden">→</span>
             </button>
           </div>
@@ -84,7 +86,7 @@ export default function HeroSection() {
         {/* Statistics */}
         <div className="absolute -bottom-32 max-w-6xl mx-auto mt-12 grid grid-cols-2 sm:grid-cols-4 gap-8">
           {data.box.map((item) => (
-            <div className="text-center shadow-md ">
+            <div className="text-center shadow-md rounded-2xl ">
               <div className="flex items-center space-x-4 p-2 rounded-2xl px-6 text-left bg-white">
                 <div className="bg-white  rounded-md ">
                   {/* Icon */}
@@ -93,9 +95,7 @@ export default function HeroSection() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-black">
-                    {item.heading}
-                  </p>
+                  <p className="text-xl font-bold text-black">{item.heading}</p>
                   <p className="text-xs font-medium text-black   bold">
                     {item.desc}
                   </p>
