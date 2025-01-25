@@ -42,30 +42,30 @@ const Clients = () => {
   const swiperRef = React.useRef(null);
 
   return (
-    <div className="flex items-center h-auto justify-between bg-[#1A2E40] pl-16">
+    <div className="flex items-center h-auto justify-between bg-[#0F2239] pl-16">
       {/* Left Section */}
-      <div className="w-4/12 h-96">
+      <div className="w-3/12 h-96">
         <div className="text-left text-white w-full">
           <p className="text-sm uppercase font-semibold text-gray-400 mb-2">
             Our Core Values
           </p>
-          <h1 className="text-3xl font-medium mb-6">
+          <h1 className="text-3xl  mb-6 mt-7">
             We love clients who understand our values
           </h1>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 mt-12">
             <button
               onClick={() => swiperRef.current?.slidePrev()}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-[#112233] hover:bg-[#334455]"
+              className="w-16 h-16  flex items-center justify-center rounded-full bg-[#334455] hover:bg-[#334455]"
               aria-label="Previous"
             >
-              <ChevronLeft className="text-white w-5 h-5" />
+              <ChevronLeft className="text-white w-8 h-8" />
             </button>
             <button
               onClick={() => swiperRef.current?.slideNext()}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-[#112233] hover:bg-[#334455]"
+              className="w-16 h-16 flex items-center justify-center rounded-full bg-[#334455] hover:bg-[#334455]"
               aria-label="Next"
             >
-              <ChevronRight className="text-white w-5 h-5" />
+              <ChevronRight className="text-white w-8 h-8" />
             </button>
           </div>
         </div>
@@ -73,7 +73,7 @@ const Clients = () => {
 
       {/* Right Section */}
       <div className="w-7/12 mt-32">
-        <div className="bg-[#1A2E40] text-white p-6 flex rounded-lg shadow-lg">
+        <div className="bg-[#0F2239] text-white p-6 flex rounded-lg shadow-lg">
           <Swiper
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             slidesPerView={"1.2"} // Show 1.5 slides at a time
