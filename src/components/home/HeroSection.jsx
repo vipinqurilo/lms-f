@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowRight } from "react-icons/fa6";
+import { IoSearchSharp } from "react-icons/io5";
 
 export default function HeroSection() {
   const data = {
@@ -63,12 +64,13 @@ export default function HeroSection() {
         {/* Search Bar */}
         <div className="relative w-full md:block hidden lg:w-3/4 mt-10 md:py-8 ">
           <div className="flex items-center bg-white rounded-full px-4 py-1 shadow-lg">
+            <IoSearchSharp className="text-xl" />
             <input
               type="text"
               placeholder="Trusted by over 15K Users worldwide since 2024"
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
-            <select className="bg-orange-100 rounded-full px-4 py-1 text-black outline-none mx-2">
+            <select className="bg-orange-100 rounded-full px-2 py-1 text-black outline-none mx-2">
               <option>Category</option>
               <option>Programming</option>
               <option>Design</option>
@@ -90,7 +92,7 @@ export default function HeroSection() {
               <div className="flex items-center space-x-4 p-2 rounded-2xl px-6 text-left bg-white">
                 <div className="bg-white  rounded-md ">
                   {/* Icon */}
-                  <span className="text-2xl font-bold text-orange-500">
+                  <span className="text-xl font-bold text-orange-500">
                     <img src={`${item.img}`} alt={item.desc} />
                   </span>
                 </div>
