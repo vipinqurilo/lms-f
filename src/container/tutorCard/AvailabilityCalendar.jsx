@@ -25,7 +25,6 @@ const AvailabilityCalendar = () => {
             {day}
           </div>
         ))}
-
         {timeSlots.map((time, rowIndex) => (
           <React.Fragment key={rowIndex}>
             {/* Time slot column */}
@@ -47,11 +46,6 @@ const AvailabilityCalendar = () => {
               ))}
           </React.Fragment>
         ))}
-      </div>
-      <div className="h-6 relative ">
-        <div className="text-primary cursor-pointer absolute left-[50%] -translate-y-3 -translate-x-[50%] hidden group-hover:inline-block text-sm underline  ">
-          View full availability
-        </div>
       </div>
     </div>
   );

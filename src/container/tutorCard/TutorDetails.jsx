@@ -26,10 +26,10 @@ const TutorDetails = () => {
       </div>
       <div className="flex mt-4 flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
         {/* Location */}
-        <p className="flex items-center text-sm text-gray-500">
+        <div className="flex items-center text-sm text-gray-500">
           <SlLocationPin className="mr-1" />
           United Kingdom
-        </p>
+        </div>
 
         {/* Rating */}
         <div className="flex items-center space-x-1">
@@ -55,25 +55,25 @@ const TutorDetails = () => {
       {/* Subjects */}
       <div className="mt-4">
         <h3 className="font-semibold text-gray-700">Teaches</h3>
-        <p className="text-gray-600 text-sm">
+        <div className="text-gray-600 text-sm">
           Accounting, Biology, Geography, Literary Criticism
-        </p>
+        </div>
       </div>
 
       {/* Languages */}
       <div className="mt-2">
         <h3 className="font-semibold text-gray-700">Speaks</h3>
-        <p className="text-gray-600 text-sm">English, Swahili</p>
+        <div className="text-gray-600 text-sm">English, Swahili</div>
       </div>
 
       {/* About */}
       <div className="mt-4">
         <h3 className="font-semibold text-gray-700">About</h3>
-        <p className="text-gray-600 text-sm line-clamp-2">
+        <div className="text-gray-600 text-sm line-clamp-2">
           Since 1998, I've been living and teaching Biology, Accounts,
           Geography, and English in Bolivia. I want all kids to be effective
           learners, so I aim to establish an exciting...
-        </p>
+        </div>
         <a
           href="#"
           className="text-orange-500 text-sm underline mt-1 inline-block"

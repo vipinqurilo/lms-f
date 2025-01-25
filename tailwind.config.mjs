@@ -12,6 +12,7 @@ export default {
         primary:'#e36760',
         secondary:'#eda256',
         dark:'#392b3c',
+        bg_green:'#BBF0D4',
         light:'#ede8ec',
         light_bg:'#F2F2F2',
         dark_text:'#333333',

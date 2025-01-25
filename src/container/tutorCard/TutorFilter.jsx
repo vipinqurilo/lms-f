@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { LiaAngleDownSolid } from "react-icons/lia";
 import SubjectSelection from "./SubjectSelection";
@@ -109,9 +109,7 @@ const TutorFilter = () => {
   const [sortBy, setSortBy] = useState(
     "By popularity" || "By price low to high" || "By price high to low"
   );
-  const [filterOpened, setfilterOpened] = useState(
-    "" || "subject" || "price" || "availability" || "more"
-  );
+  const [filterOpened, setfilterOpened] = useState("");
   const hancleSubjectClick = () => {
     if (filterOpened === "subject") {
       setfilterOpened("");
@@ -150,6 +148,7 @@ const TutorFilter = () => {
   const handleClickOutside = () => {
     setfilterOpened("");
   };
+
   return (
     <div className="p-4 bg-[#F2F2F2] flex flex-col justify-center items-center">
       {(filterOpened === "subject" ||
@@ -237,7 +236,7 @@ const TutorFilter = () => {
 
       {filterOpened === "more" && (
         <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-white">
-          <p>Additional filter options go here...</p>
+          <div>Additional filter options go here...</div>
         </div>
       )}
       {/* Bottom Section */}
