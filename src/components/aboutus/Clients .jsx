@@ -3,9 +3,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import SwiperCore, { Navigation } from "swiper";
+import "swiper/css/effect-fade"; // Import fade effect
+import SwiperCore, { Navigation, EffectFade } from "swiper";
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation, EffectFade]);
 
 const testimonials = [
   {
@@ -41,75 +42,79 @@ const Clients = () => {
   const swiperRef = React.useRef(null);
 
   return (
-    <div className="flex items-center h-auto justify-between bg-[#1A2E40] pl-16  ">
+    <div className="flex items-center h-auto justify-between bg-[#1A2E40] pl-16">
       {/* Left Section */}
-    <div className="  w-4/12 h-96">
-    <div className="text-left text-white w-full     ">
-        <p className="text-sm uppercase font-semibold text-gray-400 mb-2">
-          Our Core Values
-        </p>
-        <h1 className="text-3xl font-medium mb-6">
-          We love clients who understand our values
-        </h1>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => swiperRef.current?.slidePrev()}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-[#112233] hover:bg-[#334455]"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="text-white w-5 h-5" />
-          </button>
-          <button
-            onClick={() => swiperRef.current?.slideNext()}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-[#112233] hover:bg-[#334455]"
-            aria-label="Next"
-          >
-            <ChevronRight className="text-white w-5 h-5" />
-          </button>
+      <div className="w-4/12 h-96">
+        <div className="text-left text-white w-full">
+          <p className="text-sm uppercase font-semibold text-gray-400 mb-2">
+            Our Core Values
+          </p>
+          <h1 className="text-3xl font-medium mb-6">
+            We love clients who understand our values
+          </h1>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-[#112233] hover:bg-[#334455]"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="text-white w-5 h-5" />
+            </button>
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-[#112233] hover:bg-[#334455]"
+              aria-label="Next"
+            >
+              <ChevronRight className="text-white w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
       {/* Right Section */}
-      <div className="w-7/12    mt-32">
-      <div className="  bg-[#1A2E40] text-white p-6 flex  rounded-lg shadow-lg">
-        <Swiper
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          slidesPerView={"1.2"} // Show 1.5 slides at a time
-          spaceBetween={30} // Add spacing between slides
-          centeredSlides={false} // Ensure slides are not fully centered
-          loop={true} // Enable looping
-        >
-          {testimonials.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <div className="items-start gap-4 mb-4 ">
-                <div className="flex space-x-12 ">
-                  <div className="w-20 h-20 flex justify-center items-center bg-yellow-500 text-black font-bold  text-xl">
-                    {testimonial.number}
+      <div className="w-7/12 mt-32">
+        <div className="bg-[#1A2E40] text-white p-6 flex rounded-lg shadow-lg">
+          <Swiper
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            slidesPerView={"1.2"} // Show 1.5 slides at a time
+            spaceBetween={30} // Add spacing between slides
+            centeredSlides={false} // Ensure slides are not fully centered
+            loop={true} // Enable looping
+            effect="fade" // Apply the fade effect
+            fadeEffect={{
+              crossFade: true, // Enable the crossfade effect
+            }}
+          >
+            {testimonials.map((testimonial) => (
+              <SwiperSlide key={testimonial.id}>
+                <div className="items-start gap-4 mb-4">
+                  <div className="flex space-x-12">
+                    <div className="w-20 h-20 flex justify-center items-center bg-yellow-500 text-black font-bold text-xl">
+                      {testimonial.number}
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-semibold mb-2">
+                        {testimonial.title}
+                      </h2>
+                    </div>
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold mb-2">
-                      {testimonial.title}
-                    </h2>
-                  </div>
-                </div>
-                <div>
-                  <p className="mt-10 text-gray-300 leading-10 text-base">
-                    {testimonial.content}
-                  </p>
-                  <div className="w-full flex justify-end">
-                    <div className="w-6/12 mt-10">
-                      <p className="text-base font-medium text-gray-400 mt-2 leading-10">
-                        - {testimonial.author} <br /> {testimonial.company}
-                      </p>
+                    <p className="mt-10 text-gray-300 leading-10 text-base">
+                      {testimonial.content}
+                    </p>
+                    <div className="w-full flex justify-end">
+                      <div className="w-6/12 mt-10">
+                        <p className="text-base font-medium text-gray-400 mt-2 leading-10">
+                          - {testimonial.author} <br /> {testimonial.company}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </div>
   );

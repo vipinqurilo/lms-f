@@ -27,7 +27,7 @@ const Statistics = () => {
       {statisticsData.map((stat) => (
         <div
           key={stat.id}
-          className="flex flex-col items-center text-center bg-white p-6 w-44 h-44 rounded-full shadow-md relative"
+          className="flex flex-col items-center text-center bg-white p-6 w-44 h-44 rounded-full border border-slate-200 shadow-md relative"
         >
           <div className="absolute top-1/2 transform -translate-y-1/2">
             <img
