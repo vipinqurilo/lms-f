@@ -15,14 +15,13 @@ const Home = () => {
     <>
       <Navbar />
       <main className=" font-nunito">
-        <FeaturedInstructor />
 
-        {/* <HeroSection />
+        <HeroSection />
         <FeaturedCourses />
-        <MasterSkill /> */}
-        {/* <Mentor />
+        <FeaturedInstructor />
+        <Mentor />
+        <MasterSkill />
         <UnlimitedAccess />
-        <FeaturedCard /> */}
       </main>
       {/* <Footer /> */}
     </>

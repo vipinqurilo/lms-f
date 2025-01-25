@@ -34,7 +34,7 @@ export default function HeroSection() {
 
   return (
     <div
-      className="relative bg-cover bg-no-repeat bg-center text-black py-20 px-6"
+      className="relative bg-cover h-[90vh] bg-no-repeat bg-center text-black py-20 px-6"
       style={{
         backgroundImage: "url('/assets/home/bgimage.png')",
       }}
@@ -86,10 +86,10 @@ export default function HeroSection() {
         </div>
 
         {/* Statistics */}
-        <div className="absolute -bottom-32 max-w-6xl mx-auto mt-12 grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div className="absolute -bottom-60 max-w-6xl mx-auto mt-12 grid grid-cols-2 sm:grid-cols-4 gap-8">
           {data.box.map((item) => (
             <div className="text-center shadow-md rounded-2xl ">
-              <div className="flex items-center space-x-4 p-2 rounded-2xl px-6 text-left bg-white">
+              <div className="flex items-center space-x-4 p-4  rounded-2xl px-8 text-left bg-white">
                 <div className="bg-white  rounded-md ">
                   {/* Icon */}
                   <span className="text-xl font-bold text-orange-500">
