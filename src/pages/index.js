@@ -7,14 +7,16 @@ import Mentor from "@/components/home/Mentor";
 import UnlimitedAccess from "@/components/home/UnlimitedAccess";
 import Navbar from "@/components/Navbar";
 import FeaturedCourses from "@/container/home/FeaturedCourses";
-// import InstructorCard from "@/components/home/"
+import InstructorCard from "@/components/home/InstructorCard.jsx";
 
 const Home = () => {
-  return (
+  return (  
     <>
       <Navbar />
       <main className=" font-nunito">
-        
+      
+      <InstructorCard/>
+
         {/* <HeroSection />
         <FeaturedCourses />
         <MasterSkill /> */}
