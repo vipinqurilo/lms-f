@@ -70,7 +70,7 @@ const PlatformInfo = ({ tabs }) => {
                   <h3 className="text-2xl font-semibold capitalize">
                     {content?.title}
                   </h3>
-                  <p className="text-black/60 lg:text-center">{content?.des}</p>
+                  <p className="text-light lg:text-center">{content?.des}</p>
                   <div className="w-full flex items-center justify-between lg:justify-center lg:gap-8">
                     <Link href={content?.link} className={`${getLinkCss()}`}>
                       Browse More

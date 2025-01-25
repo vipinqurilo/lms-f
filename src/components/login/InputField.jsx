@@ -13,7 +13,7 @@ const InputField = ({ register, name, label, placeHolder, errors, type }) => {
 
   return (
     <div className="">
-      <label htmlFor={name} className="text-black/60 mb-2 block font-medium">
+      <label htmlFor={name} className="text-light mb-2 block font-medium">
         {label}
       </label>
       <div className="relative">

@@ -15,7 +15,7 @@ const LogoHeader = () => {
       </div>
       <Link
         href={"/"}
-        className="text-black/60 text-sm font-medium hover:text-black/80 hover:underline transition-custom"
+        className="text-light text-sm font-medium hover:text-black/80 hover:underline transition-custom"
       >
         Back to Home
       </Link>

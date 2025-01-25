@@ -19,7 +19,7 @@ const WhoWeAre = ({ data, heading }) => {
         }}
       >
         <h1 className="text-4xl font-bold">{heading?.page}</h1>
-        <p className="text-base text-black/60 text-center">
+        <p className="text-base text-light text-center">
           {heading?.headings?.[0]} {heading?.headings?.[1]}
         </p>
       </div>
@@ -48,7 +48,7 @@ const WhoWeAre = ({ data, heading }) => {
           {data?.subHeading}
         </h6>
         {data?.description?.map((des, i) => (
-          <p key={i} className="text-black/60">
+          <p key={i} className="text-light">
             {des}
           </p>
         ))}

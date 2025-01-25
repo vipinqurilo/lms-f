@@ -59,7 +59,7 @@ const RegisterForm = () => {
                 })}
                 className="form-checkbox checked:accent-secondary checked:text-white transition-all ease-in-out duration-500 w-4 h-4"
               />
-              <span className="ml-2 text-black/60 text-sm cursor-pointer">
+              <span className="ml-2 text-light text-sm cursor-pointer">
                 I agree to the{" "}
                 <Link href={"/"} className="text-primary font-bold">
                   Terms of Service

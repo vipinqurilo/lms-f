@@ -67,7 +67,7 @@ export default function ContactusForm() {
               "col-span-2"
             }`}
           >
-            <label className="block text-sm text-black/60">{item.label}</label>
+            <label className="block text-sm text-light">{item.label}</label>
             {item.label === "Message" ? (
               <textarea
                 placeholder={item.placeHolder}

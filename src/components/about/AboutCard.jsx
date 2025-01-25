@@ -17,7 +17,7 @@ const AboutCard = ({ data, index }) => {
 
       <div className="w-full lg:col-span-2 flex flex-col items-start gap-4">
         <h2 className="text-2xl lg:text-3xl font-bold">{data?.heading}</h2>
-        <p className="text-black/60">{data?.description}</p>
+        <p className="text-light">{data?.description}</p>
         <div className="italic font-semibold bg-white drop-shadow-md p-4 border-l-4 border-secondary">
           "{data?.highlightedText}"
         </div>

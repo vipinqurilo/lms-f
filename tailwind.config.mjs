@@ -22,6 +22,9 @@ export default {
       transitionProperty: {
         custom: "all ease-in-out 0.5s",
       },
+      textColor: {
+        light: "rgb(0 0 0 / 0.6)",
+      },
     },
   },
   plugins: [],

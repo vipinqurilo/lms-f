@@ -23,7 +23,7 @@ const StatsSection = ({ data }) => {
             </div>
             <div className="space-y-1 text-center">
               <h3 className="text-xl font-bold">{stat?.stat}</h3>
-              <p className="text-black/60">{stat?.description}</p>
+              <p className="text-light">{stat?.description}</p>
             </div>
           </div>
         ))}

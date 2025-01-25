@@ -1,9 +1,14 @@
 import React from "react";
 import path from "path";
 import fs from "fs";
+import CourseDetails from "@/container/courses/CourseDetails";
 
 export default function CourseDetailsPage({ pageData }) {
-  return <div>{pageData?.name}</div>;
+  return (
+    <main className="font-nunito">
+      <CourseDetails data={pageData?.courseDetails} />
+    </main>
+  );
 }
 
 export async function getStaticPaths() {

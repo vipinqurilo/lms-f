@@ -47,13 +47,13 @@ const LoginForm = () => {
                 type="checkbox"
                 className="form-checkbox checked:accent-secondary checked:text-white transition-all ease-in-out duration-500 w-4 h-4"
               />
-              <span className="ml-2 text-black/60 text-sm cursor-pointer">
+              <span className="ml-2 text-light text-sm cursor-pointer">
                 Remember me
               </span>
             </label>
             <button
               type="button"
-              className="text-sm font-medium hover:text-secondary text-black/60 transition-custom"
+              className="text-sm font-medium hover:text-secondary text-light transition-custom"
             >
               Forgot Password?
             </button>
