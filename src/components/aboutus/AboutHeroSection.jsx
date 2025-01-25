@@ -3,6 +3,7 @@ import Loveclients from "./loveclients";
 import MeetOurTeam from "./MeetOurTeam";
 import Statistics from "./Statistics";
 import LearningWithPlatform from "./LearningWithPlatform";
+import Clients from "./Clients ";
  const AboutHeroSection = () => {
   return (
     <div>
@@ -59,9 +60,9 @@ import LearningWithPlatform from "./LearningWithPlatform";
    
    <Loveclients/>
    <MeetOurTeam/>
-   <Statistics/>
    <LearningWithPlatform/>
-
+   <Statistics/>
+   <Clients/>
     </div>
   );
 };

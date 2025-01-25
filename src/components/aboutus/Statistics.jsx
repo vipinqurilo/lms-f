@@ -23,7 +23,7 @@ const statisticsData = [
 
 const Statistics = () => {
   return (
-    <div className="flex justify-around items-center h-[440px] bg-gray-100 p-10">
+    <div className="flex justify-around items-center h-[440px] bg-white p-10">
       {statisticsData.map((stat) => (
         <div
           key={stat.id}
