@@ -5,13 +5,15 @@ import MasterSkill from "@/components/home/MasterSkill";
 import Mentor from "@/components/home/Mentor";
 import UnlimitedAccess from "@/components/home/UnlimitedAccess";
 import Navbar from "@/components/Navbar";
+import FeaturedCourses from "@/container/home/FeaturedCourses";
 
 const Home = () => {
   return (
     <>
       <Navbar />
       <main className=" font-nunito">
-        <HeroSection />
+        <FeaturedCourses/>
+        {/* <HeroSection /> */}
         {/* <Mentor />
         <UnlimitedAccess />
         <FeaturedCard /> */}
