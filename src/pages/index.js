@@ -11,12 +11,12 @@ const Home = () => {
     <>
       <Navbar />
       <main className=" font-nunito">
-        {/* <FeaturedCard /> */}
-        {/* <Mentor /> */}
-        {/* <UnlimitedAccess/> */}
         <HeroSection />
+        {/* <Mentor />
+        <UnlimitedAccess />
+        <FeaturedCard /> */}
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
