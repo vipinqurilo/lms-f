@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <main className="p-4 font-nunito">
+      <main className=" font-nunito">
         {/* <FeaturedCard /> */}
         {/* <Mentor /> */}
         {/* <UnlimitedAccess/> */}

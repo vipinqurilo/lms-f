@@ -6,8 +6,7 @@ export default function HeroSection() {
     <div
       className="relative bg-cover bg-no-repeat bg-center text-black py-20 px-6"
       style={{
-        backgroundImage:
-          "url('/assets/home/bgimage.png')",
+        backgroundImage: "url('/assets/home/bgimage.png')",
       }}
     >
       {/* Overlay */}
@@ -15,11 +14,13 @@ export default function HeroSection() {
 
       <div className="relative max-w-6xl mx-auto flex flex-col items-center text-center">
         {/* Text Section */}
-        <h3 className="text-sm font-medium text-green-500 mb-4">
+        <h3 className="text-xl font-semibold border-b-2 text-white mb-4">
           Trusted by over 15K Users worldwide since 2024
         </h3>
-        <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
-          Unlock Knowledge, <span className="text-orange-500">Elevate Your Future</span>, Achieve Success
+        <h1 className="text-4xl lg:text-5xl md:mx-40 font-bold text-white leading-tight mb-6">
+          Unlock Knowledge,{" "}
+          <span className="text-orange-500">Elevate Your </span>Future Achieve
+          Success
         </h1>
         <div className="flex gap-4 mt-6">
           <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full shadow-md">
@@ -31,8 +32,8 @@ export default function HeroSection() {
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full lg:w-3/4 mt-10">
-          <div className="flex items-center bg-white rounded-full px-4 py-4 shadow-lg">
+        <div className="relative w-full md:block hidden lg:w-3/4 mt-10 ">
+          <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-lg">
             <input
               type="text"
               placeholder="Trusted by over 15K Users worldwide since 2024"
