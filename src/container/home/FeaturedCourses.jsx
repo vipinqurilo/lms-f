@@ -59,12 +59,12 @@ export default function FeaturedCourses() {
 
   return (
     <div
-      className="bg-no-repeat h-full "
+      className="bg-no-repeat h-full  "
       style={{
         backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,
       }}
     >
-      <div className="md:mx-32">
+      <div className="md:mx-32 md:pt-12">
         <div className="pt-8">
           <p className="text-xl font-bold text-orange-600">What's New</p>
         </div>
