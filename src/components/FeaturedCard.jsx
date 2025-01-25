@@ -8,7 +8,7 @@ export default function FeaturedCard({data}) {
         {/* Image Section */}
         <div className="relative overflow-hidden rounded-md">
           <img
-            src={data.img}
+            src={data?.img}
             alt="UX/UI Design"
             className="w-full h-48 object-cover transform transition-transform duration-300 hover:scale-110"
           />
@@ -19,13 +19,13 @@ export default function FeaturedCard({data}) {
             {/* Instructor Image */}
             <div className="flex">
               <img
-                src={data.img}
+                src={data?.img}
                 alt="Instructor"
                 className="w-12 h-12 rounded-full mr-3"
               />
               <div>
                 <h3 className="text-lg font-semibold group-hover:text-white">
-                  {data.author}
+                  {data?.author}
                 </h3>
                 <span className="text-sm group-hover:text-white font-medium text-gray-500">
                   Instructor
@@ -40,14 +40,14 @@ export default function FeaturedCard({data}) {
             </div>
           </div>
           <p className="mt-2 text-xl group-hover:text-white text-gray-700">
-            {data.heading}
+            {data?.heading}
           </p>
           <div className="flex items-center justify-between gap-4 mt-4">
             <span className="text-sm text-gray-600 group-hover:text-white">
-              📚 {data.lesson}
+              📚 {data?.lesson}
             </span>
             <span className="text-sm text-gray-600 group-hover:text-white">
-              ⏱ {data.time}
+              ⏱ {data?.time}
             </span>
           </div>
 

@@ -8,14 +8,14 @@ import UnlimitedAccess from "@/components/home/UnlimitedAccess";
 import Navbar from "@/components/Navbar";
 import FeaturedCourses from "@/container/home/FeaturedCourses";
 import InstructorCard from "@/components/home/InstructorCard.jsx";
+import FeaturedInstructor from "@/container/home/FeaturedInstructor";
 
 const Home = () => {
-  return (  
+  return (
     <>
       <Navbar />
       <main className=" font-nunito">
-      
-      <InstructorCard/>
+        <FeaturedInstructor />
 
         {/* <HeroSection />
         <FeaturedCourses />
