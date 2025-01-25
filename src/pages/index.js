@@ -1,3 +1,5 @@
+"use client"
+
 import FeaturedCard from "@/components/FeaturedCard";
 import Footer from "@/components/Footer";
 // import FeaturedInstructor from "@/components/home/FeaturedInstructor";

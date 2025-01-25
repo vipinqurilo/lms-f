@@ -1,6 +1,15 @@
-import FeaturedCard from "@/components/FeaturedCard";
+"use client";
+
 import InstructorCard from "@/components/home/InstructorCard";
 import React from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+import { Pagination } from "swiper/modules";
 
 export default function FeaturedInstructor() {
   const data = {
@@ -9,28 +18,42 @@ export default function FeaturedInstructor() {
     cardData: [
       {
         id: 1,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/user/user9.jpg`,
+        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user9.jpg",
         name: "Skyler Whites",
         designation: "UI Designer",
         numOfStudents: "50",
       },
       {
         id: 2,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/user/user10.jpg`,
+        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user10.jpg",
         name: "Walter White",
         designation: "Web Developer",
         numOfStudents: "75",
       },
       {
         id: 3,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/user/user7.jpg`,
+        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user7.jpg",
         name: "Jesse Pinkman",
         designation: "Backend Engineer",
         numOfStudents: "60",
       },
       {
         id: 4,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg`,
+        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg",
+        name: "Hank Schrader",
+        designation: "Project Manager",
+        numOfStudents: "80",
+      },
+      {
+        id: 5,
+        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg",
+        name: "Hank Schrader",
+        designation: "Project Manager",
+        numOfStudents: "80",
+      },
+      {
+        id: 6,
+        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg",
         name: "Hank Schrader",
         designation: "Project Manager",
         numOfStudents: "80",
@@ -40,22 +63,35 @@ export default function FeaturedInstructor() {
 
   return (
     <div
-      className="bg-no-repeat"
+      className="bg-no-repeat py-10"
       style={{
         backgroundImage:
-          "url(`https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png`)",
+          "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",
       }}
     >
-      <div>
-        <h2 className="text-4xl font-bold text-center">{data.heading}</h2>
-        <p className="mt-4  font-semibold text-gray-500 text-center ">
-          {data.desc}
-        </p>
+      <div className="text-center">
+        <h2 className="text-4xl font-bold">{data.heading}</h2>
+        <p className="mt-4 font-semibold text-gray-500">{data.desc}</p>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1  gap-4 md:mt-8 md:mx-20 mx-4">
-        {data.cardData.map((item) => (
-          <InstructorCard data={item} key={item.id} />
-        ))}
+      <div className="mt-8 px-4">
+        <Swiper
+          modules={[Pagination]}
+          spaceBetween={30}
+          loop={true}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          breakpoints={{
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 4 },
+          }}
+        >
+          {data.cardData.map((item) => (
+            <SwiperSlide key={item.id}>
+              <InstructorCard data={item} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
