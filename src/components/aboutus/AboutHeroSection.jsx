@@ -1,6 +1,8 @@
 import React from "react";
 import Loveclients from "./loveclients";
 import MeetOurTeam from "./MeetOurTeam";
+import Statistics from "./Statistics";
+import LearningWithPlatform from "./LearningWithPlatform";
  const AboutHeroSection = () => {
   return (
     <div>
@@ -57,7 +59,8 @@ import MeetOurTeam from "./MeetOurTeam";
    
    <Loveclients/>
    <MeetOurTeam/>
-
+   <Statistics/>
+   <LearningWithPlatform/>
 
     </div>
   );
