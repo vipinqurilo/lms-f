@@ -5,7 +5,7 @@ export default function InstructorCard({ data }) {
   return (
     <div className="relative flex flex-col rounded-xl bg-white shadow-md">
       {/* Image Container */}
-      <div className="relative flex justify-center mt-4 h-80 overflow-hidden rounded-t-xl">
+      <div className="relative flex justify-center  h-80 overflow-hidden rounded-t-xl">
         <img
           src={data?.img}
           alt="profile-picture"
@@ -14,7 +14,7 @@ export default function InstructorCard({ data }) {
       </div>
 
       {/* Content Section */}
-      <div className="p-4 text-center">
+      <div className="p-6 text-center">
         <h4 className="mb-1 text-2xl font-semibold text-blue-gray-900">
           {data?.name}
         </h4>
