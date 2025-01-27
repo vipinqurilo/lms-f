@@ -69,7 +69,7 @@ export default function Testimonial() {
   ];
 
   return (
-    <div className="flex justify-center items-center  py-10">
+    <div className="flex justify-center items-center  py-10 ">
       <div className="md:w-[60%]  w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-2xl shadow-md p-6 relative">
         <Swiper
           modules={[Navigation]}
@@ -83,7 +83,7 @@ export default function Testimonial() {
         >
           {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index}>
-              <div className="text-center">
+              <div className="text-center py-6">
                 <div className="text-orange-500 text-5xl mb-4">
                   <img
                     width={50}
@@ -91,7 +91,7 @@ export default function Testimonial() {
                     alt=""
                   />
                 </div>
-                <p className="text-white text-lg italic text-center">
+                <p className="text-white text-xl font-bold italic text-center md:mx-4">
                   {testimonial.quote}
                 </p>
                 <div className="flex justify-center mt-6">
@@ -101,20 +101,18 @@ export default function Testimonial() {
                     className="w-16 h-16 rounded-full shadow-md"
                   />
                 </div>
-                <h4 className="mt-4 text-lg font-bold">{testimonial.name}</h4>
-                <p className="text-gray-500 text-sm">{testimonial.position}</p>
+                <h4 className="mt-4 text-2xl font-bold">{testimonial.name}</h4>
+                <p className="text-gray-500 md:mt-4 font-normal text-xl">
+                  {testimonial.position}
+                </p>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
 
         {/* Navigation Buttons */}
-        <button className="swiper-button-prev absolute left-2 top-1/2 -translate-y-1/2 text-red-700">
-          
-        </button>
-        <button className="swiper-button-next absolute right-2 top-1/2 -translate-y-1/2 text-red-700">
-          
-        </button>
+        <button className="swiper-button-prev absolute left-2 top-1/2 -translate-y-1/2 text-red-700"></button>
+        <button className="swiper-button-next absolute right-2 top-1/2 -translate-y-1/2 text-red-700"></button>
       </div>
     </div>
   );
