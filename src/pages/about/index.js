@@ -1,3 +1,4 @@
+import MeetOurTeam from "@/components/about/MeetOurTeam";
 import CommonHeading from "@/components/common/CommonHeading";
 import AboutContainer from "@/container/about/AboutContainer";
 import OurMission from "@/container/about/OurMission";
@@ -96,6 +97,7 @@ export default function index() {
       <WhoWeAre data={data?.WhoWeAre} heading={data?.heading} />
       <AboutContainer />
       <OurMission data={data?.OurMission} />
+      <MeetOurTeam />
       <PlatformInfo tabs={data?.PlatformInfo} />
       <StatsSection data={data?.StatsSection} />
     </div>

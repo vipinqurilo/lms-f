@@ -42,7 +42,10 @@ export default function ContactusContainer() {
   ];
 
   return (
-    <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-12 md:gap-x-12">
+    <div
+      className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-12 md:gap-x-12"
+      
+    >
       <GetInTouch data={data} imageArray={imageArray} />
 
       <ContactusForm />

@@ -59,7 +59,7 @@ const FAQContainer = ({ data }) => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full border border-black/10 p-3 rounded px-4 pl-10 focus:outline-secondary transition-custom"
+            className="w-full border border-black/10 p-3 rounded-lg px-4 pl-10 focus:outline-secondary transition-custom"
             placeholder={"Looking for something! Search your query"}
           />
 
@@ -106,7 +106,7 @@ const FAQContainer = ({ data }) => {
                   {Array.isArray(faq?.answer)
                     ? faq?.answer?.map((ans, i) => (
                         <span key={i} className="block w-full">
-                          -{ans}
+                          - {ans}
                         </span>
                       ))
                     : faq?.answer}

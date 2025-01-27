@@ -10,16 +10,19 @@ const WhoWeAre = ({ data, heading }) => {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full  drop-shadow-md">
       <div
-        className="w-full h-[40vh] lg:h-[60vh] flex items-center justify-center flex-col gap-4 bg-cover bg-center bg-no-repeat drop-shadow-2xl bg-secondary/10"
+        className="w-full h-[40vh] lg:h-[60vh] flex items-center justify-center flex-col gap-4 bg-cover bg-center bg-no-repeat text-white"
         style={{
           clipPath: `polygon(0 0, 100% 0, 100% 100%, 50% 90%, 50% 90%, 0 100%)`,
-          //   backgroundImage: `url("/assets/about/bgImage.svg")`,
+          backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.5887605042016807) 0%, rgba(0,0,0,0.6475840336134453) 100%), url("/assets/about/bgimage.png")`,
+          // backgroundImage: `url("/assets/about/bgImage.svg")`,
         }}
       >
-        <h1 className="text-4xl font-bold">{heading?.page}</h1>
-        <p className="text-base text-light text-center">
+        <h1 className="text-4xl lg:text-5xl lg:font-extrabold font-bold">
+          {heading?.page}
+        </h1>
+        <p className="text-base lg:text-lg text-center">
           {heading?.headings?.[0]} {heading?.headings?.[1]}
         </p>
       </div>

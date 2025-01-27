@@ -4,10 +4,7 @@ import React from "react";
 const GetInTouch = ({ data, imageArray }) => {
   return (
     <div
-      className=" w-full h-full bg-secondary/20 rounded-md bg-cover bg-center bg-no-repeat text-black drop-shadow-md"
-      style={{
-        backgroundImage: `url("/assets/about/bgImage.svg")`,
-      }}
+      className=" w-full h-full border border-black/10 rounded-md text-black backdrop-blur-3xl bg-white/50"
     >
       <div className="py-5 lg:py-10 px-8 lg:px-10 h-full flex  flex-col justify-between">
         <div className=" flex flex-col gap-1">

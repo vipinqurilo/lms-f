@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -11,45 +11,40 @@ import Image from "next/image";
 const SlideShow = () => {
   const slides = [
     {
-      h6: "Approved",
-      image: "/assets/login/login-img.webp",
-      des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab suscipit fuga iure omnis voluptas nulla vero dicta, deserunt aliquam ipsum reiciendis, aperiam dignissimos veritatis quam vel asperiores? Quas, sequi?",
+      h6: "Advanced Learning Programs",
+      image: "/assets/login/advance.jpg",
+      des: "Our advanced courses are designed to equip students with the latest skills and knowledge in STEAM fields. Enhance your career prospects with specialized training in technology and engineering.",
     },
     {
-      h6: "Attendence Tracking",
-      image: "/assets/login/login-img.webp",
-      des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab suscipit fuga iure omnis voluptas nulla vero dicta, deserunt aliquam ipsum reiciendis, aperiam dignissimos veritatis quam vel asperiores? Quas, sequi?",
+      h6: "Experienced Faculty",
+      image: "/assets/login/faculty.jpg",
+      des: "Our faculty members are experts in their respective fields, bringing years of experience and practical knowledge to the classroom. They are dedicated to helping you succeed in your STEAM journey.",
     },
     {
-      h6: "Information Tracking",
-      image: "/assets/login/login-img.webp",
-      des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab suscipit fuga iure omnis voluptas nulla vero dicta, deserunt aliquam ipsum reiciendis, aperiam dignissimos veritatis quam vel asperiores? Quas, sequi?",
+      h6: "Student Support",
+      image: "/assets/login/student.webp",
+      des: "We offer a range of student support services, including career counseling, mentorship programs, and academic assistance to help you reach your full potential at Steam Institute.",
     },
     {
-      h6: "Payroll",
-      image: "/assets/login/login-img.webp",
-      des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab suscipit fuga iure omnis voluptas nulla vero dicta, deserunt aliquam ipsum reiciendis, aperiam dignissimos veritatis quam vel asperiores? Quas, sequi?",
-    },
-    {
-      h6: "Reports and Charts",
-      image: "/assets/login/login-img.webp",
-      des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab suscipit fuga iure omnis voluptas nulla vero dicta, deserunt aliquam ipsum reiciendis, aperiam dignissimos veritatis quam vel asperiores? Quas, sequi?",
-    },
-    {
-      h6: "Tracking",
-      image: "/assets/login/login-img.webp",
-      des: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab suscipit fuga iure omnis voluptas nulla vero dicta, deserunt aliquam ipsum reiciendis, aperiam dignissimos veritatis quam vel asperiores? Quas, sequi?",
+      h6: "Global Network",
+      image: "/assets/login/global.jpg",
+      des: "As a student at Steam Institute, you gain access to a global network of alumni, professionals, and industry leaders, providing valuable opportunities for career growth and collaboration.",
     },
   ];
 
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <div
-      className="hidden lg:!block w-1/2 h-full bg-cover bg-center bg-no-repeat px-5"
+      className="hidden text-white w-1/2 h-full bg-cover bg-center bg-no-repeat lg:flex items-end justify-end px-5"
+      // style={{
+      //   backgroundImage: `url("/assets/about/bgImage.svg")`,
+      // }}
       style={{
-        backgroundImage: `url("/assets/about/bgImage.svg")`,
+        backgroundImage: `linear-gradient(183deg, rgba(145,144,144,0.5887605042016807) 0%, rgba(0,0,0,0.6475840336134453) 100%), url(${slides[activeIndex]?.image})`, // Dynamically update background image
       }}
     >
       <Swiper
@@ -76,20 +71,21 @@ const SlideShow = () => {
             swiper.navigation.update();
           }
         }}
+        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="w-full flex flex-col items-center justify-center gap-2 h-screen p-10 ">
-              <div className="relative w-[100%] h-[50vh]">
+            <div className="w-full flex flex-col items-start justify-center gap-2  p-10 ">
+              {/* <div className="relative w-[100%] h-[50vh]">
                 <Image
                   src={slide?.image}
                   alt={slide?.h6}
                   fill={true}
                   className="object-contain object-center"
                 />
-              </div>
+              </div> */}
               <h6 className="mt-8 font-bold text-3xl capitalize">{slide.h6}</h6>
-              <p className="text-center">{slide?.des}</p>
+              <p className="">{slide?.des}</p>
             </div>
           </SwiperSlide>
         ))}

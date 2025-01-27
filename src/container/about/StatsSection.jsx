@@ -3,7 +3,9 @@ import React from "react";
 
 const StatsSection = ({ data }) => {
   return (
-    <div className="custom-container bg-primary/5 space-y-10">
+    <div
+      className="custom-container space-y-10"
+    >
       <h1 className="text-2xl text-center font-semibold">
         Empowering Learners Worldwide with Proven Numbers
       </h1>
@@ -13,7 +15,7 @@ const StatsSection = ({ data }) => {
             key={index}
             className="flex flex-col items-center justify-center gap-5"
           >
-            <div className="w-20 h-20 bg-secondary/10 rounded-full drop-shadow-md flex items-center justify-center border-2 border-black/10">
+            <div className="w-20 h-20 bg-white rounded-full drop-shadow-md flex items-center justify-center border-2 border-black/10">
               <Image
                 src={stat?.image}
                 alt={stat?.description}

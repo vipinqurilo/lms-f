@@ -19,13 +19,18 @@ const PlatformInfo = ({ tabs }) => {
   function getLinkCss(isWatch) {
     return `px-4 hover:bg-black text-white py-2 ${
       isWatch
-        ? "border border-black/10 !text-black hover:text-white"
+        ? "border border-black/10 !text-black hover:!text-white"
         : "bg-secondary"
     } rounded transition-custom`;
   }
 
   return (
-    <div className="custom-container bg-white">
+    <div
+      className="custom-container bg-no-repeat bg-center bg-cover"
+      style={{
+        backgroundImage: `url("/assets/about/bgImage.svg")`,
+      }}
+    >
       <div className="lg:max-w-[60%] mx-auto">
         <h1 className="text-2xl text-center font-semibold pb-2 md:pb-4">
           How to start learning with Platform?

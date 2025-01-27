@@ -22,7 +22,7 @@ const CourseDetails = ({ data }) => {
           <CommentForm />
           <CourseReview data={data?.reviews} />
         </div>
-        <div className="lg:block hidden w-full lg:!w-[35%] lg:-mt-0 lg:sticky lg:top-20">
+        <div className="lg:block hidden w-full lg:!w-[35%] lg:-mt-80 lg:sticky lg:top-10">
           <CourseHighLights data={data} />
         </div>
       </div>

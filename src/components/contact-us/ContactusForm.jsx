@@ -56,7 +56,7 @@ export default function ContactusForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full h-full px-2 flex flex-col justify-between gap-5"
+      className="w-full h-full flex flex-col justify-between gap-5 bg-white p-8 px-8 rounded border border-black/10"
     >
       <div className="flex flex-col lg:grid lg:grid-cols-2 gap-5">
         {inputBox.map((item, index) => (
