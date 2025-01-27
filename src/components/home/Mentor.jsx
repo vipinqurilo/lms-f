@@ -4,7 +4,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 
 export default function Mentor() {
   return (
-    <div className="flex flex-col md:flex-row items-start bg-gradient-to-r from-white via-pink-50 to-blue-50 py-10 px-6 md:px-16">
+    <div className="flex flex-col md:flex-row items-start bg-gradient-to-r from-white via-pink-50 to-blue-50 py-10 px-4 md:px-20">
       {/* Left Section - Image */}
       <div className="flex-shrink-0 md:w-1/2 mb-6 md:mb-0">
         <img

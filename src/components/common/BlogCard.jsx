@@ -3,7 +3,6 @@ import { MdPeopleAlt } from "react-icons/md";
 import { SlCalender } from "react-icons/sl";
 
 export default function BlogCard({ data }) {
-
   // heading: "An Overworked Newspaper Editor",
   // img: "https://dreamslms.dreamstechnologies.com/html/assets/img/blog/blog-03.jpg",
   // desc: "Design",
@@ -12,7 +11,7 @@ export default function BlogCard({ data }) {
   return (
     <div className="relative flex flex-col rounded-xl bg-white shadow-md">
       {/* Image Container */}
-      <div className="relative flex justify-center mt-4 h-80 overflow-hidden rounded-t-xl">
+      <div className="relative flex justify-center  h-80 overflow-hidden rounded-t-xl">
         <img
           src={data?.img}
           alt="profile-picture"
@@ -21,13 +20,11 @@ export default function BlogCard({ data }) {
       </div>
 
       {/* Content Section */}
-      <div className="p-4 text-center">
-        <h4 className="mb-1 text-xl md:mx-4 font-semibold text-blue-gray-900">
+      <div className="p-2 text-center ">
+        <h4 className=" text-xl text-black md:mx-4 font-semibold text-blue-gray-900">
           {data?.heading}
         </h4>
-        <p className="text-base font-medium text-gray-700 mt-4">
-          {data?.desc}
-        </p>
+        <p className="text-base font-medium text-gray-700 mt-4">{data?.desc}</p>
       </div>
 
       {/* Students Info */}

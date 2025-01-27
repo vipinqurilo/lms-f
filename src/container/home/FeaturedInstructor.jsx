@@ -63,7 +63,7 @@ export default function FeaturedInstructor() {
 
   return (
     <div
-      className="bg-no-repeat py-10"
+      className="bg-no-repeat py-10 md:px-20"
       style={{
         backgroundImage:
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",

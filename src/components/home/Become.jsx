@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Become() {
   return (
-    <div className="flex gap-4 md:mx-20 mx-4 mt-16 md:flex-row flex-col">
+    <div className="flex gap-4 md:px-20 px-4 mt-16 md:flex-row flex-col">
       <div className=" bg-[#ffdeda] rounded-2xl flex md:flex-row flex-col items-start justify-center pl-6  md:mx-6">
         <div className="py-8">
           <h2 className="md:text-2xl text-[20px] font-extrabold text-[#002058]">

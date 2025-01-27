@@ -30,7 +30,7 @@ export default function MasterSkill() {
   };
 
   return (
-    <div className="bg-white py-16 px-8">
+    <div className="bg-white py-16 md:px-20 px-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-start gap-8">
         {/* Left Content */}
         <div>
