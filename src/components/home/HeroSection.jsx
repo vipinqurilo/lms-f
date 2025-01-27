@@ -86,11 +86,11 @@ export default function HeroSection() {
         </div>
 
         {/* Statistics */}
-        <div className="absolute -bottom-60 max-w-6xl mx-auto mt-12 grid grid-cols-2 sm:grid-cols-4 md:gap-8 gap-4">
+        <div className="absolute -bottom-60 mt-12 grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
           {data.box.map((item) => (
-            <div className="text-center shadow-md rounded-2xl ">
-              <div className="flex items-center space-x-4 md:p-4 p-2  rounded-2xl px-8 text-left bg-white">
-                <div className="bg-white  rounded-md ">
+            <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
+              <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
+                <div className="bg-white rounded-md">
                   {/* Icon */}
                   <span className="text-xl font-bold text-orange-500">
                     <img src={`${item.img}`} alt={item.desc} />
@@ -98,7 +98,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-xl font-bold text-black">{item.heading}</p>
-                  <p className="text-xs font-medium text-black   bold">
+                  <p className="text-xs font-medium text-black bold">
                     {item.desc}
                   </p>
                 </div>
