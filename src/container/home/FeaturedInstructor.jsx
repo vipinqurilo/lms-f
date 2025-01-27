@@ -87,7 +87,7 @@ export default function FeaturedInstructor() {
           }}
         >
           {data.cardData.map((item) => (
-            <SwiperSlide key={item.id}>
+            <SwiperSlide key={item.id} className="pb-12">
               <InstructorCard data={item} />
             </SwiperSlide>
           ))}

@@ -87,7 +87,7 @@ export default function BlogSection() {
           }}
         >
           {data.map((item) => (
-            <SwiperSlide key={item.id}>
+            <SwiperSlide className="pb-12" key={item.id}>
               <BlogCard data={item} />
             </SwiperSlide>
           ))}

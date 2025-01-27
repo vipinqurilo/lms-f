@@ -64,7 +64,7 @@ export default function FeaturedCourses() {
         backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,
       }}
     >
-      <div className="md:mx-32 md:pt-12">
+      <div className="md:mx-32 md:pt-12 mx-4">
         <div className="pt-8">
           <p className="text-xl font-bold text-orange-600">What's New</p>
         </div>
@@ -77,7 +77,7 @@ export default function FeaturedCourses() {
               neque. Suspendisse imperdiet.
             </p>
           </div>
-          <div>
+          <div className="md:block hidden">
             <button>All Courses</button>
           </div>
         </div>
