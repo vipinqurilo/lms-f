@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import FeaturedCard from "@/components/FeaturedCard";
 import Footer from "@/components/Footer";
@@ -11,19 +11,21 @@ import Navbar from "@/components/Navbar";
 import FeaturedCourses from "@/container/home/FeaturedCourses";
 import InstructorCard from "@/components/home/InstructorCard.jsx";
 import FeaturedInstructor from "@/container/home/FeaturedInstructor";
+import Testimonial from "../components/home/Testimonial";
+import UserLove from "@/container/home/UserLove";
 
 const Home = () => {
   return (
     <>
       <Navbar />
       <main className=" font-nunito">
-
-        <HeroSection />
+        {/* <HeroSection />
         <FeaturedCourses />
         <FeaturedInstructor />
         <Mentor />
         <MasterSkill />
-        <UnlimitedAccess />
+        <UnlimitedAccess /> */}
+        <UserLove />
       </main>
       {/* <Footer /> */}
     </>
