@@ -69,8 +69,8 @@ export default function Testimonial() {
   ];
 
   return (
-    <div className="flex justify-center items-center  py-10 ">
-      <div className="md:w-[60%]  w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-2xl shadow-md p-6 relative">
+    <div className="flex justify-center items-center  md:py-10 mx-4 ">
+      <div className="md:w-[60%] border-8 border-white outline-none w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-2xl shadow p-6 relative">
         <Swiper
           modules={[Navigation]}
           navigation={{
@@ -91,7 +91,7 @@ export default function Testimonial() {
                     alt=""
                   />
                 </div>
-                <p className="text-white text-xl font-bold italic text-center md:mx-4">
+                <p className="text-white md:text-xl text-base font-bold italic text-center md:mx-4">
                   {testimonial.quote}
                 </p>
                 <div className="flex justify-center mt-6">
@@ -101,8 +101,8 @@ export default function Testimonial() {
                     className="w-16 h-16 rounded-full shadow-md"
                   />
                 </div>
-                <h4 className="mt-4 text-2xl font-bold">{testimonial.name}</h4>
-                <p className="text-gray-500 md:mt-4 font-normal text-xl">
+                <h4 className="mt-4 md:text-2xl text-xl font-bold">{testimonial.name}</h4>
+                <p className="text-gray-500 md:mt-4 font-normal md:text-xl text-base">
                   {testimonial.position}
                 </p>
               </div>
