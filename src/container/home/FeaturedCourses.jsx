@@ -82,7 +82,7 @@ export default function FeaturedCourses() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-x-2 md:mt-8">
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-x-2 md:mt-8">
           {data.card.map((card,index) => (
             <FeaturedCard data={card} key={index} />
           ))}

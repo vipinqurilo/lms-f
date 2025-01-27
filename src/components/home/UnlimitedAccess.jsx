@@ -41,7 +41,7 @@ and 1,600+ hands-on labs`,
   return (
     <div className="bg-gradient-to-b from-pink-50 via-white to-blue-50 py-10 px-5">
       {/* Statistics Section */}
-      <div className="mx-32">
+      <div className="md:mx-32">
         <div className="flex md:flex-row flex-col md:justify-evenly py-2 bg-gradient-to-r from-blue-300 rounded-2xl to-blue-100 mb-10">
           {data.stats.map((state) => (
             <div
