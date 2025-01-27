@@ -1,5 +1,8 @@
 "use client";
 
+import { Check } from "lucide-react";
+import { FaTag } from "react-icons/fa";
+
 const paymentMethods = [
   { id: "wallet", name: "Wallet balance ($390.23)" },
   { id: "bank", name: "Bank transfer" },
@@ -12,28 +15,36 @@ const paymentMethods = [
 
 export function PaymentSelection({ selected, onSelect }) {
   return (
-    <div className="grid grid-cols-2 gap-8 p-4">
+    <div className="lg:grid grid-cols-2 gap-8 p-8">
       <div>
-        <h2 className="text-lg font-semibold mb-4">SELECT A PAYMENT METHOD</h2>
+        <h2 className="text-sm  mb-4 text-[#040404]">
+          SELECT A PAYMENT METHOD
+        </h2>
         <div className="space-y-2">
           {paymentMethods.map((method) => (
             <button
               key={method.id}
               onClick={() => onSelect(method.id)}
               className={`
-                w-full flex items-center justify-between p-4 rounded-lg border
+                w-full flex items-center justify-start gap-6 p-4  border
                 ${
                   selected === method.id
-                    ? "border-orange-500"
+                    ? "border-secondary"
                     : "border-gray-200"
                 }
-                hover:border-orange-500 transition-colors
+                hover:border-secondary transition-colors
               `}
             >
-              <span>{method.name}</span>
-              {selected === method.id && (
-                <span className="text-orange-500">✓</span>
+              {selected === method.id ? (
+                <span className="text-white rounded-full p-[2px] bg-secondary">
+                  <Check size={16} />
+                </span>
+              ) : (
+                <span className="text-white rounded-full p-[2px] bg-[#E6E6E6]">
+                  <Check size={16} />
+                </span>
               )}
+              <span className="text-sm font-semibold">{method.name}</span>
             </button>
           ))}
         </div>
@@ -44,22 +55,23 @@ export function PaymentSelection({ selected, onSelect }) {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4">HAVE A COUPON?</h2>
-        <div className="flex gap-2">
+        <h2 className="text-sm  mb-4 text-[#040404]">HAVE A COUPON?</h2>
+        <div className="flex gap-2 relative">
+          <FaTag className="absolute top-[50%] text-gray-300 -translate-y-[50%] left-5" />
           <input
             type="text"
             placeholder="Enter coupon code"
-            className="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500"
+            className="flex-1  py-2 px-12 border-2 border-gray-200 border-dotted focus:outline-none"
           />
-          <button className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+          <div className="px-4 flex justify-center rounded-lg cursor-pointer items-center absolute right-5  h-[32px] text-sm top-[50%] -translate-y-[50%]  bg-black text-white hover:bg-secondary">
             Apply
-          </button>
+          </div>
         </div>
 
         <div className="mt-8">
-          <h2 className="text-lg font-semibold mb-4">SUMMARY</h2>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
+          <h2 className="text-sm mb-4">SUMMARY</h2>
+          <div className="space-y-2 leading-3 text-xs border p-3 px-6">
+            <div className="flex justify-between text-xs">
               <span>Lesson Count: 1</span>
               <span>$38.75</span>
             </div>
@@ -67,14 +79,14 @@ export function PaymentSelection({ selected, onSelect }) {
             <div>Item price: $38.75/lesson</div>
             <div>Teach subject: Accounting</div>
             <div className="pt-4 border-t mt-4">
-              <div className="flex justify-between font-medium">
+              <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>
-                <span className="text-orange-500">$38.75</span>
+                <span className="">$38.75</span>
               </div>
             </div>
           </div>
 
-          <button className="w-full mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+          <button className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black">
             Confirm payment
           </button>
 

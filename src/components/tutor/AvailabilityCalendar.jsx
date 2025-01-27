@@ -542,6 +542,31 @@ const AvailabilityCalendar = () => {
         }}
         className="h-[calc(100%-60.8px)] overflow-y-auto"
       >
+        {" "}
+        <div className="flex items-center gap-4 text-sm px-4 py-2">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-gray-200" />
+            <span className="text-[13px] font-semibold text-[#8c8c8c]">
+              NOT AVAILABLE
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-green-200" />
+            <span className="text-[13px] font-semibold text-[#8c8c8c]">
+              AVAILABLE
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-red-500" />
+            <span className="text-[13px] font-semibold text-[#8c8c8c]">
+              BOOKED
+            </span>
+          </div>
+        </div>
+        <div className="w-full bg-[#F2F2F2] text-sm flex justify-center items-center py-2">
+          <span className="text-black">Note:</span>This calendar is to only
+          check teacher's availability
+        </div>
         <div className="flex items-center justify-between px-4 gap-4">
           <div className="flex text-[13px] text-[#8c8c8c] font-semibold">
             <span>My current time: </span>
@@ -553,6 +578,7 @@ const AvailabilityCalendar = () => {
                 : "Loading..."}
             </span>
           </div>
+
           <div className="flex justify-center items-center">
             <div className="text-[13px] text-[#8c8c8c] font-semibold">
               {formattedDateRange}
@@ -607,7 +633,7 @@ const AvailabilityCalendar = () => {
           {times.map((time, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <div
-                className={`border-b text-[12px] h-[17px] px-1 text-center bg-white relative`}
+                className={`border-t text-[12px] h-[17px] px-1 text-center bg-white relative`}
               >
                 {rowIndex % 2 === 0 ? (
                   <>
@@ -645,12 +671,12 @@ const AvailabilityCalendar = () => {
                     key={`${rowIndex}-${colIndex}`}
                     className={`border-l p-1 relative ${
                       isBooked(colIndex, rowIndex)
-                        ? "bg-red-500 border-b border-red-600" // Booked slots are red
+                        ? "bg-red-500 border-t border-red-600" // Booked slots are red
                         : isAvailable(colIndex, rowIndex) &&
                           !isBeforeCurrentTime
-                        ? "bg-bg_green border-b border-light_green" // Available slots are green
+                        ? "bg-bg_green border-t border-light_green" // Available slots are green
                         : isBeforeCurrentTime
-                        ? "bg-[#FEF5E5] border-b border-gray-200" // Slots before current time are secondary
+                        ? "bg-[#FEF5E5] border-t border-gray-200" // Slots before current time are secondary
                         : "border-y border-gray-200" // Not available slots are gray
                     }`}
                   >

@@ -378,12 +378,50 @@ const bookings = [
   },
 ];
 
-const ScheduleCalendar = () => {
+const ScheduleCalendar = ({ slotLimit }) => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
   const [selectedSlots, setSelectedSlots] = useState([]);
+  const handleSlotSelect = (isBeforeCurrentTime, rowIndex, colIndex) => {
+    if (
+      isAvailable(colIndex, rowIndex) && // Check if cell is available
+      !isBeforeCurrentTime
+    ) {
+      const spanStart = rowIndex - (rowIndex % 2); // Find start of 30-minute block
+      const isAlreadySelected = selectedSlots.some(
+        (slot) => slot.dayIndex === colIndex && slot.timeIndex === spanStart
+      );
+
+      if (isAlreadySelected) {
+        // Deselect the entire block
+        setSelectedSlots((prev) =>
+          prev.filter(
+            (slot) =>
+              !(
+                slot.dayIndex === colIndex &&
+                (slot.timeIndex === spanStart ||
+                  slot.timeIndex === spanStart + 1)
+              )
+          )
+        );
+      } else {
+        // Check if adding the new slot exceeds the limit
+        if (selectedSlots.length >= slotLimit * 2) {
+          alert(`You can only select up to ${slotLimit} slots.`);
+          return;
+        }
+
+        // Select both cells in the 30-minute section
+        setSelectedSlots((prev) => [
+          ...prev,
+          { dayIndex: colIndex, timeIndex: spanStart },
+          { dayIndex: colIndex, timeIndex: spanStart + 1 },
+        ]);
+      }
+    }
+  };
 
   useEffect(() => {
     const calculateDays = () => {
@@ -543,7 +581,7 @@ const ScheduleCalendar = () => {
         }}
         className="h-full overflow-y-scroll"
       >
-        <div className="flex items-center gap-4 text-sm px-4 py-2">
+        <div className="flex items-center justify-center lg:justify-normal mt-4 lg:mt-0 gap-4 text-sm px-4 py-2">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-gray-200" />
             <span className="text-[13px] font-semibold text-[#8c8c8c]">
@@ -563,7 +601,7 @@ const ScheduleCalendar = () => {
             </span>
           </div>
         </div>
-        <div className="flex items-center justify-between px-4 gap-4">
+        <div className="flex flex-col lg:flex-row items-center justify-between px-4 gap-2 lg:gap-4">
           <div className="flex text-[13px] text-[#8c8c8c] font-semibold">
             <span>My current time: </span>
             <span>
@@ -574,11 +612,11 @@ const ScheduleCalendar = () => {
                 : "Loading..."}
             </span>
           </div>
-          <div className="flex justify-center items-center">
-            <div className="text-[13px] text-[#8c8c8c] font-semibold">
-              {formattedDateRange}
-            </div>
-
+          <div className="text-[13px] text-[#8c8c8c] font-semibold">
+            {formattedDateRange}
+          </div>
+          <div className="flex  justify-center items-center gap-2">
+            {/* Left Navigation Button */}
             <button
               onClick={() => setCurrentWeek(currentWeek - 1)}
               className="px-2 py-2"
@@ -586,17 +624,20 @@ const ScheduleCalendar = () => {
               <LiaAngleLeftSolid size={20} />
             </button>
 
-            <button
-              onClick={() => setCurrentWeek(currentWeek + 1)}
-              className="px-2 py-2"
-            >
-              <LiaAngleRightSolid size={20} />
-            </button>
+            {/* Today Button */}
             <button
               onClick={() => setCurrentWeek(0)}
               className="px-4 py-2 text-[14px] font-semibold"
             >
               TODAY
+            </button>
+
+            {/* Right Navigation Button */}
+            <button
+              onClick={() => setCurrentWeek(currentWeek + 1)}
+              className="px-2 py-2"
+            >
+              <LiaAngleRightSolid size={20} />
             </button>
           </div>
         </div>
@@ -628,7 +669,7 @@ const ScheduleCalendar = () => {
           {times.map((time, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <div
-                className={`border-b text-[12px] h-[17px] px-1 text-center bg-white relative`}
+                className={`border-t text-[12px] h-[17px] px-1 text-center bg-white relative`}
               >
                 {rowIndex % 2 === 0 ? (
                   <>
@@ -666,7 +707,7 @@ const ScheduleCalendar = () => {
                     key={`${rowIndex}-${colIndex}`}
                     className={`border-l p-1 relative cursor-pointer ${
                       isBooked(colIndex, rowIndex)
-                        ? "bg-red-500 border-b border-red-600"
+                        ? "bg-red-500 border-t border-red-600"
                         : isAvailable(colIndex, rowIndex) &&
                           !isBeforeCurrentTime
                         ? selectedSlots.some(
@@ -674,46 +715,15 @@ const ScheduleCalendar = () => {
                               slot.dayIndex === colIndex &&
                               slot.timeIndex === rowIndex
                           )
-                          ? "bg-blue-300 border-b border-blue-400" // Highlight selected cells
-                          : "bg-bg_green border-b border-light_green"
+                          ? "bg-blue-300 border-t border-blue-400" // Highlight selected cells
+                          : "bg-bg_green border-t border-light_green"
                         : isBeforeCurrentTime
-                        ? "bg-[#FEF5E5] border-b border-gray-200"
+                        ? "bg-[#FEF5E5] border-t border-gray-200"
                         : "border-y border-gray-200"
                     }`}
-                    onClick={() => {
-                      if (
-                        isAvailable(colIndex, rowIndex) && // Check if cell is available
-                        !isBeforeCurrentTime
-                      ) {
-                        const spanStart = rowIndex - (rowIndex % 2); // Find start of 30-minute block
-                        const isAlreadySelected = selectedSlots.some(
-                          (slot) =>
-                            slot.dayIndex === colIndex &&
-                            slot.timeIndex === spanStart
-                        );
-
-                        if (isAlreadySelected) {
-                          // Deselect the entire block
-                          setSelectedSlots((prev) =>
-                            prev.filter(
-                              (slot) =>
-                                !(
-                                  slot.dayIndex === colIndex &&
-                                  (slot.timeIndex === spanStart ||
-                                    slot.timeIndex === spanStart + 1)
-                                )
-                            )
-                          );
-                        } else {
-                          // Select both cells in the 30-minute section
-                          setSelectedSlots((prev) => [
-                            ...prev,
-                            { dayIndex: colIndex, timeIndex: spanStart },
-                            { dayIndex: colIndex, timeIndex: spanStart + 1 },
-                          ]);
-                        }
-                      }
-                    }}
+                    onClick={() =>
+                      handleSlotSelect(isBeforeCurrentTime, rowIndex, colIndex)
+                    }
                   >
                     {/* Add red timeline to first two columns */}
                     {colIndex === 0 &&

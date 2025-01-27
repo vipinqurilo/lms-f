@@ -9,9 +9,9 @@ import ScheduleCalendar from "./ScheduleCalendar";
 
 export function BookingModal({ onClose }) {
   const [step, setStep] = useState(1);
-  const [subject, setSubject] = useState(null);
-  const [duration, setDuration] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [subject, setSubject] = useState("accounting");
+  const [duration, setDuration] = useState("15");
+  const [paymentMethod, setPaymentMethod] = useState("wallet");
 
   const titles = {
     1: "Select subject and duration",
@@ -62,7 +62,7 @@ export function BookingModal({ onClose }) {
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t flex justify-end">
           <button
             onClick={handleNext}
-            className="w-fit px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90"
+            className="w-fit px-8 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
           >
             Next
           </button>

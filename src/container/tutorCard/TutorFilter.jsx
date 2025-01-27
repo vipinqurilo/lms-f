@@ -163,7 +163,7 @@ const TutorFilter = () => {
       )}
       {/* Top Section */}
       <div
-        className={`flex items-center w-[80%] divide-x-2 relative  ${
+        className={`hidden lg:flex items-center w-[80%] divide-x-2 relative  ${
           filterOpened === "subject" ||
           filterOpened === "price" ||
           filterOpened === "availability"
@@ -232,15 +232,15 @@ const TutorFilter = () => {
             More Filters
           </button>
         </div>
+        {filterOpened === "more" && (
+          <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-white">
+            <div>Additional filter options go here...</div>
+          </div>
+        )}
       </div>
 
-      {filterOpened === "more" && (
-        <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-white">
-          <div>Additional filter options go here...</div>
-        </div>
-      )}
       {/* Bottom Section */}
-      <div className="flex text-nowrap items-center gap-4 mt-4">
+      <div className="flex text-nowrap flex-wrap items-center gap-4 mt-4">
         {/* Active Tutors Toggle */}
         <div className="flex items-center gap-2 bg-white rounded px-4 h-[40px]">
           <label className="relative inline-flex items-center cursor-pointer">

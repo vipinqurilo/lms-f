@@ -1,5 +1,7 @@
 "use client";
 
+import { Check } from "lucide-react";
+
 const subjects = [
   { id: "accounting", name: "Accounting" },
   { id: "biology", name: "Biology" },
@@ -9,9 +11,9 @@ const subjects = [
 
 export function SubjectSelection({ selected, onSelect }) {
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">Select subject</h2>
-      <div className="space-y-2">
+    <div className="p-8">
+      <h2 className="text-lg font-semibold text-center mb-4">Select subject</h2>
+      <div className="space-y-2  lg:w-1/2 mx-auto">
         {subjects.map((subject) => (
           <button
             key={subject.id}
@@ -19,16 +21,22 @@ export function SubjectSelection({ selected, onSelect }) {
             className={`
               w-full flex items-center justify-between p-4 rounded-lg border
               ${
-                selected === subject.id
-                  ? "border-orange-500"
-                  : "border-gray-200"
+                selected === subject.id ? "border-secondary" : "border-gray-200"
               }
-              hover:border-orange-500 transition-colors
+              hover:border-secondary transition-colors
             `}
           >
-            <span className="text-base">{subject.name}</span>
+            <span
+              className={`text-base ${
+                selected === subject.id && "text-secondary"
+              }`}
+            >
+              {subject.name}
+            </span>
             {selected === subject.id && (
-              <span className="text-orange-500">✓</span>
+              <span className="text-secondary">
+                <Check size={20} />
+              </span>
             )}
           </button>
         ))}

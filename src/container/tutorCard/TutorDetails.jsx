@@ -70,12 +70,12 @@ const TutorDetails = () => {
           Geography, and English in Bolivia. I want all kids to be effective
           learners, so I aim to establish an exciting...
         </div>
-        <a
-          href="#"
+        <button
+          onClick={() => router.push(`/tutors/marlene-reilly`)}
           className="text-orange-500 text-sm underline mt-1 inline-block"
         >
           View profile
-        </a>
+        </button>
       </div>
     </div>
   );

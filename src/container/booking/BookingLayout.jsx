@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 
 export function BookingLayout({
   children,
@@ -14,7 +14,7 @@ export function BookingLayout({
 
   return (
     <div className="fixed w-screen  h-screen top-0 left-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
-      <div className="bg-white relative justify-center overflow-hidden rounded-lg w-4/5 h-[90vh]">
+      <div className="bg-white relative justify-center overflow-hidden rounded-lg w-[97%] h-[97%] lg:w-4/5 lg:h-[90vh]">
         <header className="relative flex items-center justify-center p-4 border-b">
           <div className="absolute left-8  flex items-center gap-4">
             {showBack && (
@@ -22,15 +22,13 @@ export function BookingLayout({
                 onClick={onBack}
                 className="text-gray-600 hover:text-gray-900 flex justify-center items-center  gap-2 "
               >
-                <ArrowLeft size={20} /> Back
+                <ArrowLeft size={20} />{" "}
+                <span className="hidden lg:block">Back</span>
               </button>
             )}
           </div>
-          <h1 className="text-xl py-2 font-semibold">{title}</h1>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full absolute right-8"
-          >
+          <h1 className="text-sm lg:text-xl py-2 font-semibold">{title}</h1>
+          <button onClick={onClose} className="p-2  absolute right-8">
             ✕
           </button>
           <div className="absolute inset-0 bottom-0 translate-y-[50%] flex justify-center p-4 w-fit left-[50%] -translate-x-[50%]">
@@ -57,7 +55,7 @@ export function BookingLayout({
                     }
                   `}
                   >
-                    {isCompleted ? "✓" : step}
+                    {isCompleted ? <Check size={16} /> : step}
                   </div>
                 );
               })}
