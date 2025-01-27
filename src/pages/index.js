@@ -27,7 +27,7 @@ const Home = () => {
         <MasterSkill />
         <UnlimitedAccess /> */}
         <UserLove />
-        <Become/>
+        {/* <Become/> */}
       </main>
       {/* <Footer /> */}
     </>
