@@ -18,13 +18,13 @@ export default function HeroSection() {
         desc: "Expert Tutors",
       },
       {
-        id: 1,
+        id: 3,
         img: `/assets/home/third_icon.png`,
         heading: "2k+",
         desc: "Certified Courses",
       },
       {
-        id: 1,
+        id: 4,
         img: `/assets/home/fourth_icon.png`,
         heading: "21k",
         desc: "Online Students",
@@ -34,7 +34,7 @@ export default function HeroSection() {
 
   return (
     <div
-      className="relative bg-cover h-[90vh] bg-no-repeat bg-center text-black py-20 px-6"
+      className="relative bg-cover h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
       style={{
         backgroundImage: "url('/assets/home/bgimage.png')",
       }}
@@ -62,7 +62,7 @@ export default function HeroSection() {
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full md:block hidden lg:w-3/4 mt-10 md:py-8 ">
+        <div className="relative w-full md:block hidden lg:w-2/3 mt-10 md:py-8 ">
           <div className="flex items-center bg-white rounded-full px-4 py-1 shadow-lg">
             <IoSearchSharp className="text-xl" />
             <input
@@ -86,7 +86,7 @@ export default function HeroSection() {
         </div>
 
         {/* Statistics */}
-        <div className="absolute -bottom-60 mt-12 grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
+        <div className="absolute -bottom-40 mt-12 grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
           {data.box.map((item) => (
             <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
               <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
@@ -98,9 +98,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-xl font-bold text-black">{item.heading}</p>
-                  <p className="text-xs font-medium text-black bold">
-                    {item.desc}
-                  </p>
+                  <p className="text-xs  text-black font-bold">{item.desc}</p>
                 </div>
               </div>
             </div>
