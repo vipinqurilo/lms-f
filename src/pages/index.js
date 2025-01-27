@@ -14,6 +14,8 @@ import FeaturedInstructor from "@/container/home/FeaturedInstructor";
 import Testimonial from "../components/home/Testimonial";
 import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
+import Blog from "@/components/common/BlogCard";
+import BlogSection from "@/container/common/BlogSection";
 
 const Home = () => {
   return (
@@ -29,6 +31,7 @@ const Home = () => {
         <MasterSkill />
         <UserLove />
         <Become/>
+       <BlogSection/>
         <UnlimitedAccess />
     
       </main>

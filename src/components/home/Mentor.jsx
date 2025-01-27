@@ -15,7 +15,7 @@ export default function Mentor() {
       </div>
 
       {/* Right Section - Content */}
-      <div className="md:w-1/2 text-center md:text-left md:mt-12">
+      <div className="md:w-1/2 text-left md:mt-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
           Want to share your knowledge? <br /> Join us as a Mentor
         </h2>
