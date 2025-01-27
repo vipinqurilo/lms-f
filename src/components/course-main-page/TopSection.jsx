@@ -29,8 +29,8 @@ const TopSection = ({ data }) => {
           <RatingStars rating={data?.instructor?.rating} />(
           {data?.reviews?.length})
         </div>
-        <h1 className="text-2xl font-bold">{data?.title}</h1>
-        <p className="text-white/90">{data?.subtitle}</p>
+        <h1 className="text-2xl lg:text-3xl lg:font-extrabold font-bold">{data?.title}</h1>
+        <p className="text-white/90 lg:font-semibold">{data?.subtitle}</p>
       </div>
     </div>
   );

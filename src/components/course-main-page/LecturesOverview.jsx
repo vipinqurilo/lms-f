@@ -77,14 +77,14 @@ const LecturesOverview = ({ data }) => {
               ref={contentRef}
             >
               {section?.lectures?.map((lecture, i) => (
-                <div key={i} className="w-full px-2 py-2">
+                <div key={i} className="w-full md:flex md:items-center md:justify-between px-2 py-2 md:py-4">
                   <h6 className="flex items-start gap-1">
                     <BiPlayCircle className="text-secondary text-lg" />
                     <span className="-mt-[2px] font-medium">
                       Lecture{index + 1}.{i + 1} {lecture?.title}
                     </span>
                   </h6>
-                  <p className="font-medium">{lecture?.duration}</p>
+                  <p className="font-medium text-light text-sm">{lecture?.duration}</p>
                 </div>
               ))}
             </div>

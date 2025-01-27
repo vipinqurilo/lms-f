@@ -283,9 +283,72 @@
     },
     "reviews": [
       {
-        "reviewerName": "Nicole Brown",
-        "rating": 4.5,
-        "review": "This is the second Photoshop course I have completed with Cristian..."
+        "reviewerName": "Emily Johnson",
+        "rating": 5,
+        "review": "This course was incredibly insightful and well-structured. The instructor explained the concepts clearly, making it easy to follow and understand.",
+        "likes": 125,
+        "replies": [
+          {
+            "replyerName": "John Carter",
+            "reply": "I agree! The examples provided made the learning process much easier."
+          },
+          {
+            "replyerName": "Sarah Lee",
+            "reply": "Absolutely! One of the best courses I’ve taken so far."
+          }
+        ]
+      },
+      {
+        "reviewerName": "Michael Brown",
+        "rating": 4,
+        "review": "Overall, a great learning experience. Some sections could use more practical examples, but the content quality was excellent.",
+        "likes": 89,
+        "replies": [
+          {
+            "replyerName": "Emma Wilson",
+            "reply": "I felt the same way about the practical examples, but it’s still a solid course."
+          }
+        ]
+      },
+      {
+        "reviewerName": "Sophia Martinez",
+        "rating": 4.8,
+        "review": "I learned so much from this course! The instructor’s teaching style is engaging and clear. Highly recommended for beginners.",
+        "likes": 140,
+        "replies": [
+          {
+            "replyerName": "Liam Roberts",
+            "reply": "Totally agree! The instructor made even complex topics seem simple."
+          }
+        ]
+      },
+      {
+        "reviewerName": "William Smith",
+        "rating": 3.5,
+        "review": "The course content is good, but I found the pacing a bit slow in some modules. Would recommend speeding it up slightly.",
+        "likes": 54,
+        "replies": [
+          {
+            "replyerName": "Olivia Adams",
+            "reply": "I think the pace was fine for beginners, but I understand your point."
+          }
+        ]
+      },
+      {
+        "reviewerName": "Isabella Garcia",
+        "rating": 4.7,
+        "review": "Great course! The assignments helped reinforce the concepts effectively. I feel confident applying what I’ve learned in real-world scenarios.",
+        "likes": 112,
+        "replies": [
+          {
+            "replyerName": "James Miller",
+            "reply": "The assignments were really helpful, weren’t they? I feel the same way!"
+          },
+          {
+            "replyerName": "Charlotte Moore",
+            "reply": "Yes, the hands-on approach made the course very practical and enjoyable."
+          }
+        ]
       }
     ]
   }
