@@ -13,6 +13,7 @@ import InstructorCard from "@/components/home/InstructorCard.jsx";
 import FeaturedInstructor from "@/container/home/FeaturedInstructor";
 import Testimonial from "../components/home/Testimonial";
 import UserLove from "@/container/home/UserLove";
+import Become from "@/components/home/Become";
 
 const Home = () => {
   return (
@@ -25,7 +26,8 @@ const Home = () => {
         <Mentor />
         <MasterSkill />
         <UnlimitedAccess /> */}
-        <UserLove />
+        {/* <UserLove /> */}
+        <Become/>
       </main>
       {/* <Footer /> */}
     </>
