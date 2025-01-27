@@ -59,7 +59,7 @@ export default function BlogSection() {
 
   return (
     <div
-      className="bg-no-repeat md:py-10 py-6 my-8"
+      className="bg-no-repeat md:py-16 py-6 my-8"
       style={{
         backgroundImage:
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",

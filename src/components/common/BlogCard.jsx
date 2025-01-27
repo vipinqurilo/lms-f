@@ -1,5 +1,6 @@
 import React from "react";
 import { MdPeopleAlt } from "react-icons/md";
+import { SlCalender } from "react-icons/sl";
 
 export default function BlogCard({ data }) {
 
@@ -21,10 +22,10 @@ export default function BlogCard({ data }) {
 
       {/* Content Section */}
       <div className="p-4 text-center">
-        <h4 className="mb-1 text-2xl font-semibold text-blue-gray-900">
+        <h4 className="mb-1 text-xl md:mx-4 font-semibold text-blue-gray-900">
           {data?.heading}
         </h4>
-        <p className="text-base font-medium text-gray-700">
+        <p className="text-base font-medium text-gray-700 mt-4">
           {data?.desc}
         </p>
       </div>
@@ -32,7 +33,7 @@ export default function BlogCard({ data }) {
       {/* Students Info */}
       <div className="flex justify-center pb-4">
         <div className="flex items-center gap-x-2 text-gray-700">
-          <MdPeopleAlt className="text-xl" />
+          <SlCalender className="text-base space-x-4 text-red-600" />
           <p>{data?.date} Students</p>
         </div>
       </div>
