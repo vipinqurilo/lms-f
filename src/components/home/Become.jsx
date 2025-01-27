@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Become() {
   return (
-    <div className="flex gap-4 mx-20 mt-16">
-      <div className="bg-[#ffdeda] rounded-2xl flex items-start justify-center pl-6  md:mx-6">
+    <div className="flex gap-4 md:mx-20 mx-4 mt-16 md:flex-row flex-col">
+      <div className="bg-[#ffdeda] rounded-2xl flex md:flex-row flex-col items-start justify-center pl-6  md:mx-6">
         <div className="py-8">
           <h2 className="text-2xl font-extrabold text-[#002058]">
             Become An Instructor
@@ -21,7 +21,7 @@ export default function Become() {
       </div>
 
       {/* second here */}
-      <div className="bg-[#ffe88f] rounded-2xl flex items-start justify-center pl-6 pt-4 md:mx-6 ">
+      <div className="bg-[#ffe88f] rounded-2xl flex items-start justify-center md:flex-row flex-col pl-6 pt-4 md:mx-6 ">
         <div className="py-8">
           <h2 className="text-2xl font-extrabold text-[#002058]">
             Transform Access To Education
