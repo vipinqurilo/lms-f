@@ -378,11 +378,12 @@ const bookings = [
   },
 ];
 
-const AvailabilityCalendar = () => {
+const ScheduleCalendar = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
+  const [selectedSlots, setSelectedSlots] = useState([]);
 
   useEffect(() => {
     const calculateDays = () => {
@@ -540,8 +541,28 @@ const AvailabilityCalendar = () => {
           scrollbarWidth: "thin" /* Firefox ke liye */,
           scrollbarColor: "#888 #f1f1f1" /* Firefox ke liye color */,
         }}
-        className="h-[calc(100%-60.8px)] overflow-y-auto"
+        className="h-full overflow-y-scroll"
       >
+        <div className="flex items-center gap-4 text-sm px-4 py-2">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-gray-200" />
+            <span className="text-[13px] font-semibold text-[#8c8c8c]">
+              NOT AVAILABLE
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-green-200" />
+            <span className="text-[13px] font-semibold text-[#8c8c8c]">
+              AVAILABLE
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-red-500" />
+            <span className="text-[13px] font-semibold text-[#8c8c8c]">
+              BOOKED
+            </span>
+          </div>
+        </div>
         <div className="flex items-center justify-between px-4 gap-4">
           <div className="flex text-[13px] text-[#8c8c8c] font-semibold">
             <span>My current time: </span>
@@ -643,16 +664,56 @@ const AvailabilityCalendar = () => {
                 return (
                   <div
                     key={`${rowIndex}-${colIndex}`}
-                    className={`border-l p-1 relative ${
+                    className={`border-l p-1 relative cursor-pointer ${
                       isBooked(colIndex, rowIndex)
-                        ? "bg-red-500 border-b border-red-600" // Booked slots are red
+                        ? "bg-red-500 border-b border-red-600"
                         : isAvailable(colIndex, rowIndex) &&
                           !isBeforeCurrentTime
-                        ? "bg-bg_green border-b border-light_green" // Available slots are green
+                        ? selectedSlots.some(
+                            (slot) =>
+                              slot.dayIndex === colIndex &&
+                              slot.timeIndex === rowIndex
+                          )
+                          ? "bg-blue-300 border-b border-blue-400" // Highlight selected cells
+                          : "bg-bg_green border-b border-light_green"
                         : isBeforeCurrentTime
-                        ? "bg-[#FEF5E5] border-b border-gray-200" // Slots before current time are secondary
-                        : "border-y border-gray-200" // Not available slots are gray
+                        ? "bg-[#FEF5E5] border-b border-gray-200"
+                        : "border-y border-gray-200"
                     }`}
+                    onClick={() => {
+                      if (
+                        isAvailable(colIndex, rowIndex) && // Check if cell is available
+                        !isBeforeCurrentTime
+                      ) {
+                        const spanStart = rowIndex - (rowIndex % 2); // Find start of 30-minute block
+                        const isAlreadySelected = selectedSlots.some(
+                          (slot) =>
+                            slot.dayIndex === colIndex &&
+                            slot.timeIndex === spanStart
+                        );
+
+                        if (isAlreadySelected) {
+                          // Deselect the entire block
+                          setSelectedSlots((prev) =>
+                            prev.filter(
+                              (slot) =>
+                                !(
+                                  slot.dayIndex === colIndex &&
+                                  (slot.timeIndex === spanStart ||
+                                    slot.timeIndex === spanStart + 1)
+                                )
+                            )
+                          );
+                        } else {
+                          // Select both cells in the 30-minute section
+                          setSelectedSlots((prev) => [
+                            ...prev,
+                            { dayIndex: colIndex, timeIndex: spanStart },
+                            { dayIndex: colIndex, timeIndex: spanStart + 1 },
+                          ]);
+                        }
+                      }
+                    }}
                   >
                     {/* Add red timeline to first two columns */}
                     {colIndex === 0 &&
@@ -685,4 +746,4 @@ const AvailabilityCalendar = () => {
   );
 };
 
-export default AvailabilityCalendar;
+export default ScheduleCalendar;

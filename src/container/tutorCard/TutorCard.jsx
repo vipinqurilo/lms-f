@@ -6,13 +6,15 @@ import AvlbaleCalendar from "./AvailabilityCalendar";
 import Step1SelectSubject from "../booking/Step1SelectSubject";
 import Step2SelectTimeslot from "../booking/Step2SelectTimeslot";
 import Step3Payment from "../booking/Step3Payment";
-
+import { RxCross2 } from "react-icons/rx";
+import { ArrowLeft } from "lucide-react";
+import { BookingModal } from "../booking/BookingModal";
 const TutorCard = () => {
   const [activeTab, setActiveTab] = useState("Availability");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAvailableModelOpen, setIsAvailableModelOpen] = useState(false);
   const [bookingStep, setBookingStep] = useState(1);
-
+  const [showBooking, setShowBooking] = useState(false);
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden"; // Disable scrolling
@@ -60,7 +62,7 @@ const TutorCard = () => {
               $2.50 - $20.00
             </div>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setShowBooking(true)}
               className="bg-secondary text-white px-8 flex justify-center items-center text-nowrap text-md rounded-lg hover:bg-opacity-80 w-[140px] h-[40px]"
             >
               Book now
@@ -105,7 +107,7 @@ const TutorCard = () => {
           {activeTab === "Availability" && <AvlbaleCalendar />}
           <div className="h-6 relative">
             <div
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsAvailableModelOpen(true)}
               className="text-primary cursor-pointer absolute left-[50%] -translate-y-3 -translate-x-[50%] hidden group-hover:inline-block text-sm underline"
             >
               View full availability
@@ -116,37 +118,21 @@ const TutorCard = () => {
       {/* Modal */}
       {isAvailableModelOpen && (
         <div className="fixed w-screen h-screen top-0 left-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
-          <div className="h-[80%] w-full">
-            <AvailabilityCalendar
-              setIsAvailableModelOpen={setIsAvailableModelOpen}
-            />
+          <div className="h-[80%] bg-white border rounded-lg w-[80%] mx-auto">
+            <div
+              onClick={() => setIsAvailableModelOpen(false)}
+              className="flex items-center justify-between border-b p-4 cursor-pointer"
+            >
+              <h2 className="text-lg font-semibold">Availability Calendar</h2>
+              <RxCross2 />
+            </div>
+            <AvailabilityCalendar />
           </div>
         </div>
       )}
-      {isModalOpen && (
-        <div className="fixed w-screen h-screen top-0 left-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
-          <div className="bg-white p-6 rounded-lg w-4/5">
-            {bookingStep === 1 && (
-              <Step1SelectSubject
-                onNext={handleNextStep}
-                onBack={() => setIsModalOpen(false)}
-              />
-            )}
-            {bookingStep === 2 && (
-              <Step2SelectTimeslot
-                onNext={handleNextStep}
-                onBack={handleBackStep}
-              />
-            )}
-            {bookingStep === 3 && (
-              <Step3Payment
-                onConfirm={handleConfirmPayment}
-                onBack={handleBackStep}
-              />
-            )}
-          </div>
-        </div>
-      )}
+      <div className="p-4">
+        {showBooking && <BookingModal onClose={() => setShowBooking(false)} />}
+      </div>
     </div>
   );
 };

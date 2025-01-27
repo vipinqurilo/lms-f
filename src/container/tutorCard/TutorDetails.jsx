@@ -3,22 +3,18 @@ import React, { useEffect, useState } from "react";
 import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { TooltipItem } from "../../components/common/TooltipItem";
-// import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useRouter } from "next/router";
 const TutorDetails = () => {
-  //   const [isMounted, setIsMounted] = useState(false); // Need this for the react-tooltip
-  //   console.log(isMounted, "isMounted");
-  //   useEffect(() => {
-  //     setIsMounted(true);
-  //   }, []);
+  const router = useRouter();
   return (
     <div className="flex-1 flex flex-col  py-6 ">
       {/* Profile Info */}
       <div className="flex justify-between items-center">
-        {/* {isMounted && <ReactTooltip id={"mytip"} effect={"solid"} />} */}
         <h2
+          onClick={() => router.push(`/tutors/marlene-reilly`)}
           data-tip={"Tip Here"}
           data-for={"mytip"}
-          className="text-xl font-bold "
+          className="text-xl font-bold cursor-pointer"
         >
           Marlene Reilly
         </h2>

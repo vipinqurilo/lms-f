@@ -120,10 +120,12 @@ const Step3Payment = ({ onConfirm, onBack }) => {
         </div>
 
         <div className="text-sm text-gray-600 mb-4">
-          * All purchases are in USD. Foreign transaction fees might apply according to your bank policies.
+          * All purchases are in USD. Foreign transaction fees might apply
+          according to your bank policies.
         </div>
         <div className="text-sm text-gray-600 mb-4">
-          The order will automatically be cancelled if it isn't paid within 10 minutes.
+          The order will automatically be cancelled if it isn't paid within 10
+          minutes.
         </div>
       </div>
 
