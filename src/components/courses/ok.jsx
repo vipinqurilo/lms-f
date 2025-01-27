@@ -1,10 +1,15 @@
-import React from 'react'
-import CoursesFilterCards from './CoursesFilterCards'
+import React from "react";
+import CoursesFilterCards from "./CoursesFilterCards";
+import CoursesFilterPrices from "./CoursesFilterPrices";
 
 const Ok = () => {
   return (
-    <div><CoursesFilterCards/></div>
-  )
-}
+    <div>
+         
+      <CoursesFilterCards />
+      <CoursesFilterPrices />
+    </div>
+  );
+};
 
-export default Ok
+export default Ok;
