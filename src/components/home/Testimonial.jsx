@@ -70,7 +70,7 @@ export default function Testimonial() {
 
   return (
     <div className="flex justify-center items-center  md:py-10 mx-4 ">
-      <div className="md:w-[60%] border-8 border-white outline-none w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-2xl shadow p-6 relative">
+      <div className="md:w-[60%] border-[12px] border-white outline-none w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-[3rem] shadow p-6 relative">
         <Swiper
           modules={[Navigation]}
           navigation={{
