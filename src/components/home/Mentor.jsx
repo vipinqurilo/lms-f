@@ -16,22 +16,23 @@ export default function Mentor() {
 
       {/* Right Section - Content */}
       <div className="md:w-1/2 text-left md:mt-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Want to share your knowledge? <br /> Join us as a Mentor
+        <h2 className="text-3xl md:text-4xl text-[28px] font-extrabold text-black mb-4">
+          Want to share your knowledge? <br className="md:block hidden" /> Join
+          us as a Mentor
         </h2>
-        <p className="text-gray-600 mb-6 text-xl">
+        <p className="text-gray-600 mb-6 md:text-xl text-[15px]">
           High-definition video is video of higher resolution and quality than
           standard-definition. While there is no standardized meaning for
           high-definition, generally any video.
         </p>
         <ul className="list-none space-y-3 mb-6">
-          <li className="flex items-center text-xl text-black font-bold">
+          <li className="flex items-center md:text-xl text-base text-black font-bold">
             <span className="text-[#f66962] text-2xl mr-2 ">
               <IoIosCheckmarkCircle />
             </span>{" "}
             Best Courses
           </li>
-          <li className="flex items-center text-xl text-black font-bold">
+          <li className="flex items-center md:text-xl text-base text-black font-bold">
             <span className="text-[#f66962] text-2xl mr-2">
               <IoIosCheckmarkCircle />
             </span>{" "}

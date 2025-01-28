@@ -74,7 +74,7 @@ export default function FeaturedInstructor() {
         <h2 className="text-4xl font-bold">{data.heading}</h2>
         <p className="mt-4 font-semibold text-gray-500">{data.desc}</p>
       </div> */}
-      <Heading heading={data.heading} desc={data.desc} position={'center'}  />
+      <Heading heading={data.heading} desc={data.desc} position={'center'} paddingX={'20%'} />
       <div className="mt-8 px-4">
         <Swiper
           modules={[Pagination]}

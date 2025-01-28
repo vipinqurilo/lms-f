@@ -1,4 +1,5 @@
 import React from "react";
+import Heading from "../common/Heading";
 
 export default function MasterSkill() {
   const masterskillData = {
@@ -37,19 +38,26 @@ export default function MasterSkill() {
           <h2 className="text-red-500 text-base font-extrabold  mb-2">
             What's New
           </h2>
-          <h1 className="text-4xl font-bold text-black mb-4">
+          {/* <h1 className="text-4xl font-bold text-black mb-4">
             {masterskillData.heading}
           </h1>
-          <p className="text-gray-600 text-lg mb-8 leading-6">{masterskillData.desc}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 ">
+          <p className="text-gray-600 text-lg mb-8 leading-6">{masterskillData.desc}</p> */}
+
+          <Heading
+            heading={masterskillData.heading}
+            desc={masterskillData.desc}
+            position={"left"}
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:gap-6 gap-2 ">
             {/* Features */}
             {masterskillData.features.map((feature) => (
-              <div className="flex items-start space-x-3 mt-4 border rounded-xl border-gray-200 py-8 px-6">
+              <div className="flex items-start space-x-3 mt-4 border rounded-xl border-gray-300 py-8 px-6">
                 <div className="">
                   <img src={feature.img} alt={feature.text} />
                 </div>
                 <div>
-                  <h4 className="text-[14px] font-medium   text-[#685f78]">
+                  <h4 className="text-[14px] font-medium  md:pt-0 pt-3 text-[#685f78]">
                     {feature.text}
                   </h4>
                 </div>
