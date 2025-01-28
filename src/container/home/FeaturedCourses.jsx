@@ -1,5 +1,5 @@
 import React from "react";
-import FeaturedCard from "@/components/FeaturedCard";
+import FeaturedCard from "@/components/common/FeaturedCard";
 
 export default function FeaturedCourses() {
   const data = {

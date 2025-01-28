@@ -1,5 +1,5 @@
 import React from "react";
-import Testimonial from "@/components/home/Testimonial";
+import Testimonial from "@/components/common/Testimonial";
 
 export default function UserLove() {
   return (

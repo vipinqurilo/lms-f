@@ -1,6 +1,6 @@
 "use client";
 
-import InstructorCard from "@/components/home/InstructorCard";
+import InstructorCard from "@/components/common/InstructorCard";
 import React from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";

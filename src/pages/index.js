@@ -1,6 +1,6 @@
 "use client";
 
-import FeaturedCard from "@/components/FeaturedCard";
+import FeaturedCard from "@/components/common/FeaturedCard";
 import Footer from "@/components/Footer";
 // import FeaturedInstructor from "@/components/home/FeaturedInstructor";
 import HeroSection from "@/components/home/HeroSection";
@@ -9,9 +9,9 @@ import Mentor from "@/components/home/Mentor";
 import UnlimitedAccess from "@/components/home/UnlimitedAccess";
 import Navbar from "@/components/Navbar";
 import FeaturedCourses from "@/container/home/FeaturedCourses";
-import InstructorCard from "@/components/home/InstructorCard.jsx";
+import InstructorCard from "@/components/common/InstructorCard.jsx";
 import FeaturedInstructor from "@/container/home/FeaturedInstructor";
-import Testimonial from "../components/home/Testimonial";
+import Testimonial from "../components/common/Testimonial";
 import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
 import Blog from "@/components/common/BlogCard";
