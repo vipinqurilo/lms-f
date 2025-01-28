@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import Navbar from "@/components/Navbar";
 
 export default function App({ Component, pageProps }) {
   const pathname = usePathname();
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <StoreProvider>
+      {!noFooterRoutes.includes(pathname) && <Navbar />}
       <Component {...pageProps} />
       {!noFooterRoutes.includes(pathname) && <Footer />}
     </StoreProvider>

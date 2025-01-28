@@ -62,7 +62,7 @@ export default function PrivacyPolicy() {
   ];
 
   return (
-    <div className="font-nunito">
+    <div className="font-nunito custom-margin-top">
       <TopBanner heading={"Privacy Policy"} />
       <PrivacyPolicyComp data={policyContent} />
     </div>

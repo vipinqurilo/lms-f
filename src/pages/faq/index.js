@@ -98,7 +98,7 @@ export default function FaqPage() {
   };
 
   return (
-    <div className="w-full font-nunito py-10">
+    <div className="w-full font-nunito py-10 custom-margin-top">
       <CommonHeading data={data?.heading} />
       <FAQContainer data={data?.faqs} />
     </div>

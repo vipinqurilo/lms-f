@@ -5,7 +5,7 @@ import CourseDetails from "@/container/courses/CourseDetails";
 
 export default function CourseDetailsPage({ pageData }) {
   return (
-    <main className="font-nunito">
+    <main className="font-nunito custom-margin-top">
       <CourseDetails data={pageData?.courseDetails} />
     </main>
   );

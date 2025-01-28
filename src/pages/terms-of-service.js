@@ -72,7 +72,7 @@ export default function TermsOfService() {
   ];
 
   return (
-    <div className="font-nunito">
+    <div className="font-nunito custom-margin-top">
       <TopBanner heading={"Terms of Service"} />
       <PrivacyPolicyComp data={termsData} />
     </div>
