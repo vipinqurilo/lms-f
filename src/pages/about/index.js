@@ -27,18 +27,18 @@ export default function index() {
       cardsData: [
         {
           icon: "/assets/about/mission.png",
-          title: "Our Mission",
-          des: "Our mission is to help entrepreneurs and tutors set up their own online tutoring platforms like Verbling, Preply, and Cambly. We help them reach the pinnacle of their career by enabling them to launch their own tutoring platform using our readymade solution.",
+          title: "Innovative Education",
+          des: "At Steam Institute, we provide cutting-edge education through specialized programs that combine science, technology, engineering, arts, and mathematics. Our courses are designed to prepare students for the future.",
         },
         {
           icon: "/assets/about/mission.png",
-          title: "Our Mission",
-          des: "Our mission is to help entrepreneurs and tutors set up their own online tutoring platforms like Verbling, Preply, and Cambly. We help them reach the pinnacle of their career by enabling them to launch their own tutoring platform using our readymade solution.",
+          title: "Industry Collaborations",
+          des: "We collaborate with industry experts and leading companies to offer hands-on experience, internships, and real-world exposure to our students, ensuring they are industry-ready upon graduation.",
         },
         {
           icon: "/assets/about/mission.png",
-          title: "Our Mission",
-          des: "Our mission is to help entrepreneurs and tutors set up their own online tutoring platforms like Verbling, Preply, and Cambly. We help them reach the pinnacle of their career by enabling them to launch their own tutoring platform using our readymade solution.",
+          title: "Student-Centric Approach",
+          des: "Our teaching philosophy is centered around the student. We focus on personalized learning, mentorship, and creating a supportive environment where students can excel and reach their full potential.",
         },
       ],
     },
@@ -93,7 +93,7 @@ export default function index() {
     ],
   };
   return (
-    <div className="w-full font-nunito overflow-x-hidden custom-margin-top">
+    <div className="w-full font-nunito custom-margin-top">
       <WhoWeAre data={data?.WhoWeAre} heading={data?.heading} />
       <AboutContainer />
       <OurMission data={data?.OurMission} />

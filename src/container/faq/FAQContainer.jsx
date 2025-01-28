@@ -37,7 +37,7 @@ const FAQContainer = ({ data }) => {
   return (
     <div className="w-full overflow-hidden py-8">
       <div
-        className={`w-full text-nowrap flex items-center md:justify-center gap-2 overflow-x-auto px-4`}
+        className={`w-full md:w-fit mx-auto text-nowrap flex items-center md:justify-center gap-2 overflow-x-auto border-b-2`}
       >
         {data?.map((faq, i) => (
           <button
@@ -53,18 +53,18 @@ const FAQContainer = ({ data }) => {
           </button>
         ))}
       </div>
-      <div className="bg-secondary/10 px-5 py-8 md:px-10 md:py-10 space-y-6 w-full">
-        <div className="relative lg:w-[60%] lg:mx-auto">
+      <div className=" px-5 py-8 md:px-10 md:pt-10 space-y-6 w-full">
+        <div className="relative lg:w-[60%] lg:mx-auto shadow-sm">
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full border border-black/10 p-3 rounded-lg px-4 pl-10 focus:outline-secondary transition-custom"
+            className="w-full border border-black/10 p-3 rounded-full px-8 pl-10 focus:outline-secondary transition-custom"
             placeholder={"Looking for something! Search your query"}
           />
 
           <IoSearch
-            className={`text-xl text-gray-300 absolute top-[50%] left-2 translate-y-[-50%] cursor-pointer`}
+            className={`text-xl text-light absolute top-[50%] left-3 translate-y-[-50%] cursor-pointer`}
           />
         </div>
 
@@ -72,7 +72,7 @@ const FAQContainer = ({ data }) => {
           {filteredFaqs?.map((faq, index) => (
             <li
               key={index}
-              className="border rounded-lg p-4 transition-all duration-200 ease-in-out bg-white"
+              className="border rounded-lg p-4 transition-all duration-200 ease-in-out bg-white shadow-sm"
             >
               <button
                 onClick={() => toggleFaq(index)}

@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutCard = ({ data, index }) => {
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-14">
+    <div className="w-full grid grid-cols-1 md:grid-cols-1 lg:grid-cols-4 gap-14">
       <div
         className={`w-full h-[40vh] lg:h-full rounded-xl bg-no-repeat bg-center bg-cover flex items-end justify-center ${index % 2 !== 0 && "lg:order-2"}`}
         style={{

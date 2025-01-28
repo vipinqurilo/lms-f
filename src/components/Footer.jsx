@@ -10,23 +10,27 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 import FooterLogo from "./footer/FooterLogo";
 import FooterLinks from "./footer/FooterLinks";
+import Image from "next/image";
 
 const Footer = () => {
   const contactDetails = [
     {
-      Icon: FaPhone,
-      title: "Phone Number :",
-      value: "+1012 3456 789",
+      Icon: FaLocationArrow,
+      title: "Office Location :",
+      value: "132 Dartmouth Street Boston, Massachusetts 02156 United States",
+      image: "/assets/contact-us/location.svg",
     },
     {
       Icon: FaMailBulk,
       title: "Email Address :",
       value: "demo@gmail.com",
+      image: "/assets/contact-us/email.svg",
     },
     {
-      Icon: FaLocationArrow,
-      title: "Office Location :",
-      value: "132 Dartmouth Street Boston, Massachusetts 02156 United States",
+      Icon: FaPhone,
+      title: "Phone Number :",
+      value: "+1012 3456 789",
+      image: "/assets/contact-us/phone.svg",
     },
   ];
 
@@ -145,7 +149,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-white text-light shadow border-t-0 border-black/10 font-nunito">
-      <div className="text-start flex flex-col gap-5 lg:gap-0 lg:flex-row items-start justify-between custom-container">
+      <div className="text-start flex flex-col gap-5 lg:gap-0 lg:flex-row items-start justify-between custom-container !py-5">
         <FooterLogo icons={icons} />
 
         <div className="w-full lg:w-[70%] grid md:grid-cols-2 lg:grid-cols-4 lg:gap-1 gap-5">
@@ -167,13 +171,21 @@ const Footer = () => {
             </div>
             <div className="!w-full text-black space-y-4">
               {contactDetails?.map((data, index) => (
-                <div className="flex items-start gap-4 w-full" key={index}>
-                  <div className="bg-secondary/10 !w-10 !h-8 flex items-center justify-center rounded border border-black/10">
-                    <data.Icon size={16} />
+                <div className="flex items-start gap-2 w-full" key={index}>
+                  <div className="">
+                  {/* <div className="bg-secondary/10 !w-10 !h-8 flex items-center justify-center rounded border border-black/10"> */}
+                    {/* <data.Icon size={16} /> */}
+                    <Image
+                      src={data?.image}
+                      alt={data?.title}
+                      width={10}
+                      height={10}
+                      layout="responsive"
+                    />
                   </div>
                   <div className="w-full">
-                    <p className="text-sm">{data?.title}</p>
-                    <p className="text-sm text-light">{data?.value}</p>
+                    {/* <p className="text-sm">{data?.title}</p> */}
+                    <p className="text-sm text-light font-medium -mt-1">{data?.value}</p>
                   </div>
                 </div>
               ))}

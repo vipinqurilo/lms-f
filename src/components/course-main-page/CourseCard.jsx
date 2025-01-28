@@ -39,16 +39,15 @@ const CourseCard = () => {
           </p>
         </div>
         <div className="flex justify-between mt-4">
-          <button className="flex items-center text-red-500 border border-red-500 rounded-lg px-4 py-1">
-            <FaHeart className="mr-2" />
-            Add to Wishlist
+          <button className="flex items-center text-red-500 hover:text-white hover:bg-red-500 transition-custom border border-red-500 rounded-lg px-4 py-1">
+            <FaHeart className="" />
           </button>
-          <button className="flex items-center text-gray-500 border border-gray-500 rounded-lg px-4 py-1">
+          <button className="flex items-center text-green-500 hover:bg-green-500 hover:text-white border border-green-500 transition-custom rounded-lg px-4 py-1">
             <FaShareAlt className="mr-2" />
             Share
           </button>
         </div>
-        <button className="bg-secondary hover:bg-black transition-custom text-white rounded-lg w-full py-2 mt-4">
+        <button className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4">
           Enroll Now
         </button>
       </div>
