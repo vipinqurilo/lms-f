@@ -9,3 +9,11 @@
   margin: 0;
   padding: 0;
 }
+
+:root {
+  --primary: #e36760;
+  --secondary: #f79902;
+  --dark: #392b3c;
+  --light: #ede8ec;
+  --background: #0f2138;
+}

@@ -1,9 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import TutorDetails from "./TutorDetails";
-import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import AvlbaleCalendar from "./AvailabilityCalendar";
-import { RxCross2 } from "react-icons/rx";
 import { BookingModal } from "../booking/BookingModal";
 import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
@@ -12,7 +10,9 @@ import {
   setIsAvailableModelOpen,
   setIsContactModelOpen,
 } from "../../store/slices/uiSlice";
+import { useRouter } from "next/router";
 const TutorCard = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("Availability");
   const { isAvailableModelOpen } = useSelector((state) => state.ui);
