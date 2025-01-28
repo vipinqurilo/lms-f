@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { GrFormPreviousLink } from "react-icons/gr";
+import { GrFormNextLink } from "react-icons/gr";
 
 export default function Testimonial() {
   const testimonials = [
@@ -74,8 +76,8 @@ export default function Testimonial() {
         <Swiper
           modules={[Navigation]}
           navigation={{
-            prevEl: ".swiper-button-prev",
-            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-prev-custom",
+            nextEl: ".swiper-next-custom",
           }}
           loop
           spaceBetween={20}
@@ -101,7 +103,9 @@ export default function Testimonial() {
                     className="w-16 h-16 rounded-full shadow-md"
                   />
                 </div>
-                <h4 className="mt-4 md:text-2xl text-xl font-bold">{testimonial.name}</h4>
+                <h4 className="mt-4 md:text-2xl text-xl font-bold">
+                  {testimonial.name}
+                </h4>
                 <p className="text-gray-500 md:mt-4 font-normal md:text-xl text-base">
                   {testimonial.position}
                 </p>
@@ -111,8 +115,14 @@ export default function Testimonial() {
         </Swiper>
 
         {/* Navigation Buttons */}
-        <button className="swiper-button-prev absolute left-2 top-1/2 -translate-y-1/2 text-red-700"></button>
-        <button className="swiper-button-next absolute right-2 top-1/2 -translate-y-1/2 text-red-700"></button>
+        {/* <div className=""> */}
+        <button className="swiper-prev-custom cursor-pointer absolute left-2 top-[55%] -translate-y-1/2 bg-white">
+          <GrFormPreviousLink className="text-5xl text-[#392c7d]" />
+        </button>
+        <button className="swiper-next-custom cursor-pointer absolute right-2 top-[55%] -translate-y-1/2 bg-white">
+          <GrFormNextLink className="text-5xl text-[#392c7d]" />
+        </button>
+        {/* </div> */}
       </div>
     </div>
   );

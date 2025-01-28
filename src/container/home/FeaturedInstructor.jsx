@@ -82,13 +82,19 @@ export default function FeaturedInstructor() {
           paddingX={"20%"}
         />
       </div>
-      <div  data-aos="fade-up" className="mt-8 px-4 ">
+      <div data-aos="fade-up" className="mt-8 px-4 ">
         <Swiper
           modules={[Pagination]}
           spaceBetween={30}
           loop={true}
           slidesPerView={1}
-          pagination={{ clickable: true }}
+          pagination={{
+            clickable: true,
+            enabled: true,
+            renderBullet: (index, className) => {
+              return `<span class="${className} !bg-secondary !w-10 !h-2 !rounded-lg custom-bullet"></span>`;
+            },
+          }}
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },

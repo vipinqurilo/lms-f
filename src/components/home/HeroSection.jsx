@@ -35,19 +35,14 @@ export default function HeroSection() {
   return (
     <div
       id="HeroBg"
-      className="relative  bg-cover h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
-      // style={{
-      //   backgroundImage: "url('/assets/home/bgimage.png')",
-      // }}
+      className="relative  md:bg-cover bg-contain md:h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
     >
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
       <div
         data-aos="fade-up"
         className="relative max-w-6xl mx-auto flex flex-col items-center text-center"
       >
-        {/* Text Section */}
         <h3 className="md:text-xl text-base font-semibold border-b-2 text-white mb-4">
           Trusted by over 15K Users worldwide since 2024
         </h3>
@@ -65,8 +60,7 @@ export default function HeroSection() {
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative   lg:w-2/3 mt-10 md:py-8 ">
+        <div className="md:relative absolute   lg:w-2/3 md:mt-10 z-20 -bottom-24 md:-bottom-0  md:py-8 ">
           <div className="flex items-center bg-white rounded-full px-4 md:py-3 shadow-lg">
             <IoSearchSharp className="text-2xl" />
             <input
@@ -88,13 +82,11 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Statistics */}
         <div className="absolute -bottom-40 mt-12 hidden md:grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
           {data.box.map((item) => (
             <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
               <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
                 <div className="bg-white rounded-md">
-                  {/* Icon */}
                   <span className="text-xl font-bold text-orange-500">
                     <img src={`${item.img}`} alt={item.desc} />
                   </span>
