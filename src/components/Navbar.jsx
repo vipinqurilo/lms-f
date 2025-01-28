@@ -51,13 +51,15 @@ const Navbar = () => {
           <button onClick={toggleMenu} className="lg:hidden">
             <SlMenu size={30} />
           </button>
-          <Image
-            src={"/assets/common/logo.png"}
-            alt="logo"
-            width={150}
-            height={100}
-            className="!object-cover object-center"
-          />
+          <Link href={"/"}>
+            <Image
+              src={"/assets/common/logo.png"}
+              alt="logo"
+              width={150}
+              height={100}
+              className="!object-cover object-center"
+            />
+          </Link>
         </div>
         <DeskTopMenu getLinkCss={getLinkCss} />
         <div className="flex items-center gap-2">

@@ -25,13 +25,15 @@ const MobileMenu = ({ menuRef, toggleMenu, getLinkCss }) => {
       >
         <RxCross1 size={25} />
       </button>
-      <Image
-        src={"/assets/common/logo.png"}
-        alt="logo"
-        width={200}
-        height={100}
-        className="!object-cover object-center "
-      />
+      <Link href={"/"}>
+        <Image
+          src={"/assets/common/logo.png"}
+          alt="logo"
+          width={200}
+          height={100}
+          className="!object-cover object-center "
+        />
+      </Link>
 
       <div className="w-full px-5 space-y-4">
         {data?.mainNavItems?.map((item, index) => (
@@ -67,8 +69,14 @@ const MobileMenu = ({ menuRef, toggleMenu, getLinkCss }) => {
               item?.title === isSubMenuOpen && (
                 <ul className="w-full px-8 py-2">
                   {item?.items?.map((subLink, i) => (
-                    <li className="list-disc text-light group w-full text-lg" key={i}>
-                      <Link href={subLink?.href} className={`${getLinkCss} w-full`}>
+                    <li
+                      className="list-disc text-light group w-full text-lg"
+                      key={i}
+                    >
+                      <Link
+                        href={subLink?.href}
+                        className={`${getLinkCss} w-full`}
+                      >
                         {subLink?.title}
                       </Link>
                     </li>
