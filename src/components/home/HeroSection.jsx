@@ -46,7 +46,7 @@ export default function HeroSection() {
         {/* Text Section */}
         <h3 className="md:text-xl text-base font-semibold border-b-2 text-white mb-4">
           Trusted by over 15K Users worldwide since 2024
-        </h3>
+        </h3> 
         <h1 className="text-2xl lg:text-5xl md:mx-40 font-bold mt-4 text-white leading-tight md:mt-2 mb-6">
           Unlock Knowledge,{" "}
           <span className="text-orange-500">Elevate Your </span>Future, Achieve
@@ -64,7 +64,7 @@ export default function HeroSection() {
         {/* Search Bar */}
         <div className="relative w-full md:block hidden lg:w-2/3 mt-10 md:py-8 ">
           <div className="flex items-center bg-white rounded-full px-4 py-3 shadow-lg">
-            <IoSearchSharp className="text-xl" />
+            <IoSearchSharp className="text-2xl" />
             <input
               type="text"
               placeholder="Trusted by over 15K Users worldwide since 2024"

@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { Pagination } from "swiper/modules";
+import Heading from "@/components/common/Heading";
 
 export default function FeaturedInstructor() {
   const data = {
@@ -69,10 +70,11 @@ export default function FeaturedInstructor() {
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",
       }}
     >
-      <div className="text-center">
+      {/* <div className="text-center">
         <h2 className="text-4xl font-bold">{data.heading}</h2>
         <p className="mt-4 font-semibold text-gray-500">{data.desc}</p>
-      </div>
+      </div> */}
+      <Heading heading={data.heading} desc={data.desc} position={'center'}  />
       <div className="mt-8 px-4">
         <Swiper
           modules={[Pagination]}
