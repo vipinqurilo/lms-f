@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { Pagination } from "swiper/modules";
+import Heading from "@/components/common/Heading";
 
 export default function BlogSection() {
   const data = [
@@ -65,14 +66,21 @@ export default function BlogSection() {
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",
       }}
     >
-      <div className="text-center">
+      {/* <div className="text-center">
         <h2 className="text-4xl font-bold">Latest Blogs</h2>
         <p className="mt-4 font-semibold text-gray-500">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
           accumsan bibendum gravida maecenas augue elementum et neque.
           Suspendisse imperdiet.
         </p>
-      </div>
+      </div> */}
+      <Heading
+        heading={"Latest Blogs"}
+        desc={`  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
+          accumsan bibendum gravida maecenas augue elementum et neque.
+          Suspendisse imperdiet.`}
+          paddingX={'20%'}
+      />
       <div className="mt-8 px-4">
         <Swiper
           modules={[Pagination]}

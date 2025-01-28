@@ -31,7 +31,7 @@ export default function BlogCard({ data }) {
       <div className="flex justify-center pb-4">
         <div className="flex items-center gap-x-2 text-gray-700">
           <SlCalender className="text-base space-x-4 text-red-600" />
-          <p>{data?.date} Students</p>
+          <p>{data?.date} </p>
         </div>
       </div>
     </div>

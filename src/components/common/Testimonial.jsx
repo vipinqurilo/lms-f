@@ -91,7 +91,7 @@ export default function Testimonial() {
                     alt=""
                   />
                 </div>
-                <p className="text-white md:text-xl text-base font-bold italic text-center md:mx-4">
+                <p className="text-white md:text-xl text-[15px] font-bold italic text-center md:mx-4">
                   {testimonial.quote}
                 </p>
                 <div className="flex justify-center mt-6">
