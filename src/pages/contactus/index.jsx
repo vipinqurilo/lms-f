@@ -3,7 +3,10 @@ import ContactUs from '../../components/contactus/ContactUs'
 
 const index = () => {
   return (
-    <div> <ContactUs/></div>
+    <div> 
+       <ContactUs/>
+      
+      </div>
   )
 }
 

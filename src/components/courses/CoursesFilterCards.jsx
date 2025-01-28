@@ -26,7 +26,7 @@ const CoursesFilterCards = () => {
   };
 
   return (
-    <div className="w-72 border border-gray-300 rounded-md p-4  ">
+    <div className="w-64 border bg-[#FFFFFF] border-gray-300 rounded-md p-4  ">
       {/* Course Categories */}
       <div>
         <h5 className="text-xl font-bold mb-3">Course categories</h5>
@@ -43,7 +43,7 @@ const CoursesFilterCards = () => {
               />
               <label
                 htmlFor={category.name}
-                className="ml-2 text-[#8C8598] text-base"
+                className="ml-2 text-[#8C8598] text-sm leading-8"
               >
                 {category.name} ({category.count})
               </label>

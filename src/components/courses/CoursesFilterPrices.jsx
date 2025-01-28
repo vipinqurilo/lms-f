@@ -10,7 +10,7 @@ const CoursesFilterPrices = () => {
   ];
 
   return (
-    <div className=" border border-gray-300 rounded-md p-4 bg-white shadow-sm mt-11">
+    <div className=" border w-64  border-gray-300 rounded-md p-4 bg-white shadow-sm mt-11">
       {/* Title */}
       <div>
         <h5 className="text-xl font-bold mb-3">Price</h5>

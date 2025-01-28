@@ -4,8 +4,9 @@ import CoursesFilterPrices from "./CoursesFilterPrices";
 
 const Ok = () => {
   return (
-    <div>
-         
+    <div className="mt-7">
+       
+          
       <CoursesFilterCards />
       <CoursesFilterPrices />
     </div>
