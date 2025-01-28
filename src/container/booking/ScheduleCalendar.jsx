@@ -354,7 +354,7 @@ const data = {
     true,
   ],
 };
-
+ 
 const bookings = [
   {
     date: "2025-01-26", // ISO 8601 format (YYYY-MM-DD)
@@ -512,14 +512,17 @@ const ScheduleCalendar = ({ slotLimit }) => {
 
     // Extract the date, month, and year from the days array
     const [dayOfWeek, dateStr] = days[dayIndex].label.split(" ");
-    const date = parseInt(dateStr); // Get the date part (e.g., "26" for "Sun 26")
+    const date = Number.parseInt(dateStr); // Get the date part (e.g., "26" for "Sun 26")
     const month = days[dayIndex].month; // Month as string (e.g., "Jan")
     const year = days[dayIndex].year; // Year as number (e.g., 2025)
 
     const today = new Date();
     const todayDate = today.getDate();
-    const todayMonth = today.toLocaleString("default", { month: "short" }); // Get current month as short string (e.g., "Jan")
+    const todayMonth = today.getMonth(); // Get current month as a number (0-11)
     const todayYear = today.getFullYear();
+
+    // Convert the selected month to a number (0-11)
+    const selectedMonth = new Date(`${month} 1, ${year}`).getMonth();
 
     // If the selected date's year is before today's year, return false
     if (year < todayYear) {
@@ -528,18 +531,15 @@ const ScheduleCalendar = ({ slotLimit }) => {
 
     // If the selected date's year is the same as today's, check the month and date
     if (year === todayYear) {
-      if (month < todayMonth) {
+      if (selectedMonth < todayMonth) {
         return false; // Month is before today's month
       }
-      if (month === todayMonth && date < todayDate) {
+      if (selectedMonth === todayMonth && date < todayDate) {
         return false; // Date is before today's date in the same month
       }
     }
 
     const spanIndex = Math.floor(timeIndex / 2); // Every two 15-minute slots correspond to one 30-minute span
-
-    // Check if spanIndex is within bounds
-    console.log("spanIndex", spanIndex);
 
     // If the spanIndex is out of bounds, return false
     if (!dayAvailability || spanIndex >= dayAvailability.length) {
@@ -552,7 +552,6 @@ const ScheduleCalendar = ({ slotLimit }) => {
     if (isBooked(dayIndex, timeIndex)) {
       return false; // Booked slots are not available
     }
-    // console.log(available, "out of this");
 
     return available; // Return true only if the 30-minute span is available
   };

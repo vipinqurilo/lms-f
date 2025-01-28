@@ -57,10 +57,10 @@ const TimeFilterDropdown = () => {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="absolute bottom-0 left-3 translate-y-[100%] z-[1000]"
+      className="absolute bottom-0 right-3 translate-y-[100%] z-[1000]"
     >
       <div className="w-[435px] flex flex-col justify-between bg-white rounded-lg relative mt-[12.8px]">
-        <div className="w-0 h-0 absolute top-0 left-5 -translate-y-[96%] border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[13px] border-b-white"></div>
+        <div className="w-0 h-0 absolute top-0 right-10 -translate-y-[96%] border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[13px] border-b-white"></div>
 
         {/* Days of the Week */}
         <div className="px-4 py-2 relative flex gap-4">Days of the Week</div>

@@ -40,7 +40,7 @@ const TutorCard = () => {
         {/* Price & Buttons */}
         <div className="w-full lg:w-2/3 flex flex-col lg:flex-row ">
           <div className="flex flex-col items-start lg:items-center p-3 lg:py-6 lg:px-8">
-            <div className=" w-full hidden  lg:flex">
+            <div className=" w-full flex">
               <Image
                 width={140}
                 height={140}
@@ -54,8 +54,6 @@ const TutorCard = () => {
                     onClick={() => router.push(`/tutors/marlene-reilly`)}
                     data-tip={"Tip Here"}
                     data-for={"mytip"}
-                    yhgyfdx5thrnk8
-                    n
                     className="text-base font-bold cursor-pointer"
                   >
                     Marlene Reilly

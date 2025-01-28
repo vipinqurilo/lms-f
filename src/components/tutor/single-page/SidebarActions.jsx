@@ -7,7 +7,7 @@ const SidebarActions = () => {
   return (
     <div>
       {/* right side */}
-      <div className="min-w-[400px] max-w-[400px] h-fit space-y-4 border shadow rounded-lg p-12 sticky top-4">
+      <div className="w-full lg:min-w-[400px] lg:max-w-[400px] h-fit space-y-4 border shadow rounded-lg p-4 mb-6 lg:mb-0 lg:p-12 static lg:sticky top-4">
         <button
           onClick={() => dispatch(setIsAvailableModelOpen(true))}
           className="w-full py-3 bg-[#FF9800] text-white rounded-lg hover:bg-[#F57C00] transition-colors"

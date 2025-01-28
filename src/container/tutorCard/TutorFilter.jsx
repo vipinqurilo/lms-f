@@ -6,6 +6,7 @@ import SubjectFilterDropdown from "./SubjectFilterDropdown";
 import PriceFilterDropdown from "./PriceFilterDropdown";
 import TimeFilterDropdown from "./TimeFilterDropdown";
 import SortBy from "./SortBy";
+import GenderSelector from "./GenderSelector";
 
 const data = [
   {
@@ -104,11 +105,8 @@ const data = [
 
 const TutorFilter = () => {
   const [isActive, setIsActive] = useState(false);
-  const [isOffline, setIsOffline] = useState(false);
-  const [isFeatured, setIsFeatured] = useState(false);
-  const [sortBy, setSortBy] = useState(
-    "By popularity" || "By price low to high" || "By price high to low"
-  );
+  const [gender, setGender] = useState("Any");
+  const [sortBy, setSortBy] = useState("By popularity");
   const [filterOpened, setfilterOpened] = useState("");
   const hancleSubjectClick = () => {
     if (filterOpened === "subject") {
@@ -145,6 +143,13 @@ const TutorFilter = () => {
       setfilterOpened("sort");
     }
   };
+  const handleGenderSet = () => {
+    if (filterOpened === "gender") {
+      setfilterOpened("");
+    } else {
+      setfilterOpened("gender");
+    }
+  };
   const handleClickOutside = () => {
     setfilterOpened("");
   };
@@ -155,7 +160,8 @@ const TutorFilter = () => {
         filterOpened === "price" ||
         filterOpened === "availability" ||
         filterOpened === "more" ||
-        filterOpened === "sort") && (
+        filterOpened === "sort" ||
+        filterOpened === "gender") && (
         <div
           onClick={() => handleClickOutside()}
           className="w-screen h-screen absolute inset-0 bg-black bg-opacity-50 z-10"
@@ -163,7 +169,7 @@ const TutorFilter = () => {
       )}
       {/* Top Section */}
       <div
-        className={`hidden lg:flex items-center w-[80%] divide-x-2 relative  ${
+        className={`hidden lg:flex items-center w-full px-20  divide-x-2 relative  ${
           filterOpened === "subject" ||
           filterOpened === "price" ||
           filterOpened === "availability"
@@ -171,7 +177,7 @@ const TutorFilter = () => {
             : ""
         }`}
       >
-        <div className="flex flex-col cursor-pointer justify-center px-4 py-2 w-full md:w-1/5 h-[72px] rounded-l-lg bg-white   ">
+        <div className="flex flex-col cursor-pointer justify-center px-4 py-2 w-full md:w-1/4 h-[72px] rounded-l-lg bg-white   ">
           <div className="text-[13px] leading-3 text-[#a6a6a6]">Search</div>
           <input
             type="text"
@@ -181,7 +187,7 @@ const TutorFilter = () => {
         </div>
         <div
           onClick={() => hancleSubjectClick()}
-          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/5 h-[72px]  bg-white   "
+          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/4 h-[72px]  bg-white   "
         >
           <div className="text-[13px] leading-3 text-[#a6a6a6]">
             Teach subject
@@ -194,7 +200,7 @@ const TutorFilter = () => {
         </div>
         <div
           onClick={() => handlePriceClick()}
-          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/5 h-[72px]  bg-white   "
+          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/4 h-[72px]  bg-white   "
         >
           <div className="text-[13px] leading-3 text-[#a6a6a6]">Price</div>
           <div className="flex justify-between items-center">
@@ -205,7 +211,7 @@ const TutorFilter = () => {
         </div>
         <div
           onClick={() => handleAvailabilityClick()}
-          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/5 h-[72px]  bg-white   "
+          className="flex relative flex-col cursor-pointer text-[16px] justify-center rounded-r-lg px-4 py-2 w-full md:w-1/4 h-[72px]  bg-white   "
         >
           <div className="text-[13px] leading-3 text-[#a6a6a6]">
             Availability
@@ -216,27 +222,6 @@ const TutorFilter = () => {
           </div>
           {filterOpened === "availability" && <TimeFilterDropdown />}
         </div>
-
-        <div className="bg-white flex justify-center items-center  text-[#f89c03]   px-2 md:w-[15%] py-3 h-[72px] rounded-r-lg ">
-          <button
-            className="bg-[#FEF5E5] rounded-lg  px-6 py-2"
-            onClick={toggleMoreFilters}
-          >
-            {/* <Image
-              className="object-cover"
-              width={16}
-              height={16}
-              alt="filter"
-              src={"/assets/icons/filter.svg"}
-            /> */}
-            More Filters
-          </button>
-        </div>
-        {filterOpened === "more" && (
-          <div className="mt-4 p-4 border border-gray-300 rounded-lg bg-white">
-            <div>Additional filter options go here...</div>
-          </div>
-        )}
       </div>
 
       {/* Bottom Section */}
@@ -254,32 +239,21 @@ const TutorFilter = () => {
           </label>
           <span className="text-sm">Active Tutors</span>
         </div>
-        {/* Offline Sessions Toggle */}
-        <div className="flex items-center gap-2 bg-white rounded px-4 h-[40px]">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={isOffline}
-              onChange={() => setIsOffline(!isOffline)}
-            />
-            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary   after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-          </label>
-          <span className="text-sm">Offline Sessions</span>
+        <div
+          onClick={() => handleGenderSet()}
+          className="flex relative flex-col cursor-pointer text-sm  min-w-[174px] text-[16px] justify-center px-4 py-2   h-[40px] rounded-lg bg-white   "
+        >
+          <div className="flex justify-between items-center gap-4">
+            <span className="">
+              <span className="font-semibold">Gender:</span> {gender}
+            </span>
+            <LiaAngleDownSolid />
+          </div>
+          {filterOpened === "gender" && (
+            <GenderSelector setGender={setGender} selectedGender={gender} />
+          )}
         </div>
-        {/* Featured Toggle */}
-        <div className="flex items-center gap-2 bg-white rounded px-4 h-[40px]">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={isFeatured}
-              onChange={() => setIsFeatured(!isFeatured)}
-            />
-            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary   after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-          </label>
-          <span className="text-sm">Featured</span>
-        </div>
+
         <div
           onClick={() => handleSortBy()}
           className="flex relative flex-col cursor-pointer text-sm  min-w-[174px] text-[16px] justify-center px-4 py-2   h-[40px] rounded-lg bg-white   "

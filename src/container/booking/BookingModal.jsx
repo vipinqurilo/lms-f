@@ -15,7 +15,7 @@ export function BookingModal({ onClose }) {
 
   const titles = {
     1: "Select subject and duration",
-    2: "Select subject and duration",
+    2: "Select number of slots",
     3: "Schedule your lessons",
     4: "Select payment method",
   };
@@ -48,7 +48,7 @@ export function BookingModal({ onClose }) {
       )}
       {step === 3 && (
         <div className=" h-[calc(100%-154px)]">
-          <ScheduleCalendar slotLimit={2} />
+          <ScheduleCalendar slotLimit={(Number(duration)/15)} />
         </div>
       )}
       {step === 4 && (

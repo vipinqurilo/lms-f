@@ -19,22 +19,28 @@ export default function TeacherProfile() {
     (state) => state.ui
   );
   return (
-    <div className="flex px-10 py-8">
+    <div className="block lg:flex   px-2 lg:px-10 py-8 w-full ">
       {/* Left side */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="w-full lg:max-w-7xl mx-auto px-2 lg:px-4 py-8">
         <ProfileHeader />
+        <div className="block lg:hidden">
+          <SidebarActions />
+        </div>
         <AboutSection />
         <SpeaksSection />
         <PricingSection />
+        <h2 className="text-2xl font-semibold my-4">Schedule</h2>
+        <h2 className="text-base font-bold my-4">Marlene Reilly's Calendar</h2>
         <div className="h-[600px] border">
           <AvailabilityCalendar />
         </div>
-        <GroupClassesSection />
         <TeachingExpertiseSection />
         <TeachingQualificationsSection />
         <ReviewsSection activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
-
+      <div className="hidden lg:block">
+        <SidebarActions />
+      </div>
     </div>
   );
 }
