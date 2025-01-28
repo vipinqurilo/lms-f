@@ -48,17 +48,17 @@ and 1,600+ hands-on labs`,
               key={state.desc} // Add a unique key for React list rendering
               className="flex items-center space-x-4 p-5 rounded-lg text-left "
             >
-              <div className="bg-white p-3 rounded-md">
+              <div className="bg-white md:p-3  p-1 rounded-md">
                 {/* Icon */}
-                <span className="text-2xl font-bold text-orange-500">
+                <div className="  font-bold text-orange-500">
                   <img src={state.img} alt={state.desc} />
-                </span>
+                </div>
               </div>
               <div>
-                <p className="text-3xl font-bold text-blue-900">
+                <p className="md:text-3xl text-2xl font-extrabold text-[#002058]">
                   {state.number}
                 </p>
-                <p className="text-xl font-medium text-black mt-6 uppercase bold">
+                <p className="md:text-xl text-base font-medium text-black md:mt-6 uppercase bold">
                   {state.desc}
                 </p>
               </div>
