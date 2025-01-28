@@ -63,20 +63,20 @@ export default function HeroSection() {
 
         {/* Search Bar */}
         <div className="relative w-full md:block hidden lg:w-2/3 mt-10 md:py-8 ">
-          <div className="flex items-center bg-white rounded-full px-4 py-1 shadow-lg">
+          <div className="flex items-center bg-white rounded-full px-4 py-3 shadow-lg">
             <IoSearchSharp className="text-xl" />
             <input
               type="text"
               placeholder="Trusted by over 15K Users worldwide since 2024"
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
-            <select className="bg-orange-100 rounded-full px-2 py-1 text-black outline-none mx-2">
+            <select className="bg-orange-100 rounded-full px-4 py-2.5 text-black outline-none mx-2">
               <option>Category</option>
               <option>Programming</option>
               <option>Design</option>
               <option>Marketing</option>
             </select>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white  p-2 rounded-full shadow-md">
+            <button className="bg-orange-500 hover:bg-orange-600 text-white  p-3 rounded-full shadow-md">
               <span className="hidden sm:inline">
                 <FaArrowRight />
               </span>
