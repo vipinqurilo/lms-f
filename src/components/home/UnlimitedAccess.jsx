@@ -39,7 +39,7 @@ and 1,600+ hands-on labs`,
   };
 
   return (
-    <div className="bg-gradient-to-b from-pink-50 via-white to-blue-50 py-10 px-5">
+    <div data-aos="fade-up" className="bg-gradient-to-b from-pink-50 via-white to-blue-50 py-10 px-5">
       {/* Statistics Section */}
       <div data-aos="fade-up" className="md:px-20 px-4">
         <div className="flex md:flex-row flex-col md:justify-evenly py-2 bg-gradient-to-r from-blue-300 rounded-2xl to-blue-100 mb-10">
@@ -68,19 +68,19 @@ and 1,600+ hands-on labs`,
       </div>
 
       {/* Access Information Section */}
-      <div data-aos="fade-up" className="text-center mb-10 md:mt-16 mt-4">
+      <div  className="text-center mb-10 md:mt-16 mt-4">
         <p className="md:text-4xl text-2xl leading-10 font-bold text-gray-900">
-          Unlimited access to <span className="">360+ courses</span> <br />
+          Unlimited access to <span className="">360+ courses</span> <br /> 
           and <span className="">1,600+ hands-on labs</span>
         </p>
       </div>
 
       {/* Icons Section */}
-      <div data-aos="fade-up" className="flex justify-center flex-wrap gap-6">
+      <div  className="flex justify-center flex-wrap gap-6">
         {/* Replace these spans with actual icons */}
         {data.logos.map((logo) => (
-          <span className="bg-white p-4 rounded ">
-            <img src={logo} alt="" />
+          <span className="bg-white p-4 rounded hover:animate-bounce transition-all duration-1000">
+            <img className="" src={logo} alt="" />
           </span>
         ))}
       </div>
