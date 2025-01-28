@@ -42,14 +42,14 @@ export default function MasterSkill() {
             {masterskillData.heading}
           </h1>
           <p className="text-gray-600 text-lg mb-8 leading-6">{masterskillData.desc}</p> */}
-
-          <Heading
-            heading={masterskillData.heading}
-            desc={masterskillData.desc}
-            position={"left"}
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:gap-6 gap-2 ">
+          <div data-aos="fade-up">
+            <Heading
+              heading={masterskillData.heading}
+              desc={masterskillData.desc}
+              position={"left"}
+            />
+          </div>
+          <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:gap-6 gap-2 ">
             {/* Features */}
             {masterskillData.features.map((feature) => (
               <div className="flex items-start space-x-3 mt-4 border rounded-xl border-gray-300 py-8 px-6">
@@ -67,7 +67,7 @@ export default function MasterSkill() {
         </div>
 
         {/* Right Image */}
-        <div className="flex justify-center">
+        <div data-aos="fade-up" className="flex justify-center">
           <img
             src="https://dreamslms.dreamstechnologies.com/html/assets/img/join.png"
             alt="Master Skills"

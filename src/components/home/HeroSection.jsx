@@ -42,11 +42,11 @@ export default function HeroSection() {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
-      <div className="relative max-w-6xl mx-auto flex flex-col items-center text-center">
+      <div  data-aos="fade-up" className="relative max-w-6xl mx-auto flex flex-col items-center text-center">
         {/* Text Section */}
         <h3 className="md:text-xl text-base font-semibold border-b-2 text-white mb-4">
           Trusted by over 15K Users worldwide since 2024
-        </h3> 
+        </h3>
         <h1 className="text-2xl lg:text-5xl md:mx-40 font-bold mt-4 text-white leading-tight md:mt-2 mb-6">
           Unlock Knowledge,{" "}
           <span className="text-orange-500">Elevate Your </span>Future, Achieve

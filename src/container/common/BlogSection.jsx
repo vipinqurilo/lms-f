@@ -74,14 +74,16 @@ export default function BlogSection() {
           Suspendisse imperdiet.
         </p>
       </div> */}
-      <Heading
-        heading={"Latest Blogs"}
-        desc={`  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
+      <div data-aos="fade-up">
+        <Heading
+          heading={"Latest Blogs"}
+          desc={`  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
           accumsan bibendum gravida maecenas augue elementum et neque.
           Suspendisse imperdiet.`}
-          paddingX={'20%'}
-      />
-      <div className="mt-8 px-4">
+          paddingX={"20%"}
+        />
+      </div>
+      <div data-aos="fade-up" className="mt-8 px-4">
         <Swiper
           modules={[Pagination]}
           spaceBetween={30}

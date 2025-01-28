@@ -66,10 +66,10 @@ export default function FeaturedCourses() {
       }}
     >
       <div className="md:pt-12 ">
-        <div className="pt-8">
+        <div  data-aos="fade-up" className="pt-8">
           <p className="text-xl font-bold text-orange-600">What's New</p>
         </div>
-        <div className="flex justify-between md:mt-4">
+        <div  data-aos="fade-up" className="flex justify-between md:mt-4">
           <Heading
             heading={"Featured Courses"}
             position={"left"}
@@ -83,7 +83,7 @@ export default function FeaturedCourses() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 grid-cols-1 gap-x-2 md:mt-8">
+        <div  data-aos="fade-up" className="grid md:grid-cols-3 grid-cols-1 gap-x-2 md:mt-8 ">
           {data.card.map((card, index) => (
             <FeaturedCard data={card} key={index} />
           ))}
