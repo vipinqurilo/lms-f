@@ -10,7 +10,7 @@ export default {
     extend: {
       colors: {
         primary: "#e36760",
-        secondary: "#eda256",
+        secondary: "#F79902",
         dark: "#392b3c",
         light: "#ede8ec",
         background: "var(--background)",
@@ -23,7 +23,7 @@ export default {
         custom: "all ease-in-out 0.5s",
       },
       textColor: {
-        light: "rgb(0 0 0 / 0.6)",
+        light: "rgb(0 0 0 / 0.75)",
       },
     },
   },

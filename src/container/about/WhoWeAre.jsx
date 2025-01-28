@@ -12,10 +12,10 @@ const WhoWeAre = ({ data, heading }) => {
   return (
     <div className="w-full  drop-shadow-md">
       <div
-        className="w-full h-[40vh] lg:h-[60vh] flex items-center justify-center flex-col gap-4 bg-cover bg-center bg-no-repeat text-white"
+        className="w-full h-[40vh] lg:h-[60vh] flex items-center justify-center flex-col gap-4 bg-cover bg-center bg-no-repeat text-white bg-blue-500"
         style={{
           clipPath: `polygon(0 0, 100% 0, 100% 100%, 50% 90%, 50% 90%, 0 100%)`,
-          backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.5887605042016807) 0%, rgba(0,0,0,0.6475840336134453) 100%), url("/assets/about/bgimage.png")`,
+          // backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.5887605042016807) 0%, rgba(0,0,0,0.6475840336134453) 100%), url("/assets/about/bgimage.png")`,
           // backgroundImage: `url("/assets/about/bgImage.svg")`,
         }}
       >

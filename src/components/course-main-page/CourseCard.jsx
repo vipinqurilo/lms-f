@@ -8,7 +8,7 @@ const CourseCard = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   return (
-    <div className="w-full bg-white mx-auto border rounded-lg shadow p-4 relative">
+    <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
       <div className="relative rounded-lg overflow-hidden">
         <Image
           src={"/assets/common/courseImage.jpg"} // Replace with your image source

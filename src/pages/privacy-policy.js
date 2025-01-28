@@ -68,3 +68,32 @@ export default function PrivacyPolicy() {
     </div>
   );
 }
+
+// export async function getStaticPaths() {
+//   const dataDir = path.join(process.cwd(), "src/data/courses");
+//   const files = fs.readdirSync(dataDir);
+//   const paths = files.map((filename) => ({
+//     params: { slug: filename.replace(/\.json$/, "") },
+//   }));
+
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// }
+
+// export async function getStaticProps({ params }) {
+//   const { slug } = params;
+//   const dataFilePath = path.join(
+//     process.cwd(),
+//     "src/data/courses",
+//     `${slug}.json`
+//   );
+//   const rawData = fs.readFileSync(dataFilePath, "utf-8");
+//   const pageData = JSON.parse(rawData);
+//   return {
+//     props: {
+//       pageData,
+//     },
+//   };
+// }
