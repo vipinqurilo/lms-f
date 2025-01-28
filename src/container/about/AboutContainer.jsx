@@ -36,7 +36,7 @@ const AboutContainer = () => {
     },
   ];
   return (
-    <section className="custom-container space-y-20">
+    <section data-aos="fade-up" className="custom-container space-y-20">
       {data?.map((card, index) => (
         <AboutCard data={card} key={index} index={index} />
       ))}

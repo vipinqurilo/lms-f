@@ -34,7 +34,7 @@ const LecturesOverview = ({ data }) => {
   }, []);
 
   return (
-    <div className="course-sub-container">
+    <div data-aos="zoom-out" className="course-sub-container">
       <Heading data={"Course Content "} />
       <div className="flex items-center justify-between text-sm">
         {details?.map((item, index) => (

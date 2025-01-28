@@ -93,7 +93,7 @@ export default function index() {
     ],
   };
   return (
-    <div className="w-full font-nunito">
+    <div className="w-full font-nunito overflow-x-hidden">
       <WhoWeAre data={data?.WhoWeAre} heading={data?.heading} />
       <AboutContainer />
       <OurMission data={data?.OurMission} />

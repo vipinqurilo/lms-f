@@ -32,7 +32,7 @@ const AboutInstructor = ({ data }) => {
   ];
 
   return (
-    <div className="course-sub-container">
+    <div data-aos="fade-right" className="course-sub-container">
       <Heading data="About Instructor" />
       <div className="space-y-2">
         <div className="flex items-center gap-4">

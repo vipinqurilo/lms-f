@@ -68,7 +68,7 @@ const CourseHighLights = ({ data }) => {
   ];
 
   return (
-    <div className="w-full space-y-5 font-nunito">
+    <div data-aos="zoom-in-left" className="w-full space-y-5 font-nunito">
       <CourseCard />
       <IncludesListRed list={listItemsRed} type="red" heading={"Includes"} />
       <IncludesListRed list={listItemsPurple} heading={"Includes"} />

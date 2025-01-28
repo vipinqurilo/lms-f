@@ -26,7 +26,10 @@ const WhoWeAre = ({ data, heading }) => {
           {heading?.headings?.[0]} {heading?.headings?.[1]}
         </p>
       </div>
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-5 sm:px-10 lg:px-20 -mt-10 md:-mt-20 lg:-mt-28">
+      <div
+        data-aos="fade-up"
+        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 px-5 sm:px-10 lg:px-20 -mt-10 md:-mt-20 lg:-mt-28"
+      >
         {images?.map((img, index) => (
           <div
             key={index}

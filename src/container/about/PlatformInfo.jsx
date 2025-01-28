@@ -25,11 +25,11 @@ const PlatformInfo = ({ tabs }) => {
   }
 
   return (
-    <div
+    <div data-aos="zoom-out"
       className="custom-container bg-no-repeat bg-center bg-cover"
-      style={{
-        backgroundImage: `url("/assets/about/bgImage.svg")`,
-      }}
+      // style={{
+      //   backgroundImage: `url("/assets/about/bgImage.svg")`,
+      // }}
     >
       <div className="lg:max-w-[60%] mx-auto">
         <h1 className="text-2xl text-center font-semibold pb-2 md:pb-4">

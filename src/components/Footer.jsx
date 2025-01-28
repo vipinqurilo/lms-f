@@ -181,7 +181,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <p className="w-full bg-black/10 py-3 text-center">
+      <p className="w-full bg-gray-50 py-3 text-center">
         © 2025 STEAM Institute. All rights reserved
       </p>
     </footer>

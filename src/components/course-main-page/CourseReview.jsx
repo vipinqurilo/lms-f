@@ -21,7 +21,7 @@ const CourseReview = ({ data }) => {
   };
 
   return (
-    <div className="course-sub-container !border-none !shadow-none">
+    <div data-aos="zoom-in-up" className="course-sub-container !border-none !shadow-none">
       <Heading data={"Students Reviews"} />
       <div className="space-y-6">
         {data?.map((review, index) => (

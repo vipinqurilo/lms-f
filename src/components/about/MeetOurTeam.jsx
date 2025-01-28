@@ -36,7 +36,13 @@ const MeetOurTeam = () => {
   ];
 
   return (
-    <div className="custom-container bg-white">
+    <div
+      data-aos="zoom-in-right"
+      className="custom-container  bg-no-repeat bg-center bg-cover"
+      style={{
+        backgroundImage: `url("/assets/about/bgImage.svg")`,
+      }}
+    >
       {/* Heading Section */}
       <div className="flex flex-col md:flex-row  items-center md:items-start justify-between gap-8 ">
         {/* Left Section */}

@@ -65,7 +65,7 @@ const CommentForm = () => {
   };
 
   return (
-    <div className="course-sub-container">
+    <div data-aos="zoom-in" className="course-sub-container">
       <Heading data={"Write Review and Ratings"} />
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
         <div className="text-2xl flex items-center justify-start">

@@ -4,7 +4,8 @@ import React from "react";
 const StatsSection = ({ data }) => {
   return (
     <div
-      className="custom-container space-y-10"
+      data-aos="fade-down"
+      className="custom-container space-y-10 bg-background text-white"
     >
       <h1 className="text-2xl text-center font-semibold">
         Empowering Learners Worldwide with Proven Numbers
@@ -25,7 +26,7 @@ const StatsSection = ({ data }) => {
             </div>
             <div className="space-y-1 text-center">
               <h3 className="text-xl font-bold">{stat?.stat}</h3>
-              <p className="text-light">{stat?.description}</p>
+              <p className="text-white">{stat?.description}</p>
             </div>
           </div>
         ))}

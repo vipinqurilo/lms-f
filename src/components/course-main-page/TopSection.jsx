@@ -11,7 +11,10 @@ const TopSection = ({ data }) => {
       }}
     >
       <div className="w-full backdrop-blur-sm">
-        <div className="w-full lg:max-w-[60%] h-full custom-container space-y-5">
+        <div
+          data-aos="fade-up"
+          className="w-full lg:max-w-[60%] h-full custom-container space-y-5"
+        >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 border-4 border-black/10 relative">
               <Image
@@ -22,13 +25,13 @@ const TopSection = ({ data }) => {
               />
             </div>
             <div className="">
-              <p className="text-lg font-semibold">{data?.instructor?.name}</p>
-              <p className="font-medium">{data?.instructor?.role}</p>
+              <p className="text-lg font-bold">{data?.instructor?.name}</p>
+              <p className="">{data?.instructor?.role}</p>
             </div>
           </div>
           <div className="flex items-center text-xl gap-1">
-            <RatingStars rating={data?.instructor?.rating} />(
-            {data?.reviews?.length})
+            <RatingStars rating={data?.instructor?.rating} />
+            <span className="text-base">({data?.reviews?.length})</span>
           </div>
           <h1 className="text-2xl lg:text-3xl lg:font-extrabold font-bold">
             {data?.title}

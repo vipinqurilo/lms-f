@@ -13,7 +13,7 @@ export default {
         secondary: "#F79902",
         dark: "#392b3c",
         light: "#ede8ec",
-        background: "var(--background)",
+        background: "#0f2138",
         foreground: "var(--foreground)",
       },
       fontFamily: {
