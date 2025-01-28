@@ -34,15 +34,19 @@ export default function HeroSection() {
 
   return (
     <div
-      className="relative bg-cover h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
-      style={{
-        backgroundImage: "url('/assets/home/bgimage.png')",
-      }}
+      id="HeroBg"
+      className="relative  bg-cover h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
+      // style={{
+      //   backgroundImage: "url('/assets/home/bgimage.png')",
+      // }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
-      <div  data-aos="fade-up" className="relative max-w-6xl mx-auto flex flex-col items-center text-center">
+      <div
+        data-aos="fade-up"
+        className="relative max-w-6xl mx-auto flex flex-col items-center text-center"
+      >
         {/* Text Section */}
         <h3 className="md:text-xl text-base font-semibold border-b-2 text-white mb-4">
           Trusted by over 15K Users worldwide since 2024
@@ -62,31 +66,30 @@ export default function HeroSection() {
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full md:block hidden lg:w-2/3 mt-10 md:py-8 ">
-          <div className="flex items-center bg-white rounded-full px-4 py-3 shadow-lg">
+        <div className="relative   lg:w-2/3 mt-10 md:py-8 ">
+          <div className="flex items-center bg-white rounded-full px-4 md:py-3 shadow-lg">
             <IoSearchSharp className="text-2xl" />
             <input
               type="text"
               placeholder="Trusted by over 15K Users worldwide since 2024"
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
-            <select className="bg-orange-100 rounded-full px-4 py-2.5 text-black outline-none mx-2">
+            <select className="bg-orange-100 rounded-full md:px-4 md:py-2.5 py-1 text-xs text-center text-black outline-none mx-2">
               <option>Category</option>
               <option>Programming</option>
               <option>Design</option>
               <option>Marketing</option>
             </select>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white  p-3 rounded-full shadow-md">
-              <span className="hidden sm:inline">
-                <FaArrowRight />
+            <button className="bg-orange-500 hover:bg-orange-600 text-white  md:p-3 p-1 rounded-full shadow-md">
+              <span className=" sm:inline">
+                <FaArrowRight className="" />
               </span>
-              <span className="sm:hidden">→</span>
             </button>
           </div>
         </div>
 
         {/* Statistics */}
-        <div className="absolute -bottom-40 mt-12 grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
+        <div className="absolute -bottom-40 mt-12 hidden md:grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
           {data.box.map((item) => (
             <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
               <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
