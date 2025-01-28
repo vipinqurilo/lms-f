@@ -4,8 +4,7 @@ import React from "react";
 const StatsSection = ({ data }) => {
   return (
     <div
-      data-aos="fade-down"
-      className="custom-container space-y-10 bg-background text-white"
+      className="custom-container flex flex-col gap-10 bg-background text-white"
     >
       <h1 className="text-2xl text-center font-semibold">
         Empowering Learners Worldwide with Proven Numbers

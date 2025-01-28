@@ -47,7 +47,7 @@ const CourseDetails = ({ data }) => {
             <span className="line-through">₹1999.00</span> <span>50% off</span>
           </p>
             </div>
-            <button className="px-4 py-2 lg:w-[20%] bg-secondary hover:bg-black transition-custom w-full text-white rounded-full">
+            <button className="px-4 py-2 md:w-[40%] lg:w-[20%] bg-secondary hover:bg-black transition-custom w-full text-white rounded-full">
               Enroll Now
             </button>
           </div>

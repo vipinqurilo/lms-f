@@ -45,7 +45,7 @@ const DeskTopMenu = ({ getLinkCss }) => {
           {item?.items &&
             item?.items?.length > 0 &&
             item?.title === isSubMenuOpen && (
-              <div className="absolute top-full left-0">
+              <div className="absolute top-full left-0 pt-4">
                 <div className="-mb-3.5 ml-2 text-white ">
                   <VscTriangleUp size={40} />
                 </div>

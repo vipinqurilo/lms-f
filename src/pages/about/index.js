@@ -11,14 +11,16 @@ export default function index() {
   const data = {
     heading: {
       page: "About Us",
-      headings: ["We build an organization to help people to learn", "online."],
+      headings:
+        "We build an organization dedicated to empowering people with the skills, knowledge, and opportunities they need to learn, grow, and succeed.",
     },
     WhoWeAre: {
-      subHeading: " We build an organization to help people to learn online.",
+      subHeading:
+        "Empowering innovation and creativity through STEAM education.",
       description: [
-        "Platform is a self-hosted solution that helps entrepreneurs to launch online tutoring and consultation platforms where multiple tutors or consultants can register and deliver one-to-one or group online sessions to learners. It is a highly scalable and fully customizable solution to meet the business requirements of the users. The solution is pre-integrated with Cometchat, Lesson Space, and Zoom to support features such as video chat, Whiteboard, Textpad, code editor, multiple screen sharing, etc. which improves the interaction between tutor and learner during an online session.",
+        "The Steam Institute is dedicated to transforming education by integrating Science, Technology, Engineering, Arts, and Mathematics (STEAM) into a holistic learning experience. Our platform enables learners and educators to engage in interactive, innovative, and inspiring sessions designed to foster critical thinking, creativity, and problem-solving skills. With cutting-edge tools and resources, we create a dynamic ecosystem for learners to thrive in a digital world.",
 
-        "For seamless payment transactions, Platform is integrated with secured payment gateways like Paypal, Authorize.net, Stripe, Paystack, PayGate, 2Checkout/2CO. It is a complete solution with robust functionalities and essential features that guarantee high performance and competitive results. In addition to this, Platform is also available as PWA.",
+        "Our platform is equipped with advanced features such as live video sessions, interactive whiteboards, collaborative coding spaces, and digital art tools to facilitate immersive learning. Integrated with secure payment gateways and scalable infrastructure, it ensures seamless transactions and exceptional performance. Steam Institute also provides Progressive Web App (PWA) support, making education accessible across devices anytime, anywhere.",
       ],
     },
     OurMission: {
@@ -96,10 +98,10 @@ export default function index() {
     <div className="w-full font-nunito custom-margin-top">
       <WhoWeAre data={data?.WhoWeAre} heading={data?.heading} />
       <AboutContainer />
-      <OurMission data={data?.OurMission} />
-      <MeetOurTeam />
-      <PlatformInfo tabs={data?.PlatformInfo} />
       <StatsSection data={data?.StatsSection} />
+      <OurMission data={data?.OurMission} />
+      <PlatformInfo tabs={data?.PlatformInfo} />
+      <MeetOurTeam />
     </div>
   );
 }

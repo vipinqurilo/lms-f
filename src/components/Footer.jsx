@@ -87,7 +87,7 @@ const Footer = () => {
         },
         {
           name: "FAQs",
-          link: "/faqs",
+          link: "/faq",
         },
       ],
     },
@@ -149,7 +149,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-white text-light shadow border-t-0 border-black/10 font-nunito">
-      <div className="text-start flex flex-col gap-5 lg:gap-0 lg:flex-row items-start justify-between custom-container !py-5">
+      <div className="text-start flex flex-col gap-5 lg:gap-0 lg:flex-row items-start justify-between custom-container !py-10">
         <FooterLogo icons={icons} />
 
         <div className="w-full lg:w-[70%] grid md:grid-cols-2 lg:grid-cols-4 lg:gap-1 gap-5">
@@ -173,8 +173,6 @@ const Footer = () => {
               {contactDetails?.map((data, index) => (
                 <div className="flex items-start gap-2 w-full" key={index}>
                   <div className="">
-                  {/* <div className="bg-secondary/10 !w-10 !h-8 flex items-center justify-center rounded border border-black/10"> */}
-                    {/* <data.Icon size={16} /> */}
                     <Image
                       src={data?.image}
                       alt={data?.title}
@@ -184,8 +182,9 @@ const Footer = () => {
                     />
                   </div>
                   <div className="w-full">
-                    {/* <p className="text-sm">{data?.title}</p> */}
-                    <p className="text-sm text-light font-medium -mt-1">{data?.value}</p>
+                    <p className="text-sm text-light font-medium -mt-1">
+                      {data?.value}
+                    </p>
                   </div>
                 </div>
               ))}

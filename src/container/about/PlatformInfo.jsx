@@ -17,16 +17,23 @@ const PlatformInfo = ({ tabs }) => {
   };
 
   function getLinkCss(isWatch) {
-    return `px-4 hover:bg-black text-white py-2 ${
+    return `px-4 hover:bg-secondary text-white py-2 ${
       isWatch
-        ? "border border-black/10 !text-black hover:!text-white"
+        ? "border border-white/50 hover:!text-white"
         : "bg-secondary"
     } rounded transition-custom`;
   }
+  // function getLinkCss(isWatch) {
+  //   return `px-4 hover:bg-black text-white py-2 ${
+  //     isWatch
+  //       ? "border border-black/10 !text-black hover:!text-white"
+  //       : "bg-secondary"
+  //   } rounded transition-custom`;
+  // }
 
   return (
-    <div data-aos="zoom-out"
-      className="custom-container bg-no-repeat bg-center bg-cover"
+    <div
+      className="custom-container bg-no-repeat bg-center bg-cover bg-background text-white"
       // style={{
       //   backgroundImage: `url("/assets/about/bgImage.svg")`,
       // }}
@@ -42,7 +49,7 @@ const PlatformInfo = ({ tabs }) => {
               className={`flex-1 py-2 text-center text-lg font-semibold ${
                 activeTab === index
                   ? "text-orange-500 border-b-2 border-orange-500"
-                  : "text-gray-500"
+                  : "text-gray-200"
               }`}
               onClick={() => handleTabClick(index)}
             >
@@ -72,10 +79,10 @@ const PlatformInfo = ({ tabs }) => {
                   />
                 </div>
                 <div className="w-full flex items-start lg:items-center lg:gap-8 flex-col gap-4">
-                  <h3 className="text-2xl font-semibold capitalize">
+                  <h3 className="text-2xl font-bold capitalize">
                     {content?.title}
                   </h3>
-                  <p className="text-light lg:text-center">{content?.des}</p>
+                  <p className="text-white lg:text-center">{content?.des}</p>
                   <div className="w-full flex items-center justify-between lg:justify-center lg:gap-8">
                     <Link href={content?.link} className={`${getLinkCss()}`}>
                       Browse More

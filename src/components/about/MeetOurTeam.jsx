@@ -25,7 +25,7 @@ const MeetOurTeam = () => {
     {
       name: "MS. Tshepiso Machekane",
       role: "Mathematics & Technology Education",
-      image: "/assets/about/founder1.jpg",
+      image: "/assets/about/founder3.jpg",
     },
 
     {
@@ -37,11 +37,7 @@ const MeetOurTeam = () => {
 
   return (
     <div
-      data-aos="zoom-in-right"
       className="custom-container  bg-no-repeat bg-center bg-cover"
-      style={{
-        backgroundImage: `url("/assets/about/bgImage.svg")`,
-      }}
     >
       {/* Heading Section */}
       <div className="flex flex-col md:flex-row  items-center md:items-start justify-between gap-8 ">
@@ -73,7 +69,7 @@ const MeetOurTeam = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 gap-y-7 justify-items-center mt-16">
         {teamMembers.map((member, index) => (
           <div
-            className="text-center w-full h-72 flex flex-col items-center justify-center hover:border border-black/10 transition-custom hover:bg-black hover:text-white hover:drop-shadow rounded-lg group"
+            className="text-center w-full h-72 flex flex-col items-center justify-center border border-black/10 transition-custom hover:bg-black hover:text-white hover:drop-shadow rounded-lg group"
             key={index}
           >
             {/* Image */}

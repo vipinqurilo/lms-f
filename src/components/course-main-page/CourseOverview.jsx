@@ -3,7 +3,7 @@ import Heading from "./Heading";
 
 const CourseOverview = ({ data }) => {
   return (
-    <div data-aos="flip-up" className="course-sub-container">
+    <div data-aos="fade-up" className="course-sub-container">
       <Heading data="Course Overview" />
       {data?.description?.map((des, index) => (
         <p key={index} className="text-light">
