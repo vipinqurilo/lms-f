@@ -38,8 +38,8 @@ const Courses = () => {
       {/* Course Cards Section */}
       <CourseCards />
     </div>
-        <div className="lg:w-3/12">
-          <div className="hidden lg:flex  w-64  h-10 justify-between items-center      ">
+        <div className="lg:w-3/12 mt-9 ">
+          <div className="hidden lg:flex  w-64  h-10 justify-between items-center   px-1    ">
             <div className="flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
