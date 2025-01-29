@@ -16,6 +16,7 @@ import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
 import Blog from "@/components/common/BlogCard";
 import BlogSection from "@/container/common/BlogSection";
+import LogoSlider from "@/components/common/LogoSlider";
 
 const Home = () => {
   return (
@@ -33,6 +34,7 @@ const Home = () => {
         <Become/>
        <BlogSection/>
         <UnlimitedAccess />
+        <LogoSlider/>
     
 
       </main>
