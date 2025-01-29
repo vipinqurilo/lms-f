@@ -1,0 +1,87 @@
+{
+  "contactInfo": {
+    "phone": "+9784536781",
+    "label": "Customer Support"
+  },
+  "socialLinks": [
+    {
+      "icon": "Mail",
+      "href": "mailto:contact@steaminstitute.com",
+      "label": "Email us"
+    },
+    {
+      "icon": "Phone",
+      "href": "tel:+9784536781",
+      "label": "Call us"
+    },
+    {
+      "icon": "Twitter",
+      "href": "https://twitter.com/steaminstitute",
+      "label": "Twitter"
+    },
+    {
+      "icon": "Instagram",
+      "href": "https://instagram.com/steaminstitute",
+      "label": "Instagram"
+    }
+  ],
+  "mainNavItems": [
+    {
+      "title": "Courses",
+      "href": "/courses",
+      "items": [
+        {
+          "title": "Browse All Courses",
+          "href": "/courses",
+          "description": "Explore our complete catalog of courses"
+        },
+        {
+          "title": "Popular Courses",
+          "href": "/courses/popular",
+          "description": "See what other students are learning"
+        },
+        {
+          "title": "New Courses",
+          "href": "/courses/new",
+          "description": "Check out our latest course offerings"
+        }
+      ]
+    },
+    {
+      "title": "Find a Tutor",
+      "href": "/tutors",
+      "items": [
+        {
+          "title": "Browse Tutors",
+          "href": "/tutors",
+          "description": "Find the perfect tutor for your needs"
+        },
+        {
+          "title": "Book a Session",
+          "href": "/tutors/book",
+          "description": "Schedule one-on-one tutoring sessions"
+        }
+      ]
+    },
+    {
+      "title": "Contact us",
+      "href": "/contact-us"
+    },
+    {
+      "title": "Teach on Steam",
+      "href": "/teach",
+      "items": [
+        {
+          "title": "Become an Instructor",
+          "href": "/teach/apply",
+          "description": "Join our community of educators"
+        },
+        {
+          "title": "Teaching Resources",
+          "href": "/teach/resources",
+          "description": "Access tools and guides for teachers"
+        }
+      ]
+    }
+  ]
+}
