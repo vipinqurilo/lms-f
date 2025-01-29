@@ -1,14 +1,15 @@
+import protectedPages from "@/middleware/protectedPages";
 import { Sidebar } from "./Sidebar";
 import TopBanner from "./TopBanner";
 
-export default function StudentDashboardLayout({ children }) {
+export default protectedPages(function StudentDashboardLayout({ children }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen overflow-hidden bg-gray-50 w-full font-nunito">
       <TopBanner />
-      <div className="flex p-20">
+      <div className="w-full flex h-[calc(100%-80px)]">
         <Sidebar />
-        <main className="flex-1 px-8">{children}</main>
+        <main className="flex-1 p-8 w-full overflow-y-auto">{children}</main>
       </div>
     </div>
   );
-}
+});
