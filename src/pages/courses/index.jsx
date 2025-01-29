@@ -12,33 +12,32 @@ const Courses = () => {
         {/* Header Section */}  
 
         {/* Course Cards Section */}
-        <div className="lg:w-9/12 ">
-          <div className="lg:flex flex-wrap justify-between items-center mb-6       ">
-            {/* Icon and Results Text */}
-            <div className="flex items-center space-x-3">
-              <div className="bg-[#FF6575] w-10 h-10 rounded flex justify-center items-center">
-                <AiOutlineAppstore className="text-2xl text-white font-bold" />
-              </div>
-              <h2 className="text-lg font-semibold">
-                Showing 1-9 of 50 results
-              </h2>
-            </div>
-
-            {/* Search and Dropdown */}
-            <div className="flex items-center space-x-4 flex-wrap">
-              <input
-                type="text"
-                placeholder="Search our courses"
-                className="border rounded-lg px-4 py-2 w-48"
-              />
-              <select className="border rounded-lg px-4 py-2 w-52">
-                <option>Newly published</option>
-                <option>Most popular</option>
-              </select>
-            </div>
+        <div className="lg:w-9/12 w-full mx-auto p-4 ">
+      <div className="flex flex-wrap justify-between items-center mb-6">
+        {/* Icon and Results Text */}
+        <div className="flex items-center space-x-3 ">
+          <div className="bg-[#FF6575] w-10 h-10 rounded flex justify-center items-center">
+            <AiOutlineAppstore className="text-2xl text-white font-bold" />
           </div>
-          <CourseCards />
+          <h2 className="text-lg font-semibold">Showing 1-9 of 50 results</h2>
         </div>
+
+        {/* Search and Dropdown */}
+        <div className="flex items-center lg:space-x-4 flex-wrap mt-5">
+          <input
+            type="text"
+            placeholder="Search our courses"
+            className="border rounded-lg px-4 py-2 w-full sm:w-48"
+          />
+         <select className="border rounded-lg px-4 py-2 w-full sm:w-52 lg:mt-auto mt-5 ">
+            <option>Newly published</option>
+            <option>Most popular</option>
+          </select>
+        </div>
+      </div>
+      {/* Course Cards Section */}
+      <CourseCards />
+    </div>
         <div className="lg:w-3/12">
           <div className="hidden lg:flex  w-64  h-10 justify-between items-center      ">
             <div className="flex items-center gap-2">
