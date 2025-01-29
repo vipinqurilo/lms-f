@@ -20,7 +20,6 @@ import BlogSection from "@/container/common/BlogSection";
 const Home = () => {
   return (
     <>
-      <Navbar />
       <main className=" font-nunito">
         <HeroSection />
         <div className="md:mt-0 mt-8">
@@ -35,7 +34,6 @@ const Home = () => {
         <UnlimitedAccess />
     
       </main>
-      {/* <Footer /> */}
     </>
   );
 };

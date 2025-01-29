@@ -10,14 +10,20 @@ export default {
     extend: {
       colors: {
         primary: "#e36760",
-        secondary: "#eda256",
+        secondary: "#F79902",
         dark: "#392b3c",
         light: "#ede8ec",
-        background: "var(--background)",
+        background: "#0f2138",
         foreground: "var(--foreground)",
       },
       fontFamily: {
         nunito: ["Nunito Sans", "sans-serif"],
+      },
+      transitionProperty: {
+        custom: "all ease-in-out 0.5s",
+      },
+      textColor: {
+        light: "rgb(0 0 0 / 0.75)",
       },
     },
   },

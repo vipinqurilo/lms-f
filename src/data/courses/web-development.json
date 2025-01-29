@@ -1,0 +1,355 @@
+{
+  "courseDetails": {
+    "title": "The Complete Web Developer Course 2.0",
+    "subtitle": "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, JavaScript, PHP, Python, MySQL & more!",
+    "courseimage": "/assets/common/courseImage.jpg",
+    "instructor": {
+      "name": "Nicole Brown",
+      "role": "UX/UI Designer",
+      "rating": 4.5,
+      "profileImage": "/assets/common/profile.jpg",
+      "courses": 5,
+      "lessons": 12,
+      "totalTime": "9hr 30min",
+      "studentsEnrolled": 270866,
+      "skills": [
+        "Web Design",
+        "UI/UX Design",
+        "Mobile Design",
+        "User Interface Design",
+        "Sketch",
+        "Photoshop",
+        "GUI",
+        "HTML",
+        "CSS",
+        "Grid Systems",
+        "Typography",
+        "Minimal",
+        "Bootstrap",
+        "Responsive Web Design"
+      ],
+      "availableFor": [
+        "Full Time Office Work",
+        "Remote Work",
+        "Freelance",
+        "Contract",
+        "Worldwide"
+      ]
+    },
+    "price": {
+      "current": "FREE",
+      "original": "$99.00",
+      "discount": "50%"
+    },
+    "features": [
+      "11 hours on-demand video",
+      "69 downloadable resources",
+      "Full lifetime access",
+      "Access on mobile and TV",
+      "Assignments",
+      "Certificate of Completion"
+    ],
+    "courseOverview": {
+      "description": [
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+      ],
+      "requirements": [
+        "You need a copy of Adobe XD 2019 or above.",
+        "A free trial can be downloaded from Adobe.",
+        "No previous design experience is needed.",
+        "No previous Adobe XD skills required."
+      ],
+      "whatYouWillLearn": [
+        "Become a UX designer.",
+        "You will be able to add UX designer to your CV.",
+        "Build & test a full website design.",
+        "Build & test a full mobile app design.",
+        "Learn to design websites & mobile phone apps.",
+        "You will learn how to choose colors.",
+        "Prototype your designs with interactions.",
+        "Export production-ready assets."
+      ]
+    },
+    "courseContent": {
+      "totals": 92,
+      "totalDuration": "10:56:11",
+      "sections": [
+        {
+          "title": "In which areas do you operate?",
+          "duration": "10:00",
+          "lectures": [
+            {
+              "title": "Introduction to Operational Areas",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Defining Geographic Coverage",
+              "duration": "8 min",
+              "link": ""
+            },
+            {
+              "title": "Understanding Key Market Areas",
+              "duration": "12 min",
+              "link": ""
+            },
+            {
+              "title": "Identifying Industry Niches",
+              "duration": "9 min",
+              "link": ""
+            },
+            {
+              "title": "Evaluating Strategic Regions",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Future Expansion Plans",
+              "duration": "11 min",
+              "link": ""
+            }
+          ]
+        },
+        {
+          "title": "The Brief",
+          "duration": "15:30",
+          "lectures": [
+            {
+              "title": "Introduction to the Brief",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Understanding Project Goals",
+              "duration": "12 min",
+              "link": ""
+            },
+            {
+              "title": "Setting Expectations",
+              "duration": "8 min",
+              "link": ""
+            },
+            {
+              "title": "Deliverables Overview",
+              "duration": "15 min",
+              "link": ""
+            },
+            {
+              "title": "Managing Stakeholders",
+              "duration": "14 min",
+              "link": ""
+            },
+            {
+              "title": "Workflow Setup",
+              "duration": "9 min",
+              "link": ""
+            },
+            {
+              "title": "Communication Channels",
+              "duration": "7 min",
+              "link": ""
+            },
+            {
+              "title": "Tools and Resources",
+              "duration": "11 min",
+              "link": ""
+            },
+            {
+              "title": "Timeline Planning",
+              "duration": "13 min",
+              "link": ""
+            },
+            {
+              "title": "The Final Brief",
+              "duration": "12 min",
+              "link": ""
+            }
+          ]
+        },
+        {
+          "title": "Wireframing Low Fidelity",
+          "duration": "20:00",
+          "lectures": [
+            {
+              "title": " 1: What is Wireframing?",
+              "duration": "8 min",
+              "link": ""
+            },
+            {
+              "title": " 2: Tools for Wireframing",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Sketching Basics",
+              "duration": "12 min",
+              "link": ""
+            },
+            {
+              "title": "Building Low Fidelity Models",
+              "duration": "15 min",
+              "link": ""
+            },
+            {
+              "title": "Understanding User Flows",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Testing Wireframes",
+              "duration": "8 min",
+              "link": ""
+            },
+            {
+              "title": "Collaboration on Wireframes",
+              "duration": "9 min",
+              "link": ""
+            },
+            {
+              "title": "Finalizing Wireframes",
+              "duration": "14 min",
+              "link": ""
+            }
+          ]
+        },
+        {
+          "title": "Type, Color & Icon Introduction",
+          "duration": "25:00",
+          "lectures": [
+            {
+              "title": " 1: Typography Basics",
+              "duration": "8 min",
+              "link": ""
+            },
+            {
+              "title": " 2: Choosing Fonts",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Understanding Colors",
+              "duration": "12 min",
+              "link": ""
+            },
+            {
+              "title": "Designing with Icons",
+              "duration": "14 min",
+              "link": ""
+            },
+            {
+              "title": "Color Theory Basics",
+              "duration": "11 min",
+              "link": ""
+            },
+            {
+              "title": "Accessibility in Design",
+              "duration": "13 min",
+              "link": ""
+            },
+            {
+              "title": "Prototyping with Color",
+              "duration": "9 min",
+              "link": ""
+            },
+            {
+              "title": "Icon Sets and Libraries",
+              "duration": "10 min",
+              "link": ""
+            },
+            {
+              "title": "Advanced Typography",
+              "duration": "8 min",
+              "link": ""
+            },
+            {
+              "title": "Creating Harmony in Design",
+              "duration": "15 min",
+              "link": ""
+            },
+            {
+              "title": "Finalizing Type & Color Choices",
+              "duration": "14 min",
+              "link": ""
+            },
+            {
+              "title": "Exporting Icon Assets",
+              "duration": "9 min",
+              "link": ""
+            }
+          ]
+        }
+      ]
+    },
+    "reviews": [
+      {
+        "reviewerName": "Emily Johnson",
+        "rating": 5,
+        "review": "This course was incredibly insightful and well-structured. The instructor explained the concepts clearly, making it easy to follow and understand.",
+        "likes": 125,
+        "replies": [
+          {
+            "replyerName": "John Carter",
+            "reply": "I agree! The examples provided made the learning process much easier."
+          },
+          {
+            "replyerName": "Sarah Lee",
+            "reply": "Absolutely! One of the best courses I’ve taken so far."
+          }
+        ]
+      },
+      {
+        "reviewerName": "Michael Brown",
+        "rating": 4,
+        "review": "Overall, a great learning experience. Some sections could use more practical examples, but the content quality was excellent.",
+        "likes": 89,
+        "replies": [
+          {
+            "replyerName": "Emma Wilson",
+            "reply": "I felt the same way about the practical examples, but it’s still a solid course."
+          }
+        ]
+      },
+      {
+        "reviewerName": "Sophia Martinez",
+        "rating": 4.8,
+        "review": "I learned so much from this course! The instructor’s teaching style is engaging and clear. Highly recommended for beginners.",
+        "likes": 140,
+        "replies": [
+          {
+            "replyerName": "Liam Roberts",
+            "reply": "Totally agree! The instructor made even complex topics seem simple."
+          }
+        ]
+      },
+      {
+        "reviewerName": "William Smith",
+        "rating": 3.5,
+        "review": "The course content is good, but I found the pacing a bit slow in some modules. Would recommend speeding it up slightly.",
+        "likes": 54,
+        "replies": [
+          {
+            "replyerName": "Olivia Adams",
+            "reply": "I think the pace was fine for beginners, but I understand your point."
+          }
+        ]
+      },
+      {
+        "reviewerName": "Isabella Garcia",
+        "rating": 4.7,
+        "review": "Great course! The assignments helped reinforce the concepts effectively. I feel confident applying what I’ve learned in real-world scenarios.",
+        "likes": 112,
+        "replies": [
+          {
+            "replyerName": "James Miller",
+            "reply": "The assignments were really helpful, weren’t they? I feel the same way!"
+          },
+          {
+            "replyerName": "Charlotte Moore",
+            "reply": "Yes, the hands-on approach made the course very practical and enjoyable."
+          }
+        ]
+      }
+    ]
+  }
+}
