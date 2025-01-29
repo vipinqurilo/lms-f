@@ -34,13 +34,14 @@ const CoursesFilterCards = () => {
           <div key={index} className="mb-2">
             {/* Checkbox */}
             <div className="flex items-center">
-              <input
-                type="checkbox"
-                id={category.name}
-                className="h-4 w-4 text-blue-600 border-orange-600 rounded focus:ring-blue-500"
-                onChange={() => toggleCategory(category.name)}
-                checked={!!expandedCategories[category.name]}
-              />
+            <input
+  type="checkbox"
+  id={category.name}
+  className="h-4 w-4 text-gray-600 border-gray-300 rounded focus:ring-orange-500 checked:bg-orange-600 checked:border-orange-600"
+  onChange={() => toggleCategory(category.name)}
+  checked={!!expandedCategories[category.name]}
+/>
+
               <label
                 htmlFor={category.name}
                 className="ml-2 text-[#8C8598] text-sm leading-8"

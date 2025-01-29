@@ -2,7 +2,8 @@ import React from "react";
 import { AiOutlineAppstore } from "react-icons/ai";
 import Pagination from "../../components/courses/Pagination";
 import CourseCards from "../../components/courses/CourseCards";
-import Ok from "../../components/courses/ok";
+import Ok from "../../components/courses/CoursesFilter";
+import CoursesFilter from "../../components/courses/CoursesFilter";
 
 const Courses = () => {
   return (
@@ -62,7 +63,7 @@ const Courses = () => {
             </button>
           </div>
           <div className="hidden lg:block">
-            <Ok />
+            <CoursesFilter />
           </div>
         </div>
       </div>

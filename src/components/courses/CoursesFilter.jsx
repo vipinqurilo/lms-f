@@ -2,15 +2,13 @@ import React from "react";
 import CoursesFilterCards from "./CoursesFilterCards";
 import CoursesFilterPrices from "./CoursesFilterPrices";
 
-const Ok = () => {
+const CoursesFilter = () => {
   return (
     <div className="mt-7">
-       
-          
       <CoursesFilterCards />
       <CoursesFilterPrices />
     </div>
   );
 };
 
-export default Ok;
+export default CoursesFilter;
