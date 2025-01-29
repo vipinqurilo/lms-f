@@ -33,6 +33,7 @@ const PlatformInfo = ({ tabs }) => {
 
   return (
     <div
+    data-aos="fade-up"
       className="custom-container bg-no-repeat bg-center bg-cover bg-background text-white"
       // style={{
       //   backgroundImage: `url("/assets/about/bgImage.svg")`,

@@ -78,8 +78,8 @@ export default function FeaturedInstructor() {
         <Heading
           heading={data.heading}
           desc={data.desc}
-          position={"center"}
-          paddingX={"20%"}
+          position={"!text-center"}
+          paddingX={"md:!w-[60%] mx-auto"}
         />
       </div>
       <div data-aos="fade-up" className="mt-8 px-4 ">
