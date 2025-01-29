@@ -16,6 +16,7 @@ import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
 import Blog from "@/components/common/BlogCard";
 import BlogSection from "@/container/common/BlogSection";
+import LogoSlider from "@/components/common/LogoSlider";
 
 const Home = () => {
   return (
@@ -25,13 +26,16 @@ const Home = () => {
         <div className="md:mt-0 mt-8">
         <FeaturedCourses />
         </div>
+        
         <FeaturedInstructor />
+        <LogoSlider/>
         <Mentor />
         <MasterSkill />
         <UserLove />
         <Become/>
        <BlogSection/>
         <UnlimitedAccess />
+      
     
 
       </main>

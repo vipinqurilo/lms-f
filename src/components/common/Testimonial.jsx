@@ -145,15 +145,13 @@ export default function Testimonial() {
           ))}
         </Swiper>
 
-        {/* Navigation Buttons */}
-        {/* <div className=""> */}
         <button ref={prevRef} className={`${getButtonCss()}`}>
           <GrFormPreviousLink className="text-5xl " />
         </button>
         <button ref={nextRef} className={`${getButtonCss(true)}`}>
           <GrFormNextLink className="text-5xl" />
         </button>
-        {/* </div> */}
+   
       </div>
     </div>
   );
