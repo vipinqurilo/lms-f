@@ -113,14 +113,6 @@ export default function Testimonial() {
               swiper.navigation.update();
             }
           }}
-          onSwiper={(swiper) => {
-            setTimeout(() => {
-              swiper.params.navigation.prevEl = prevRef.current;
-              swiper.params.navigation.nextEl = nextRef.current;
-              swiper.navigation.init();
-              swiper.navigation.update();
-            });
-          }}
         >
           {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index}>
