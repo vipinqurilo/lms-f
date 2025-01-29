@@ -37,3 +37,39 @@
     @apply w-full p-4 px-5 bg-white shadow-sm border border-black/10 rounded-xl space-y-5;
   }
 }
+
+#HeroBg {
+  background-image: url("/assets/home/bgimage.png");
+}
+
+@media (max-width: 768px) {
+  #HeroBg {
+    background-image: url("/assets/home/bgmobile.png");
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+.container {
+  @apply !w-full h-full flex items-center font-nunito;
+}
+
+@layer utilities {
+  .custom-container {
+    @apply w-full py-10 lg:py-14 px-5 md:px-10 lg:px-20;
+  }
+  .custom-margin-top {
+    @apply mt-28 overflow-x-hidden;
+  }
+  .course-sub-container {
+    @apply w-full p-4 px-5 bg-white shadow-sm border border-black/10 rounded-xl space-y-5;
+  }
+}
+
+:root {
+  --primary: #e36760;
+  --secondary: #f79902;
+  --dark: #392b3c;
+  --light: #ede8ec;
+  --background: #0f2138;
+}

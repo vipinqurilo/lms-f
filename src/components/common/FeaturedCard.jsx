@@ -1,7 +1,7 @@
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
 
-export default function FeaturedCard({data}) {
+export default function FeaturedCard({ data }) {
   return (
     <div className="flex gap-6 md:p-6 p-2">
       <div className="w-96 group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
