@@ -5,7 +5,6 @@ export default function FeaturedCard({ data }) {
   return (
     <div className="flex gap-6 md:p-0  p-2">
       <div className="w-96 lg:w-full group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
-        {/* Image Section */}
         <div className="relative overflow-hidden rounded-md">
           <img
             src={data?.img}
@@ -13,10 +12,8 @@ export default function FeaturedCard({ data }) {
             className="w-full h-48 object-cover transform transition-transform duration-300 hover:scale-110"
           />
         </div>
-        {/* Content Section */}
         <div className="mt-4">
           <div className="flex items-center justify-between">
-            {/* Instructor Image */}
             <div className="flex">
               <img
                 src={data?.img}

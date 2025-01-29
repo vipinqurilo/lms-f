@@ -26,14 +26,16 @@ const Home = () => {
         <div className="md:mt-0 mt-8">
         <FeaturedCourses />
         </div>
+        
         <FeaturedInstructor />
+        <LogoSlider/>
         <Mentor />
         <MasterSkill />
         <UserLove />
         <Become/>
        <BlogSection/>
         <UnlimitedAccess />
-        <LogoSlider/>
+      
     
 
       </main>

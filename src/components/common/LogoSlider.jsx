@@ -60,19 +60,18 @@ const logos = [
 
 const LogoSlider = () => {
   return (
-    <div className="w-full bg-white py-10">
-      <h2 className="text-center text-lg font-semibold text-gray-500 mb-6">
+    <div className="w-full bg-white py-10  md:py-16">
+      <h2 className="text-center md:text-xl text-lg font-bold text-primary mb-4">
         Trusted By
       </h2>
-      <h3 className="text-center text-3xl font-bold text-black mb-10">
+      <h3 className="text-center md:text-4xl text-2xl font-bold text-black mb-10">
         500+ Leading Universities And Companies
       </h3>
       <Swiper
-        slidesPerView={4} 
-        spaceBetween={20} 
-        loop={true} 
+        spaceBetween={20}
+        loop={true}
         autoplay={{
-          delay: 3000, 
+          delay: 3000,
           disableOnInteraction: false,
         }}
         modules={[Autoplay, Navigation]}
@@ -82,7 +81,7 @@ const LogoSlider = () => {
             spaceBetween: 10,
           },
           768: {
-            slidesPerView: 3,
+            slidesPerView: 4,
             spaceBetween: 15,
           },
           1024: {
