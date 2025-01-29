@@ -10,7 +10,7 @@ const CoursesFilterPrices = () => {
   ];
 
   return (
-    <div className=" border w-64  border-gray-300 rounded-md p-4 bg-white shadow-sm mt-11">
+    <div className="lg:border lg:w-64 w-full border-gray-300 lg:rounded-md p-4 bg-white shadow-sm lg:mt-11">
       {/* Title */}
       <div>
         <h5 className="text-xl font-bold mb-3">Price</h5>
@@ -23,13 +23,13 @@ const CoursesFilterPrices = () => {
               value={category.name}
               checked={selectedOption === category.name}
               onChange={() => setSelectedOption(category.name)}
-              className="h-4 w-4 text-red-500 focus:ring-red-500 border-gray-300"
+              className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300"
             />
             <label
               htmlFor={category.name}
               className={`ml-2 text-base ${
                 selectedOption === category.name
-                  ? "text-red-500 font-medium"
+                  ? "text-orange-500 font-medium"
                   : "text-gray-700"
               }`}
             >
