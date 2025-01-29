@@ -1,15 +1,38 @@
-import Navbar from "../components/Navbar";
+"use client";
+
+import FeaturedCard from "@/components/common/FeaturedCard";
+import Footer from "@/components/Footer";
+// import FeaturedInstructor from "@/components/home/FeaturedInstructor";
+import HeroSection from "@/components/home/HeroSection";
+import MasterSkill from "@/components/home/MasterSkill";
+import Mentor from "@/components/home/Mentor";
+import UnlimitedAccess from "@/components/home/UnlimitedAccess";
+import Navbar from "@/components/Navbar";
+import FeaturedCourses from "@/container/home/FeaturedCourses";
+import InstructorCard from "@/components/common/InstructorCard.jsx";
+import FeaturedInstructor from "@/container/home/FeaturedInstructor";
+import Testimonial from "../components/common/Testimonial";
+import UserLove from "@/container/home/UserLove";
+import Become from "@/components/home/Become";
+import Blog from "@/components/common/BlogCard";
+import BlogSection from "@/container/common/BlogSection";
 
 const Home = () => {
   return (
     <>
-      <main className="p-4 font-nunito">
-        <h1 className="text-3xl font-bold text-center">
-          Welcome to Tutor Website
-        </h1>
-        <p className="text-center mt-4">
-          Explore courses and find your perfect tutor.
-        </p>
+      <main className=" font-nunito">
+        <HeroSection />
+        <div className="md:mt-0 mt-8">
+        <FeaturedCourses />
+        </div>
+        <FeaturedInstructor />
+        <Mentor />
+        <MasterSkill />
+        <UserLove />
+        <Become/>
+       <BlogSection/>
+        <UnlimitedAccess />
+    
       </main>
     </>
   );

@@ -1,3 +1,4 @@
+
 import Footer from "@/components/Footer";
 import StoreProvider from "@/provider/StoreProvider";
 import "@/styles/globals.css";
