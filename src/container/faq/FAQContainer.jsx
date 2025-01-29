@@ -35,7 +35,7 @@ const FAQContainer = ({ data }) => {
   }, [selectedCategory, searchTerm]);
 
   return (
-    <div className="w-full overflow-hidden py-8">
+    <div data-aos="fade-up" className="w-full overflow-hidden py-8">
       <div
         className={`w-full md:w-fit mx-auto text-nowrap flex items-center md:justify-center gap-2 overflow-x-auto border-b-2`}
       >
