@@ -5,15 +5,27 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/container/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
+
         primary: "#e36760",
         secondary: "#F79902",
-        dark: "#392b3c",
-        light: "#ede8ec",
+      
+       
         background: "#0f2138",
+
+   
+        
+        dark:'#392b3c',
+        bg_green:'#BBF0D4',
+        light:'#ede8ec',
+        light_bg:'#F2F2F2',
+        dark_text:'#333333',
+        light_green:'#5ce49b',
+        
         foreground: "var(--foreground)",
       },
       fontFamily: {

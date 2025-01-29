@@ -37,3 +37,11 @@
     @apply w-full p-4 px-5 bg-white shadow-sm border border-black/10 rounded-xl space-y-5;
   }
 }
+
+:root {
+  --primary: #e36760;
+  --secondary: #f79902;
+  --dark: #392b3c;
+  --light: #ede8ec;
+  --background: #0f2138;
+}
