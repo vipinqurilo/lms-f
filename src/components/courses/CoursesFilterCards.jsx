@@ -66,7 +66,7 @@ const CoursesFilterCards = () => {
               <input
                 type="checkbox"
                 id={category.name}
-                className="h-5 w-5 appearance-none  cursor-pointer border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                className="h-4 w-4 appearance-none  cursor-pointer border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600  focus:ring-orange-500 focus:outline-none"
                 onChange={() => toggleCategorySelection(category)} // Toggle selection of all options
                 checked={
                   selectedOptions[category.name]?.length === category.options.length
@@ -96,7 +96,7 @@ const CoursesFilterCards = () => {
                       <input
                         type="checkbox"
                         id={`${category.name}-${option}`}
-                        className="h-5 w-5  cursor-pointer appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        className="h-4 w-4  cursor-pointer appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600   focus:ring-orange-500 focus:outline-none"
                         onChange={() => toggleOption(category.name, option)}
                         checked={selectedOptions[category.name]?.includes(option)}
                       />
