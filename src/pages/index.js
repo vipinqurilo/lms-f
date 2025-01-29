@@ -20,7 +20,7 @@ import BlogSection from "@/container/common/BlogSection";
 const Home = () => {
   return (
     <>
-      <main className=" font-nunito">
+      <main className=" font-nunito custom-margin-top !overflow-visible">
         <HeroSection />
         <div className="md:mt-0 mt-8">
         <FeaturedCourses />

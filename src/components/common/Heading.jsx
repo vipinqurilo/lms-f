@@ -8,14 +8,12 @@ export default function Heading({
   paddingX,
 }) {
   return (
-    <div className={`  text-${position ? position : "center"} `}>
+    <div className={`${position}`}>
       <h2 className="md:text-4xl text-[28px] leading-8 font-extrabold ">
         {heading}
       </h2>
       <p
-        className={`mt-4 md:w-${descWidth ? descWidth : "full"} md:px-[${
-          paddingX ? paddingX : "4"
-        }]  text-[15px] md:text-base font-semibold text-gray-500`}
+        className={`mt-4 ${descWidth} ${paddingX} text-[15px] md:text-base font-semibold text-gray-500`}
       >
         {desc}
       </p>

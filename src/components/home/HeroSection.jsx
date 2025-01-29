@@ -60,7 +60,7 @@ export default function HeroSection() {
           </button>
         </div>
 
-        <div className="md:relative absolute   lg:w-2/3 md:mt-10 z-20 -bottom-24 md:-bottom-0  md:py-8 ">
+        <div className="md:relative absolute   lg:w-2/3 md:mt-10 -bottom-24 md:-bottom-0  md:py-8 ">
           <div className="flex items-center bg-white rounded-full px-4 md:py-3 shadow-lg">
             <IoSearchSharp className="text-2xl" />
             <input

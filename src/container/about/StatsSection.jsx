@@ -4,6 +4,7 @@ import React from "react";
 const StatsSection = ({ data }) => {
   return (
     <div
+    data-aos="fade-up"
       className="custom-container flex flex-col gap-10 bg-background text-white"
     >
       <h1 className="text-2xl text-center font-semibold">
