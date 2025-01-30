@@ -10,6 +10,7 @@ export default function MyCoursesPage() {
         <TitleComp
           heading={"My Courses"}
           des={"Manage your courses and its updates"}
+          iscourse={true}
         />
         <InstructorMyCourses />
       </main>

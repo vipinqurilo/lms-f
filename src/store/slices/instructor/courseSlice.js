@@ -114,6 +114,8 @@ const initialState = {
       status: "Publish",
     },
   ],
+  courseAddData: {},
+  step: 1,
   isLoading: {},
   error: {},
 };
@@ -121,9 +123,20 @@ const initialState = {
 const courseSlice = createSlice({
   name: "course",
   initialState,
-  reducers: {},
+  reducers: {
+    updateStep: (state, action) => {
+      state.step = action.payload;
+    },
+    updateCourseAddDataState: (state, action) => {
+      const data = action.payload;
+      state.courseAddData = {
+        ...state.courseAddData,
+        data,
+      };
+    },
+  },
   extraReducers: (builder) => {},
 });
 
-// export const { handleSelectedCourse } = courseSlice.actions;
+export const { updateCourseAddDataState, updateStep } = courseSlice.actions;
 export default courseSlice.reducer;

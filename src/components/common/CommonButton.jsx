@@ -8,7 +8,7 @@ const CommonButton = ({
   loading = false,
 }) => {
   const baseStyles =
-    "px-4 py-2 rounded-md shadow text-sm font-semibold transition";
+    "px-4 h-fit py-2 rounded-md shadow text-sm font-semibold transition";
 
   const styles = {
     primary: `bg-background text-white hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-95`,
