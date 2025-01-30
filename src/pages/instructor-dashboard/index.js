@@ -1,6 +1,6 @@
 import { CourseCard } from "@/components/student-dashboard/CourseCard";
 import { StatsCard } from "@/components/student-dashboard/StatsCard";
-import CreatedCourses from "@/container/instructor/CreatedCourses";
+import CreatedCourses from "@/container/instructor/dashboard/CreatedCourses";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 import React from "react";
 

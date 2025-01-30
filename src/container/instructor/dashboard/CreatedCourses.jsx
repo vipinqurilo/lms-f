@@ -1,3 +1,4 @@
+import TableHeader from "@/components/instructor/TableHeader";
 import React from "react";
 
 const headingsData = ["Courses", "Enrolled", "Status"];
@@ -56,18 +57,7 @@ const CreatedCourses = () => {
       <div className="bg-white rounded-lg shadow-md overflow-hiddenp-4 ">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                {headingsData?.map((heading, index) => (
-                  <th
-                    key={index}
-                    className="px-6 py-4 text-left font-semibold text-background"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+            <TableHeader headingsData={headingsData} />
             <tbody className="divide-y divide-gray-200">
               {data?.map((course, index) => (
                 <tr key={index} className="hover:bg-gray-50">

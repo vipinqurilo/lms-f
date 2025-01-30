@@ -87,25 +87,20 @@ const instructorSidebarLinks = [
     href: "/instructor-dashboard/my-courses",
   },
   {
-    title: "Announcements",
-    icon: Megaphone,
-    href: "/instructor-dashboard/announcements",
-  },
-  {
     title: "Withdrawals",
     icon: Wallet,
     href: "/instructor-dashboard/withdrawals",
   },
-  {
-    title: "Quiz Attempts",
-    icon: FileText,
-    href: "/instructor-dashboard/quiz-attempts",
-  },
-  {
-    title: "Assignments",
-    icon: ClipboardCheck,
-    href: "/instructor-dashboard/assignments",
-  },
+  // {
+  //   title: "Quiz Attempts",
+  //   icon: FileText,
+  //   href: "/instructor-dashboard/quiz-attempts",
+  // },
+  // {
+  //   title: "Assignments",
+  //   icon: ClipboardCheck,
+  //   href: "/instructor-dashboard/assignments",
+  // },
   {
     title: "Earnings",
     icon: DollarSign,
@@ -200,6 +195,17 @@ export function Sidebar() {
                 isHovered={isHovered}
               />
             )}
+
+            <LinkComponent
+              handleIsHovered={handleIsHovered}
+              isHovered={isHovered}
+              link={{
+                title: "Announcements",
+                icon: Megaphone,
+                href: "/instructor-dashboard/announcements",
+              }}
+              isCollapsed={isCollapsed}
+            />
 
             <button
               onMouseEnter={() => handleIsHovered("logout")}

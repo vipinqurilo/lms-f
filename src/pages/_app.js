@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }) {
     "/student-dashboard",
   ];
   useEffect(() => {
-    Aos.init({ duration: 1500 });
+    Aos.init({ duration: 1000 });
     Aos.refresh();
   }, []);
 

@@ -1,8 +1,10 @@
+import TitleComp from "@/components/instructor/TitleComp";
 import { AvatarUpload } from "@/components/student-dashboard/settings/AvatarUpload";
 import { ChangePassword } from "@/components/student-dashboard/settings/ChangePassword";
 import { EditProfile } from "@/components/student-dashboard/settings/EditProfile";
 import { SettingsTabs } from "@/components/student-dashboard/settings/SettingsTabs";
 import { SocialProfiles } from "@/components/student-dashboard/settings/SocialProfiles";
+import WithdrawalTabProfile from "@/components/student-dashboard/settings/WithdrawalTabProfile";
 import React, { useState } from "react";
 
 const DashboardSettingsContainer = () => {
@@ -19,13 +21,10 @@ const DashboardSettingsContainer = () => {
   };
   return (
     <div className="bg-white rounded-lg border">
-      {/* Header */}
-      <div className="p-4 px-8 border-b">
-        <h1 className="text-2xl font-semibold text-dark mb-2">Settings</h1>
-        <p className="text-gray-500">
-          You have full control to manage your own account settings
-        </p>
-      </div>
+      <TitleComp
+        heading={"Settings"}
+        des={"You have full control to manage your own account settings"}
+      />
 
       {/* Tabs */}
       <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
@@ -46,6 +45,8 @@ const DashboardSettingsContainer = () => {
         {activeTab === "change-password" && <ChangePassword />}
 
         {activeTab === "social-profiles" && <SocialProfiles />}
+
+        {activeTab === "withdrawal" && <WithdrawalTabProfile />}
 
         {activeTab === "linked-accounts" && (
           <div className="text-gray-500">

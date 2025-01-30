@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { useSelector } from "react-redux";
 
 const tabs = [
   {
@@ -47,25 +50,50 @@ const tabs = [
       </svg>
     ),
   },
+  {
+    id: "withdrawal",
+    label: "Withdrawal",
+    icon: () => (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+      </svg>
+    ),
+  },
 ];
 
 export function SettingsTabs({ activeTab, onTabChange }) {
+  const { authUser } = useSelector((state) => state.user);
+
   return (
     <div className="flex flex-wrap gap-2 border-b">
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          onClick={() => onTabChange(tab.id)}
-          className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
-            activeTab === tab.id
-              ? "text-primary border-b border-primary"
-              : "text-gray-500 hover:text-primary"
-          }`}
-        >
-          <tab.icon />
-          {tab.label}
-        </button>
-      ))}
+      {tabs
+        ?.slice(
+          0,
+          authUser?.role === "student"
+            ? 3
+            : authUser?.role === "instructor"
+            ? 4
+            : undefined
+        )
+        .map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => onTabChange(tab.id)}
+            className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
+              activeTab === tab.id
+                ? "text-primary border-b border-primary"
+                : "text-gray-500 hover:text-primary"
+            }`}
+          >
+            <tab.icon />
+            {tab.label}
+          </button>
+        ))}
     </div>
   );
 }
