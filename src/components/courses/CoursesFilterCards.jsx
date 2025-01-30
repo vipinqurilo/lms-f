@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TiTick } from "react-icons/ti";
 
-const CoursesFilterCards = () => {
+const CoursesFilterCards = ({ clearTrigger }) => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [selectedOptions, setSelectedOptions] = useState({});
+
+  // Reset selected options and expanded categories when clearTrigger changes
+  useEffect(() => {
+    setSelectedOptions({});
+    setExpandedCategories({});
+  }, [clearTrigger]);
 
   const categories = [
     { name: "Backend", count: 3, options: ["Node.js", "Django", "Spring"] },
@@ -54,7 +60,7 @@ const CoursesFilterCards = () => {
           {/* Main Category */}
           <div 
             className="flex items-center cursor-pointer"
-            onClick={() => handleCategoryClick(category)} // Toggle dropdown & selection
+            onClick={() => handleCategoryClick(category)}
           >
             <div className="relative">
               <input
@@ -82,7 +88,7 @@ const CoursesFilterCards = () => {
                   <li 
                     key={idx} 
                     className="flex items-center cursor-pointer"
-                    onClick={() => handleOptionClick(category.name, option)} // Click anywhere to toggle checkbox
+                    onClick={() => handleOptionClick(category.name, option)}
                   >
                     <div className="relative flex items-center">
                       <input

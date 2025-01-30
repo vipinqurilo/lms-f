@@ -4,9 +4,18 @@ import { AiOutlineAppstore } from "react-icons/ai";
 import Pagination from "../../components/courses/Pagination";
 import CourseCards from "../../components/courses/CourseCards";
 import CoursesFilter from "../../components/courses/CoursesFilter";
+import CoursesFilterCards from "../../components/courses/CoursesFilterCards";
+import CoursesFilterPrices from "../../components/courses/CoursesFilterPrices";
 
 const Courses = () => {
   const [showFilters, setShowFilters] = useState(false);
+  const [clearTrigger, setClearTrigger] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Newly published"); // State for select option
+
+  const clearFilters = () => {
+    setClearTrigger((prev) => !prev); // Toggle state to trigger effect in child components
+    setSelectedOption("Newly published"); // Reset the select option
+  };
 
   return (
     <div className="lg:p-5 bg-gray-100 flex flex-wrap justify-center">
@@ -31,7 +40,11 @@ const Courses = () => {
                 placeholder="Search our courses"
                 className="border rounded-lg px-4 py-2 w-full sm:w-48"
               />
-              <select className="border bg-white rounded-lg lg:px-4 lg:py-2  px-3  py-2 w-full sm:w-52 lg:mt-auto mt-3">
+              <select
+                className="border bg-white rounded-lg lg:px-4 lg:py-2  px-3  py-2 w-full sm:w-52 lg:mt-auto mt-3"
+                value={selectedOption} // Bind the select value to state
+                onChange={(e) => setSelectedOption(e.target.value)} // Handle selection change
+              >
                 <option>Newly published</option>
                 <option>Most popular</option>
               </select>
@@ -90,7 +103,7 @@ const Courses = () => {
         </div>
 
         {/* Desktop Filter Section */}
-        <div className="hidden lg:block lg:w-3/12 mt-9">
+        <div className="hidden lg:block lg:w-3/12 mt-9 sticky top-0 h-screen  overflow-y-auto">
           <div className="w-64 h-10 flex justify-between items-center px-1">
             <div className="flex items-center gap-2">
               <svg
@@ -109,12 +122,19 @@ const Courses = () => {
               </svg>
               <span className="text-sm font-medium text-gray-700">Filters</span>
             </div>
-            <button className="text-sm font-medium text-gray-500 hover:text-gray-700">
+            <button
+              className="text-sm font-medium text-gray-500 hover:text-gray-700"
+              onClick={clearFilters} // Trigger clear function
+            >
               CLEAR
             </button>
           </div>
-          <CoursesFilter />
-        </div>
+          {/* filter part */}
+          <div className="lg:mt-7">
+            <CoursesFilterCards clearTrigger={clearTrigger} />
+            <CoursesFilterPrices clearTrigger={clearTrigger} />
+          </div>
+         </div>
       </div>
 
       <div className="w-11/12 lg:px-10">

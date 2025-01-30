@@ -1,19 +1,7 @@
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
 import Ok from "./CoursesFilter";
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 const FeaturedCard = () => {
   // Array of data for the 6 cards
   const cardsData = [
@@ -83,8 +71,45 @@ const FeaturedCard = () => {
       image: "/images/course-15.jpg",
       instructorImage: "/images/user6.jpg",
     },
+
+    {
+      title: "Digital Marketing Essentials",
+      instructor: "Sarah K",
+      price: "$220",
+      originalPrice: "$100.00",
+      lessons: "25+ Lessons",
+      duration: "13hr 30min",
+      rating: "4.9 (50)",
+      image: "/images/course-15.jpg",
+      instructorImage: "/images/user6.jpg",
+    },
+
+    {
+      title: "Digital Marketing Essentials",
+      instructor: "Sarah K",
+      price: "$220",
+      originalPrice: "$100.00",
+      lessons: "25+ Lessons",
+      duration: "13hr 30min",
+      rating: "4.9 (50)",
+      image: "/images/course-15.jpg",
+      instructorImage: "/images/user6.jpg",
+    },
+
+    {
+      title: "Digital Marketing Essentials",
+      instructor: "Sarah K",
+      price: "$220",
+      originalPrice: "$100.00",
+      lessons: "25+ Lessons",
+      duration: "13hr 30min",
+      rating: "4.9 (50)",
+      image: "/images/course-15.jpg",
+      instructorImage: "/images/user6.jpg",
+    },
   ];
 
+  
   return (
     <div className="flex">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full ">
