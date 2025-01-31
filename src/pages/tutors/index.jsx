@@ -17,7 +17,7 @@ const index = () => {
   );
 
   return (
-    <div className="text-lg bg-light_bg w-full h-screen p-2 md:p-10 lg:p-20">
+    <div className="text-lg bg-light_bg w-full h-screen p-2 md:p-10 lg:p-20 custom-margin-top">
       <TutorFilter />
       <TutorCard />
       {/* Modal */}
