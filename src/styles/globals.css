@@ -31,7 +31,7 @@
     @apply w-full py-10 lg:py-14 px-5 md:px-10 lg:px-20;
   }
   .custom-margin-top {
-    @apply mt-28 overflow-x-hidden;
+    @apply mt-40 overflow-x-hidden;
   }
   .course-sub-container {
     @apply w-full p-4 px-5 bg-white shadow-sm border border-black/10 rounded-xl space-y-5;
