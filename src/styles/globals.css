@@ -36,6 +36,12 @@
   .course-sub-container {
     @apply w-full p-4 px-5 bg-white shadow-sm border border-black/10 rounded-xl space-y-5;
   }
+  .dashboard-container {
+    @apply w-full bg-white rounded-lg border border-black/10;
+  }
+  .dashboard-sub-container {
+    @apply w-full px-5 py-5;
+  }
 }
 
 :root {
