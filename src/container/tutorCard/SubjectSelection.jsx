@@ -4,12 +4,30 @@ import { GoCheck } from "react-icons/go";
 const SubjectSelection = ({ setSelectedItems, selectedItems, data }) => {
   // Toggle selection of chapters
   const toggleSelection = (e, item) => {
-    console.log(e); // Log the event to inspect its type
-    setSelectedItems((prev) =>
-      prev.includes(item)
-        ? prev.filter((selected) => selected !== item)
-        : [...prev, item]
-    );
+    const subjectData = data.find((subject) => subject.subject === item);
+    const selectedChapters = subjectData?.chapters || [];
+
+    setSelectedItems((prev) => {
+      const isSubjectSelected = prev.includes(item);
+      const areAllChaptersSelected = selectedChapters.every((chapter) =>
+        prev.includes(chapter)
+      );
+
+      if (isSubjectSelected || areAllChaptersSelected) {
+        // Deselect the subject and its chapters
+        return prev.filter(
+          (selected) =>
+            selected !== item && !selectedChapters.includes(selected)
+        );
+      } else {
+        // Select the subject and only the missing chapters
+        return [
+          ...prev,
+          item,
+          ...selectedChapters.filter((chapter) => !prev.includes(chapter)),
+        ];
+      }
+    });
   };
 
   return (

@@ -3,7 +3,7 @@ import TopBanner from "./TopBanner";
 
 export default function StudentDashboardLayout({ children }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 custom-margin-top">
       <TopBanner />
       <div className="flex p-20">
         <Sidebar />
