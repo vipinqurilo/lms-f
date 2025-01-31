@@ -1,3 +1,4 @@
+import TableHeader from "@/components/instructor/TableHeader";
 import React from "react";
 
 const withdrawals = [
@@ -58,25 +59,24 @@ const withdrawals = [
   },
 ];
 
+const heading_data = [
+  "Sr. No.",
+  "Image",
+  "Name/ID",
+  "Email/Phone",
+  "Type",
+  "Registered",
+  "Featured",
+  "Verified",
+];
 
-const WithdrawalHistory = () => {
+const Course = () => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-6xl mx-auto custom-margin-top">
+    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-6xl mx-auto ">
       <div className="overflow-x-auto">
         <table className="w-full border border-gray-200 rounded-lg">
-          <thead>
-            <tr className="bg-gray-100 text-gray-600 text-sm">
-              <th className="py-3 px-4 text-left">Sr. No.</th>
-              <th className="py-3 px-4 text-left">Image</th>
-              <th className="py-3 px-4 text-left">Name/ID</th>
-              <th className="py-3 px-4 text-left">Email/Phone</th>
-              <th className="py-3 px-4 text-left">Type</th>
-              <th className="py-3 px-4 text-left">Registered</th>
-              <th className="py-3 px-4 text-left">Featured</th>
-              <th className="py-3 px-4 text-left">Verified</th>
-            </tr>
-          </thead>
-          <tbody>
+          <TableHeader headingsData={heading_data} />
+          <tbody className="">
             {withdrawals.map((withdrawal, index) => (
               <tr key={index} className="border-t border-gray-200">
                 <td className="py-4 px-4 text-gray-700">{index + 1}</td>
@@ -116,4 +116,4 @@ const WithdrawalHistory = () => {
   );
 };
 
-export default WithdrawalHistory;
+export default Course;

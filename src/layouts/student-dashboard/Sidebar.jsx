@@ -113,7 +113,29 @@ const instructorSidebarLinks = [
   },
 ];
 
-const adminSidebarLinks = [];
+const adminSidebarLinks = [
+  {
+    title: "Dashboard",
+    icon: LayoutDashboard,
+    href: "/admin-dashboard",
+    color: "text-primary",
+  },
+  {
+    title: "Courses",
+    icon: GraduationCap,
+    href: "/admin-dashboard/approvals/courses",
+  },
+  {
+    title: "Teachers",
+    icon: GraduationCap,
+    href: "/admin-dashboard/teachers",
+  },
+  {
+    title: "Withdrawals",
+    icon: Wallet,
+    href: "/admin-dashboard/withdrawals",
+  },
+];
 
 export function Sidebar() {
   const pathname = usePathname();
