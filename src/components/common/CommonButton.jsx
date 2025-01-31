@@ -17,6 +17,7 @@ const CommonButton = ({
 
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={loading}
       className={`${baseStyles} ${styles[variant]}`}

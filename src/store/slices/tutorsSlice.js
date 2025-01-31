@@ -1,14 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  processStep: 1,
+  processData: {},
+  isLoading: {},
+  error: {},
+};
 
 const tutorsSlice = createSlice({
-  name: 'tutors',
-  initialState: [],
+  name: "tutors",
+  initialState,
   reducers: {
-    setTutors(state, action) {
-      return action.payload;
+    updateProcessStep: (state, action) => {
+      state.step = action.payload;
+    },
+    updateProcessData: (state, action) => {
+      const { field, data } = action.payload;
+      state.courseAddData = {
+        ...state.courseAddData,
+        [field]: data,
+      };
     },
   },
 });
 
-export const { setTutors } = tutorsSlice.actions;
+export const { updateProcessData, updateProcessStep } = tutorsSlice.actions;
 export default tutorsSlice.reducer;

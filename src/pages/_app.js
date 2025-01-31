@@ -6,6 +6,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 export default function App({ Component, pageProps }) {
   const pathname = usePathname();
@@ -29,6 +30,7 @@ export default function App({ Component, pageProps }) {
       {!hideNavFooter && <Navbar />}
       <Component {...pageProps} />
       {!hideNavFooter && <Footer />}
+      <Toaster position="top-right" />
     </StoreProvider>
   );
 }

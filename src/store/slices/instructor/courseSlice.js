@@ -128,10 +128,10 @@ const courseSlice = createSlice({
       state.step = action.payload;
     },
     updateCourseAddDataState: (state, action) => {
-      const data = action.payload;
+      const { field, data } = action.payload;
       state.courseAddData = {
         ...state.courseAddData,
-        data,
+        [field]: data,
       };
     },
   },

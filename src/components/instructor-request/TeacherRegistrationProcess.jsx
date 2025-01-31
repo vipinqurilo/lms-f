@@ -1,30 +1,42 @@
 "use client";
 
 import React from "react";
-import { FaCheck } from "react-icons/fa";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoDocumentText, IoVideocam, IoBook, IoCash } from "react-icons/io5";
 import { useSelector } from "react-redux";
 
-const stepsData = [
+const steps = [
   {
     id: 1,
-    title: "Basic Information",
-    icon: IoDocumentText,
-    color: "text-blue-500",
+    title: "PERSONAL INFO",
+    active: false,
+    completed: true,
   },
-  { id: 2, title: "Course Media", icon: IoVideocam, color: "text-green-500" },
-  { id: 3, title: "Curriculum", icon: IoBook, color: "text-purple-500" },
-  { id: 4, title: "Pricing & Access", icon: IoCash, color: "text-orange-500" },
+  {
+    id: 2,
+    title: "Subject and Language",
+    active: false,
+    completed: true,
+  },
+  {
+    id: 3,
+    title: "Experience",
+    active: true,
+    completed: false,
+  },
+  {
+    id: 4,
+    title: "CONFIRMATION",
+    active: false,
+    completed: false,
+  },
 ];
 
-const AddCourseProcess = () => {
-  const { step } = useSelector((state) => state.instructor.course);
+const TeacherRegistrationProcess = () => {
+  const { processStep: step } = useSelector((state) => state.tutors);
 
   return (
-    <div className="w-full grid grid-cols-4 px-10 py-5 gap-6">
-      {stepsData?.map((item, index) => (
-        <div key={index} className="flex items-center gap-6 text-nowrap">
+    <div className="grid grid-cols-4 lg:grid-cols-1 lg:w-[20%] lg:sticky lg:top-32 lg:left-0 gap-0 lg:gap-0 h-fit shadow">
+      {steps?.map((item, index) => (
+        <div key={index} className="flex lg:flex-col lg:items-start items-center gap-0 lg:gap-0 text-nowrap">
           <p
             className={`${step > item?.id && "text-green-500 font-bold"} ${
               step >= item?.id
@@ -59,12 +71,12 @@ const AddCourseProcess = () => {
                 )}
               </span>
             </span>
-            {item?.title}
+            <span className="lg:block hidden">{item?.title}</span>
           </p>
-          {index !== stepsData?.length - 1 && (
+          {index !== steps?.length - 1 && (
             <>
               <div
-                className={`w-full border-[1.5px] rounded-l-lg ${
+                className={`w-full lg:h-20 lg:ml-[17px] lg:w-0 border-[1.5px] rounded-l-lg ${
                   step > item?.id && "border-green-500 border-dashed"
                 } ${
                   step === item?.id
@@ -72,13 +84,6 @@ const AddCourseProcess = () => {
                     : "border-gray-300 border-dashed"
                 } transition-custom`}
               ></div>
-              {/* <span>
-                <IoIosArrowBack
-                  className={`rotate-180 -ml-[15px] text-lg ${
-                    step >= item?.id ? "text-background" : "text-gray-300"
-                  }`}
-                />
-              </span> */}
             </>
           )}
         </div>
@@ -87,4 +92,4 @@ const AddCourseProcess = () => {
   );
 };
 
-export default AddCourseProcess;
+export default TeacherRegistrationProcess;
