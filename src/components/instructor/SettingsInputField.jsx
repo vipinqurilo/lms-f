@@ -11,6 +11,7 @@ const SettingsInputField = ({
   isSelect = false,
   options,
   control,
+  isMulti = false,
 }) => {
   return (
     <div className="space-y-2">
@@ -29,6 +30,7 @@ const SettingsInputField = ({
               <Select
                 {...field}
                 options={options}
+                isMulti={isMulti}
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { FaCheck } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const steps = [
@@ -12,18 +13,24 @@ const steps = [
   },
   {
     id: 2,
-    title: "Subject and Language",
+    title: "Indentity",
     active: false,
     completed: true,
   },
   {
     id: 3,
+    title: "Subject and Language",
+    active: false,
+    completed: true,
+  },
+  {
+    id: 4,
     title: "Experience",
     active: true,
     completed: false,
   },
   {
-    id: 4,
+    id: 5,
     title: "CONFIRMATION",
     active: false,
     completed: false,
@@ -34,7 +41,7 @@ const TeacherRegistrationProcess = () => {
   const { processStep: step } = useSelector((state) => state.tutors);
 
   return (
-    <div className="grid grid-cols-4 lg:grid-cols-1 lg:w-[20%] lg:sticky lg:top-32 lg:left-0 gap-0 lg:gap-0 h-fit shadow">
+    <div className="flex items-center lg:grid lg:grid-cols-1 lg:w-[20%] gap-0 lg:gap-0 h-fit w-fit mx-auto">
       {steps?.map((item, index) => (
         <div key={index} className="flex lg:flex-col lg:items-start items-center gap-0 lg:gap-0 text-nowrap">
           <p
@@ -76,8 +83,8 @@ const TeacherRegistrationProcess = () => {
           {index !== steps?.length - 1 && (
             <>
               <div
-                className={`w-full lg:h-20 lg:ml-[17px] lg:w-0 border-[1.5px] rounded-l-lg ${
-                  step > item?.id && "border-green-500 border-dashed"
+                className={`w-8 lg:h-20 lg:ml-[17px] lg:w-0 border-[1.5px] rounded-l-lg ${
+                  step > item?.id && "border-green-500 border-dashed "
                 } ${
                   step === item?.id
                     ? "border-background"

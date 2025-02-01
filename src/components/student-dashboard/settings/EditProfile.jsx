@@ -1,22 +1,68 @@
+"use client"
+
+import SubmitButtonsComp from "@/components/instructor/addcourse/SubmitButtonsComp";
+import {
+  updateProcessData,
+  updateProcessStep,
+} from "@/store/slices/tutorsSlice";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 export function EditProfile() {
+  const path = usePathname();
+  const dispatch = useDispatch();
   const [profile, setProfile] = useState({
-    firstName: "Ronald",
-    lastName: "Richard",
-    userName: "studentdemo",
-    phoneNumber: "90154-91036",
-    designation: "User Interface Design",
-    bio: "Hello! I'm Ronald Richard. I'm passionate about developing innovative software solutions, analyzing classic literature. I aspire to become a software developer, work as an editor. In my free time, I enjoy coding, reading, hiking etc.",
+    firstName: "",
+    lastName: "",
+    userName: "",
+    phoneNumber: "",
+    designation: "",
+    bio: "",
   });
+
+  const handleReset = () => {
+    setProfile({
+      firstName: "",
+      lastName: "",
+      userName: "",
+      phoneNumber: "",
+      designation: "",
+      bio: "",
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission
   };
 
+  const handleNext = () => {
+    const allFieldsFilled = Object.values(profile).every(
+      (value) => value.trim() !== ""
+    );
+
+    if (allFieldsFilled) {
+      console.log("profile", profile);
+      dispatch(updateProcessData({ field: "profile", data: profile }));
+      dispatch(updateProcessStep(2));
+      console.log("Submitted!!");
+      
+    } else {
+      toast.error("Please fill all the details.");
+    }
+  };
+
+  console.log(path);
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-4 px-8">
+    <form
+      onSubmit={handleSubmit}
+      className={`space-y-6 ${
+        path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"
+      }`}
+    >
       <div className=" flex flex-col">
         <div className="text-lg font-semibold  ">Personal Details</div>
         <div className="text-gray-800">Edit your personal information</div>
@@ -124,12 +170,23 @@ export function EditProfile() {
         />
       </div>
 
-      <button
-        type="submit"
-        className=" w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-      >
-        Update Profile
-      </button>
+      {path === "/instructor-request" ? (
+        <div className="w-full flex items-center justify-between">
+          <SubmitButtonsComp
+            cancelText={"Cancel"}
+            onCancel={handleReset}
+            handleClick={() => handleNext()}
+            saveText={"Save and Continue"}
+          />
+        </div>
+      ) : (
+        <button
+          type="submit"
+          className=" w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+        >
+          Update Profile
+        </button>
+      )}
     </form>
   );
 }

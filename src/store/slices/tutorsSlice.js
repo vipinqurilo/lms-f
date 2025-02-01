@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  processStep: 1,
+  processStep: 2,
   processData: {},
   isLoading: {},
   error: {},
@@ -12,12 +12,12 @@ const tutorsSlice = createSlice({
   initialState,
   reducers: {
     updateProcessStep: (state, action) => {
-      state.step = action.payload;
+      state.processStep = action.payload;
     },
     updateProcessData: (state, action) => {
       const { field, data } = action.payload;
-      state.courseAddData = {
-        ...state.courseAddData,
+      state.processData = {
+        ...state.processData,
         [field]: data,
       };
     },
