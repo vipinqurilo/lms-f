@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import StatesCard from "@/components/admin-dashboard/dashboard/StatesCard";
 
 const index = () => {
-  return (
-    <div >index</div>
-  )
-}
+  return <StatesCard />;
+};
 
-export default index
+export default index;

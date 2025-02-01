@@ -18,25 +18,34 @@ import Blog from "@/components/common/BlogCard";
 import BlogSection from "@/container/common/BlogSection";
 import LogoSlider from "@/components/common/LogoSlider";
 
-const Home = () => {
+export async function getServerSideProps() {
+  const res = await fetch(
+    `https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/front`
+  );
+  const cardData = await res.json();
+
+  return { props: { cardData } };
+}
+
+const Home = ({ cardData }) => {
+  console.log(cardData, "kd data");
+
   return (
     <>
       <main className=" font-nunito custom-margin-top !overflow-visible">
         <HeroSection />
         <div className="md:mt-0 mt-8">
-        <FeaturedCourses />
+          <FeaturedCourses cardData={cardData} />
         </div>
-        
+
         <FeaturedInstructor />
-        <LogoSlider/>
+        <LogoSlider />
         <Mentor />
         <MasterSkill />
         <UserLove />
-        <Become/>
-       <BlogSection/>
+        <Become />
+        <BlogSection />
         <UnlimitedAccess />
-      
-  
       </main>
     </>
   );
