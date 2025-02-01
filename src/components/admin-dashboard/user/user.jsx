@@ -69,7 +69,7 @@ const WithdrawalHistory = () => {
   };
 
   return (
-    <div className="bg-white   rounded-lg p-6 w-full max-w-6xl mx-auto ">
+    <div className="    rounded-lg p-6 w-full max-w-6xl mx-auto ">
       {/* Search Filters */}
       <div className="border rounded-lg bg-gray-50">
         <div
@@ -165,7 +165,7 @@ const WithdrawalHistory = () => {
           <tbody>
             {withdrawals.map((withdrawal, index) => (
               <tr key={index} className="border-t border-gray-200">
-                <td className="py-4 px-4 text-gray-700">{index + 1}</td>
+                <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
                 <td className="py-4 px-4">
                   <img
                     src={withdrawal.image}
@@ -173,27 +173,27 @@ const WithdrawalHistory = () => {
                     className="w-10 h-10 rounded-full"
                   />
                 </td>
-                <td className="py-4 px-4 text-gray-700">
-                  <p className="font-medium">{withdrawal.method}</p>
+                <td className="py-4 px-4 text-gray-700 text-sm">
+                  <p className="font-mediumtext-sm ">{withdrawal.method}</p>
                   <p className="text-sm text-gray-500">
                     User ID: {withdrawal.userId}
                   </p>
                 </td>
-                <td className="py-4 px-4 text-gray-700">
+                <td className="py-4 px-4 text-gray-700 text-sm">
                   <p>{withdrawal.email}</p>
                   <p className="text-sm text-gray-500">{withdrawal.phone}</p>
                 </td>
-                <td className="py-4 px-4 text-gray-700">{withdrawal.type}</td>
-                <td className="py-4 px-4 text-gray-700">
+                <td className="py-4 px-4 text-gray-700 text-sm">{withdrawal.type}</td>
+                <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.registered}
                 </td>
-                <td className="py-4 px-4 text-gray-700">
+                <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.featured}
                 </td>
-                <td className="py-4 px-4 text-gray-700">
+                <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.verified}
                 </td>
-                <td className="py-4 px-4 text-center">
+                <td className="py-4 px-4 text-center text-sm">
                   <label className="flex items-center cursor-pointer justify-center">
                     <input
                       type="checkbox"
@@ -214,16 +214,16 @@ const WithdrawalHistory = () => {
                     </div>
                   </label>
                 </td>
-                <td className="py-4 px-4 text-center">
+                <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
                     <button className="text-gray-600 hover:text-blue-500">
-                      <FiEye size={18} />
+                      <FiEye size={15} />
                     </button>
                     <button className="text-gray-600 hover:text-yellow-500">
-                      <FiEdit2 size={18} />
+                      <FiEdit2 size={15} />
                     </button>
                     <button className="text-gray-600 hover:text-gray-500">
-                      <FiMoreVertical size={18} />
+                      <FiMoreVertical size={15} />
                     </button>
                   </div>
                 </td>
