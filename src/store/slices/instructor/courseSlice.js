@@ -1,3 +1,5 @@
+import { api } from "@/store/api/api";
+import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -120,6 +122,15 @@ const initialState = {
   error: {},
 };
 
+export const getAllIntructorCourses = CreateApiAsyncThunk(
+  "GET/course/getAllIntructorCourses",
+  () => api.get(`/course/instructor/get`)
+);
+
+export const createCourse = CreateApiAsyncThunk("course/createCourse", (data) =>
+  api.post(`/course`, data)
+);
+
 const courseSlice = createSlice({
   name: "course",
   initialState,
@@ -135,7 +146,30 @@ const courseSlice = createSlice({
       };
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllIntructorCourses.pending, (state) => {
+        state.isLoading["getAllIntructorCourses"] = true;
+      })
+      .addCase(getAllIntructorCourses.fulfilled, (state, action) => {
+        state.isLoading["getAllIntructorCourses"] = false;
+        // state.courses = action.payload.data;
+      })
+      .addCase(getAllIntructorCourses.rejected, (state, action) => {
+        state.isLoading["getAllIntructorCourses"] = false;
+        state.error = action.payload;
+      })
+      .addCase(createCourse.pending, (state) => {
+        state.isLoading["createCourse"] = true;
+      })
+      .addCase(createCourse.fulfilled, (state, action) => {
+        state.isLoading["createCourse"] = false;
+      })
+      .addCase(createCourse.rejected, (state, action) => {
+        state.isLoading["createCourse"] = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export const { updateCourseAddDataState, updateStep } = courseSlice.actions;
