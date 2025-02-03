@@ -1,6 +1,7 @@
 "use client"
 
-import { Heart, ChevronLeft, ChevronRight } from "lucide-react"
+import { Heart, ChevronLeft, ChevronRight, CirclePause, Play } from "lucide-react"
+import Image from "next/image"
 import { useState, useRef } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation } from "swiper/modules"
@@ -20,8 +21,9 @@ const courses = [
     thumbnail: "/assets/student-dashboard/course/course-02.jpg",
     mentor: {
       name: "Leonardo samual",
-      avatar: "/placeholder.svg?height=32&width=32",
+      avatar: "/assets/student-dashboard/course/course-02.jpg",
     },
+    progress: 65,
   },
   {
     id: 2,
@@ -33,8 +35,9 @@ const courses = [
     thumbnail: "/assets/student-dashboard/course/course-02.jpg",
     mentor: {
       name: "Bayu Saito",
-      avatar: "/placeholder.svg?height=32&width=32",
+      avatar: "/assets/student-dashboard/course/course-02.jpg",
     },
+    progress: 45,
   },
   {
     id: 3,
@@ -46,8 +49,23 @@ const courses = [
     thumbnail: "/assets/student-dashboard/course/course-02.jpg",
     mentor: {
       name: "Padhang Satrio",
-      avatar: "/placeholder.svg?height=32&width=32",
+      avatar: "/assets/student-dashboard/course/course-02.jpg",
     },
+    progress: 80,
+  },
+  {
+    id: 4,
+    category: {
+      name: "FRONT END",
+      color: "bg-blue-100 text-blue-600",
+    },
+    title: "Beginner's Guide to Becoming a Professional Front-End Developer",
+    thumbnail: "/assets/student-dashboard/course/course-02.jpg",
+    mentor: {
+      name: "Leonardo samual",
+      avatar: "/assets/student-dashboard/course/course-02.jpg",
+    },
+    progress: 30,
   },
 ]
 
@@ -55,18 +73,19 @@ export default function ContinueWatching() {
   const swiperRef = useRef(null)
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full py-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900">Continue Watching</h2>
         <div className="flex gap-2">
           <button
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:bg-gray-50"
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-primary text-gray-400 hover:text-white "
+
             onClick={() => swiperRef.current?.slidePrev()}
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 bg-indigo-600 text-white hover:bg-indigo-700"
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-primary text-gray-400 hover:text-white "
             onClick={() => swiperRef.current?.slideNext()}
           >
             <ChevronRight className="w-4 h-4" />
@@ -83,10 +102,10 @@ export default function ContinueWatching() {
         }}
         breakpoints={{
           640: {
-            slidesPerView: 2,
+            slidesPerView: 2.5,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: 2.5,
           },
         }}
       >
@@ -104,15 +123,34 @@ function CourseCard({ course }) {
   const [isLiked, setIsLiked] = useState(false)
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div className="relative">
-        <img src={course.thumbnail || "/placeholder.svg"} alt={course.title} className="w-full h-48 object-cover" />
+    <div className="bg-white rounded-2xl overflow-hidden  border border-gray-100 ">
+      <div className="relative w-full h-48">
+        <Image
+          src={course.thumbnail || "/placeholder.svg"}
+          alt={course.title}
+          fill
+          className="object-cover filter brightness-75" // Added black filter
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
         <button
           onClick={() => setIsLiked(!isLiked)}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm hover:bg-white z-10"
         >
           <Heart className={`w-4 h-4 ${isLiked ? "fill-red-500 text-red-500" : "text-gray-600"}`} />
         </button>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute w-10 h-10 bg-black/30 rounded-full flex items-center justify-center">
+            <Play className="w-6 h-6 text-gray-200" />
+          </div>
+        </div>
+        {/* Progress overlay at the bottom of the image */}
+        <div className="absolute bottom-0 left-0  right-0 h-1 bg-gray-200 z-10">
+          <div className="h-full bg-primary transition-all duration-300" style={{ width: `${course.progress}%` }} />
+        </div>
+        {/* Progress percentage */}
+        <div className="absolute bottom-2 right-2 px-2 py-1 text-xs font-medium bg-black/60 text-white rounded-md z-10">
+          {course.progress}%
+        </div>
       </div>
       <div className="p-5">
         <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-3 ${course.category.color}`}>
@@ -120,11 +158,15 @@ function CourseCard({ course }) {
         </div>
         <h3 className="text-gray-900 font-semibold mb-4 line-clamp-2">{course.title}</h3>
         <div className="flex items-center gap-3">
-          <img
-            src={course.mentor.avatar || "/placeholder.svg"}
-            alt={course.mentor.name}
-            className="w-8 h-8 rounded-full object-cover"
-          />
+          <div className="relative w-8 h-8">
+            <Image
+              src={course.mentor.avatar || "/placeholder.svg"}
+              alt={course.mentor.name}
+              fill
+              className="rounded-full object-cover"
+              sizes="32px"
+            />
+          </div>
           <div className="text-sm text-gray-600">{course.mentor.name}</div>
         </div>
       </div>
