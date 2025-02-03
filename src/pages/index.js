@@ -17,13 +17,13 @@ import Become from "@/components/home/Become";
 import Blog from "@/components/common/BlogCard";
 import BlogSection from "@/container/common/BlogSection";
 import LogoSlider from "@/components/common/LogoSlider";
+import axios from "axios";
 
 export async function getServerSideProps() {
-  const res = await fetch(
-    `https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/front`
+  const res = await axios.get(
+    "https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/front"
   );
-  const cardData = await res.json();
-
+  const cardData = res.data;
   return { props: { cardData } };
 }
 
