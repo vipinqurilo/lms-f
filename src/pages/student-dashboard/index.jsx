@@ -1,3 +1,4 @@
+import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { CourseCard } from "../../components/student-dashboard/CourseCard";
 import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
@@ -59,22 +60,27 @@ const recentCourses = [
 export default function DashboardPage() {
   return (
     <StudentDashboardLayout className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat, index) => (
-          <StatsCard key={index} title={stat.title} value={stat.value} />
-        ))}
+      <div className="flex gap-6">
+        <div className=" h-fit grid grid-cols-1 md:grid-cols-2 gap-6 w-2/3">
+          {stats.map((stat, index) => (
+            <StatsCard key={index} title={stat.title} value={stat.value} />
+          ))}
+        </div>
+        <div className="w-1/3">
+          <ScheduleView />
+        </div>
       </div>
-
       <div className="py-8">
         <h2 className="text-2xl font-bold text-dark mb-6">
           Recently Enrolled Courses
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recentCourses.map((course) => (
-            <CourseCard key={course.id} course={course} />
+            <CourseCard key={course.id} course={course} type="view" />
           ))}
         </div>
       </div>
+
     </StudentDashboardLayout>
   );
 }

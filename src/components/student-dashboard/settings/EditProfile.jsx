@@ -18,7 +18,7 @@ export function EditProfile() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-4 px-8">
       <div className=" flex flex-col">
-        <div className="text-lg font-semibold  ">Personal Details</div>
+        <div className="text-lg font-semibold ">Personal Details</div>
         <div className="text-gray-800">Edit your personal information</div>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
@@ -100,7 +100,7 @@ export function EditProfile() {
         </label>
         <input
           id="designation"
-          className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+          className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
           value={profile.designation}
           onChange={(e) =>
             setProfile({ ...profile, designation: e.target.value })
@@ -117,7 +117,11 @@ export function EditProfile() {
         </label>
         <textarea
           id="bio"
+<<<<<<< Updated upstream
           className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+=======
+          className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+>>>>>>> Stashed changes
           value={profile.bio}
           onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
           rows={4}
