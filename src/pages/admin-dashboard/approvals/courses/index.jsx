@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 import Course from "@/components/admin-dashboard/approvals/courses/Course";
 import TitleComp from "@/components/instructor/TitleComp";
+import { useDispatch } from "react-redux";
+import { getAllAdminCourses } from "@/store/slices/admin-dashboard/courseSlice";
 
 export default function index() {
+  const dispatch = useDispatch();
+  // const loading = useSelector(state => state...getAllAdminCourses)
+
+  useEffect(() => {
+    dispatch(getAllAdminCourses());
+  }, []);
+
   return (
     <StudentDashboardLayout>
       <main className="dashboard-container  mt-4">

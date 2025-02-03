@@ -7,16 +7,8 @@ import EarningSummary from "@/components/admin-dashboard/dashboard/EarningSummar
 import BookingTable from "@/components/admin-dashboard/dashboard/SalesTable";
 import TotalEarning from "@/components/admin-dashboard/dashboard/TotalEarning";
 import { useEffect } from "react";
-import { getAllAdminCourses } from "@/store/slices/admin-dashboard/courseSlice";
-import { useDispatch, useSelector } from "react-redux";
 
 const index = () => {
-  const dispatch = useDispatch();
-  // const loading = useSelector(state => state...getAllAdminCourses)
- 
-  useEffect(() => {
-    dispatch(getAllAdminCourses());
-  }, []);
 
   return (
     <StudentDashboardLayout>
