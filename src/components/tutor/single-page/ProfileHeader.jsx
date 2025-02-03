@@ -10,7 +10,7 @@ const ProfileHeader = () => {
       {/* Profile Header */}
       <div className="flex flex-col md:flex-row  gap-8 mb-12">
         <div className=" relative w-full lg:w-fit flex gap-2">
-          <Image
+          <Image  
             width={256}
             height={256}
             src="/assets/tutor/Marlenereilly.jpg"

@@ -3,29 +3,26 @@ import { FaRegHeart } from "react-icons/fa";
 
 export default function FeaturedCard({ data }) {
   return (
-    <div className="flex gap-6 md:p-6 p-2">
-      <div className="w-96 group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
-        {/* Image Section */}
+    <div className="flex gap-6 md:p-0  p-2">
+      <div className="w-96 lg:w-full group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
         <div className="relative overflow-hidden rounded-md">
           <img
-            src={data?.img}
+            src={data?.courseImage}
             alt="UX/UI Design"
             className="w-full h-48 object-cover transform transition-transform duration-300 hover:scale-110"
           />
         </div>
-        {/* Content Section */}
         <div className="mt-4">
           <div className="flex items-center justify-between">
-            {/* Instructor Image */}
             <div className="flex">
               <img
-                src={data?.img}
+                src={data?.courseImage}
                 alt="Instructor"
                 className="w-12 h-12 rounded-full mr-3"
               />
               <div>
                 <h3 className="text-lg font-semibold group-hover:text-white">
-                  {data?.author}
+                  {/* {data?.author} */}  static data
                 </h3>
                 <span className="text-sm group-hover:text-white font-medium text-gray-500">
                   Instructor
@@ -40,7 +37,7 @@ export default function FeaturedCard({ data }) {
             </div>
           </div>
           <p className="mt-2 text-xl group-hover:text-white text-gray-700">
-            {data?.heading}
+            {data?.courseTitle}
           </p>
           <div className="flex items-center justify-between gap-4 mt-4">
             <span className="text-sm text-gray-600 group-hover:text-white">

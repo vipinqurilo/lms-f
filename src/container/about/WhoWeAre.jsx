@@ -9,15 +9,21 @@ const WhoWeAre = ({ data, heading }) => {
           backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.5887605042016807) 0%, rgba(0,0,0,0.6475840336134453) 100%), url("/assets/about/bgimage.png")`,
         }}
       >
-        <h1 className="text-4xl lg:text-5xl lg:font-extrabold font-bold">
+        <h1
+          data-aos="fade-up"
+          className="text-4xl lg:text-5xl lg:font-extrabold font-bold"
+        >
           {heading?.page}
         </h1>
-        <p className="text-base lg:text-lg text-center max-w-3xl">
+        <p
+          data-aos="fade-up"
+          className="text-base lg:text-lg text-center max-w-3xl"
+        >
           {heading?.headings}
         </p>
       </div>
 
-      <div className="custom-container space-y-6">
+      <div data-aos="fade-up" className="custom-container space-y-6">
         <h6 className="text-2xl font-bold md:text-3xl lg:text-4xl max-w-3xl">
           {data?.subHeading}
         </h6>

@@ -39,6 +39,7 @@ const index = () => {
       {isContactModelOpen && (
         <ContactModal onClose={() => dispatch(setIsContactModelOpen(false))} />
       )}
+
       <TutorAvailabilityCalendar />
     </div>
   );

@@ -1,17 +1,20 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
+
 import { X } from "lucide-react"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 const TutorAvailabilityCalendar = () => {
+
   const [selections, setSelections] = useState({})
   const [isSelecting, setIsSelecting] = useState(false)
   const [startCell, setStartCell] = useState(null)
   const [endCell, setEndCell] = useState(null)
   const [isResizing, setIsResizing] = useState(false)
   const [resizeStartCell, setResizeStartCell] = useState(null)
+
   const [resizeDirection, setResizeDirection] = useState(null)
 
   const times = Array.from({ length: 96 }, (_, index) => {
@@ -22,12 +25,14 @@ const TutorAvailabilityCalendar = () => {
     return `${hours}:${minutes}`
   })
 
+
   const handleMouseDown = (dayIndex, timeIndex, edge = null) => {
     if (edge) {
       setIsResizing(true)
       setResizeStartCell([dayIndex, timeIndex])
       setResizeDirection(edge)
     } else if (selections[DAYS[dayIndex]]?.[timeIndex]) {
+
       setIsResizing(true)
       setResizeStartCell([dayIndex, timeIndex])
     } else {
@@ -64,6 +69,7 @@ const TutorAvailabilityCalendar = () => {
       const newSelections = { ...selections }
       const [startDay, startTime] = resizeStartCell
       const [endDay, endTime] = endCell
+
       const day = DAYS[startDay]
 
       if (resizeDirection === "top") {
@@ -78,6 +84,7 @@ const TutorAvailabilityCalendar = () => {
         for (let t = Math.min(newEnd, startTime); t <= Math.max(newEnd, startTime); t++) {
           newSelections[day][t] = t <= newEnd
         }
+
       }
 
       setSelections(newSelections)
@@ -88,8 +95,10 @@ const TutorAvailabilityCalendar = () => {
     setStartCell(null)
     setEndCell(null)
     setResizeStartCell(null)
+
     setResizeDirection(null)
   }, [isSelecting, isResizing, startCell, endCell, resizeStartCell, resizeDirection, selections])
+
 
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp)
@@ -116,12 +125,14 @@ const TutorAvailabilityCalendar = () => {
     while (newSelections[day]?.[endTimeIndex]) {
       newSelections[day][endTimeIndex] = false
       endTimeIndex++
+
     }
     setSelections(newSelections)
   }
 
   const renderCell = (day, dayIndex, timeIndex) => {
     const isSelected = selections[day]?.[timeIndex]
+
     const isFirstInBlock = isSelected && !selections[day]?.[timeIndex - 1]
     const isLastInBlock = isSelected && !selections[day]?.[timeIndex + 1]
     const isMiddleOfBlock = isSelected && selections[day]?.[timeIndex - 1] && selections[day]?.[timeIndex + 1]
@@ -138,9 +149,11 @@ const TutorAvailabilityCalendar = () => {
     }
     cellClass += "border-gray-200"
 
+
     return (
       <div
         key={`${day}-${timeIndex}`}
+
         className={cellClass}
         onMouseDown={() => handleMouseDown(dayIndex, timeIndex)}
         onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
@@ -167,12 +180,14 @@ const TutorAvailabilityCalendar = () => {
               handleMouseDown(dayIndex, timeIndex, "bottom")
             }}
           />
+
         )}
       </div>
     )
   }
 
   return (
+
     <div className="w-full overflow-x-auto select-none bg-white rounded-lg border border-gray-200 shadow-sm p-4">
       <div className="min-w-[800px]">
         <div className="grid grid-cols-[40px_repeat(7,_1fr)] gap-0">
@@ -182,14 +197,17 @@ const TutorAvailabilityCalendar = () => {
               key={day}
               className={`font-semibold text-center border-l border-y py-2 border-gray-200 ${day === "Sat" ? "border-r" : ""}`}
             >
+
               {day}
             </div>
           ))}
           {times.map((time, timeIndex) => (
             <React.Fragment key={time}>
+
               <div className="text-[12px] leading-3 border-l border-b text-center border-gray-200">
                 {timeIndex % 2 === 0 ? time : ""}
               </div>
+
               {DAYS.map((day, dayIndex) => renderCell(day, dayIndex, timeIndex))}
             </React.Fragment>
           ))}
@@ -199,5 +217,7 @@ const TutorAvailabilityCalendar = () => {
   )
 }
 
+
 export default TutorAvailabilityCalendar
+
 

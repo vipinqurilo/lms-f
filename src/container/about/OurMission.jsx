@@ -4,7 +4,7 @@ import React from "react";
 
 const OurMission = ({ data }) => {
   return (
-    <div className="custom-container flex flex-col lg:flex-row lg:justify-between gap-10 lg:mt-10 relative bg-cover bg-center bg-no-repeat text-black">
+    <div data-aos="fade-up" className="custom-container flex flex-col lg:flex-row lg:justify-between gap-10 lg:mt-10 relative bg-cover bg-center bg-no-repeat text-black">
       <div className="w-full lg:w-[35%] lg:sticky lg:top-40 flex flex-col justify-between gap-6">
         <div className="space-y-2">
           <h2 className="font-bold text-secondary capitalize">{data?.tag}</h2>
