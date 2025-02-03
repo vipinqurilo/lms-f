@@ -25,10 +25,10 @@ const BasicDetails = () => {
     control,
   } = useForm();
 
-  const [features, setFeatures] = useState([""]);
-  const [whatYouWillLearn, setWhatYouWillLearn] = useState([""]);
-  const [requirements, setRequirements] = useState([""]);
-  const [description, setDescription] = useState([""]);
+  const [features, setFeatures] = useState([]);
+  const [whatYouWillLearn, setWhatYouWillLearn] = useState([]);
+  const [requirements, setRequirements] = useState([]);
+  // const [description, setDescription] = useState([]);
 
   const submitHandler = (data) => {
     console.log(data);
@@ -58,28 +58,28 @@ const BasicDetails = () => {
     { value: "all-levels", label: "All Levels" },
   ];
 
-  const handleAddDescription = () => {
-    setDescription((prev) => {
-      const updatedDescription = [...prev, ""];
-      setValue("description", updatedDescription);
-      return updatedDescription;
-    });
-  };
+  // const handleAddDescription = () => {
+  //   setDescription((prev) => {
+  //     const updatedDescription = [...prev, ""];
+  //     setValue("description", updatedDescription);
+  //     return updatedDescription;
+  //   });
+  // };
 
-  const handleRemoveDescription = (index) => {
-    setDescription((prev) => {
-      const updatedDescription = prev.filter((_, i) => i !== index);
-      setValue("description", updatedDescription);
-      return updatedDescription;
-    });
-  };
+  // const handleRemoveDescription = (index) => {
+  //   setDescription((prev) => {
+  //     const updatedDescription = prev.filter((_, i) => i !== index);
+  //     setValue("description", updatedDescription);
+  //     return updatedDescription;
+  //   });
+  // };
 
   const handleReset = () => {
     // Reset dynamic fields to initial state
     setFeatures(courseAddData.basic.features || [""]);
     setWhatYouWillLearn(courseAddData.basic.whatYouWillLearn || [""]);
     setRequirements(courseAddData.basic.requirements || [""]);
-    setDescription(courseAddData.basic.description || [""]);
+    // setDescription(courseAddData.basic.description || [""]);
 
     // Reset the form values to match the initial state
     reset({
@@ -89,7 +89,8 @@ const BasicDetails = () => {
       features: courseAddData.basic.features || [""],
       requirements: courseAddData.basic.requirements || [""],
       whatYouWillLearn: courseAddData.basic.whatYouWillLearn || [""],
-      description: courseAddData.basic.description || [""],
+      description: courseAddData?.basic?.description || "",
+      // description: courseAddData.basic.description || [""],
     });
   };
 
@@ -162,7 +163,11 @@ const BasicDetails = () => {
         <label className="block text-sm font-medium text-light mb-2">
           Description
         </label>
-        {description.map((item, index) => (
+        <textarea
+          {...register("description", { required: "Description is reuired" })}
+          className="mt-1 block h-20 resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+        />
+        {/* {description.map((item, index) => (
           <div key={index} className="flex items-center space-x-2 mb-2">
             <textarea
               value={item}
@@ -181,12 +186,17 @@ const BasicDetails = () => {
               variant="secondary"
             />
           </div>
-        ))}
-        <CommonButton
+        ))} */}
+        {/* <CommonButton
           label={"Add Description"}
           variant="secondary"
           onClick={handleAddDescription}
-        />
+        /> */}
+        {errors.description && (
+          <span className="text-sm text-red-500">
+            *{errors.description?.message}
+          </span>
+        )}
       </div>
 
       <div className="w-full col-span-3">

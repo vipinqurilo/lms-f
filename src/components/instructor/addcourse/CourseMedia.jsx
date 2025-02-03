@@ -53,7 +53,7 @@ const CourseMedia = () => {
           type="file"
           accept="image/*"
           onChange={(e) => handleFileChange(e, "image")}
-          className="block w-full text-sm text-gray-500 border-gray-300  "
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2"
         />
         {media.imagePreview && (
           <div
@@ -71,7 +71,7 @@ const CourseMedia = () => {
           type="file"
           accept="video/*"
           onChange={(e) => handleFileChange(e, "video")}
-          className="block w-full text-sm text-gray-500 border-gray-300 "
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2"
         />
         {media.videoPreview && (
           <div className="w-full h-80 rounded-lg">

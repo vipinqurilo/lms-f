@@ -26,11 +26,21 @@ const SettingsInputField = ({
           <Controller
             name={name}
             control={control}
-            render={({ field }) => (
+            render={({ field: { onChange, value, ref } }) => (
               <Select
-                {...field}
+                inputRef={ref}
                 options={options}
                 isMulti={isMulti}
+                getOptionLabel={(e) => e.label}
+                getOptionValue={(e) => e.value}
+                value={options.find((c) => c.value === value)}
+                onChange={(selectedOption) =>
+                  onChange(
+                    isMulti
+                      ? selectedOption.map((opt) => opt.value)
+                      : selectedOption.value
+                  )
+                }
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,

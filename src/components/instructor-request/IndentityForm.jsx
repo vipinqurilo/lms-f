@@ -8,14 +8,13 @@ import {
   updateProcessStep,
 } from "@/store/slices/tutorsSlice";
 import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
+import toast from "react-hot-toast";
 
 export default function IndentityForm() {
   const {
     register,
     handleSubmit,
     watch,
-    setError,
-    clearErrors,
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch();
@@ -39,21 +38,13 @@ export default function IndentityForm() {
       ];
 
       if (!allowedTypes.includes(file.type)) {
-        setError("profilePicture", {
-          type: "manual",
-          message: "Invalid file type. Allowed: png, jpg, jpeg, gif, bmp.",
-        });
+        toast.error("Invalid file type. Allowed: png, jpg, jpeg, gif, bmp.");
         return;
       } else if (file.size > 2 * 1024 * 1024) {
-        setError("profilePicture", {
-          type: "manual",
-          message: "File size exceeds 2MB.",
-        });
+        toast.error("File size exceeds 2MB.");
         return;
       }
-
-      clearErrors("profilePicture");
-      setProfilePreview(URL.createObjectURL(file)); // Set image preview
+      setProfilePreview(URL.createObjectURL(file));
     }
   };
 
@@ -66,9 +57,6 @@ export default function IndentityForm() {
   return (
     <div className="max-w-full mx-auto">
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold">
-          Add profile photo, video, and biography
-        </h1>
         <p className="text-gray-600">
           Support your professional profile with a latest profile picture, a
           self-introduction video, and a short biography.

@@ -20,13 +20,13 @@ const TeacherRegistrationContainer = () => {
       <TeacherRegistrationProcess />
       <div className="w-full lg:w-[80%] ">
         {step === 1 ? (
-          <div className={stepContainerCss}>
+          <div className={`${stepContainerCss} space-y-6`}>
             <h2 className={h2Styles}>PERSONAL INFO</h2>
             <BasicDetailsForm />
           </div>
         ) : step === 2 ? (
           <div className={`${stepContainerCss} space-y-6`}>
-            <h2 className={h2Styles}>Intro</h2>
+            <h2 className={h2Styles}>Add profile photo, video, and biography</h2>
             <IndentityForm />
           </div>
         ) : step === 3 ? (

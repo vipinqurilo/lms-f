@@ -1,102 +1,137 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import SubmitButtonsComp from "./SubmitButtonsComp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateCourseAddDataState,
   updateStep,
 } from "@/store/slices/instructor/courseSlice";
 import toast from "react-hot-toast";
-import { FaAngleDown, FaEdit } from "react-icons/fa";
-import { FiDelete } from "react-icons/fi";
-import CommonButton from "@/components/common/CommonButton";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { MdEditSquare, MdOutlineDelete } from "react-icons/md";
 import { AiTwotoneEdit } from "react-icons/ai";
+import { MdOutlineDelete } from "react-icons/md";
+import CommonButton from "@/components/common/CommonButton";
+import { RiUploadCloud2Line } from "react-icons/ri";
+import UploadLecture from "./UploadLecture";
 
 const Curriculum = () => {
+  const { courseAddData } = useSelector((state) => state.instructor.course);
   const dispatch = useDispatch();
+
   const [lecture, setLecture] = useState({
-    lectureTitle: "",
-    videoUrl: "",
-    des: "",
+    lessonTitle: "",
+    video: "",
+    duration: "",
   });
-  const [modules, setModules] = useState([{ moduletitle: "", lectures: [] }]);
+
+  const [modules, setModules] = useState([{ moduleTitle: "", lessons: [] }]);
+
   const [editingLecture, setEditingLecture] = useState({
     moduleIndex: null,
     lectureIndex: null,
-    data: { lectureTitle: "", videoUrl: "", des: "" },
+    data: { lessonTitle: "", video: "", duration: "" },
   });
+
   const [isEditModule, setisEditModule] = useState(null);
+  const [isEditLecture, setisEditLecture] = useState(null);
+  const [isChooseFile, setisChooseFile] = useState(null);
 
-  // Handle Module Title Update
-  const handleModuleTitleUpdate = (index, newTitle) => {
-    const updatedModules = [...modules];
-    updatedModules[index].moduletitle = newTitle;
-    setModules(updatedModules);
-  };
+  useEffect(() => {
+    if (Object.keys(courseAddData).length > 0) {
+      setModules(courseAddData?.curriculum);
+    }
+  }, [courseAddData]);
 
-  // Handle Adding a New Lecture
+  // ✅ Add Lecture
   const handleAddLecture = (moduleIndex) => {
-    const updatedModules = [...modules];
-    updatedModules[moduleIndex].lectures.push({
-      title: lecture.lectureTitle,
-      videoUrl: lecture.videoUrl,
-      description: lecture.des,
-    });
-    setModules(updatedModules);
-    // Reset the lecture form after adding
-    setLecture({ lectureTitle: "", videoUrl: "", des: "" });
-  };
-  const handleRemoveLecture = (moduleIndex, index) => {
-    const updatedModules = [...modules];
-    updatedModules[moduleIndex].lectures.filter((lec, i) => i !== index);
-    setModules(updatedModules);
+    if (
+      lecture?.lessonTitle !== ""
+      // (lecture?.lessonTitle !== "",
+      // lecture?.video !== "",
+      // lecture?.duration !== "")
+    ) {
+      setModules((prevModules) => {
+        const updatedModules = prevModules.map((module, index) => {
+          if (index === moduleIndex) {
+            return {
+              ...module,
+              lessons: [
+                ...module.lessons, // Create a new array instead of mutating
+                {
+                  title: lecture.lessonTitle,
+                  video: lecture.video,
+                  duration: lecture.duration,
+                },
+              ],
+            };
+          }
+          return module;
+        });
+
+        return updatedModules;
+      });
+
+      setLecture({ lessonTitle: "", video: "", duration: "" });
+    } else {
+      toast.error("All fields are required");
+    }
   };
 
+  // ✅ Remove Lecture
+  const handleRemoveLecture = (moduleIndex, lectureIndex) => {
+    setModules((prevModules) => {
+      const updatedModules = [...prevModules];
+      updatedModules[moduleIndex].lessons = updatedModules[
+        moduleIndex
+      ].lessons.filter((_, i) => i !== lectureIndex);
+      return updatedModules;
+    });
+  };
+
+  // ✅ Edit Lecture
   const handleEditLecture = (moduleIndex, lectureIndex) => {
-    const lectureToEdit = modules[moduleIndex].lectures[lectureIndex];
+    const lectureToEdit = modules[moduleIndex].lessons[lectureIndex];
+
     setEditingLecture({
       moduleIndex,
       lectureIndex,
       data: {
-        lectureTitle: lectureToEdit.title,
-        videoUrl: lectureToEdit.videoUrl,
-        des: lectureToEdit.description,
+        lessonTitle: lectureToEdit.title,
+        video: lectureToEdit.video,
+        duration: lectureToEdit.duration,
       },
     });
+
+    setisEditLecture(lectureIndex);
   };
 
+  // ✅ Save Edited Lecture
   const handleSaveEditedLecture = () => {
     if (
       editingLecture.moduleIndex !== null &&
       editingLecture.lectureIndex !== null
     ) {
-      const updatedModules = [...modules];
-      updatedModules[editingLecture.moduleIndex].lectures[
-        editingLecture.lectureIndex
-      ] = {
-        title: editingLecture.data.lectureTitle,
-        videoUrl: editingLecture.data.videoUrl,
-        description: editingLecture.data.des,
-      };
-      setModules(updatedModules);
+      setModules((prevModules) => {
+        const updatedModules = [...prevModules];
+        updatedModules[editingLecture.moduleIndex].lessons[
+          editingLecture.lectureIndex
+        ] = {
+          lessonTitle: editingLecture.data.lessonTitle,
+          video: editingLecture.data.video,
+          duration: editingLecture.data.duration,
+        };
+        return updatedModules;
+      });
+
       setEditingLecture({
         moduleIndex: null,
         lectureIndex: null,
-        data: { lectureTitle: "", videoUrl: "", des: "" },
+        data: { lessonTitle: "", video: "", duration: "" },
       });
-    }
-  };
 
-  // Handle Changes in the Lecture Form
-  const handleLectureChange = (e) => {
-    const { name, value } = e.target;
-    setLecture((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+      setisEditLecture(null);
+    }
   };
 
   const handleEditLectureChange = (e) => {
@@ -110,28 +145,47 @@ const Curriculum = () => {
     }));
   };
 
+  const handleUploadedVideoDataSet = (videoUrl, videoDuration, moduleIndex) => {
+    setModules((prevModules) => {
+      const updatedModules = prevModules.map((module, index) => {
+        if (index === moduleIndex) {
+          return {
+            ...module,
+            lessons: [
+              ...module.lessons,
+              {
+                lessonTitle: lecture.lessonTitle,
+                video: lecture.video,
+                duration: lecture.duration,
+              },
+            ],
+          };
+        }
+        return module;
+      });
+
+      return updatedModules;
+    });
+  };
+
   const handleNext = () => {
     dispatch(updateCourseAddDataState({ field: "curriculum", data: modules }));
     dispatch(updateStep(4));
   };
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const [height, setHeight] = useState(0);
-  const contentRef = useRef(null);
-
-  const toggleSection = (index) => {
-    if (activeIndex === index) {
-      setActiveIndex(null);
-      setHeight(0);
-    } else {
-      setActiveIndex(index);
-      setHeight(contentRef.current.scrollHeight);
-    }
-  };
-
   return (
     <div className="flex w-full flex-col gap-10">
+      <div className="w-full flex items-center justify-between self-end">
+        <h2 className="text-xl font-semibold">Course Curriculum</h2>
+        <CommonButton
+          label={"Add Module"}
+          onClick={() => {
+            setisEditModule(modules?.length);
+            setModules((prev) => [...prev, { moduleTitle: "", lessons: [] }]);
+          }}
+        />
+      </div>
+
       {modules?.map((item, index) => (
         <div
           key={index}
@@ -143,94 +197,113 @@ const Curriculum = () => {
               {isEditModule === index ? (
                 <input
                   type="text"
-                  value={item?.moduletitle}
-                  onChange={(e) =>
-                    handleModuleTitleUpdate(index, e.target.value)
-                  }
-                  className="px-3 py-1 focus:outline-none border border-black/10 rounded"
+                  value={item?.moduleTitle}
+                  onChange={(e) => {
+                    const updatedModules = [...modules];
+                    updatedModules[index].moduleTitle = e.target.value;
+                    setModules(updatedModules);
+                  }}
+                  className="px-2 py-0.5 focus:outline-none border border-black/10 rounded"
                 />
               ) : (
-                item?.moduletitle
+                item?.moduleTitle
               )}
             </h2>
-            <div className=" flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <CommonButton
                 label={isEditModule === index ? "Submit" : "Edit"}
                 variant="secondary"
                 onClick={() =>
-                  isEditModule === index
-                    ? setisEditModule(null)
-                    : setisEditModule(index)
+                  setisEditModule(isEditModule === index ? null : index)
                 }
               />
               <CommonButton
                 label={"Delete"}
                 variant="secondary"
                 onClick={() =>
-                  setModules((prev) => prev.filter((mod, j) => j !== index))
+                  setModules((prev) => prev.filter((_, j) => j !== index))
                 }
-              />
-              <CommonButton
-                label={"Add Lecture"}
-                onClick={() => handleAddLecture(index)}
               />
             </div>
           </div>
 
-          {item?.lectures?.map((lecture, i) => (
+          <div className="w-full grid grid-cols-4 gap-10 py-2">
+            {/* Add Inputs for New Lecture */}
+            <input
+              type="text"
+              placeholder="Lesson Title"
+              value={lecture.lessonTitle}
+              onChange={(e) =>
+                setLecture({ ...lecture, lessonTitle: e.target.value })
+              }
+              className="px-2 py-0.5 focus:outline-none border border-black/10 rounded text-sm"
+            />
+            <button
+              onClick={() =>
+                setisChooseFile({
+                  lectureIndex: modules?.findIndex((module, i) => i === index),
+                  moduleIndex: index,
+                })
+              }
+              className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-primary/10 "
+            >
+              <RiUploadCloud2Line size={20} />
+              Choose File
+            </button>
+            <CommonButton
+              label={"Add Lecture"}
+              variant="secondary"
+              onClick={() => handleAddLecture(index)} // Pass module index
+            />
+          </div>
+
+          {item?.lessons?.map((lecture, i) => (
             <div
               className="w-full bg-white p-4 rounded-lg border border-black/10"
               key={i}
             >
-              <div
-                onClick={() => toggleSection(i)}
-                className="flex items-center cursor-pointer justify-between w-full"
-              >
+              <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
                   <GiHamburgerMenu size={18} />
-                  <h3 className="font-medium text-sm">
-                    Lecture {index + 1}.{i + 1}{" "}
-                    <input
-                      type="text"
-                      value={item?.moduletitle}
-                      onChange={(e) =>
-                        handleModuleTitleUpdate(index, e.target.value)
-                      }
-                      className="px-3 py-1 focus:outline-none border border-black/10 rounded"
-                    />{" "}
-                    {lecture?.title}
-                  </h3>
+                  {isEditLecture === i ? (
+                    <div className="flex items-center gap-1 text-sm">
+                      Lecture {index + 1}.{i + 1}
+                      <input
+                        type="text"
+                        value={editingLecture.data.lessonTitle}
+                        onChange={handleEditLectureChange}
+                        name="lessonTitle"
+                        className="px-2 py-0.5 focus:outline-none border border-black/10 rounded"
+                      />
+                    </div>
+                  ) : (
+                    <h3 className="font-medium text-sm">
+                      Lecture {index + 1}.{i + 1} {lecture?.title}
+                    </h3>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 text-xl">
-                  <AiTwotoneEdit onClick={() => handleEditLecture(index, i)} />
+                  {isEditLecture === i ? (
+                    <CommonButton
+                      label="Save"
+                      onClick={handleSaveEditedLecture}
+                    />
+                  ) : (
+                    <AiTwotoneEdit
+                      onClick={() => handleEditLecture(index, i)}
+                      className="cursor-pointer"
+                    />
+                  )}
                   <MdOutlineDelete
                     className="hover:text-red-500 cursor-pointer transition-custom"
                     onClick={() => handleRemoveLecture(index, i)}
                   />
-                  <FaAngleDown />
                 </div>
               </div>
-              <div
-                className="transition-all ease-in-out duration-500 overflow-hidden"
-                style={{
-                  maxHeight: activeIndex === i ? `${height}px` : "0px",
-                }}
-                ref={contentRef}
-              ></div>
             </div>
           ))}
         </div>
       ))}
-
-      <button
-        onClick={() => {
-          setisEditModule(modules?.length);
-          setModules((prev) => [...prev, { moduletitle: "", lectures: [] }]);
-        }}
-        className="bg-secondary/20 text-black hover:text-white hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-95 px-4 h-fit rounded-md shadow text-lg font-semibold transition py-4"
-      >
-        Add Module
-      </button>
 
       <div className="w-full flex items-center justify-between">
         <SubmitButtonsComp
@@ -240,6 +313,14 @@ const Curriculum = () => {
           handleClick={handleNext}
         />
       </div>
+
+      {isChooseFile !== null && (
+        <UploadLecture
+          handleCancel={() => setisChooseFile(null)}
+          moduleInfo={isChooseFile}
+          handleUploadedVideoDataSet={handleUploadedVideoDataSet}
+        />
+      )}
     </div>
   );
 };

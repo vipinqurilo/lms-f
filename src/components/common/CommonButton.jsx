@@ -13,6 +13,7 @@ const CommonButton = ({
   const styles = {
     primary: `bg-background text-white hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-95`,
     secondary: `border border-backbg-background text-[#223142] hover:bg-[#223142] hover:text-white`,
+    third: `border border-secondary text-[#223142] hover:bg-[#223142] hover:text-white`,
   };
 
   return (

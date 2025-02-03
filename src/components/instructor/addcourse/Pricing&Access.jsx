@@ -4,10 +4,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import SettingsInputField from "../SettingsInputField";
 import SubmitButtonsComp from "./SubmitButtonsComp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateStep } from "@/store/slices/instructor/courseSlice";
 
 const PricingAccess = () => {
+  const { courseAddData } = useSelector((state) => state.instructor.course);
+
   const dispatch = useDispatch()
   const {
     register,

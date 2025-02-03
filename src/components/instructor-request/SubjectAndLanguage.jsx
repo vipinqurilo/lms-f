@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import data from "@/data/subjectsAndLanguageData.json";
 import { useForm } from "react-hook-form";
 import SettingsInputField from "../instructor/SettingsInputField";
@@ -11,6 +11,7 @@ import {
 } from "@/store/slices/tutorsSlice";
 
 const SubjectAndLanguage = () => {
+  const [subjects, setSubjects] = useState([]);
   const dispatch = useDispatch();
   const {
     register,
@@ -18,6 +19,7 @@ const SubjectAndLanguage = () => {
     formState: { errors },
     control,
     watch,
+    setValue,
   } = useForm();
   const selectedSubjects = watch("subjects");
 
@@ -38,9 +40,23 @@ const SubjectAndLanguage = () => {
     subSubjects: subject?.subSubjects,
   }));
 
+  const handleAddRemoveSubjects = (data) => {
+    setSubjects((prevSubjects) => {
+      const updatedSubjects = prevSubjects.some(
+        (sub) => sub.label === data.label
+      )
+        ? prevSubjects.filter((sub) => sub.label !== data.label)
+        : [...prevSubjects, data];
+
+      setValue("subjects", updatedSubjects);
+
+      return updatedSubjects;
+    });
+  };
+
   return (
     <div className="w-full space-y-6">
-      <div className="">
+      <div className="lg:hidden">
         <SettingsInputField
           control={control}
           errors={errors}
@@ -51,6 +67,22 @@ const SubjectAndLanguage = () => {
           register={register}
           isMulti={true}
         />
+      </div>
+
+      <div className="lg:grid grid-cols-5 gap-10">
+        {subjectsData?.map((subject, index) => (
+          <button
+            key={index}
+            onClick={() => handleAddRemoveSubjects(subject)}
+            className={`${
+              subjects.some((sub) => sub.label === subject.label)
+                ? "bg-background text-white" // Subject is selected
+                : "bg-none" // Subject is not selected
+            } px-3 py-2 text-sm border border-black/10 w-full rounded-lg`}
+          >
+            {subject?.label}
+          </button>
+        ))}
       </div>
 
       <div className="w-full grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">

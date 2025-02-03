@@ -113,7 +113,7 @@ const AddExperience = ({
           type="file"
           id="certificate"
           accept=".png, .jpg, .jpeg, .txt, .doc, .docx, .pdf"
-          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary p-2"
           {...register("certificate")}
           onChange={onFileChange}
         />

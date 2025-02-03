@@ -10,7 +10,7 @@ const RequestWithdrawal = ({ handleClose, handleRequest, loading, balance }) => 
       PropComponent={
         <div data-aos="fade-up" className="bg-white border border-black/10 rounded-lg">
           <ModalHeading title={"Withdrawal Request"} onClose={handleClose} />
-          <div className="px-5 pb-6 flex flex-col gap-4">
+          <div className="px-10 pb-6 flex flex-col gap-4">
             <h4>
               Please check your transaction notification on your connected
               withdrawal method
