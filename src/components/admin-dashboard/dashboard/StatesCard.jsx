@@ -19,23 +19,11 @@ const statsData = [
     icon: FaUsers,
     iconColor: "#2196F3",
   },
-  {
-    value: "1,200",
-    description: "Total Orders",
-    icon: FaShoppingCart,
-    iconColor: "#FF9800",
-  },
-  {
-    value: "85%",
-    description: "Conversion Rate",
-    icon: FaChartBar,
-    iconColor: "#9C27B0",
-  },
 ];
 
 export default function StatesCard() {
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
       {statsData.map((stat, index) => (
         <div
           key={index}
