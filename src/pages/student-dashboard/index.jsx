@@ -2,6 +2,7 @@ import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { CourseCard } from "../../components/student-dashboard/CourseCard";
 import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
+import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
 
 const stats = [
   { title: "Enrolled Courses", value: 12 },
@@ -54,6 +55,19 @@ const recentCourses = [
     reviews: 10,
     price: 65,
     originalPrice: 70,
+  }, {
+    id: "4",
+    title: "Sketch from A to Z (2024): Become an app designer",
+    instructor: {
+      name: "Jenny",
+      image: "/assets/student-dashboard/user/user2.jpg",
+    },
+    thumbnail: "/assets/student-dashboard/course/course-04.jpg",
+    lessons: 10,
+    duration: "40hr 10min",
+    rating: 3,
+    reviews: 18,
+    isFree: true,
   },
 ];
 
@@ -61,16 +75,19 @@ export default function DashboardPage() {
   return (
     <StudentDashboardLayout className="space-y-8">
       <div className="flex gap-6">
-        <div className=" h-fit grid grid-cols-1 md:grid-cols-2 gap-6 w-2/3">
+        <div className="w-2/3">
+        <div className=" h-fit grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {stats.map((stat, index) => (
             <StatsCard key={index} title={stat.title} value={stat.value} />
           ))}
         </div>
-        <div className="w-1/3">
+          <ContinueWatching />
+        </div>
+        <div className="w-2/3">
           <ScheduleView />
         </div>
       </div>
-      <div className="py-8">
+      <div className="py-8"> 
         <h2 className="text-2xl font-bold text-dark mb-6">
           Recently Enrolled Courses
         </h2>

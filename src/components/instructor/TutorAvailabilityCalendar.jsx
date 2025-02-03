@@ -69,14 +69,14 @@ const TutorAvailabilityCalendar = () => {
       if (resizeDirection === "top") {
         const blockEnd = findBlockEnd(day, startTime)
         const newStart = Math.min(endTime, blockEnd)
-        for (let t = 0; t < 96; t++) {
-          newSelections[day][t] = t >= newStart && t <= blockEnd
+        for (let t = Math.min(newStart, startTime); t <= Math.max(newStart, startTime); t++) {
+          newSelections[day][t] = t >= newStart
         }
       } else if (resizeDirection === "bottom") {
         const blockStart = findBlockStart(day, startTime)
         const newEnd = Math.max(endTime, blockStart)
-        for (let t = 0; t < 96; t++) {
-          newSelections[day][t] = t >= blockStart && t <= newEnd
+        for (let t = Math.min(newEnd, startTime); t <= Math.max(newEnd, startTime); t++) {
+          newSelections[day][t] = t <= newEnd
         }
       }
 
