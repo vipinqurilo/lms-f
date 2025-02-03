@@ -16,35 +16,23 @@ const CoursesFilterCards = ({ clearTrigger }) => {
     { name: "CSS", count: 2, options: ["Tailwind", "Bootstrap"] },
     { name: "Frontend", count: 2, options: ["React", "Vue.js"] },
     { name: "General", count: 2, options: ["Agile", "Scrum"] },
-    {
-      name: "IT & Software",
-      count: 2,
-      options: ["Networking", "Cybersecurity"],
-    },
+    { name: "IT & Software", count: 2, options: ["Networking", "Cybersecurity"] },
     { name: "Photography", count: 2, options: ["Editing", "Lighting"] },
-    {
-      name: "Programming Language",
-      count: 3,
-      options: ["Python", "Java", "C++"],
-    },
+    { name: "Programming Language", count: 3, options: ["Python", "Java", "C++"] },
     { name: "Technology", count: 2, options: ["AI", "Blockchain"] },
   ];
 
   // Category select/unselect + dropdown toggle
   const handleCategoryClick = (category) => {
-    const isAllSelected =
-      selectedOptions[category.name]?.length === category.options.length;
-
+    const isAllSelected = selectedOptions[category.name]?.length === category.options.length;
+    
     if (isAllSelected) {
       // Unselect all options and close dropdown
       setSelectedOptions((prev) => ({ ...prev, [category.name]: [] }));
       setExpandedCategories((prev) => ({ ...prev, [category.name]: false }));
     } else {
       // Select all options and open dropdown
-      setSelectedOptions((prev) => ({
-        ...prev,
-        [category.name]: category.options,
-      }));
+      setSelectedOptions((prev) => ({ ...prev, [category.name]: category.options }));
       setExpandedCategories((prev) => ({ ...prev, [category.name]: true }));
     }
   };
@@ -68,9 +56,9 @@ const CoursesFilterCards = ({ clearTrigger }) => {
     <div className="lg:w-64 border bg-white border-gray-300 rounded-md p-4 w-full">
       <h5 className="text-xl font-bold mb-3">Course categories</h5>
       {categories.map((category, index) => (
-        <div key={index} className="mb-2">  
+        <div key={index} className="mb-2">
           {/* Main Category */}
-          <div
+          <div 
             className="flex items-center cursor-pointer"
             onClick={() => handleCategoryClick(category)}
           >
@@ -79,22 +67,15 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                 type="checkbox"
                 id={category.name}
                 className="h-4 w-4 appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                checked={
-                  selectedOptions[category.name]?.length ===
-                  category.options.length
-                }
+                checked={selectedOptions[category.name]?.length === category.options.length}
                 readOnly
               />
               {/* Checkmark icon */}
-              {selectedOptions[category.name]?.length ===
-                category.options.length && (
+              {selectedOptions[category.name]?.length === category.options.length && (
                 <TiTick className="absolute inset-0 m-auto text-white w-4 h-4" />
               )}
             </div>
-            <label
-              htmlFor={category.name}
-              className="ml-2 text-[#8C8598] text-sm leading-8 cursor-pointer"
-            >
+            <label htmlFor={category.name} className="ml-2 text-[#8C8598] text-sm leading-8 cursor-pointer">
               {category.name} ({category.count})
             </label>
           </div>
@@ -104,8 +85,8 @@ const CoursesFilterCards = ({ clearTrigger }) => {
             <div className="ml-6 mt-2 p-2 rounded shadow-sm">
               <ul className="space-y-2">
                 {category.options.map((option, idx) => (
-                  <li
-                    key={idx}
+                  <li 
+                    key={idx} 
                     className="flex items-center cursor-pointer"
                     onClick={() => handleOptionClick(category.name, option)}
                   >
@@ -114,9 +95,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                         type="checkbox"
                         id={`${category.name}-${option}`}
                         className="h-4 w-4 cursor-pointer appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                        checked={selectedOptions[category.name]?.includes(
-                          option
-                        )}
+                        checked={selectedOptions[category.name]?.includes(option)}
                         readOnly
                       />
                       {/* Conditionally render the TiTick icon */}
@@ -124,10 +103,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                         <TiTick className="absolute inset-0 m-auto text-white w-4 h-4" />
                       )}
                     </div>
-                    <label
-                      htmlFor={`${category.name}-${option}`}
-                      className="ml-2 text-gray-600 text-sm cursor-pointer"
-                    >
+                    <label htmlFor={`${category.name}-${option}`} className="ml-2 text-gray-600 text-sm cursor-pointer">
                       {option}
                     </label>
                   </li>

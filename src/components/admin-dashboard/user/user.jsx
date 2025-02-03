@@ -51,8 +51,7 @@ const columns = [
   "Registered",
   "Featured",
   "Verified",
-  "Status",
-  "Action",
+   "Action",
 ];
 
 
@@ -193,27 +192,7 @@ const WithdrawalHistory = () => {
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.verified}
                 </td>
-                <td className="py-4 px-4 text-center text-sm">
-                  <label className="flex items-center cursor-pointer justify-center">
-                    <input
-                      type="checkbox"
-                      className="sr-only"
-                      checked={statusList[index]}
-                      onChange={() => toggleStatus(index)}
-                    />
-                    <div
-                      className={`relative w-10 h-5 rounded-full transition ${
-                        statusList[index] ? "bg-blue-500" : "bg-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`absolute left-1 top-1 w-3.5 h-3.5 bg-white rounded-full shadow transition ${
-                          statusList[index] ? "translate-x-5" : ""
-                        }`}
-                      />
-                    </div>
-                  </label>
-                </td>
+ 
                 <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
                     <button className="text-gray-600 hover:text-blue-500">
