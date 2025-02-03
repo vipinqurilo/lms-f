@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import ContactModal from "../../components/common/ContactModal";
+import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 
 const index = () => {
   const dispatch = useDispatch();
@@ -38,8 +39,10 @@ const index = () => {
       {isContactModelOpen && (
         <ContactModal onClose={() => dispatch(setIsContactModelOpen(false))} />
       )}
+      <TutorAvailabilityCalendar />
     </div>
   );
 };
+
 
 export default index;

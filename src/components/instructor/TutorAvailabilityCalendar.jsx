@@ -5,7 +5,7 @@ import { X } from "lucide-react"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
-const AvailabilityCalendar = () => {
+const TutorAvailabilityCalendar = () => {
   const [selections, setSelections] = useState({})
   const [isSelecting, setIsSelecting] = useState(false)
   const [startCell, setStartCell] = useState(null)
@@ -199,5 +199,5 @@ const AvailabilityCalendar = () => {
   )
 }
 
-export default AvailabilityCalendar
+export default TutorAvailabilityCalendar
 
