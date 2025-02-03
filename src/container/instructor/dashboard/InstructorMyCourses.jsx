@@ -3,12 +3,13 @@ import InstructorButton from "@/components/instructor/InstructorButton";
 import { CourseCard } from "@/components/student-dashboard/CourseCard";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import React, { useEffect, useState } from "react";
-import { FiEdit3 } from "react-icons/fi";
+import { FiEdit, FiEdit3 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { BiBook, BiCheckCircle, BiTime, BiEdit } from "react-icons/bi";
 import DeleteModal from "@/components/instructor/DeleteModal";
 import CommonButton from "@/components/common/CommonButton";
+import { useRouter } from "next/navigation";
 
 const tabs = [
   {
@@ -31,6 +32,7 @@ const tabs = [
 
 const InstructorMyCourses = () => {
   const dispatch = useDispatch();
+  const router = useRouter()
   const { courses } = useSelector((state) => state.instructor.course);
   const [isDelete, setisDelete] = useState(null);
   const [selecteStatus, setselecteStatus] = useState("All");
@@ -61,19 +63,21 @@ const InstructorMyCourses = () => {
             key={index}
             tab={tab?.tab}
             icon={tab?.icon}
-            condition={`${selecteStatus === tab?.tab && "!bg-secondary text-white"}`}
+            condition={`${
+              selecteStatus === tab?.tab && "!bg-secondary text-white"
+            }`}
             handleClick={() => handleStatusChange(tab?.tab)}
           />
         ))}
       </div>
-      <div className="w-full grid grid-cols-3 gap-10">
+      <div className="w-full grid grid-cols-3 gap-5">
         {filteredCourses?.map((course, index) => (
-          <div className="border border-black/10 flex flex-col justify-between bg-white px-5 py-5 rounded-lg hover:bg-secondary/5 transition-custom">
+          <div className="relative flex items-start gap-2">
             <CourseCard course={course} key={index} />
-            <div className=" flex justify-between gap-2 pt-4">
-              <CommonButton label={"Edit"} variant="secondary" />
+            <div className="flex items-center gap-2 flex-col ">
+              <CommonButton label={<FiEdit size={20} />} variant="secondary" />
               <CommonButton
-                label={"Delete"}
+                label={<MdDeleteOutline size={20} />}
                 variant="secondary"
                 onClick={() => setisDelete(course?.title)}
               />

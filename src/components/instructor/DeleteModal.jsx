@@ -15,7 +15,7 @@ const DeleteModal = ({ onClose, text, handleDelete, loading }) => {
               Are you certain you want to delete this {text || "record"}?
             </p>
 
-            <div className="flex justify-center gap-10 mt-8">
+            <div className="flex justify-between gap-10 mt-8">
               <CommonButton
                 label="Yes, Delete It!"
                 onClick={handleDelete}

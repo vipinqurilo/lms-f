@@ -5,11 +5,17 @@ import BasicDetails from "@/components/instructor/addcourse/BasicDetails";
 import CourseMedia from "@/components/instructor/addcourse/CourseMedia";
 import Curriculum from "@/components/instructor/addcourse/Curriculum";
 import PricingAccess from "@/components/instructor/addcourse/Pricing&Access";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 const AddCourseProcessContainer = () => {
   const { step } = useSelector((state) => state.instructor.course);
+  const [media, setMedia] = useState({
+    video: null,
+    image: null,
+    videoPreview: null,
+    imagePreview: null,
+  });
 
   return (
     <div className="space-y-4">
@@ -18,11 +24,11 @@ const AddCourseProcessContainer = () => {
         {step === 1 ? (
           <BasicDetails />
         ) : step === 2 ? (
-          <CourseMedia />
+          <CourseMedia media={media} setMedia={setMedia} />
         ) : step === 3 ? (
           <Curriculum />
         ) : step === 4 ? (
-          <PricingAccess />
+          <PricingAccess media={media} />
         ) : undefined}
       </div>
     </div>

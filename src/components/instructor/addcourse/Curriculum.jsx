@@ -38,8 +38,13 @@ const Curriculum = () => {
   const [isChooseFile, setisChooseFile] = useState(null);
 
   useEffect(() => {
-    if (Object.keys(courseAddData).length > 0) {
-      setModules(courseAddData?.curriculum);
+    if (
+      Array.isArray(courseAddData?.curriculum) &&
+      courseAddData.curriculum.length > 0
+    ) {
+      setModules(courseAddData.curriculum);
+    } else {
+      setModules([{ moduleTitle: "", lessons: [] }]); // Set a default valid structure
     }
   }, [courseAddData]);
 

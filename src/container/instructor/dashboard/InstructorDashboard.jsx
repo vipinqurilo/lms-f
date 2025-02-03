@@ -6,6 +6,7 @@ import { CourseCard } from "@/components/student-dashboard/CourseCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllIntructorCourses } from "@/store/slices/instructor/courseSlice";
 import Loader from "@/components/common/Loader";
+import ScheduleView from "./ScheduleView";
 
 const stats = [
   { title: "Enrolled Courses", value: 12 },
@@ -107,11 +108,21 @@ const recentCourses = [
   },
 ];
 
+const headingsData = ["Courses", "Enrolled", "Status"];
+
 const InstructorDashboard = () => {
   const dispatch = useDispatch();
   const loading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
+  const { courses } = useSelector((state) => state.instructor.course);
+  const filteredData = courses?.map((course) => ({
+    image: course?.thumbnail,
+    title: course?.title,
+    des: course?.description,
+    value2: course?.status,
+    value1: 100,
+  }));
 
   useEffect(() => {
     dispatch(getAllIntructorCourses());
@@ -124,26 +135,31 @@ const InstructorDashboard = () => {
           <Loader color={"text-secondary text-2xl"} text={"Loader..."} />
         </div>
       ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {stats.map((stat, index) => (
-              <StatsCard key={index} title={stat.title} value={stat.value} />
-            ))}
-          </div>
-
-          <CreatedCourses />
-
-          <div className="py-8">
-            <h2 className="text-2xl font-bold text-background mb-6">
-              Recently Enrolled Courses
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recentCourses.map((course) => (
-                <CourseCard key={course.id} course={course} />
+        <div className="w-full h-full flex items-start gap-5 justify-between relative">
+          <div className="w-[70%]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+              {stats.map((stat, index) => (
+                <StatsCard key={index} title={stat.title} value={stat.value} />
               ))}
             </div>
+
+            <CreatedCourses headingsData={headingsData} data={filteredData} />
+
+            <div className="py-8">
+              <h2 className="text-2xl font-bold text-background mb-6">
+                Recently Enrolled Courses
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {recentCourses.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+            </div>
           </div>
-        </>
+          <div className="w-[30%] sticky top-32 h-fit bg-gray-400">
+            <ScheduleView />
+          </div>
+        </div>
       )}
     </div>
   );

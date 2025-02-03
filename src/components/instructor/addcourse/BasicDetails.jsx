@@ -166,6 +166,7 @@ const BasicDetails = () => {
         <textarea
           {...register("description", { required: "Description is reuired" })}
           className="mt-1 block h-20 resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+          placeholder="Enter Course Description"
         />
         {/* {description.map((item, index) => (
           <div key={index} className="flex items-center space-x-2 mb-2">

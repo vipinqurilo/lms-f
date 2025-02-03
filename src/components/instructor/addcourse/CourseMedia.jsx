@@ -9,14 +9,8 @@ import {
 } from "@/store/slices/instructor/courseSlice";
 import toast from "react-hot-toast";
 
-const CourseMedia = () => {
+const CourseMedia = ({ media, setMedia }) => {
   const dispatch = useDispatch();
-  const [media, setMedia] = useState({
-    video: null,
-    image: null,
-    videoPreview: null,
-    imagePreview: null,
-  });
 
   const handleFileChange = (event, type) => {
     const selectedFile = event.target.files[0];
