@@ -4,8 +4,7 @@ import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing ic
 
 const withdrawals = [
   {
-    image: "https://via.placeholder.com/40",
-    method: "Landen Mosciski",
+    user: "Landen Mosciski",
     ordertype: "webinars",
     serviceType: "offline",
     netTotal: "20",
@@ -157,8 +156,7 @@ const Course = () => {
                 <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
 
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p className="font-mediumtext-sm ">{withdrawal.method}</p>
-                  <p className="text-sm text-gray-500">{withdrawal.userId}</p>
+                  <p className="font-mediumtext-sm ">{withdrawal.user}</p>
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   <p>{withdrawal.email}</p>
@@ -187,9 +185,7 @@ const Course = () => {
                     <button className="text-gray-600 hover:text-blue-500">
                       <FiEye size={15} />
                     </button>
-                    {/* <button className="text-gray-600 hover:text-yellow-500">
-                      <FiEdit2 size={15} />
-                    </button> */}
+
                     <button className="text-gray-600 hover:text-gray-500">
                       <FiMoreVertical size={15} />
                     </button>
