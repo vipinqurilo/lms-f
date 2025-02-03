@@ -4,6 +4,7 @@ import tutorsReducer from "./slices/tutorsSlice";
 import uiReducer from "./slices/uiSlice";
 import userSlice from "./slices/userSlice";
 import instructorRootReducer from "./slices/instructor/instructorRootReducer";
+import adminRootReducer from "./slices/admin-dashboard/adminRootReducer";
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   ui: uiReducer,
   user: userSlice,
   instructor: instructorRootReducer,
+  admin: adminRootReducer,
 });
 
 export default rootReducer;
