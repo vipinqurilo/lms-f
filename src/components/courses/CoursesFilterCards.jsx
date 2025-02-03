@@ -1,21 +1,16 @@
-
- 
-
 import React, { useState, useEffect } from "react";
-import { TiTick } from "react-icons/ti"; 
+import { TiTick } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories } from "@/store/slices/coursesSlice";
-//conmment 
+import { fetchCategories, fetchCoursesByCategory } from "@/store/slices/coursesSlice";
 
 const CoursesFilterCards = ({ clearTrigger }) => {
-    const dispatch = useDispatch();
-    const { categories, loading, error } = useSelector((state) => state.courses);
-  console.log(categories,"llll")
-    const [expandedCategories, setExpandedCategories] = useState({});
-    const [selectedOptions, setSelectedOptions] = useState({});
+  const dispatch = useDispatch();
+  const { categories, loading, error, courses } = useSelector((state) => state.courses);
+  const [expandedCategories, setExpandedCategories] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState({});
 
- useEffect(() => {
-    dispatch(fetchCategories());
+  useEffect(() => {
+    dispatch(fetchCategories()); // Fetch categories when the component mounts
   }, [dispatch]);
 
   // Reset selected options and expanded categories when clearTrigger changes
@@ -24,9 +19,11 @@ const CoursesFilterCards = ({ clearTrigger }) => {
     setExpandedCategories({});
   }, [clearTrigger]);
 
-
   // Category select/unselect + dropdown toggle
   const handleCategoryClick = (category) => {
+    // Log the category's _id
+    console.log("Category _id:", category._id);
+
     const isAllSelected =
       selectedOptions[category.name]?.length === category.options?.length;
 
@@ -41,6 +38,9 @@ const CoursesFilterCards = ({ clearTrigger }) => {
         [category.name]: category.options,
       }));
       setExpandedCategories((prev) => ({ ...prev, [category.name]: true }));
+
+      // Dispatch the fetchCoursesByCategory action
+      dispatch(fetchCoursesByCategory(category._id));  // Use category._id to fetch courses
     }
   };
 
@@ -63,7 +63,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
     <div className="lg:w-64 border bg-white border-gray-300 rounded-md p-4 w-full">
       <h5 className="text-xl font-bold mb-3">Course categories</h5>
       {categories.map((category, index) => (
-        <div key={index} className="mb-2">  
+        <div key={index} className="mb-2">
           {/* Main Category */}
           <div
             className="flex items-center cursor-pointer"
@@ -93,7 +93,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
             </label>
           </div>
 
-           {expandedCategories[category.name] && (
+          {expandedCategories[category.name] && (
             <div className="ml-6 mt-2 p-2 rounded shadow-sm">
               <ul className="space-y-2">
                 {category?.options?.map((option, idx) => (
@@ -107,12 +107,10 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                         type="checkbox"
                         id={`${category.name}-${option}`}
                         className="h-4 w-4 cursor-pointer appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                        checked={selectedOptions[category.name]?.includes(
-                          option
-                        )}
+                        checked={selectedOptions[category.name]?.includes(option)}
                         readOnly
                       />
-                       {selectedOptions[category.name]?.includes(option) && (
+                      {selectedOptions[category.name]?.includes(option) && (
                         <TiTick className="absolute inset-0 m-auto text-white w-4 h-4" />
                       )}
                     </div>
@@ -129,6 +127,24 @@ const CoursesFilterCards = ({ clearTrigger }) => {
           )}
         </div>
       ))}
+
+      {/* Display Courses */}
+      {courses.length > 0 && (
+        <div className="mt-6">
+          <h5 className="text-lg font-bold mb-3">Courses</h5>
+          <ul>
+            {courses.map((course, index) => (
+              <li key={index} className="py-2 border-b border-gray-200">
+                {course.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Loading and Error Handling */}
+      {loading && <p className="text-center mt-4">Loading...</p>}
+      {error && <p className="text-center mt-4 text-red-500">{error}</p>}
     </div>
   );
 };
