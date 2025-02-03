@@ -12,13 +12,14 @@ const Courses = () => {
   const [clearTrigger, setClearTrigger] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Newly published"); // State for select option
 
+  
   const clearFilters = () => {
     setClearTrigger((prev) => !prev); // Toggle state to trigger effect in child components
     setSelectedOption("Newly published"); // Reset the select option
   };
 
   return (
-    <div className="lg:p-5 bg-gray-100 flex flex-wrap justify-center">
+    <div className="lg:p-5 bg-gray-100 flex flex-wrap justify-center custom-margin-top">
       <div className="w-full lg:px-20 gap-6 flex mt-9">
         {/* Course Cards Section */}
         <div className="lg:w-9/12 w-full mx-auto p-4">

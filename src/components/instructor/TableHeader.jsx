@@ -1,6 +1,7 @@
 import React from "react";
 
 const TableHeader = ({ headingsData }) => {
+  console.log(headingsData,"lll")
   return (
     <thead className="bg-gray-100 w-full">
       <tr>
