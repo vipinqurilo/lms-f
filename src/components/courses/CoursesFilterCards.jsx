@@ -129,7 +129,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
       ))}
 
       {/* Display Courses */}
-      {courses.length > 0 && (
+      {/* {courses.length > 0 && (
         <div className="mt-6">
           <h5 className="text-lg font-bold mb-3">Courses</h5>
           <ul>
@@ -140,7 +140,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
 
       {/* Loading and Error Handling */}
       {loading && <p className="text-center mt-4">Loading...</p>}

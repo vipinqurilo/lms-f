@@ -42,13 +42,12 @@
 // export default coursesSlice.reducer;
 
 
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// API URL for categories
+// API URLs
 const CATEGORY_API_URL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/category/filter';
-// API URL for courses (example dynamic URL with category ID)
 const COURSE_API_URL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/filter/';
+const COURSE_API_URL_ALL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/front'; // New endpoint for all courses
 
 // Async Thunk to fetch categories
 export const fetchCategories = createAsyncThunk('courses/fetchCategories', async () => {
@@ -58,37 +57,49 @@ export const fetchCategories = createAsyncThunk('courses/fetchCategories', async
   }
 
   const result = await response.json();
-  return result.data || []; // Extract 'data' array
+  return result.data || [];
 });
 
 // Async Thunk to fetch courses by category
 export const fetchCoursesByCategory = createAsyncThunk(
   'courses/fetchCoursesByCategory',
   async (categoryId) => {
-    console.log(categoryId,"p;pp;p;p;")
     const response = await fetch(`${COURSE_API_URL}${categoryId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch courses');
     }
 
     const result = await response.json();
-    console.log('Fetched courses for category', categoryId, result); // Log the data
-    return result.data || []; // Extract 'data' array
+    return result.data || [];
+  }
+);
+
+// Async Thunk to fetch all courses (no filter)
+export const fetchCourses = createAsyncThunk(
+  'courses/fetchCourses',
+  async () => {
+    const response = await fetch(COURSE_API_URL_ALL);
+    if (!response.ok) {
+      throw new Error('Failed to fetch courses');
+    }
+
+    const result = await response.json();
+    return result.data || [];
   }
 );
 
 const coursesSlice = createSlice({
   name: 'courses',
   initialState: {
-    categories: [], // Store categories
-    courses: [], // Store courses based on selected category
+    categories: [],
+    courses: [],
     loading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
-    // Handle category fetch actions
     builder
+      // Handle category fetch actions
       .addCase(fetchCategories.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -101,8 +112,8 @@ const coursesSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      
-      // Handle courses fetch actions
+
+      // Handle fetch courses by category
       .addCase(fetchCoursesByCategory.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -112,6 +123,20 @@ const coursesSlice = createSlice({
         state.courses = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchCoursesByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      // Handle fetch all courses (no filter)
+      .addCase(fetchCourses.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCourses.fulfilled, (state, action) => {
+        state.loading = false;
+        state.courses = Array.isArray(action.payload) ? action.payload : [];
+      })
+      .addCase(fetchCourses.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
