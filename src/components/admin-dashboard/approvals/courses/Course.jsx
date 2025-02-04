@@ -1,6 +1,7 @@
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState } from "react";
 import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing icons
+import { useSelector } from "react-redux";
 
 const withdrawals = [
   {
@@ -18,7 +19,7 @@ const withdrawals = [
 const columns = [
   "ID",
   "User",
-  "Order type",
+  "Title  ",
   "service type",
   "Net total",
   "Payment",
@@ -28,6 +29,10 @@ const columns = [
 ];
 
 const Course = () => {
+  const { data } = useSelector((state) => state.admin?.course?.courses);
+
+  console.log(data, "kd datas");
+
   const [statusList, setStatusList] = useState(
     withdrawals.map((withdrawal) => withdrawal.status)
   );
