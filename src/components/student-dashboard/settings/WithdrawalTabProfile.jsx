@@ -2,7 +2,7 @@ import SettingsInputField from "@/components/instructor/SettingsInputField";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const methods = ["bank transfer", "e-Check", "paypal"];
+const methods = ["bank transfer", "paypal"];
 
 const WithdrawalTabProfile = () => {
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
@@ -43,7 +43,10 @@ const WithdrawalTabProfile = () => {
           ))}
         </div>
 
-        <form onSubmit={handleSubmit(submitHandler)} className="w-full p-5 py-6 border border-black/10 space-y-8 !mt-10 rounded-lg">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="w-full p-5 py-6 border border-black/10 space-y-8 !mt-10 rounded-lg"
+        >
           {selectedMethod === methods[0] ? (
             <div className="w-full grid grid-cols-2 gap-8">
               <SettingsInputField
@@ -83,19 +86,6 @@ const WithdrawalTabProfile = () => {
               />
             </div>
           ) : selectedMethod === methods[1] ? (
-            <div>
-              <SettingsInputField
-                label={"Your Physical Address"}
-                name={"address"}
-                placeholder={"Enter Your Physical Address"}
-                register={register}
-                errors={errors}
-              />
-              <p className="text-light mt-2">
-                We will send you an E-Check to this address directly
-              </p>
-            </div>
-          ) : selectedMethod === methods[2] ? (
             <div>
               <SettingsInputField
                 label={"PayPal Email Address"}

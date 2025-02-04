@@ -10,12 +10,6 @@ import { useSelector } from "react-redux";
 
 const AddCourseProcessContainer = () => {
   const { step } = useSelector((state) => state.instructor.course);
-  const [media, setMedia] = useState({
-    video: null,
-    image: null,
-    videoPreview: null,
-    imagePreview: null,
-  });
 
   return (
     <div className="space-y-4">
@@ -24,11 +18,11 @@ const AddCourseProcessContainer = () => {
         {step === 1 ? (
           <BasicDetails />
         ) : step === 2 ? (
-          <CourseMedia media={media} setMedia={setMedia} />
+          <CourseMedia />
         ) : step === 3 ? (
           <Curriculum />
         ) : step === 4 ? (
-          <PricingAccess media={media} />
+          <PricingAccess />
         ) : undefined}
       </div>
     </div>

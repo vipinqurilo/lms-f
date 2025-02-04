@@ -10,8 +10,12 @@ import {
 import toast from "react-hot-toast";
 import { uploadImage, uploadVideo } from "@/store/slices/uploadSlice";
 
-const CourseMedia = ({ media, setMedia }) => {
+const CourseMedia = () => {
   const dispatch = useDispatch();
+  const [media, setMedia] = useState({
+    video: null,
+    image: null,
+  });
   const imageLoader = useSelector(
     (state) => state.upload.isLoading.uploadImage
   );
@@ -19,33 +23,36 @@ const CourseMedia = ({ media, setMedia }) => {
     (state) => state.upload.isLoading.uploadVideo
   );
 
-  const handleFileChange = (event, type) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      const previewUrl = URL.createObjectURL(selectedFile);
-      setMedia((prevState) => {
-        const updatedState = {
-          ...prevState,
-          [type]: selectedFile,
-          [`${type}Preview`]: previewUrl,
-        };
-        return updatedState;
-      });
-    }
-  };
-
   const handleImageUpload = (event) => {
     const selectedFile = event.target.files[0];
     const formData = new FormData();
     formData.append("courseImage", selectedFile);
-    dispatch(uploadImage(formData));
+    dispatch(uploadImage(formData))
+      .unwrap()
+      .then((res) => {
+        if (res?.data) {
+          setMedia((prev) => ({
+            ...prev,
+            image: res?.data,
+          }));
+        }
+      });
   };
 
   const handleVideoUpload = (event) => {
     const selectedFile = event.target.files[0];
     const formData = new FormData();
     formData.append("video", selectedFile);
-    dispatch(uploadVideo(formData));
+    dispatch(uploadVideo(formData))
+      .unwrap()
+      .then((res) => {
+        if (res?.data) {
+          setMedia((prev) => ({
+            ...prev,
+            video: res?.data,
+          }));
+        }
+      });
   };
 
   const submitHandler = () => {
@@ -68,7 +75,6 @@ const CourseMedia = ({ media, setMedia }) => {
           type="file"
           accept="image/*"
           onChange={(e) => {
-            handleFileChange(e, "image");
             handleImageUpload(e);
           }}
           className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:cursor-not-allowed disabled:opacity-60"
@@ -77,7 +83,7 @@ const CourseMedia = ({ media, setMedia }) => {
         {media.imagePreview && (
           <div
             className="w-full h-80 bg-no-repeat bg-cover bg-center mt-5 rounded-lg"
-            style={{ backgroundImage: `url(${media.imagePreview})` }}
+            style={{ backgroundImage: `url(${media.image})` }}
           ></div>
         )}
       </div>
@@ -90,7 +96,6 @@ const CourseMedia = ({ media, setMedia }) => {
           type="file"
           accept="video/*"
           onChange={(e) => {
-            handleFileChange(e, "video");
             handleVideoUpload(e);
           }}
           className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -99,7 +104,7 @@ const CourseMedia = ({ media, setMedia }) => {
         {media.videoPreview && (
           <div className="w-full h-80 rounded-lg">
             <video
-              src={media.videoPreview}
+              src={media.video}
               className="w-full h-full rounded-lg mt-5"
               controls
             />

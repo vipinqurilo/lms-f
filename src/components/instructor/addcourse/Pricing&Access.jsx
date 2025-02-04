@@ -5,14 +5,19 @@ import { useForm } from "react-hook-form";
 import SettingsInputField from "../SettingsInputField";
 import SubmitButtonsComp from "./SubmitButtonsComp";
 import { useDispatch, useSelector } from "react-redux";
-import { createCourse, updateCourseAddDataState, updateStep } from "@/store/slices/instructor/courseSlice";
+import {
+  createCourse,
+  updateCourseAddDataState,
+  updateStep,
+} from "@/store/slices/instructor/courseSlice";
 import { useRouter } from "next/navigation";
 
-const PricingAccess = ({ media }) => {
-  const router = useRouter()
+const PricingAccess = () => {
+  const router = useRouter();
   const { courseAddData } = useSelector((state) => state.instructor.course);
-  const loading = useSelector((state) => state.instructor.course.isLoading.createCourse);
-  const { image, video } = useSelector((state) => state.upload);
+  const loading = useSelector(
+    (state) => state.instructor.course.isLoading.createCourse
+  );
 
   const dispatch = useDispatch();
   const {
@@ -23,8 +28,6 @@ const PricingAccess = ({ media }) => {
 
   const submitHandler = (data) => {
     const formData = new FormData();
-
-    // Basic Course Details
     formData.append("courseTitle", courseAddData?.basic?.title || "");
     formData.append(
       "courseDescription",
@@ -36,8 +39,6 @@ const PricingAccess = ({ media }) => {
     // formData.append("courseSubCategory", courseAddData?.basic?.subCategory || "");
     formData.append("courseLevel", courseAddData?.basic?.level || "");
     formData.append("coursePrice", data.price || "");
-
-    // Features, Learning Outcomes, and Requirements (Convert Arrays to Strings)
     formData.append(
       "courseFeatures",
       JSON.stringify(courseAddData?.basic?.features || [])
@@ -50,21 +51,14 @@ const PricingAccess = ({ media }) => {
       "courseRequirements",
       JSON.stringify(courseAddData?.basic?.requirements || [])
     );
-
-    // Curriculum (Convert Curriculum Array to JSON String)
     formData.append(
       "courseContent",
       JSON.stringify(courseAddData?.curriculum || [])
     );
-
-    // Instructor Details
     formData.append("courseInstructor", "Arjun Nagar");
     // formData.append("courseInstructor", courseAddData?.instructor || "");
-
-    // Course Media (Check If Files Exist Before Appending)
-      formData.append("courseImage", image);
-      formData.append("courseVideo", video);
-    
+    formData.append("courseImage", courseAddData?.media?.image);
+    formData.append("courseVideo", courseAddData?.media?.video);
 
     // Debugging: Check FormData Entries
     for (let [key, value] of formData.entries()) {
@@ -74,11 +68,11 @@ const PricingAccess = ({ media }) => {
     console.log("formData", formData);
 
     dispatch(createCourse(formData))
-    .unwrap()
-    .then(() => {
-      dispatch(updateCourseAddDataState({}))
-      router.push("/instructor-dashboard")
-    })
+      .unwrap()
+      .then(() => {
+        dispatch(updateCourseAddDataState({}));
+        router.push("/instructor-dashboard");
+      });
   };
 
   return (
