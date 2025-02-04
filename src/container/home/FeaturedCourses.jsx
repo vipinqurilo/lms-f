@@ -87,7 +87,7 @@ export default function FeaturedCourses({ cardData }) {
           data-aos="fade-up"
           className="grid md:grid-cols-3 grid-cols-1 gap-2 lg:gap-10 md:mt-8 "
         >
-          {cardData?.data?.map((card, index) => (
+          {cardData?.map((card, index) => (
             <FeaturedCard data={card} key={index} />
           ))}
         </div>

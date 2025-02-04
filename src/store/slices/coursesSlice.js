@@ -7,6 +7,11 @@ export const fetchCategories = CreateApiAsyncThunk(
   () => api.get(`api/category/filter`, data)
 );
 
+export const fetchCoursesAsync = CreateApiAsyncThunk(
+  "GET/courses/fetchCoursesAsync",
+  () => api.get(`/api/course/admin/get`)
+);
+
 export const wishlistAsync = CreateApiAsyncThunk(
   "courses/wishlistAsync",
   (data) => api.post(`/api/wishlist`, data)
@@ -16,6 +21,7 @@ const coursesSlice = createSlice({
   name: "courses",
   initialState: {
     categories: [],
+    courses: [],
     wishlist: [],
     isLoading: {},
     error: {},
@@ -40,11 +46,22 @@ const coursesSlice = createSlice({
       })
       .addCase(wishlistAsync.fulfilled, (state, action) => {
         state.isLoading["wishlistAsync"] = false;
-        state.authUser = action.payload?.data;
+        state.wishlist = action.payload?.data;
       })
       .addCase(wishlistAsync.rejected, (state, action) => {
         state.isLoading["wishlistAsync"] = false;
         state.error["wishlistAsync"] = action.payload;
+      })
+      .addCase(fetchCoursesAsync.pending, (state, action) => {
+        state.isLoading["fetchCoursesAsync"] = true;
+      })
+      .addCase(fetchCoursesAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchCoursesAsync"] = false;
+        state.courses = action.payload?.data;
+      })
+      .addCase(fetchCoursesAsync.rejected, (state, action) => {
+        state.isLoading["fetchCoursesAsync"] = false;
+        state.error["fetchCoursesAsync"] = action.payload;
       });
   },
 });
