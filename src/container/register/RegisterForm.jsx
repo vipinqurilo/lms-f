@@ -7,8 +7,13 @@ import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const RegisterForm = () => {
+  const loading = useSelector(
+    (state) => state.user.isLoading.userRegisterAsync
+  );
+
   const dispatch = useDispatch();
   const {
     register,
@@ -81,7 +86,7 @@ const RegisterForm = () => {
             )}
           </div>
 
-          <SubmitButton text={"Register"} />
+          <SubmitButton text={loading ? <Loader /> : "Register"} />
         </form>
       </div>
       <LoginOptions type={"register"} />
