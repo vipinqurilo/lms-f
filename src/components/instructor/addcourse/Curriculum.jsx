@@ -44,11 +44,10 @@ const Curriculum = () => {
     ) {
       setModules(courseAddData.curriculum);
     } else {
-      setModules([{ moduleTitle: "", lessons: [] }]); // Set a default valid structure
+      setModules([{ moduleTitle: "", lessons: [] }]);
     }
   }, [courseAddData]);
 
-  // ✅ Add Lecture
   const handleAddLecture = (moduleIndex) => {
     if (
       lecture?.lessonTitle !== ""
@@ -85,13 +84,15 @@ const Curriculum = () => {
 
   // ✅ Remove Lecture
   const handleRemoveLecture = (moduleIndex, lectureIndex) => {
-    // setModules((prevModules) => {
-    //   const updatedModules = [...prevModules];
-    //   updatedModules[moduleIndex]?.lessons = updatedModules[
-    //     moduleIndex
-    //   ].lessons.filter((_, i) => i !== lectureIndex);
-    //   return updatedModules;
-    // });
+    if (modules?.length > 0 && modules[moduleIndex]?.lessons?.length > 0) {
+      setModules((prevModules) => {
+        const updatedModules = [...prevModules];
+        updatedModules[moduleIndex]?.lessons = updatedModules[
+          moduleIndex
+        ].lessons.filter((_, i) => i !== lectureIndex);
+        return updatedModules;
+      });
+    }
   };
 
   // ✅ Edit Lecture
