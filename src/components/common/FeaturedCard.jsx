@@ -1,5 +1,9 @@
 import React from "react";
-import { fetchCoursesAsync, wishlistAsync } from "@/store/slices/coursesSlice";
+import {
+  addOrderAsync,
+  fetchCoursesAsync,
+  wishlistAsync,
+} from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
@@ -8,7 +12,11 @@ export default function FeaturedCard({ data }) {
 
   const handleAddWishlist = (id) => {
     console.log(id, "iddd");
-    dispatch(wishlistAsync({ "course": id }));
+    dispatch(wishlistAsync({ course: id }));
+  };
+
+  const handleAddOrder = (id) => {
+    dispatch(addOrderAsync(id));
   };
 
   return (
@@ -69,7 +77,10 @@ export default function FeaturedCard({ data }) {
                 <span>4.</span> (15)
               </span>
             </div>
-            <button className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] ">
+            <button
+              onClick={() => handleAddOrder(data?._id)}
+              className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] "
+            >
               BUY NOW
             </button>
           </div>
