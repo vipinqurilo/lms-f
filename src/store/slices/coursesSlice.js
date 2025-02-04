@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { api } from "../api/api";
+import { api, api2 } from "../api/api";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
 
 export const fetchCategories = CreateApiAsyncThunk(
@@ -14,7 +14,7 @@ export const fetchCoursesAsync = CreateApiAsyncThunk(
 
 export const wishlistAsync = CreateApiAsyncThunk(
   "courses/wishlistAsync",
-  (data) => api.post(`/api/wishlist`, data)
+  (data) => api2.post(`/api/whishlist`, data)
 );
 
 const coursesSlice = createSlice({

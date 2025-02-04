@@ -1,5 +1,5 @@
-import { fetchCoursesAsync, wishlistAsync } from "@/store/slices/coursesSlice";
 import React from "react";
+import { fetchCoursesAsync, wishlistAsync } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
@@ -8,7 +8,7 @@ export default function FeaturedCard({ data }) {
 
   const handleAddWishlist = (id) => {
     console.log(id, "iddd");
-    // dispatch(wishlistAsync());
+    dispatch(wishlistAsync({ "course": id }));
   };
 
   return (
