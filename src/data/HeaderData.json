@@ -69,19 +69,7 @@
     },
     {
       "title": "Teach on Steam",
-      "href": "/teach",
-      "items": [
-        {
-          "title": "Become an Instructor",
-          "href": "/teach/apply",
-          "description": "Join our community of educators"
-        },
-        {
-          "title": "Teaching Resources",
-          "href": "/teach/resources",
-          "description": "Access tools and guides for teachers"
-        }
-      ]
+      "href": "/teach-on-steam"
     }
   ]
 }

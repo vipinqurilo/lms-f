@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import data from "@/data/subjectsAndLanguageData.json";
 import { useForm } from "react-hook-form";
 import SettingsInputField from "../instructor/SettingsInputField";
 import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateProcessData,
   updateProcessStep,
@@ -12,6 +12,7 @@ import {
 
 const SubjectAndLanguage = () => {
   const [subjects, setSubjects] = useState([]);
+  const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
   const {
     register,
@@ -20,12 +21,22 @@ const SubjectAndLanguage = () => {
     control,
     watch,
     setValue,
+    reset,
   } = useForm();
   const selectedSubjects = watch("subjects");
 
+  useEffect(() => {
+    if (processData && Object.keys(processData).length > 0) {
+      reset({
+        subjects: processData?.subjectAndlanguage?.subjects || [],
+        language: processData?.subjectAndlanguage?.language || [],
+      });
+      setSubjects(processData?.subjectAndlanguage?.subjects || []);
+    }
+  }, [processData, reset]);
+
   const submitForm = (data) => {
-    console.log(data);
-    dispatch(updateProcessData({ field: "subject&language", data }));
+    dispatch(updateProcessData({ field: "subjectAndlanguage", data }));
     dispatch(updateProcessStep(4));
   };
 

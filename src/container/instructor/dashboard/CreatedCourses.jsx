@@ -17,11 +17,11 @@ const CreatedCourses = ({
       : "bg-red-200 text-red-800";
   };
   return (
-    <div className="py-8">
+    <div className="pt-8">
       <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
       <div className="bg-white rounded-lg shadow-md overflow-hiddenp-4 ">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full rounded-lg">
             <TableHeader headingsData={headingsData} />
             <tbody className="divide-y divide-gray-200">
               {data?.map((course, index) => (
@@ -44,18 +44,18 @@ const CreatedCourses = ({
                     </div>
                   </td>
                   <td key={index} className="px-6 py-4 ">
-                    <button className="text-light/60 hover:text-primary">
+                    <div className="text-light/60">
                       {course?.value1 ? course?.value1 : "-"}
-                    </button>
+                    </div>
                   </td>
                   <td key={index} className="px-6 py-4">
-                    <button
-                      className={`text-light/60 hover:text-primary px-4 py-2 font-semibold rounded-full text-sm ${
-                        headingsData[2] !== "Amount" && getStatusCss(course?.value2)
+                    <div
+                      className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm ${
+                        headingsData[2] === "Status" && getStatusCss(course?.value2)
                       }`}
                     >
                       {course?.value2}
-                    </button>
+                    </div>
                   </td>
                 </tr>
               ))}

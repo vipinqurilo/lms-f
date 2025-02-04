@@ -1,57 +1,76 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateProcessData,
   updateProcessStep,
 } from "@/store/slices/tutorsSlice";
 import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
+import { uploadImage } from "@/store/slices/uploadSlice";
 import toast from "react-hot-toast";
 
 export default function IndentityForm() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
+    reset,
   } = useForm();
   const dispatch = useDispatch();
+  const { processData } = useSelector((state) => state.tutors);
+  const loading = useSelector((state) => state.upload.isLoading.uploadImage);
 
   const [profilePreview, setProfilePreview] = useState(null);
 
-  // Watch profile picture for preview
-  const profilePicture = watch("profilePicture");
-
-  // File validation
-  const onFileChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      const allowedTypes = [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "image/gif",
-        "image/bmp",
-      ];
-
-      if (!allowedTypes.includes(file.type)) {
-        toast.error("Invalid file type. Allowed: png, jpg, jpeg, gif, bmp.");
-        return;
-      } else if (file.size > 2 * 1024 * 1024) {
-        toast.error("File size exceeds 2MB.");
-        return;
+  useEffect(() => {
+    if (processData) {
+      if (Object.keys(processData).length > 0) {
+        reset({
+          youtubeLink: processData?.indentity?.youtubeLink,
+          bio: processData?.indentity?.bio,
+        });
+        setProfilePreview(processData?.indentity?.profile);
       }
-      setProfilePreview(URL.createObjectURL(file));
     }
-  };
+  }, [processData]);
 
   const handleNext = (data) => {
-    console.log("Form Data:", data);
+    const formData = {
+      ...data,
+      profile: profilePreview,
+    };
     dispatch(updateProcessStep(3));
-    dispatch(updateProcessData({ field: "indentity", data }));
+    dispatch(updateProcessData({ field: "indentity", data: formData }));
+  };
+
+  const handleImageValidation = (e) => {
+    const imageFile = e.target.files[0];
+    const formData = new FormData();
+    formData.append("courseImage", imageFile);
+
+    if (imageFile) {
+      if (imageFile.size > 2 * 1024 * 1024) {
+        toast.error("File size must be less than 2MB");
+        return;
+      }
+      dispatch(uploadImage(formData))
+        .unwrap()
+        .then((res) => {
+          if (res?.data) {
+            if (profilePreview) {
+              URL.revokeObjectURL(profilePreview);
+            }
+            setProfilePreview(res.data);
+          } else {
+            toast.error("Invalid image response", res);
+          }
+        })
+        .catch((error) => {
+          toast.error("Image upload failed:", error);
+        });
+    }
   };
 
   return (
@@ -71,7 +90,9 @@ export default function IndentityForm() {
           </label>
           <div className="flex items-start space-x-4 mt-2">
             <div className="w-24 h-auto lg:h-24 rounded-lg bg-gray-200 flex items-center justify-center">
-              {profilePreview ? (
+              {loading ? (
+                <span className="text-gray-500 text-sm">Uploading...</span>
+              ) : profilePreview ? (
                 <img
                   src={profilePreview}
                   alt="Profile preview"
@@ -81,22 +102,18 @@ export default function IndentityForm() {
                 <span className="text-gray-500 text-sm">No Image</span>
               )}
             </div>
+
             <div className="space-y-2">
               <input
                 type="file"
-                accept=".png,.jpg,.jpeg,.gif,.bmp"
-                {...register("profilePicture")}
-                onChange={onFileChange}
-                className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2"
+                accept="image/png, image/jpeg, image/jpg, image/gif, image/bmp"
+                onChange={(e) => handleImageValidation(e)}
+                disabled={loading}
+                className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:cursor-not-allowed disabled:opacity-60"
               />
               <p className="text-xs text-gray-500">
                 Max size 2MB. Allowed formats: png, jpg, jpeg, gif, bmp.
               </p>
-              {errors.profilePicture && (
-                <p className="text-sm text-red-500">
-                  {errors.profilePicture.message}
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -121,7 +138,7 @@ export default function IndentityForm() {
           </label>
           <textarea
             placeholder="Write a short biography about yourself..."
-            {...register("biography")}
+            {...register("bio")}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[100px]"
           />
         </div>

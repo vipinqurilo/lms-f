@@ -10,6 +10,7 @@ import { BiBook, BiCheckCircle, BiTime, BiEdit } from "react-icons/bi";
 import DeleteModal from "@/components/instructor/DeleteModal";
 import CommonButton from "@/components/common/CommonButton";
 import { useRouter } from "next/navigation";
+import CreatedCourses from "./CreatedCourses";
 
 const tabs = [
   {
@@ -32,7 +33,7 @@ const tabs = [
 
 const InstructorMyCourses = () => {
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
   const { courses } = useSelector((state) => state.instructor.course);
   const [isDelete, setisDelete] = useState(null);
   const [selecteStatus, setselecteStatus] = useState("All");
@@ -55,6 +56,23 @@ const InstructorMyCourses = () => {
     console.log(isDelete);
   };
 
+  const filteredData = filteredCourses?.map((course) => ({
+    image: course?.thumbnail,
+    title: course?.title,
+    des: course?.description,
+    value1: course?.entrolled || 425,
+    value2: (
+      <div className="flex items-center gap-5">
+        <button className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500">
+          <FiEdit3 size={20} className="" />
+        </button>
+        <button className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500">
+          <MdDeleteOutline size={20} />
+        </button>
+      </div>
+    ),
+  }));
+
   return (
     <section className="dashboard-sub-container flex flex-col gap-6">
       <div className="flex items-center gap-4">
@@ -70,7 +88,13 @@ const InstructorMyCourses = () => {
           />
         ))}
       </div>
-      <div className="w-full grid grid-cols-3 gap-5">
+
+      <CreatedCourses
+        headingsData={["Courses", "Enrolled", "Action"]}
+        data={filteredData}
+      />
+
+      {/* <div className="w-full grid grid-cols-3 gap-5">
         {filteredCourses?.map((course, index) => (
           <div className="relative flex items-start gap-2">
             <CourseCard course={course} key={index} />
@@ -84,7 +108,7 @@ const InstructorMyCourses = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <Pagination
         currentPage={currentPage}
         totalPages={5}

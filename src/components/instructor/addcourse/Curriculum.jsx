@@ -64,7 +64,7 @@ const Curriculum = () => {
               lessons: [
                 ...module.lessons, // Create a new array instead of mutating
                 {
-                  title: lecture.lessonTitle,
+                  lessonTitle: lecture.lessonTitle,
                   video: lecture.video,
                   duration: lecture.duration,
                 },
@@ -85,13 +85,13 @@ const Curriculum = () => {
 
   // ✅ Remove Lecture
   const handleRemoveLecture = (moduleIndex, lectureIndex) => {
-    setModules((prevModules) => {
-      const updatedModules = [...prevModules];
-      updatedModules[moduleIndex].lessons = updatedModules[
-        moduleIndex
-      ].lessons.filter((_, i) => i !== lectureIndex);
-      return updatedModules;
-    });
+    // setModules((prevModules) => {
+    //   const updatedModules = [...prevModules];
+    //   updatedModules[moduleIndex]?.lessons = updatedModules[
+    //     moduleIndex
+    //   ].lessons.filter((_, i) => i !== lectureIndex);
+    //   return updatedModules;
+    // });
   };
 
   // ✅ Edit Lecture

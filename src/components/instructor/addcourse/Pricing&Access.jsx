@@ -5,11 +5,14 @@ import { useForm } from "react-hook-form";
 import SettingsInputField from "../SettingsInputField";
 import SubmitButtonsComp from "./SubmitButtonsComp";
 import { useDispatch, useSelector } from "react-redux";
-import { createCourse, updateStep } from "@/store/slices/instructor/courseSlice";
+import { createCourse, updateCourseAddDataState, updateStep } from "@/store/slices/instructor/courseSlice";
+import { useRouter } from "next/navigation";
 
 const PricingAccess = ({ media }) => {
+  const router = useRouter()
   const { courseAddData } = useSelector((state) => state.instructor.course);
   const loading = useSelector((state) => state.instructor.course.isLoading.createCourse);
+  const { image, video } = useSelector((state) => state.upload);
 
   const dispatch = useDispatch();
   const {
@@ -59,8 +62,8 @@ const PricingAccess = ({ media }) => {
     // formData.append("courseInstructor", courseAddData?.instructor || "");
 
     // Course Media (Check If Files Exist Before Appending)
-      formData.append("courseImage", courseAddData?.media?.image);
-      formData.append("courseVideo", courseAddData?.media?.video);
+      formData.append("courseImage", image);
+      formData.append("courseVideo", video);
     
 
     // Debugging: Check FormData Entries
@@ -71,7 +74,11 @@ const PricingAccess = ({ media }) => {
     console.log("formData", formData);
 
     dispatch(createCourse(formData))
-
+    .unwrap()
+    .then(() => {
+      dispatch(updateCourseAddDataState({}))
+      router.push("/instructor-dashboard")
+    })
   };
 
   return (

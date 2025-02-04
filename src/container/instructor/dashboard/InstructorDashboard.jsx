@@ -132,32 +132,37 @@ const InstructorDashboard = () => {
     <div className="w-full h-full">
       {loading ? (
         <div className="w-full h-full flex items-center justify-center">
-          <Loader color={"text-secondary text-2xl"} text={"Loader..."} />
+          <Loader color={"text-secondary !text-2xl"} text={"Loader..."} />
         </div>
       ) : (
-        <div className="w-full h-full flex items-start gap-5 justify-between relative">
-          <div className="w-[70%]">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-              {stats.map((stat, index) => (
-                <StatsCard key={index} title={stat.title} value={stat.value} />
-              ))}
-            </div>
-
-            <CreatedCourses headingsData={headingsData} data={filteredData} />
-
-            <div className="py-8">
-              <h2 className="text-2xl font-bold text-background mb-6">
-                Recently Enrolled Courses
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recentCourses.map((course) => (
-                  <CourseCard key={course.id} course={course} />
+        <div className="w-full ">
+          <div className="w-full flex items-start gap-5 justify-between">
+            <div className="w-[70%] relative">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+                {stats.map((stat, index) => (
+                  <StatsCard
+                    key={index}
+                    title={stat.title}
+                    value={stat.value}
+                  />
                 ))}
               </div>
+
+              <CreatedCourses headingsData={headingsData} data={filteredData} />
+            </div>
+            <div className="w-[30%] sticky top-0 z-[0]">
+              <ScheduleView />
             </div>
           </div>
-          <div className="w-[30%] sticky top-32 h-fit bg-gray-400">
-            <ScheduleView />
+          <div className="py-8">
+            <h2 className="text-2xl font-bold text-background mb-6">
+              Recently Enrolled Courses
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recentCourses.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))}
+            </div>
           </div>
         </div>
       )}

@@ -2,15 +2,22 @@
 
 import React, { useState } from "react";
 import SubmitButtonsComp from "./SubmitButtonsComp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateCourseAddDataState,
   updateStep,
 } from "@/store/slices/instructor/courseSlice";
 import toast from "react-hot-toast";
+import { uploadImage, uploadVideo } from "@/store/slices/uploadSlice";
 
 const CourseMedia = ({ media, setMedia }) => {
   const dispatch = useDispatch();
+  const imageLoader = useSelector(
+    (state) => state.upload.isLoading.uploadImage
+  );
+  const videoLoading = useSelector(
+    (state) => state.upload.isLoading.uploadVideo
+  );
 
   const handleFileChange = (event, type) => {
     const selectedFile = event.target.files[0];
@@ -25,6 +32,20 @@ const CourseMedia = ({ media, setMedia }) => {
         return updatedState;
       });
     }
+  };
+
+  const handleImageUpload = (event) => {
+    const selectedFile = event.target.files[0];
+    const formData = new FormData();
+    formData.append("courseImage", selectedFile);
+    dispatch(uploadImage(formData));
+  };
+
+  const handleVideoUpload = (event) => {
+    const selectedFile = event.target.files[0];
+    const formData = new FormData();
+    formData.append("video", selectedFile);
+    dispatch(uploadVideo(formData));
   };
 
   const submitHandler = () => {
@@ -46,8 +67,12 @@ const CourseMedia = ({ media, setMedia }) => {
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => handleFileChange(e, "image")}
-          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2"
+          onChange={(e) => {
+            handleFileChange(e, "image");
+            handleImageUpload(e);
+          }}
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={imageLoader}
         />
         {media.imagePreview && (
           <div
@@ -64,8 +89,12 @@ const CourseMedia = ({ media, setMedia }) => {
         <input
           type="file"
           accept="video/*"
-          onChange={(e) => handleFileChange(e, "video")}
-          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2"
+          onChange={(e) => {
+            handleFileChange(e, "video");
+            handleVideoUpload(e);
+          }}
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          disabled={videoLoading}
         />
         {media.videoPreview && (
           <div className="w-full h-80 rounded-lg">

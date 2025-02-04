@@ -68,14 +68,7 @@ export default function ScheduleView() {
               time: "1:00 PM - 2:00 PM",
               color: "bg-violet-500",
               attendees: 2,
-            },
-            {
-              subject: "Algebra",
-              topic: "Equations and inequalities",
-              time: "3:30 PM - 4:30 PM",
-              color: "bg-green-500",
-              attendees: 3,
-            },
+            }
           ].map((lesson, index) => (
             <div
               key={index}
