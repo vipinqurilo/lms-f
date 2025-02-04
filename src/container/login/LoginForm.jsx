@@ -4,8 +4,12 @@ import LogoHeader from "@/components/login/LogoHeader";
 import SubmitButton from "@/components/login/SubmitButton";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoginAsync } from "@/store/slices/userSlice";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
   const {
     register,
     formState: { errors },
@@ -13,7 +17,7 @@ const LoginForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    console.log(data);
+    dispatch(userLoginAsync(data));
   };
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">

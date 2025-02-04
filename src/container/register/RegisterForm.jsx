@@ -2,11 +2,14 @@ import InputField from "@/components/login/InputField";
 import LoginOptions from "@/components/login/LoginOptions";
 import LogoHeader from "@/components/login/LogoHeader";
 import SubmitButton from "@/components/login/SubmitButton";
+import { userRegisterAsync } from "@/store/slices/userSlice";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 const RegisterForm = () => {
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
@@ -14,7 +17,8 @@ const RegisterForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    console.log(data);
+    // console.log(data);
+    dispatch(userRegisterAsync(data));
   };
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">
