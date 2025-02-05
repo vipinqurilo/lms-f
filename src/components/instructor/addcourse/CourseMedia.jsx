@@ -13,9 +13,13 @@ import { uploadImage, uploadVideo } from "@/store/slices/uploadSlice";
 const CourseMedia = () => {
   const dispatch = useDispatch();
   const [media, setMedia] = useState({
-    video: null,
-    image: null,
+    video: "https://res.cloudinary.com/dxyt4v9lc/image/upload/v1732340717/qllrpxbyrvupuvxxvbn4.jpg",
+    image: "https://res.cloudinary.com/dxyt4v9lc/image/upload/v1732340717/qllrpxbyrvupuvxxvbn4.jpg",
   });
+  // const [media, setMedia] = useState({
+  //   video: null,
+  //   image: null,
+  // });
   const imageLoader = useSelector(
     (state) => state.upload.isLoading.uploadImage
   );
@@ -120,6 +124,7 @@ const CourseMedia = () => {
             e.preventDefault();
             dispatch(updateStep(1));
           }}
+          loading={imageLoader || videoLoading}
           saveText={"Save and Continue"}
         />
       </div>

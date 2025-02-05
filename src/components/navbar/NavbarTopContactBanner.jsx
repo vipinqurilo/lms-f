@@ -1,9 +1,10 @@
 import React from "react";
 import { FaEnvelope, FaTwitter, FaInstagram, FaPhone } from "react-icons/fa";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
-import { contactInfo, socialLinks } from "@/data/HeaderData.json";
+import data from "@/data/HeaderData.json";
 
 const NavbarTopContactBanner = () => {
+  const { contactInfo, socialLinks } = data;
   return (
     <div className="bg-background text-white !py-2 custom-container !mt-0 md:block hidden">
       <div className="container mx-auto flex justify-between items-center">

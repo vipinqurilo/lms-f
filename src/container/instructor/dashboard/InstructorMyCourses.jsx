@@ -11,6 +11,12 @@ import DeleteModal from "@/components/instructor/DeleteModal";
 import CommonButton from "@/components/common/CommonButton";
 import { useRouter } from "next/navigation";
 import CreatedCourses from "./CreatedCourses";
+import {
+  deleteCourse,
+  editCourseData,
+  getAllIntructorCourses,
+} from "@/store/slices/instructor/courseSlice";
+import Loader from "@/components/common/Loader";
 
 const tabs = [
   {
@@ -35,10 +41,16 @@ const InstructorMyCourses = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { courses } = useSelector((state) => state.instructor.course);
+  const getloading = useSelector(
+    (state) => state.instructor.course.isLoading.getAllIntructorCourses
+  );
   const [isDelete, setisDelete] = useState(null);
   const [selecteStatus, setselecteStatus] = useState("All");
   const [filteredCourses, setfilteredCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const deleteLoading = useSelector(
+    (state) => state.instructor.course.isLoading.deleteCourse
+  );
 
   useEffect(() => {
     if (selecteStatus !== "All") {
@@ -54,19 +66,50 @@ const InstructorMyCourses = () => {
 
   const handleDelete = () => {
     console.log(isDelete);
+    dispatch(deleteCourse(isDelete));
+  };
+
+  useEffect(() => {
+    dispatch(getAllIntructorCourses());
+  }, []);
+
+  // const handleFilterCourse
+
+  const handleEditCourse = (course) => {
+    const data = {
+      id: course?._id,
+      basic: {
+        title: course?.courseTitle,
+        category: course?.courseCategory,
+        requirements: course?.courseRequirements,
+        whatYouWillLearn: course?.courseLearning,
+        description: course?.courseDescription,
+      },
+      media: {
+        video: course?.courseVideo,
+        image: course?.courseImage,
+      },
+      curriculum: course?.courseContent,
+      price: course?.coursePrice
+    };
+    dispatch(editCourseData(data));
+    router.push("/instructor-dashboard/my-courses/add-course");
   };
 
   const filteredData = filteredCourses?.map((course) => ({
-    image: course?.thumbnail,
-    title: course?.title,
-    des: course?.description,
+    image: course?.courseImage,
+    title: course?.courseTitle,
+    des: course?.courseDescription,
     value1: course?.entrolled || 425,
     value2: (
       <div className="flex items-center gap-5">
-        <button className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500">
+        <button onClick={() => handleEditCourse(course)} className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500">
           <FiEdit3 size={20} className="" />
         </button>
-        <button className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500">
+        <button
+          onClick={() => setisDelete(course?._id)}
+          className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500"
+        >
           <MdDeleteOutline size={20} />
         </button>
       </div>
@@ -89,26 +132,15 @@ const InstructorMyCourses = () => {
         ))}
       </div>
 
-      <CreatedCourses
-        headingsData={["Courses", "Enrolled", "Action"]}
-        data={filteredData}
-      />
+      {getloading ? (
+        <Loader color={"text-primary"} isBig={true} />
+      ) : (
+        <CreatedCourses
+          headingsData={["Courses", "Enrolled", "Action"]}
+          data={filteredData}
+        />
+      )}
 
-      {/* <div className="w-full grid grid-cols-3 gap-5">
-        {filteredCourses?.map((course, index) => (
-          <div className="relative flex items-start gap-2">
-            <CourseCard course={course} key={index} />
-            <div className="flex items-center gap-2 flex-col ">
-              <CommonButton label={<FiEdit size={20} />} variant="secondary" />
-              <CommonButton
-                label={<MdDeleteOutline size={20} />}
-                variant="secondary"
-                onClick={() => setisDelete(course?.title)}
-              />
-            </div>
-          </div>
-        ))}
-      </div> */}
       <Pagination
         currentPage={currentPage}
         totalPages={5}
@@ -118,6 +150,8 @@ const InstructorMyCourses = () => {
       {isDelete !== null && (
         <DeleteModal
           handleDelete={handleDelete}
+          text={"Course"}
+          loading={deleteLoading}
           onClose={() => setisDelete(null)}
         />
       )}

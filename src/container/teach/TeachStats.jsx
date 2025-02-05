@@ -42,7 +42,7 @@ const TeachStats = () => {
   ];
 
   return (
-    <div className="bg-primary/10 custom-container">
+    <div className="bg-primary/10 custom-container lg:py-10">
       <div className=" grid grid-cols-2 md:grid-cols-5 gap-5">
         {stats.map((stat, index) => (
           <div key={index} className="text-center lg:flex lg:items-start lg:justify-start lg:gap-4">

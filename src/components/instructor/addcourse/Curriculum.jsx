@@ -50,10 +50,10 @@ const Curriculum = () => {
 
   const handleAddLecture = (moduleIndex) => {
     if (
-      lecture?.lessonTitle !== ""
-      // (lecture?.lessonTitle !== "",
-      // lecture?.video !== "",
-      // lecture?.duration !== "")
+      // lecture?.lessonTitle !== ""
+      (lecture?.lessonTitle !== "",
+      lecture?.video !== "",
+      lecture?.duration !== "")
     ) {
       setModules((prevModules) => {
         const updatedModules = prevModules.map((module, index) => {
@@ -87,9 +87,14 @@ const Curriculum = () => {
     if (modules?.length > 0 && modules[moduleIndex]?.lessons?.length > 0) {
       setModules((prevModules) => {
         const updatedModules = [...prevModules];
-        updatedModules[moduleIndex]?.lessons = updatedModules[
-          moduleIndex
-        ].lessons.filter((_, i) => i !== lectureIndex);
+        if (
+          updatedModules[moduleIndex] &&
+          updatedModules[moduleIndex].lessons
+        ) {
+          updatedModules[moduleIndex].lessons = updatedModules[
+            moduleIndex
+          ].lessons.filter((_, i) => i !== lectureIndex);
+        }
         return updatedModules;
       });
     }
@@ -149,29 +154,6 @@ const Curriculum = () => {
         [name]: value,
       },
     }));
-  };
-
-  const handleUploadedVideoDataSet = (videoUrl, videoDuration, moduleIndex) => {
-    setModules((prevModules) => {
-      const updatedModules = prevModules.map((module, index) => {
-        if (index === moduleIndex) {
-          return {
-            ...module,
-            lessons: [
-              ...module.lessons,
-              {
-                lessonTitle: lecture.lessonTitle,
-                video: lecture.video,
-                duration: lecture.duration,
-              },
-            ],
-          };
-        }
-        return module;
-      });
-
-      return updatedModules;
-    });
   };
 
   const handleNext = () => {
@@ -254,7 +236,9 @@ const Curriculum = () => {
               className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-primary/10 "
             >
               <RiUploadCloud2Line size={20} />
-              Choose File
+              {lecture?.video !== ""
+                ? "Video uploaded successfully"
+                : "Choose File"}
             </button>
             <CommonButton
               label={"Add Lecture"}
@@ -283,9 +267,15 @@ const Curriculum = () => {
                       />
                     </div>
                   ) : (
-                    <h3 className="font-medium text-sm">
-                      Lecture {index + 1}.{i + 1} {lecture?.title}
-                    </h3>
+                    <a
+                      href={lecture?.video}
+                      className="hover:text-primary"
+                      target="_blank"
+                    >
+                      <h3 className="font-medium text-sm">
+                        Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
+                      </h3>
+                    </a>
                   )}
                 </div>
                 <div className="flex items-center gap-2 text-xl">
@@ -324,7 +314,7 @@ const Curriculum = () => {
         <UploadLecture
           handleCancel={() => setisChooseFile(null)}
           moduleInfo={isChooseFile}
-          handleUploadedVideoDataSet={handleUploadedVideoDataSet}
+          setLecture={setLecture}
         />
       )}
     </div>

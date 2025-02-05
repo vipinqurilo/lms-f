@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import SettingsInputField from "../SettingsInputField";
 import SubmitButtonsComp from "./SubmitButtonsComp";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCourse,
+  editCourse,
   updateCourseAddDataState,
   updateStep,
 } from "@/store/slices/instructor/courseSlice";
@@ -24,7 +25,16 @@ const PricingAccess = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
+
+  useEffect(() => {
+    if (courseAddData?.price) {
+      reset({
+        price: courseAddData?.price || "",
+      });
+    }
+  }, [courseAddData]);
 
   const submitHandler = (data) => {
     const formData = new FormData();
@@ -65,14 +75,23 @@ const PricingAccess = () => {
       console.log(`${key}:`, value);
     }
 
-    console.log("formData", formData);
-
-    dispatch(createCourse(formData))
-      .unwrap()
-      .then(() => {
-        dispatch(updateCourseAddDataState({}));
-        router.push("/instructor-dashboard");
-      });
+    if (courseAddData?.id) {
+      dispatch(editCourse({ id: courseAddData?.id, data: formData }))
+        .unwrap()
+        .then(() => {
+          dispatch(updateStep(1));
+          dispatch(updateCourseAddDataState({}));
+          router.push("/instructor-dashboard");
+        });
+    } else {
+      dispatch(createCourse(formData))
+        .unwrap()
+        .then(() => {
+          dispatch(updateStep(1));
+          dispatch(updateCourseAddDataState({}));
+          router.push("/instructor-dashboard");
+        });
+    }
   };
 
   return (

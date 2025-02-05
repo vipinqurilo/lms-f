@@ -43,12 +43,12 @@ const CreatedCourses = ({
                       </div>
                     </div>
                   </td>
-                  <td key={index} className="px-6 py-4 ">
+                  <td className="px-6 py-4 ">
                     <div className="text-light/60">
                       {course?.value1 ? course?.value1 : "-"}
                     </div>
                   </td>
-                  <td key={index} className="px-6 py-4">
+                  <td className="px-6 py-4">
                     <div
                       className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm ${
                         headingsData[2] === "Status" && getStatusCss(course?.value2)
