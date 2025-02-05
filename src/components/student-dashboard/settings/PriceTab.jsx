@@ -1,15 +1,35 @@
-import React, { useState } from "react";
+"use client";
+
+import { updateTutionSlots } from "@/store/slices/instructor/settingsSlice";
+import { Loader } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const PriceTab = () => {
+  const { profile } = useSelector((state) => state.instructor.setting);
+  const dispatch = useDispatch();
+  const loading = useSelector(
+    (state) => state.instructor.setting.isLoading.updateTutionSlots
+  );
   const subjects = [
     { name: "Biology", hourlyRate: 40 },
     { name: "Earth Sciences", hourlyRate: 155 },
     { name: "Physics", hourlyRate: 155 },
-  ];  
+  ];
 
   const timeSlots = ["15 minutes", "30 minutes", "45 minutes", "60 minutes"];
 
   const [selectedSlots, setSelectedSlots] = useState([]);
+
+  useEffect(() => {
+    if (profile?.tutionSlots) {
+      const slots = profile.tutionSlots
+        .map((slot) => `${slot} minutes`)
+        .filter((slot) => timeSlots.includes(slot));
+
+      setSelectedSlots(slots);
+    }
+  }, [profile]);
 
   const handleSlotSelect = (slot) => {
     if (selectedSlots.includes(slot)) {
@@ -27,6 +47,14 @@ const PriceTab = () => {
       "60 minutes": 1,
     };
     return `$${(hourlyRate * slotMultiplier[slot]).toFixed(2)}`;
+  };
+
+  const updateTimeSlots = () => {
+    const data = {
+      tutionSlots: selectedSlots?.map((slot) => slot?.split(" ")[0]),
+    };
+    console.log(data);
+    dispatch(updateTutionSlots());
   };
 
   return (
@@ -66,8 +94,13 @@ const PriceTab = () => {
                     }`}
                   >
                     <div className="w-5 h-5 border border-black/10 rounded flex items-center justify-center">
-                    
-                      <div className={`w-3 h-3 bg-background rounded ${selectedSlots?.includes(slot) ? "scale-100" : "scale-0"} transition-custom`}></div>
+                      <div
+                        className={`w-3 h-3 bg-background rounded ${
+                          selectedSlots?.includes(slot)
+                            ? "scale-100"
+                            : "scale-0"
+                        } transition-custom`}
+                      ></div>
                     </div>
                     {slot}
                   </label>
@@ -102,9 +135,11 @@ const PriceTab = () => {
 
       <button
         type="submit"
-        className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+        onClick={() => updateTimeSlots()}
+        className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
+        disabled={loading}
       >
-        Update Price
+        {loading ? <Loader /> : "Update Price"}
       </button>
     </div>
   );

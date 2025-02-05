@@ -19,6 +19,9 @@ const PricingAccess = () => {
   const loading = useSelector(
     (state) => state.instructor.course.isLoading.createCourse
   );
+  const updateloading = useSelector(
+    (state) => state.instructor.course.isLoading.editCourse
+  );
 
   const dispatch = useDispatch();
   const {
@@ -108,9 +111,9 @@ const PricingAccess = () => {
         <SubmitButtonsComp
           cancelText={"Go Back"}
           onCancel={() => dispatch(updateStep(3))}
-          saveText={"Create Course"}
+          saveText={courseAddData?.id ? "Edit Course" : "Create Course"}
           handleClick={handleSubmit((data) => submitHandler(data))}
-          loading={loading}
+          loading={loading || updateloading}
         />
       </div>
     </div>

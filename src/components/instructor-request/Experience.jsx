@@ -17,11 +17,22 @@ import { usePathname } from "next/navigation";
 import CommonButton from "../common/CommonButton";
 import BackgroundModal from "../instructor/BackgroundModal";
 import ModalHeading from "../common/ModalHeading";
+import {
+  updateEducation,
+  updateExperience,
+} from "@/store/slices/instructor/settingsSlice";
 
 const Experience = () => {
   const { processData } = useSelector((state) => state.tutors);
   const loading = useSelector(
     (state) => state.tutors.isLoading.instructorRequest
+  );
+  const { profile } = useSelector((state) => state.instructor.setting);
+  const experienceloading = useSelector(
+    (state) => state.instructor.setting.isLoading.updateExperience
+  );
+  const educationloading = useSelector(
+    (state) => state.instructor.setting.isLoading.updateEducation
   );
   const path = usePathname();
   const dispatch = useDispatch();
@@ -48,6 +59,13 @@ const Experience = () => {
     }
   }, [processData]);
 
+  useEffect(() => {
+    if (profile && path === "/instructor-dashboard/settings") {
+      setExperience(profile?.experience);
+      setEducation(profile?.education);
+    }
+  }, [profile]);
+
   const addExperience = (data) => {
     setExperience((prev) => [...prev, data]);
     reset();
@@ -68,7 +86,7 @@ const Experience = () => {
         education: education,
         experience,
       };
-      
+
       dispatch(instructorRequest(formData))
         .unwrap()
         .then(() => {
@@ -78,6 +96,20 @@ const Experience = () => {
     } else {
       toast.error("Add Experience and education");
     }
+  };
+
+  const handleUpdateExperience = () => {
+    const data = {
+      experience,
+    };
+    dispatch(updateExperience(data));
+  };
+
+  const handleUpdateEducation = () => {
+    const data = {
+      education: education,
+    };
+    dispatch(updateEducation(data));
   };
 
   return (
@@ -268,20 +300,36 @@ const Experience = () => {
         />
       )}
 
-      <div className="w-full flex items-center justify-between">
-        <SubmitButtonsComp
-          cancelText={"Go Back"}
-          onCancel={() => dispatch(updateProcessStep(3))}
-          saveText={"Save and Continue"}
-          handleClick={() => handleNext()}
-          loading={loading}
-        />
-      </div>
+      {path === "/instructor-dashboard/settings" ? (
+        <div className="flex items-center gap-5">
+          <CommonButton
+            label={"Update Experience"}
+            onClick={() => handleUpdateExperience()}
+            loading={experienceloading}
+          />
+          <CommonButton
+            label={"Update Education"}
+            variant="secondary"
+            onClick={() => handleUpdateEducation()}
+            loading={educationloading}
+          />
+        </div>
+      ) : (
+        <div className="w-full flex items-center justify-between">
+          <SubmitButtonsComp
+            cancelText={"Go Back"}
+            onCancel={() => dispatch(updateProcessStep(3))}
+            saveText={"Save and Continue"}
+            handleClick={() => handleNext()}
+            loading={loading}
+          />
+        </div>
+      )}
 
-      {isAdd && isEdit && (
+      {(isAdd || isEdit) && (
         <BackgroundModal
           PropComponent={
-            <div className="bg-white w-[60%]  pb-10 rounded-lg">
+            <div className="bg-white w-[60%] pb-10 rounded-lg">
               <ModalHeading
                 title={
                   type === "education" ? "Add Education" : "Add Experience"

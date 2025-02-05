@@ -9,8 +9,23 @@ import {
   updateProcessData,
   updateProcessStep,
 } from "@/store/slices/tutorsSlice";
+import { usePathname } from "next/navigation";
+import CommonButton from "../common/CommonButton";
+import {
+  updateLanguages,
+  updateSubjects,
+} from "@/store/slices/instructor/settingsSlice";
 
 const SubjectAndLanguage = () => {
+  const path = usePathname();
+  const { profile } = useSelector((state) => state.instructor.setting);
+  const loading = useSelector(
+    (state) => state.instructor.setting.isLoading.updateLanguages
+  );
+  const subjectsloading = useSelector(
+    (state) => state.instructor.setting.isLoading.updateSubjects
+  );
+
   const [subjects, setSubjects] = useState([]);
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
@@ -24,6 +39,7 @@ const SubjectAndLanguage = () => {
     reset,
   } = useForm();
   const selectedSubjects = watch("subjects");
+  const selectedLanguages = watch("language");
 
   useEffect(() => {
     if (processData && Object.keys(processData).length > 0) {
@@ -34,6 +50,15 @@ const SubjectAndLanguage = () => {
       setSubjects(processData?.subjectAndlanguage?.subjects || []);
     }
   }, [processData, reset]);
+
+  useEffect(() => {
+    if (profile && path === "/instructor-dashboard/settings") {
+      reset({
+        language: profile?.languagesSpoken,
+        subjects: profile?.subjectsTaught,
+      });
+    }
+  }, [profile]);
 
   const submitForm = (data) => {
     dispatch(updateProcessData({ field: "subjectAndlanguage", data }));
@@ -63,6 +88,20 @@ const SubjectAndLanguage = () => {
 
       return updatedSubjects;
     });
+  };
+
+  const handleUpdateLanguage = () => {
+    const data = {
+      languagesSpoken: selectedLanguages,
+    };
+    dispatch(updateLanguages(data));
+  };
+
+  const handleUpdateSubjects = () => {
+    const data = {
+      subjectsTaught: selectedSubjects,
+    };
+    dispatch(updateSubjects(data));
   };
 
   return (
@@ -144,14 +183,30 @@ const SubjectAndLanguage = () => {
         isMulti={true}
       />
 
-      <div className="w-full flex items-center justify-between">
-        <SubmitButtonsComp
-          cancelText={"Go Back"}
-          onCancel={() => dispatch(updateProcessStep(2))}
-          saveText={"Save and Continue"}
-          handleClick={handleSubmit((data) => submitForm(data))}
-        />
-      </div>
+      {path === "/instructor-dashboard/settings" ? (
+        <div className="flex items-center gap-5">
+          <CommonButton
+            label={"Update Subjects"}
+            onClick={() => handleUpdateSubjects()}
+            loading={subjectsloading}
+          />
+          <CommonButton
+            label={"Update Languages"}
+            variant="secondary"
+            onClick={() => handleUpdateLanguage()}
+            loading={loading}
+          />
+        </div>
+      ) : (
+        <div className="w-full flex items-center justify-between">
+          <SubmitButtonsComp
+            cancelText={"Go Back"}
+            onCancel={() => dispatch(updateProcessStep(2))}
+            saveText={"Save and Continue"}
+            handleClick={handleSubmit((data) => submitForm(data))}
+          />
+        </div>
+      )}
     </div>
   );
 };

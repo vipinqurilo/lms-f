@@ -1,19 +1,53 @@
+"use client";
+
+import Loader from "@/components/common/Loader";
 import SettingsInputField from "@/components/instructor/SettingsInputField";
-import React, { useState } from "react";
+import { updatePaymentInfo } from "@/store/slices/instructor/settingsSlice";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 const methods = ["bank transfer", "paypal"];
 
 const WithdrawalTabProfile = () => {
+  const { profile } = useSelector((state) => state.instructor.setting);
+  const dispatch = useDispatch();
+  const loading = useSelector(
+    (state) => state.instructor.setting.isLoading.updatePaymentInfo
+  );
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
+  useEffect(() => {
+    if (profile) {
+      // Reset the form with profile data based on the selected method
+      if (selectedMethod === methods[0]) {
+        reset({
+          name: profile?.paymentInfo?.accountHolderName || "",
+          accountnumber: profile?.paymentInfo?.accountNumber || "",
+          bankname: profile?.paymentInfo?.bankName || "",
+          ifscCode: profile?.paymentInfo?.ifscCode || "",
+        });
+      } else if (selectedMethod === methods[1]) {
+        reset({
+          paypalemailaddress: profile?.paymentInfo?.paypalEmail || "",
+        });
+      }
+    }
+  }, [profile, selectedMethod, reset]);
+
+  console.log(profile);
+
   const submitHandler = (data) => {
-    console.log(data);
+    const formdata = {
+      paymentInfo: data,
+    };
+    dispatch(updatePaymentInfo(formdata));
   };
 
   return (
@@ -58,7 +92,7 @@ const WithdrawalTabProfile = () => {
               />
               <SettingsInputField
                 label={"Account Number"}
-                name={"account-number"}
+                name={"accountnumber"}
                 placeholder={"Enter Account Number"}
                 register={register}
                 errors={errors}
@@ -71,25 +105,25 @@ const WithdrawalTabProfile = () => {
                 errors={errors}
               />
               <SettingsInputField
-                label={"IBAN"}
-                name={"iban"}
-                placeholder={"Enter IBAN"}
+                label={"IFSC Code"}
+                name={"ifscCode"}
+                placeholder={"Enter IFSC Code"}
                 register={register}
                 errors={errors}
               />
-              <SettingsInputField
+              {/* <SettingsInputField
                 label={"BIC / SWIFT"}
                 name={"bic"}
                 placeholder={"Enter BIC / SWIFT"}
                 register={register}
                 errors={errors}
-              />
+              /> */}
             </div>
           ) : selectedMethod === methods[1] ? (
             <div>
               <SettingsInputField
                 label={"PayPal Email Address"}
-                name={"paypal-email-address"}
+                name={"paypalemailaddress"}
                 placeholder={"Enter PayPal Email Address"}
                 register={register}
                 errors={errors}
@@ -103,9 +137,10 @@ const WithdrawalTabProfile = () => {
 
           <button
             type="submit"
-            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary capitalize"
+            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary capitalize disabled:opacity-60 disabled:cursor-not-allowed"
+            disabled={loading}
           >
-            Save withdrawal account
+            {loading ? <Loader /> : "Save withdrawal account"}
           </button>
         </form>
       </div>

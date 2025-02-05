@@ -24,12 +24,12 @@ export const createCourse = CreateApiAsyncThunk("course/createCourse", (data) =>
 );
 
 export const deleteCourse = CreateApiAsyncThunk("course/deleteCourse", (id) =>
-  api.delete(`/${id}`)
+  api.delete(`course/instructor/${id}`)
 );
 
 export const editCourse = CreateApiAsyncThunk(
   "course/editCourse",
-  ({ id, data }) => api.put(`/${id}`, data)
+  ({ id, data }) => api.put(`course/instructor/${id}`, data)
 );
 
 const courseSlice = createSlice({
@@ -51,8 +51,8 @@ const courseSlice = createSlice({
       }
     },
     editCourseData: (state, action) => {
-      state.courseAddData = action.payload
-    }
+      state.courseAddData = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -102,5 +102,6 @@ const courseSlice = createSlice({
   },
 });
 
-export const { updateCourseAddDataState, updateStep, editCourseData } = courseSlice.actions;
+export const { updateCourseAddDataState, updateStep, editCourseData } =
+  courseSlice.actions;
 export default courseSlice.reducer;

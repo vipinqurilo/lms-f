@@ -187,8 +187,11 @@ const Curriculum = () => {
                   type="text"
                   value={item?.moduleTitle}
                   onChange={(e) => {
-                    const updatedModules = [...modules];
-                    updatedModules[index].moduleTitle = e.target.value;
+                    const updatedModules = modules.map((mod, modIndex) =>
+                      modIndex === index
+                        ? { ...mod, moduleTitle: e.target.value }
+                        : mod
+                    );
                     setModules(updatedModules);
                   }}
                   className="px-2 py-0.5 focus:outline-none border border-black/10 rounded"
