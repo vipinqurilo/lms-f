@@ -117,9 +117,9 @@ const InstructorDashboard = () => {
   );
   const { courses } = useSelector((state) => state.instructor.course);
   const filteredData = courses?.map((course) => ({
-    image: course?.thumbnail,
-    title: course?.title,
-    des: course?.description,
+    image: course?.courseImage,
+    title: course?.courseTitle,
+    des: course?.courseDescription,
     value2: course?.status,
     value1: 100,
   }));
