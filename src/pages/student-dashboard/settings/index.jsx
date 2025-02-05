@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { SettingsTabs } from "../../../components/student-dashboard/settings/SettingsTabs";
@@ -8,10 +8,13 @@ import { AvatarUpload } from "../../../components/student-dashboard/settings/Ava
 import { EditProfile } from "../../../components/student-dashboard/settings/EditProfile";
 import { ChangePassword } from "../../../components/student-dashboard/settings/ChangePassword";
 import { SocialProfiles } from "../../../components/student-dashboard/settings/SocialProfiles";
+import { fetchProfileAsync } from "@/store/slices/student-dashboard/ProfileSlice";
+import { useDispatch } from "react-redux";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("edit-profile");
   const [avatarUrl, setAvatarUrl] = useState("/assets/tutor/Marlenereilly.jpg");
+  const dispatch = useDispatch();
 
   const handleAvatarUpload = (file) => {
     const url = URL.createObjectURL(file);
@@ -21,7 +24,10 @@ export default function SettingsPage() {
   const handleAvatarDelete = () => {
     setAvatarUrl("/placeholder.svg");
   };
-
+  // Fetch profile data on component mount
+  useEffect(() => {
+    dispatch(fetchProfileAsync());
+  }, [dispatch]);
   return (
     <StudentDashboardLayout className="space-y-8">
       <div className="bg-white rounded-lg border">
