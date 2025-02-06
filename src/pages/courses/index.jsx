@@ -11,14 +11,14 @@ import FeaturedCard from "@/components/common/FeaturedCard";
 
 const Courses = () => {
   const courses = useSelector((state) => state?.courses?.courses);
-
+  console.log(courses, "newttt course");
   const [showFilters, setShowFilters] = useState(false);
   const [clearTrigger, setClearTrigger] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Newly published"); // State for select option
+  const [selectedOption, setSelectedOption] = useState(""); // State for select option
 
   const clearFilters = () => {
     setClearTrigger((prev) => !prev); // Toggle state to trigger effect in child components
-    setSelectedOption("Newly published"); // Reset the select option
+    setSelectedOption(""); // Reset the select option
   };
 
   return (
@@ -46,8 +46,8 @@ const Courses = () => {
               />
               <select
                 className="border bg-white rounded-lg lg:px-4 lg:py-2  px-3  py-2 w-full sm:w-52 lg:mt-auto mt-3"
-                value={selectedOption} // Bind the select value to state
-                onChange={(e) => setSelectedOption(e.target.value)} // Handle selection change
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
               >
                 <option>Newly published</option>
                 <option>Most popular</option>
@@ -101,8 +101,10 @@ const Courses = () => {
           </div>
 
           {/* Course Cards Section */}
-          <div className="mt-7 grid grid-col-3">
-            <FeaturedCard data={courses} />
+          <div className="mt-7 grid grid-cols-2 ">
+            {courses.map((course, index) => (
+              <FeaturedCard data={course} key={index} />
+            ))}
           </div>
         </div>
 
