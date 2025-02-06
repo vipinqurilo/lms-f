@@ -10,17 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import AddExperience from "./AddExperience";
-import TableHeader from "../instructor/TableHeader";
-import { AiOutlineEdit } from "react-icons/ai";
-import { MdOutlineDelete } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import CommonButton from "../common/CommonButton";
-import BackgroundModal from "../instructor/BackgroundModal";
-import ModalHeading from "../common/ModalHeading";
 import {
   updateEducation,
   updateExperience,
 } from "@/store/slices/instructor/settingsSlice";
+import TableComponent from "./TableComponent";
 
 const Experience = () => {
   const { processData } = useSelector((state) => state.tutors);
@@ -38,19 +34,29 @@ const Experience = () => {
   const dispatch = useDispatch();
   const [experience, setExperience] = useState([]);
   const [education, setEducation] = useState([]);
-  const [isAdd, setisAdd] = useState(false);
+  const [isAdd, setisAdd] = useState(null);
   const [isEdit, setIsEdit] = useState(null);
-  const toggleIsAdd = () => setisAdd(!isAdd);
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
     reset,
-    watch,
   } = useForm();
 
-  const type = watch("type");
+  useEffect(() => {
+    if (isEdit) {
+      reset({
+        title: isEdit?.title || "",
+        institution: isEdit?.institution || "",
+        location: isEdit?.location || "",
+        certificate: isEdit?.startyear || "",
+        startyear: isEdit?.startyear || "",
+        endyear: isEdit?.endyear || "",
+        des: isEdit?.des || "",
+      });
+    }
+  }, [isEdit]);
 
   useEffect(() => {
     if (processData && Object.keys(processData).length > 0) {
@@ -113,195 +119,58 @@ const Experience = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6">
-      {path === "/instructor-dashboard/settings" && (
-        <div className="w-fit self-end">
-          <CommonButton
-            label={"Add Experience"}
-            variant="secondary"
-            onClick={() => toggleIsAdd()}
-          />
-        </div>
-      )}
-      <div className="space-y-2 w-full">
-        <div className="w-full !overflow-x-auto">
-          <table className="w-full text-nowrap rounded-lg">
-            <TableHeader
-              headingsData={[
-                "Experience information",
-                "Start-End",
-                "Document",
-                "Actions",
-              ]}
-            />
-            <tbody>
-              {experience?.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="py-5 text-center items-center justify-center text-light border border-t-0 border-black/10"
-                  >
-                    No Experience Added
-                  </td>
-                </tr>
-              ) : (
-                experience?.map((data) => (
-                  <tr className="text-left border border-t-0 border-black/10">
-                    <td className="px-6 py-4 text-left">
-                      <div className="w-full space-y-0.5">
-                        <h2>{data?.title}</h2>
-                        <p>
-                          {data?.institution}, {data?.location}
-                        </p>
-                        <p></p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {data?.startyear}-{data?.endyear}
-                    </td>
-                    <td className="px-6 py-4">
-                      {data?.certificate ? (
-                        <a
-                          href={data.certificate}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 underline"
-                        >
-                          View Document
-                        </a>
-                      ) : (
-                        "No certificate available"
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="w-full flex items-center gap-2">
-                        <button
-                          onClick={() => {
-                            toggleIsAdd();
-                            setIsEdit(data);
-                          }}
-                          className="w-8 h-8 border border-black/10 flex items-center justify-center hover:bg-gray-100 rounded"
-                        >
-                          <AiOutlineEdit size={20} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setExperience((prev) =>
-                              prev?.filter(
-                                (expe) => expe?.title !== data?.title
-                              )
-                            )
-                          }
-                          className="w-8 h-8 border border-black/10 flex items-center justify-center hover:bg-gray-100 rounded hover:text-red-500 transition-custom"
-                        >
-                          <MdOutlineDelete size={20} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="space-y-2 w-full">
-        <div className="w-full !overflow-x-auto">
-          <table className="w-full text-nowrap rounded-lg">
-            <TableHeader
-              headingsData={[
-                "Education information",
-                "Start-End",
-                "Document",
-                "Actions",
-              ]}
-            />
-            <tbody>
-              {education?.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="py-5 text-center items-center justify-center text-light border border-t-0 border-black/10"
-                  >
-                    No Education Added
-                  </td>
-                </tr>
-              ) : (
-                education?.map((data) => (
-                  <tr className="text-left border border-t-0 border-black/10">
-                    <td className="px-6 py-4 text-left">
-                      <div className="w-full space-y-0.5">
-                        <h2>{data?.title}</h2>
-                        <p>
-                          {data?.institution}, {data?.location}
-                        </p>
-                        <p></p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {data?.startyear}-{data?.endyear}
-                    </td>
-                    <td className="px-6 py-4">
-                      {data?.certificate ? (
-                        <a
-                          href={data.certificate}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 underline"
-                        >
-                          View Document
-                        </a>
-                      ) : (
-                        "No certificate available"
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="w-full flex items-center gap-2">
-                        <button
-                          onClick={() => {
-                            toggleIsAdd();
-                            setIsEdit(data);
-                          }}
-                          className="w-8 h-8 border border-black/10 flex items-center justify-center hover:bg-gray-100 rounded"
-                        >
-                          <AiOutlineEdit size={20} />
-                        </button>
-                        <button
-                          onClick={() =>
-                            setEducation((prev) =>
-                              prev?.filter(
-                                (expe) => expe?.title !== data?.title
-                              )
-                            )
-                          }
-                          className="w-8 h-8 border border-black/10 flex items-center justify-center hover:bg-gray-100 rounded hover:text-red-500 transition-custom"
-                        >
-                          <MdOutlineDelete size={20} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div
+      className={`w-full flex flex-col gap-6 lg:gap-10
+      ${path === "/instructor-dashboard/settings" && "pt-5"}
+      `}
+    >
+      <div className="w-full border border-black/10 rounded-lg px-5 lg:px-8 py-5 flex flex-col gap-6 lg:gap-6">
+        <h2 className="text-lg font-bold">Experience</h2>
+        <TableComponent
+          title="Experience"
+          data={experience}
+          setData={setExperience}
+          toggleIsAdd={() => setisAdd("experience")}
+          setIsEdit={setIsEdit}
+        />
 
-      {path !== "/instructor-dashboard/settings" && (
         <AddExperience
           addExperience={addExperience}
           control={control}
           errors={errors}
           handleSubmit={handleSubmit}
           register={register}
-          watch={watch}
+          type={"education" || isAdd}
           addEducation={addEducation}
         />
-      )}
+      </div>
+
+      <div className="w-full border border-black/10 rounded-lg px-5 lg:px-8 py-5 flex flex-col gap-6 lg:gap-6">
+        <h2 className="text-lg font-bold">Education</h2>
+
+        <TableComponent
+          title="Education"
+          data={education}
+          setData={setEducation}
+          toggleIsAdd={() => setisAdd("education")}
+          setIsEdit={setIsEdit}
+        />
+
+        {/* {path !== "/instructor-dashboard/settings" && ( */}
+        <AddExperience
+          addExperience={addExperience}
+          control={control}
+          errors={errors}
+          handleSubmit={handleSubmit}
+          register={register}
+          type={"experience"}
+          addEducation={addEducation}
+        />
+        {/* )} */}
+      </div>
 
       {path === "/instructor-dashboard/settings" ? (
-        <div className="flex items-center gap-5">
+        <div className="flex items-center w-full justify-end gap-10">
           <CommonButton
             label={"Update Experience"}
             onClick={() => handleUpdateExperience()}
@@ -324,35 +193,6 @@ const Experience = () => {
             loading={loading}
           />
         </div>
-      )}
-
-      {(isAdd || isEdit) && (
-        <BackgroundModal
-          PropComponent={
-            <div className="bg-white w-[60%] pb-10 rounded-lg">
-              <ModalHeading
-                title={
-                  type === "education" ? "Add Education" : "Add Experience"
-                }
-                onClose={() => {
-                  toggleIsAdd();
-                  setIsEdit(null);
-                }}
-              />
-              <div className="px-10">
-                <AddExperience
-                  addExperience={addExperience}
-                  control={control}
-                  errors={errors}
-                  handleSubmit={handleSubmit}
-                  register={register}
-                  addEducation={addEducation}
-                  watch={watch}
-                />
-              </div>
-            </div>
-          }
-        />
       )}
     </div>
   );

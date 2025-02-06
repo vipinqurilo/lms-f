@@ -89,10 +89,14 @@ const initialState = {
   error: {},
 };
 
-export const getBookigs = CreateApiAsyncThunk("booking/getBookigs", () =>
-  api.get(`/bookings`)
+export const getBookigs = CreateApiAsyncThunk(
+  "booking/getBookigs",
+  (formData) => {
+    // const query = formData?.
+    return api.get(`/bookings`);
+  }
 );
-5;
+
 export const updateAvailabilityCalender = CreateApiAsyncThunk(
   "booking/updateAvailabilityCalender",
   (data) => api.put(`/profile/payment-info`, data)
@@ -110,7 +114,7 @@ const bookingSlice = createSlice({
       })
       .addCase(getBookigs.fulfilled, (state, action) => {
         state.isLoading["getBookigs"] = false;
-        state.bookings = action.payload.data;
+        // state.bookings = action.payload.data;
       })
       .addCase(getBookigs.rejected, (state, action) => {
         state.isLoading["getBookigs"] = false;

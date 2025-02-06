@@ -29,6 +29,7 @@ const SubjectAndLanguage = () => {
   );
 
   const [subjects, setSubjects] = useState([]);
+  const [subSubjects, setSubSubjects] = useState([]); // sub subjects when i select any subject then i get this values
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
   const {
@@ -56,14 +57,23 @@ const SubjectAndLanguage = () => {
   useEffect(() => {
     if (profile && path === "/instructor-dashboard/settings") {
       reset({
-        language: profile?.languagesSpoken,
-        subjects: profile?.subjectsTaught,
+        language:
+          profile?.languagesSpoken
+            ?.map((lang) => languages?.find((l) => l?._id === lang))
+            ?.map((match) => ({ label: match?.name, value: match?._id })) || [],
+        subSubjects: profile?.subjectsTaught,
       });
     }
   }, [profile]);
 
   const submitForm = (data) => {
-    dispatch(updateProcessData({ field: "subjectAndlanguage", data }));
+    const formdata = {
+      language: data?.language,
+      subjects: subSubjects,
+    };
+    dispatch(
+      updateProcessData({ field: "subjectAndlanguage", data: formdata })
+    );
     dispatch(updateProcessStep(4));
   };
 
@@ -110,6 +120,22 @@ const SubjectAndLanguage = () => {
     dispatch(getLanguages());
   }, []);
 
+  useEffect(() => {
+    const selectedSubSubjects = selectedSubjects?.flatMap((subject) => {
+      const filteredSubjects = subjectsData?.filter(
+        (mainSubject) => mainSubject?.value === subject?.value
+      );
+
+      return filteredSubjects?.flatMap(
+        (subsubject) => watch(subsubject?.label?.toLowerCase()) || []
+      );
+    });
+
+    setSubSubjects(selectedSubSubjects || []);
+  }, [selectedSubjects]);
+
+  console.log("subSubjects", subSubjects);
+
   return (
     <div className="w-full space-y-6">
       <div className="lg:hidden">
@@ -125,20 +151,23 @@ const SubjectAndLanguage = () => {
         />
       </div>
 
-      <div className="lg:grid grid-cols-5 gap-10">
-        {subjectsData?.map((subject, index) => (
-          <button
-            key={index}
-            onClick={() => handleAddRemoveSubjects(subject)}
-            className={`${
-              subjects.some((sub) => sub.label === subject.label)
-                ? "bg-background text-white" // Subject is selected
-                : "bg-none" // Subject is not selected
-            } px-3 py-2 text-sm border border-black/10 w-full rounded-lg`}
-          >
-            {subject?.label}
-          </button>
-        ))}
+      <div className="w-full flex flex-col gap-4">
+        <h2 className="text-light text-sm">Subjects</h2>
+        <div className="lg:grid grid-cols-5 gap-5">
+          {subjectsData?.map((subject, index) => (
+            <button
+              key={index}
+              onClick={() => handleAddRemoveSubjects(subject)}
+              className={`${
+                subjects.some((sub) => sub.label === subject.label)
+                  ? "bg-background text-white" // Subject is selected
+                  : "bg-none hover:bg-background transition-custom hover:text-white" // Subject is not selected
+              } px-3 py-2 text-sm border border-black/10 w-full rounded-lg`}
+            >
+              {subject?.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="w-full grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
@@ -155,6 +184,7 @@ const SubjectAndLanguage = () => {
                     value: data,
                   })
                 );
+
                 return (
                   <div key={subsubject?.value}>
                     <SettingsInputField
@@ -189,7 +219,7 @@ const SubjectAndLanguage = () => {
       )}
 
       {path === "/instructor-dashboard/settings" ? (
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-16 w-full justify-end">
           <CommonButton
             label={"Update Subjects"}
             onClick={() => handleUpdateSubjects()}
@@ -197,7 +227,6 @@ const SubjectAndLanguage = () => {
           />
           <CommonButton
             label={"Update Languages"}
-            variant="secondary"
             onClick={() => handleUpdateLanguage()}
             loading={loading}
           />

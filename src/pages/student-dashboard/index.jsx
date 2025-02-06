@@ -1,128 +1,106 @@
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { CourseCard } from "../../components/student-dashboard/CourseCard";
 import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
-
-const stats = [
-  {
-    title: "Enrolled Courses",
-    value: "04",
-    iconSrc:
-      "assets/student-dashboard/icons/EnrolledCourses.svg",
-    bgColor: "bg-[#EBEAFC]",
-
-  },
-  {
-    title: "Active Courses",
-    value: "03",
-    iconSrc:
-      "assets/student-dashboard/icons/ActiveCourses.svg",
-    bgColor: "bg-[#DBFCDF]",
-  },
-  {
-    title: "Completed Courses",
-    value: "13",
-    iconSrc:
-      "assets/student-dashboard/icons/CompletedCourses.svg",
-    bgColor: "bg-[#F8E9FC]",
-  },
-  {
-    title: "Booked Courses",
-    value: "03",
-    iconSrc:
-      "assets/student-dashboard/icons/BookedCourses.svg",
-    bgColor: "bg-[#E9F6FA]",
-  },
-]
-
-const recentCourses = [
-  {
-    id: "1",
-    title: "Wordpress for Beginners - Master Wordpress Quickly",
-    instructor: {
-      name: "Cooper",
-      image: "/assets/student-dashboard/user/user1.jpg",
-    },
-    thumbnail: "/assets/student-dashboard/course/course-03.jpg",
-    lessons: 12,
-    duration: "70hr 30min",
-    rating: 5,
-    reviews: 20,
-    price: 80,
-    originalPrice: 99,
-  },
-  {
-    id: "2",
-    title: "Sketch from A to Z (2024): Become an app designer",
-    instructor: {
-      name: "Jenny",
-      image: "/assets/student-dashboard/user/user2.jpg",
-    },
-    thumbnail: "/assets/student-dashboard/course/course-04.jpg",
-    lessons: 10,
-    duration: "40hr 10min",
-    rating: 3,
-    reviews: 18,
-    isFree: true,
-  },
-  {
-    id: "3",
-    title: "Learn Angular Fundamentals From beginning to advance...",
-    instructor: {
-      name: "Nicole Brown",
-      image: "/assets/student-dashboard/user/user3.jpg",
-    },
-    thumbnail: "/assets/student-dashboard/course/course-02.jpg",
-    lessons: 15,
-    duration: "80hr 40min",
-    rating: 4,
-    reviews: 10,
-    price: 65,
-    originalPrice: 70,
-  }, {
-    id: "4",
-    title: "Sketch from A to Z (2024): Become an app designer",
-    instructor: {
-      name: "Jenny",
-      image: "/assets/student-dashboard/user/user2.jpg",
-    },
-    thumbnail: "/assets/student-dashboard/course/course-04.jpg",
-    lessons: 10,
-    duration: "40hr 10min",
-    rating: 3,
-    reviews: 18,
-    isFree: true,
-  },
-];
+import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
 
 export default function DashboardPage() {
+  const dispatch = useDispatch();
+  const { data: enrolledCourses, isLoading } = useSelector(
+    (state) => state.student.enrolledCourses
+  );
+  const { bookings, isLoading: bookingLoading } = useSelector(
+    (state) => state.student.booking
+  );
+
+  const stats = [
+    {
+      title: "Enrolled Courses",
+
+      value: enrolledCourses?.length || 0,
+      iconSrc: "assets/student-dashboard/icons/EnrolledCourses.svg",
+      bgColor: "bg-[#EBEAFC]",
+    },
+    {
+      title: "Active Courses",
+      value: "03",
+      iconSrc: "assets/student-dashboard/icons/ActiveCourses.svg",
+      bgColor: "bg-[#DBFCDF]",
+    },
+    {
+      title: "Completed Courses",
+      value: "13",
+      iconSrc: "assets/student-dashboard/icons/CompletedCourses.svg",
+      bgColor: "bg-[#F8E9FC]",
+    },
+    {
+      title: "Booked Courses",
+      value: bookings?.length || 0,
+      iconSrc: "assets/student-dashboard/icons/BookedCourses.svg",
+      bgColor: "bg-[#E9F6FA]",
+    },
+  ];
+  useEffect(() => {
+    dispatch(fetchEnrolledCoursesAsync());
+  }, [dispatch]);
+
   return (
     <StudentDashboardLayout className="space-y-8">
       <div className="flex gap-6">
         <div className="w-2/3">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-      {stats.map((stat, index) => (
-        <StatsCard key={index} title={stat.title} value={stat.value} iconSrc={stat.iconSrc} bgColor={stat.bgColor} />
-      ))}
-    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            {stats.map((stat, index) => (
+              <StatsCard
+                key={index}
+                title={stat.title}
+                value={stat.value}
+                iconSrc={stat.iconSrc}
+                bgColor={stat.bgColor}
+              />
+            ))}
+          </div>
           <ContinueWatching />
         </div>
         <div className="w-2/3">
           <ScheduleView />
         </div>
       </div>
-      <div className="py-8"> 
+
+      {/* Recently Enrolled Courses */}
+      <div className="py-8">
         <h2 className="text-2xl font-bold text-dark mb-6">
           Recently Enrolled Courses
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recentCourses.map((course) => (
-            <CourseCard key={course.id} course={course} type="view" />
-          ))}
+          {!isLoading["fetchEnrolledCoursesAsync"] &&
+            enrolledCourses?.map((enrollment) => (
+              <CourseCard
+                key={enrollment._id}
+                course={{
+                  id: enrollment.course._id,
+                  title: enrollment.course.courseTitle,
+                  instructor: {
+                    name: enrollment.course.courseInstructor || "N/A",
+                    image: enrollment.course.courseImage,
+                  },
+                  thumbnail: enrollment.course.courseImage,
+                  lessons: enrollment.course.courseContent.reduce(
+                    (acc, module) => acc + module.lessons.length,
+                    0
+                  ),
+                  duration: "N/A", // Replace if duration data is available
+                  price: enrollment.course.coursePrice,
+                  originalPrice: "N/A", // Replace if original price is available
+                }}
+                onWishlist={false}
+                onWishlistClick={() => {}}
+              />
+            ))}
         </div>
       </div>
-
     </StudentDashboardLayout>
   );
 }

@@ -6,7 +6,9 @@ const Loader = ({ text, color, isBig=false }) => {
   return (
     <div className="flex justify-center items-center">
       {isBig ? (
+
         <ImSpinner10 size={40} className={`animate-spin ${color}`} />
+
       ) : (
         <div className="flex items-center gap-2">
           <TbLoader size={20} className={`animate-spin ${color}`} />
