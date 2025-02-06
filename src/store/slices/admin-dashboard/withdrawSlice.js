@@ -32,4 +32,4 @@ export const withdrawSlice = createSlice({
   },
 });
 
-export default courseSlice.reducer;
+export default withdrawSlice.reducer;

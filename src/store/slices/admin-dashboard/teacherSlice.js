@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
-import { api } from "@/store/api/api";
+import { api, api3 } from "@/store/api/api";
 
 export const getAllAdminTeacher = CreateApiAsyncThunk(
   "GET/teacher/getAllAdminTeacher",
-  () => api.get(`/api/course/admin/get`)
+  () => api3.get(`/api/requests/teachers`)
 );
 
 export const teacherSlice = createSlice({
@@ -23,7 +23,7 @@ export const teacherSlice = createSlice({
       })
       .addCase(getAllAdminTeacher.fulfilled, (state, action) => {
         state.isLoading["getAllAdminTeacher"] = false;
-        state.teachers = action.payload;
+        state.teachers = action.payload?.data;
       })
       .addCase(getAllAdminTeacher.rejected, (state, action) => {
         state.isLoading["getAllAdminTeacher"] = false;
@@ -32,4 +32,4 @@ export const teacherSlice = createSlice({
   },
 });
 
-export default courseSlice.reducer;
+export default teacherSlice.reducer;
