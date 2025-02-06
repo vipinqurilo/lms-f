@@ -5,11 +5,36 @@ import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashb
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
 
 const stats = [
-  { title: "Enrolled Courses", value: 12 },
-  { title: "Active Courses", value: "03" },
-  { title: "Completed Courses", value: 13 },
-  { title: "Booked Courses", value: 3 },
-];
+  {
+    title: "Enrolled Courses",
+    value: "04",
+    iconSrc:
+      "assets/student-dashboard/icons/EnrolledCourses.svg",
+    bgColor: "bg-[#EBEAFC]",
+
+  },
+  {
+    title: "Active Courses",
+    value: "03",
+    iconSrc:
+      "assets/student-dashboard/icons/ActiveCourses.svg",
+    bgColor: "bg-[#DBFCDF]",
+  },
+  {
+    title: "Completed Courses",
+    value: "13",
+    iconSrc:
+      "assets/student-dashboard/icons/CompletedCourses.svg",
+    bgColor: "bg-[#F8E9FC]",
+  },
+  {
+    title: "Booked Courses",
+    value: "03",
+    iconSrc:
+      "assets/student-dashboard/icons/BookedCourses.svg",
+    bgColor: "bg-[#E9F6FA]",
+  },
+]
 
 const recentCourses = [
   {
@@ -76,11 +101,11 @@ export default function DashboardPage() {
     <StudentDashboardLayout className="space-y-8">
       <div className="flex gap-6">
         <div className="w-2/3">
-        <div className=" h-fit grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-          {stats.map((stat, index) => (
-            <StatsCard key={index} title={stat.title} value={stat.value} />
-          ))}
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      {stats.map((stat, index) => (
+        <StatsCard key={index} title={stat.title} value={stat.value} iconSrc={stat.iconSrc} bgColor={stat.bgColor} />
+      ))}
+    </div>
           <ContinueWatching />
         </div>
         <div className="w-2/3">
