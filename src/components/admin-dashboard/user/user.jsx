@@ -1,8 +1,10 @@
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState } from "react";
 import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing icons
- 
-const withdrawals = [
+import EditModal from "./EditModel";
+import { Pagination } from "@/components/student-dashboard/Pagination";
+
+const initialWithdrawals = [
   {
     image: "https://via.placeholder.com/40",
     method: "Landen Mosciski",
@@ -14,6 +16,330 @@ const withdrawals = [
     featured: "No",
     verified: "Yes",
     status: true, // Default status
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
+  },
+  {
+    image: "https://via.placeholder.com/40",
+    method: "Larissa Mosciski",
+    email: "larissa.mosciski974@dummyid.com",
+    phone: "+855 13253244",
+    userId: "108",
+    type: "Affiliate",
+    registered: "Oct 02, 2022 01:02",
+    featured: "No",
+    verified: "Yes",
+    status: false,
   },
   {
     image: "https://via.placeholder.com/40",
@@ -41,7 +367,6 @@ const withdrawals = [
   },
 ];
 
- 
 const columns = [
   "ID",
   "Image",
@@ -51,114 +376,36 @@ const columns = [
   "Registered",
   "Featured",
   "Verified",
-   "Action",
+  "Status", // Added status column
+  "Action",
 ];
 
 const WithdrawalHistory = () => {
-  const [statusList, setStatusList] = useState(
-    withdrawals.map((withdrawal) => withdrawal.status)
-  );
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [withdrawals, setWithdrawals] = useState(initialWithdrawals); // Set the withdrawals data in state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedWithdrawal, setSelectedWithdrawal] = useState(null);
+
+  const openModal = (withdrawal) => {
+    setSelectedWithdrawal(withdrawal);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedWithdrawal(null);
+  };
 
   const toggleStatus = (index) => {
-    const updatedStatus = [...statusList];
-    updatedStatus[index] = !updatedStatus[index];
-    setStatusList(updatedStatus);
+    const updatedWithdrawals = [...withdrawals];
+    updatedWithdrawals[index].status = !updatedWithdrawals[index].status;
+    setWithdrawals(updatedWithdrawals); // Update withdrawals state
   };
 
   return (
-    <div className="    rounded-lg p-6 w-full max-w-6xl mx-auto ">
-      {/* Search Filters */}
-      <div className="border rounded-lg bg-gray-50">
-        <div
-          className="p-4 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-lg "
-          onClick={() => setIsSearchOpen(!isSearchOpen)}
-        >
-          <h2 className="text-lg font-semibold text-gray-700">Search</h2>
-          <span
-            className="text-gray-600 transition-transform duration-500"
-            style={{
-              transform: isSearchOpen ? "rotate(180deg)" : "rotate(0deg)",
-            }}
-          >
-            ▼
-          </span>
-        </div>
-        <div
-          className={`transition-all duration-700 ease-in-out ${
-            isSearchOpen ? "max-h-[500px] opacity-700" : "max-h-0 opacity-0"
-          } overflow-hidden`}
-        >
-          <div className="p-4 border-t">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              <div className="leading-9">
-                <span className="text-sm font-medium text-gray-700">Name or email</span>
-                <input type="text" className="border  h-9 rounded w-full" />
-              </div>
-
-              <div className="leading-9">
-                <span className="text-sm  font-medium  text-gray-700">User type</span>
-                <select className="border h-9 rounded w-full">
-                  <option>User type</option>
-                  <option>Affiliate</option>
-                  <option>Customer</option>
-                </select>
-              </div>
-
-              <div className="leading-9">
-                <span className="text-sm  font-medium  text-gray-700">Email verified</span>
-                <select className="border h-9 rounded w-full">
-                  <option>Select</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-
-              <div className="leading-9">
-                <span className="text-sm  font-medium  text-gray-700">Featured</span>
-                <select className="border h-9 rounded w-full">
-                  <option>Select</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-              <div className="leading-9">
-                <span className="text-sm  font-medium  text-gray-700">Status</span>
-                <select className="border h-9 rounded w-full">
-                  <option>Select</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-
-              <div className="leading-9">
-                <span className="text-sm  font-medium  text-gray-700">Reg date from</span>
-                <input type="date" className="border  h-9 rounded w-full" />
-              </div>
-
-              <div className="leading-9">
-                <span className="text-sm  font-medium  text-gray-700">Reg date to</span>
-                <input type="date" className="border  h-9 rounded w-full" />
-              </div>
-              <div className="flex gap-3 mt-9 ">
-                <div><button className="bg-blue-600 text-white px-4 py-1 rounded">
-                  Search
-                </button></div>
-              <div>  <button className="bg-gray-500 text-white px-4 py-1 rounded">
-                  Clear
-                </button></div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Table Section */}
+    <div className="rounded-lg p-6 w-full max-w-6xl mx-auto">
       <div className="overflow-x-auto mt-4">
-        
         <table className="w-full border border-gray-200 rounded-lg">
-        <TableHeader headingsData={columns} />
+          <TableHeader headingsData={columns} />
 
           <tbody>
             {withdrawals.map((withdrawal, index) => (
@@ -172,7 +419,7 @@ const WithdrawalHistory = () => {
                   />
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p className="font-mediumtext-sm ">{withdrawal.method}</p>
+                  <p className="font-medium text-sm">{withdrawal.method}</p>
                   <p className="text-sm text-gray-500">
                     User ID: {withdrawal.userId}
                   </p>
@@ -181,7 +428,9 @@ const WithdrawalHistory = () => {
                   <p>{withdrawal.email}</p>
                   <p className="text-sm text-gray-500">{withdrawal.phone}</p>
                 </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">{withdrawal.type}</td>
+                <td className="py-4 px-4 text-gray-700 text-sm">
+                  {withdrawal.type}
+                </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.registered}
                 </td>
@@ -191,15 +440,39 @@ const WithdrawalHistory = () => {
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.verified}
                 </td>
- 
+
+                {/* Status Toggle */}
+                <td className="py-4 px-3 text-center text-sm">
+                  <button
+                    className={`py-2 px-4 rounded-full ${
+                      withdrawal.status
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => toggleStatus(index)}
+                  >
+                    {withdrawal.status ? "Active" : "Inactive"}
+                  </button>
+                </td>
+
                 <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
                     <button className="text-gray-600 hover:text-blue-500">
                       <FiEye size={15} />
                     </button>
-                    <button className="text-gray-600 hover:text-yellow-500">
-                      <FiEdit2 size={15} />
+                    <button className="flex items-center text-gray-600 hover:text-yellow-500">
+                      <label className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          value=""
+                          className="sr-only peer"
+                          checked={withdrawal.status}
+                          onChange={() => toggleStatus(index)} // Toggle status when clicked
+                        />
+                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[3px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                      </label>
                     </button>
+
                     <button className="text-gray-600 hover:text-gray-500">
                       <FiMoreVertical size={15} />
                     </button>
@@ -211,6 +484,22 @@ const WithdrawalHistory = () => {
         </table>
       </div>
       
+      {/* Pagination
+      <div className="px-6 py-4 ">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={2}
+              onPageChange={setCurrentPage}
+            />
+          </div> */}
+
+
+
+      <EditModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        withdrawal={selectedWithdrawal}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import TeacherRequests from '@/components/admin-dashboard/teacherrequests'
+  import TeacherRequests from '@/components/admin-dashboard/teacherrequests'
 import StudentDashboardLayout from '@/layouts/student-dashboard/StudentDashboardLayout'
 import React from 'react'
 

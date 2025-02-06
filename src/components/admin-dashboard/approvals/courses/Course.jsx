@@ -156,7 +156,7 @@ const Course = () => {
           <TableHeader headingsData={columns} />
 
           <tbody>
-            {courses.map((course, index) => (
+            {courses?.map((course, index) => (
               <tr key={index} className="border-t border-gray-200">
                 <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
 

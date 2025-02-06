@@ -16,7 +16,7 @@ export const userLoginAsync = CreateApiAsyncThunk(
 const initialState = {
   authUser: {
     name: "khurshid",
-    role: "student",
+    role: "admin",
 
   },
   isLoading: {},
@@ -56,6 +56,7 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.error["userLoginAsync"] = action.payload;
+
 
       })
 
