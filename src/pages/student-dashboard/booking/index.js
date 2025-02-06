@@ -1,52 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Clock, User, Search, Video } from "lucide-react";
+import { Clock, User, Search, Video, Calendar } from "lucide-react";
 import { StartEndDateSelector } from "@/components/student-dashboard/StartEndDateSelector";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 import Image from "next/image";
-import index from "@/pages/about";
-import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
-
-const bookings = [
-  {
-    id: "1",
-    title: "Master Digital Product Design: UX Research & UI Design",
-    description:
-      "A complete design education for product designers: Research the user experience, the...",
-    duration: "25.5 total hour",
-    lectureCount: 54,
-    instructor: "Elijah Snyder",
-    level: "Intermediate",
-    progress: 75,
-    time: "09:00 AM",
-    thumbnail:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-31%20114954-mAGFAq1n16wjZsslAuRYYyAXClzcqJ.png",
-  },
-  {
-    id: "2",
-    title: "Complete Product Design From Home Course",
-    description: "Learn Product Design From the Ground Up",
-    duration: "25.5 total hour",
-    lectureCount: 54,
-    instructor: "Callie Carson",
-    level: "Intermediate",
-    progress: 35,
-    time: "02:30 PM",
-    thumbnail:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-31%20114954-mAGFAq1n16wjZsslAuRYYyAXClzcqJ.png",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
 export default function BookingsPage() {
-  const [activeTab, setActiveTab] = useState("regular");
+  const dispatch = useDispatch();
+  const { bookings, isLoading } = useSelector((state) => state.student.booking);
+  const [activeTab, setActiveTab] = useState("All lessons");
   const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");
   const [startDate, setStartDate] = useState(new Date());
+
   const [endDate, setEndDate] = useState(new Date());
   const [endDateError, setEndDateError] = useState(false);
-
+  // const [isLoading, setIsLoading] = useState(false);
   // Validate end date whenever start date or end date changes
   useEffect(() => {
     if (endDate < startDate) {
@@ -72,6 +45,23 @@ export default function BookingsPage() {
       setEndDateError(true);
     }
   };
+
+  // Fetch bookings when component mounts or filters change
+  useEffect(() => {
+    const status = activeTab === "All lessons" ? undefined : activeTab;
+    // dispatch(fetchBookingsAsync({
+    //   status,
+    //   startDate: startDate.toISOString(),
+    //   endDate: endDate.toISOString()
+    // }));
+    dispatch(
+      fetchBookingsAsync({
+        status,
+        startDate: "",
+        endDate: "",
+      })
+    );
+  }, [dispatch, activeTab, startDate, endDate]);
 
   return (
     <StudentDashboardLayout className="container mx-auto p-6 max-w-5xl">
@@ -108,54 +98,47 @@ export default function BookingsPage() {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold">My Bookings</h2>
         <div className="flex w-fit bg-white p-1 rounded-lg">
-      <button
-        className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
-          activeTab2 === "listing"
-            ? "bg-orange-500 text-white"
-            : "text-gray-700"
-        }`}
-
-        onClick={() => setActiveTab2("listing")}
-      >
-        Listing
-      </button>
-      <button
-        className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
-          activeTab2 === "calendar"
-            ? "bg-orange-500 text-white"
-            : "text-gray-700"
-        }`}
-
-        onClick={() => setActiveTab2("calendar")}
-      >
-        Calendar
-      </button>
-    </div>
-
+          <button
+            className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
+              activeTab2 === "listing"
+                ? "bg-orange-500 text-white"
+                : "text-gray-700"
+            }`}
+            onClick={() => setActiveTab2("listing")}
+          >
+            Listing
+          </button>
+          <button
+            className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
+              activeTab2 === "calendar"
+                ? "bg-orange-500 text-white"
+                : "text-gray-700"
+            }`}
+            onClick={() => setActiveTab2("calendar")}
+          >
+            Calendar
+          </button>
+        </div>
       </div>
 
       {/* Custom Tabs */}
       <div className="border-b mb-6">
         <div className="flex gap-6">
-          {[
-            "All lessons",
-            "Unscheduled",
-            "Scheduled",
-            "Completed",
-            "Canceled",
-          ].map((item, index) => (
-            <button
-              onClick={() => setActiveTab(item)}
-              className={`pb-4 relative ${
-                activeTab === item ? "text-emerald-600" : "text-gray-600"
-              }`}
-            >
-              {item}
-              {activeTab === item && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
-              )}
-            </button>
-          ))}
+          {["All lessons", "Scheduled", "Completed", "Canceled"].map(
+            (item, index) => (
+              <button
+                onClick={() => setActiveTab(item)}
+                className={`pb-4 relative ${
+                  activeTab === item ? "text-emerald-600" : "text-gray-600"
+                }`}
+              >
+                {item}
+                {activeTab === item && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
+                )}
+              </button>
+            )
+          )}
         </div>
       </div>
       <div className="flex items-center gap-4 mb-4">
@@ -200,75 +183,91 @@ export default function BookingsPage() {
         </div>
       </div>
       {/* Bookings Content */}
-     {activeTab2==="listing"?(
-       <div className="space-y-6">
-       {activeTab === "All lessons" ? (
-         bookings.map((booking) => (
-           <div
-             key={booking.id}
-             className="bg-white rounded-lg shadow-sm overflow-hidden"
-           >
-             <div className="flex gap-6 p-4">
-               <Image
-                 width={128}
-                 height={128}
-                 src="/assets/tutor/Marlenereilly.jpg"
-                 alt="Tutor"
-                 className="rounded-xl object-cover w-[80px] lg:w-[128px] h-[80px] lg:h-[128px]"
-               />
-               <div className="flex-1 min-w-0">
-                 <h3 className="font-semibold mb-2">{booking.title}</h3>
-                 <p className="text-sm text-gray-500 mb-4">
-                   {booking.description}
-                 </p>
-                 <div className="flex items-center gap-6 text-sm text-gray-600">
-                   <div className="flex items-center gap-2">
-                     <Clock className="h-4 w-4" />
-                     <span>
-                       {booking.duration} 
-                     </span>
-                   </div>
-                   {/* <div className="flex items-center gap-2">
-                     <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                     <span>{booking.level}</span>
-                   </div> */}
-                   <div className="flex items-center gap-2">
-                     <User className="h-4 w-4" />
-                     <span>by {booking.instructor}</span>
-                     <span className="text-xs text-emerald-700 font-semibold">
-                       Available at {booking.time}
-                     </span>
-                   </div>
-                 </div>
-               </div>
-               <div className="flex flex-col items-end justify-between">
-                 <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800" ><Video /></span>
-                 {/* <div className="w-32">
-                   <div className="h-2 bg-gray-100 rounded-full">
-                     <div
-                       className="h-full bg-orange-500 rounded-full transition-all duration-300"
-                       style={{ width: `${booking.progress}%` }}
-                     />
-                   </div>
-                   <span className="text-sm text-gray-600 mt-1 block text-right">
-                     {booking.progress}%
-                   </span>
-                 </div> */}
-               </div>
-             </div>
-           </div>
-         ))
-       ) : (
-         <div className="text-center py-12 text-gray-500">
-           No one-o-one bookings found
-         </div>
-       )}
-     </div>
-     ):(
-      <>
-      <AvailabilityCalendar/>
-      </>
-     )}
+      {activeTab2 === "listing" ? (
+        <div className="space-y-6">
+          {isLoading.fetchBookingsAsync ? (
+            <div className="text-center py-12">Loading...</div>
+          ) : activeTab === "All lessons" && bookings.length > 0 ? (
+            bookings.map((booking) => (
+              <div
+                key={booking._id}
+                className="bg-white rounded-lg shadow-sm overflow-hidden"
+              >
+                <div className="flex gap-10 p-4">
+                  {/* Tutor Image and Details */}
+                  <div className="flex items-center gap-2">
+                    <Image
+                      width={128}
+                      height={128}
+                      src="/assets/tutor/Marlenereilly.jpg" // Default tutor image
+                      alt="Tutor"
+                      className="rounded-xl object-cover w-[50px] h-[50px]"
+                    />
+                    <div className="items-center gap-2">
+                      <div className="flex items-center gap-2">
+                        <span>{`${booking.teacher.firstName} ${booking.teacher.lastName}`}</span>
+                      </div>
+                      <span className="text-xs text-emerald-700 font-semibold">
+                        {booking.status}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-l border-gray-300 mx-4"></div>
+
+                  {/* Booking Details */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold mb-2">
+                      {booking?.subject?.name || "N/A"}
+                    </h3>
+                    <div className="flex items-center gap-6 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+
+                        <Clock className="h-4 w-4" />
+                        <span>
+                          {`${new Date(
+                            booking.sessionStartTime
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })} - ${new Date(
+                            booking.sessionEndTime
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}`}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>
+                          {new Date(booking.scheduledDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Icon */}
+                  <div className="flex flex-col items-end justify-between">
+                    <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800">
+                      <Video />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              No one-o-one bookings found
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          <AvailabilityCalendar />
+        </>
+      )}
     </StudentDashboardLayout>
   );
 }

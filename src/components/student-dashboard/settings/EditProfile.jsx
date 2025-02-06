@@ -21,8 +21,10 @@ export function EditProfile() {
   const profile = profileState?.profile;
   const isLoading = profileState?.isLoading;
   const error = profileState?.error;
+  console.log(profileState?.profile,'profileState?.profile');
 
   const path = usePathname();
+
 
   const [localProfile, setLocalProfile] = useState({
     firstName: "",
