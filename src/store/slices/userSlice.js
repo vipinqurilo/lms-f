@@ -13,7 +13,10 @@ export const userLoginAsync = CreateApiAsyncThunk(
 );
 
 const initialState = {
-  authUser: {},
+  authUser: {
+    name:"khurshid",
+    role:"admin"
+  },
   isLoading: {},
   error: {},
 };

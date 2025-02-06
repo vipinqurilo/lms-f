@@ -26,7 +26,7 @@ export const withdrawSlice = createSlice({
         state.withdraws = action.payload;
       })
       .addCase(getAllWithdraws.rejected, (state, action) => {
-        state.isLoading["getAllWithdraws"] = false;
+        state.isLoading["getAllWithdraws"] = false``;
         state.error["getAllWithdraws"] = action.payload;
       });
   },
