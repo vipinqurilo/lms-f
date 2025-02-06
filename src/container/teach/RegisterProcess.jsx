@@ -57,12 +57,17 @@ const RegisterProcess = () => {
               clipPath: `polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%, 10% 50%)`,
             }}
           >
-            <h4 className="text-lg font-bold ">{step?.label}</h4>
+            <div className="w-full flex items-center gap-2 justify-center">
+              <h4 className="text-lg font-bold lg:text-2xl text-[#696969]">
+                0{index+1}
+              </h4>
+              <h4 className="text-lg font-bold ">{step?.label}</h4>
+            </div>
             <div
-              className="text-3xl mb-2 w-14 h-14 flex items-center justify-center rounded-lg !bg-opacity-40"
+              className="text-2xl mb-2 w-14 h-14 flex items-center justify-center rounded-2xl !bg-opacity-40"
               style={{
                 color: step.color,
-                backgroundColor: hexToRGBA(step?.color, 0.4),
+                backgroundColor: hexToRGBA(step?.color, 0.1),
               }}
             >
               {step.icon}

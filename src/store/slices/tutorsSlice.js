@@ -41,10 +41,14 @@ const tutorsSlice = createSlice({
     },
     updateProcessData: (state, action) => {
       const { field, data } = action.payload;
-      state.processData = {
-        ...state.processData,
-        [field]: data,
-      };
+      if (state.processData.hasOwnProperty(field)) {
+        state.processData[field] = data;
+      } else {
+        state.processData = {
+          ...state.processData,
+          [field]: data,
+        };
+      }
       clearError: (state, action) => {
         const errorKey = action.payload;
         if (errorKey) {

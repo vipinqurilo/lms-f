@@ -2,7 +2,7 @@
 import InstructorButton from "@/components/instructor/InstructorButton";
 import { CourseCard } from "@/components/student-dashboard/CourseCard";
 import { Pagination } from "@/components/student-dashboard/Pagination";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FiEdit, FiEdit3 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import {
   deleteCourse,
   editCourseData,
   getAllIntructorCourses,
+  getFilteredInstrcutorCourses,
 } from "@/store/slices/instructor/courseSlice";
 import Loader from "@/components/common/Loader";
 
@@ -44,6 +45,9 @@ const InstructorMyCourses = () => {
   const getloading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
+  const filyterLoading = useSelector(
+    (state) => state.instructor.course.isLoading.getFilteredInstrcutorCourses
+  );
   const [isDelete, setisDelete] = useState(null);
   const [selecteStatus, setselecteStatus] = useState("All");
   const [filteredCourses, setfilteredCourses] = useState([]);
@@ -52,28 +56,21 @@ const InstructorMyCourses = () => {
     (state) => state.instructor.course.isLoading.deleteCourse
   );
 
-  useEffect(() => {
-    if (selecteStatus !== "All") {
-      setfilteredCourses(
-        courses.filter((course) => course.status === selecteStatus)
-      );
-    } else {
-      setfilteredCourses(courses);
-    }
-  }, [selecteStatus]);
-
   const handleStatusChange = (value) => setselecteStatus(value);
 
   const handleDelete = () => {
-    console.log(isDelete);
-    dispatch(deleteCourse(isDelete));
+    dispatch(deleteCourse(isDelete))
+      .unwrap()
+      .then(() => setisDelete(null));
   };
 
   useEffect(() => {
-    dispatch(getAllIntructorCourses());
-  }, []);
-
-  // const handleFilterCourse
+    if (selecteStatus.toLowerCase() === "all") {
+      dispatch(getAllIntructorCourses());
+    } else {
+      dispatch(getFilteredInstrcutorCourses(selecteStatus.toLowerCase()));
+    }
+  }, [selecteStatus]);
 
   const handleEditCourse = (course) => {
     const data = {
@@ -90,31 +87,36 @@ const InstructorMyCourses = () => {
         image: course?.courseImage,
       },
       curriculum: course?.courseContent,
-      price: course?.coursePrice
+      price: course?.coursePrice,
     };
     dispatch(editCourseData(data));
     router.push("/instructor-dashboard/my-courses/add-course");
   };
 
-  const filteredData = filteredCourses?.map((course) => ({
-    image: course?.courseImage,
-    title: course?.courseTitle,
-    des: course?.courseDescription,
-    value1: course?.entrolled || 425,
-    value2: (
-      <div className="flex items-center gap-5">
-        <button onClick={() => handleEditCourse(course)} className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500">
-          <FiEdit3 size={20} className="" />
-        </button>
-        <button
-          onClick={() => setisDelete(course?._id)}
-          className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500"
-        >
-          <MdDeleteOutline size={20} />
-        </button>
-      </div>
-    ),
-  }));
+  const filteredData = useMemo(() => {
+    return courses?.map((course) => ({
+      image: course?.courseImage,
+      title: course?.courseTitle,
+      des: course?.courseDescription,
+      value1: course?.entrolled || 425,
+      value2: (
+        <div className="flex items-center gap-5">
+          <button
+            onClick={() => handleEditCourse(course)}
+            className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500"
+          >
+            <FiEdit3 size={20} />
+          </button>
+          <button
+            onClick={() => setisDelete(course?._id)}
+            className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500"
+          >
+            <MdDeleteOutline size={20} />
+          </button>
+        </div>
+      ),
+    }));
+  }, [filteredCourses, courses]);
 
   return (
     <section className="dashboard-sub-container flex flex-col gap-6">
@@ -132,7 +134,7 @@ const InstructorMyCourses = () => {
         ))}
       </div>
 
-      {getloading ? (
+      {getloading || filyterLoading ? (
         <Loader color={"text-primary"} isBig={true} />
       ) : (
         <CreatedCourses
