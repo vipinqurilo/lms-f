@@ -18,6 +18,7 @@ const initialState = {
     name: "khurshid",
     role: "instructor",
     // role: "student",
+    // role: "admin",
   },
   isLoading: {},
   error: {},
@@ -56,6 +57,7 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.error["userLoginAsync"] = action.payload;
+
 
       })
 
