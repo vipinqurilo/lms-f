@@ -1,4 +1,6 @@
-import { updateSocialProfilesAsync } from "@/store/slices/student-dashboard/ProfileSlice";
+
+import { updateSocialProfilesAsync } from "@/store/slices/student-dashboard/profileSlice";
+
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
