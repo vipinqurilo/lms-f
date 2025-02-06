@@ -155,7 +155,6 @@ export function EditProfile() {
         path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"
       }`}
     >
-      <div className="">
         {path !== "/instructor-request" && (
           <div className=" flex flex-col">
             <div className="text-lg font-semibold  ">Personal Details</div>
@@ -213,10 +212,8 @@ export function EditProfile() {
                 onChange={(e) =>
                   setLocalProfile({ ...localProfile, userName: e.target.value })
                 }
-
               />
             </div>
-
           ) : (
             <div className="w-full flex flex-col gap-2">
               <label className="text-light text-sm">Gender</label>
@@ -247,8 +244,8 @@ export function EditProfile() {
             </div>
           )}
 
-          <div className="space-y-2">
-            <label
+           <div className="">
+           <label
               htmlFor="phoneNumber"
               className="block text-sm font-medium text-gray-700"
             >
@@ -257,73 +254,37 @@ export function EditProfile() {
                 <span className="text-red-500 text-xs">{phoneNumberError}</span>
               )}
             </label>
+          <div className="flex">
+            <input
+              id="countryCode"
+              className={`mt-1 block px-4 py-2 w-1/4 rounded-l-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none ${
+                error?.updatePersonalInfoAsync ? "border-red-500" : ""
+              }`}
+              value={localProfile.countryCode}
+              onChange={(e) =>
+                setLocalProfile({
+                  ...localProfile,
+                  countryCode: e.target.value,
+                })
+              }
+            />
             <input
               id="phoneNumber"
-              type="text"
-              className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              className="mt-1 block px-4 py-2 w-3/4 rounded-r-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
               value={localProfile.phoneNumber}
-              onChange={handlePhoneNumberChange}
-            />
-          </div>
-        </div>
-
-
-        {path !== "/instructor-request" && (
-          <div className="space-y-2">
-            <label
-              htmlFor="userName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              User Name
-            </label>
-            <input
-              id="userName"
-              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-              value={localProfile.userName}
               onChange={(e) =>
-                setLocalProfile({ ...localProfile, userName: e.target.value })
+                setLocalProfile({
+                  ...localProfile,
+                  phoneNumber: e.target.value,
+                })
               }
             />
           </div>
-        )}
+           </div>
+        </div>
 
-        {path !== "/instructor-request" && (
-          <div className="space-y-2">
-            <label
-              htmlFor="designation"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Designation
-            </label>
-            <div className="flex">
-              <input
-                id="countryCode"
-                className={`mt-1 block px-4 py-2 w-1/4 rounded-l-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none ${
-                  error?.updatePersonalInfoAsync ? "border-red-500" : ""
-                }`}
-                value={localProfile.countryCode}
-                onChange={(e) =>
-                  setLocalProfile({
-                    ...localProfile,
-                    countryCode: e.target.value,
-                  })
-                }
-              />
-              <input
-                id="phoneNumber"
-                className="mt-1 block px-4 py-2 w-3/4 rounded-r-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-                value={localProfile.phoneNumber}
-                onChange={(e) =>
-                  setLocalProfile({
-                    ...localProfile,
-                    phoneNumber: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
-        )}
-      </div>
+       
+
 
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
@@ -366,7 +327,7 @@ export function EditProfile() {
           </div>
         )}
 
-        {path !== "/instructor-request" && (
+        {path === "/instructor-request" && (
           <div className="space-y-2">
             <label
               htmlFor="designation"
@@ -394,12 +355,13 @@ export function EditProfile() {
           </label>
           <textarea
             id="bio"
-            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none resize-none"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
             value={localProfile.bio}
-            onChange={(e) => setLocalProfile({ ...localProfile, bio: e.target.value })}
+            onChange={(e) =>
+              setLocalProfile({ ...localProfile, bio: e.target.value })
+            }
             rows={4}
           />
-
         </div>
       )}
 
