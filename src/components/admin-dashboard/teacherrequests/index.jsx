@@ -35,11 +35,12 @@ const TeacherRequests = () => {
   const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
-   const { teachers } = useSelector((state) => state.admin?.teacher);
-
+   const  {teachers}  = useSelector((state) => state.admin?.teacher);
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
+
+  console.log(teachers,"lloloo")
 
 
 
