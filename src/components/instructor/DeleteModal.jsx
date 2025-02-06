@@ -10,12 +10,12 @@ const DeleteModal = ({ onClose, text, handleDelete, loading }) => {
         <div data-aos="fade-up" className=" bg-white border border-black/10 rounded-lg">
           <ModalHeading title={"Are You Sure?"} onClose={onClose} />
 
-          <div className="w-full px-5 pb-6">
+          <div className="w-full px-10 pb-6">
             <p className="text-center font-semibold text-base  text-[#223142] mt-5 ">
               Are you certain you want to delete this {text || "record"}?
             </p>
 
-            <div className="flex justify-center gap-10 mt-8">
+            <div className="flex justify-between gap-10 mt-8">
               <CommonButton
                 label="Yes, Delete It!"
                 onClick={handleDelete}

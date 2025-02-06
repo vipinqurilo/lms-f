@@ -1,20 +1,25 @@
+"use client";
 import CommonButton from "@/components/common/CommonButton";
 import TitleComp from "@/components/instructor/TitleComp";
 import AddCourseProcessContainer from "@/container/instructor/addcourse/AddCourseProcessContainer";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
+import { editCourse } from "@/store/slices/instructor/courseSlice";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { IoIosArrowBack } from "react-icons/io";
+import { useDispatch } from "react-redux";
 
 export default function AddCoursePage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   return (
     <StudentDashboardLayout>
       <div className="mb-4">
         <CommonButton
           label={"Back"}
-          //   label={<IoIosArrowBack />}
-          onClick={() => router.back()}
+          onClick={() => {
+            dispatch(editCourse({}));
+            router.back();
+          }}
           variant="primary"
         />
       </div>

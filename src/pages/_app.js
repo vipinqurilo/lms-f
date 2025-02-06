@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }) {
       {!hideNavFooter && <Navbar />}
       <Component {...pageProps} />
       {!hideNavFooter && <Footer />}
-      <Toaster />
+      <Toaster position="top-right" />
     </StoreProvider>
   );
 }
