@@ -14,13 +14,8 @@ export const userLoginAsync = CreateApiAsyncThunk(
 
 const initialState = {
   authUser: {
-    name:"khurshid",
-    role:"admin"
-
-const initialState = {
-  authUser: {
-    name: "Khurshid",
-    role: "admin"
+    name: "khurshid",
+    role: "admin",
   },
   isLoading: {},
   error: {},
@@ -59,6 +54,7 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.error["userLoginAsync"] = action.payload;
+      })
 
       .addCase(instructorRegister.pending, (state) => {
         state.isLoading["instructorRegister"] = true;
@@ -68,7 +64,6 @@ const userSlice = createSlice({
       })
       .addCase(instructorRegister.rejected, (state) => {
         state.isLoading["instructorRegister"] = false;
-
       });
   },
 });
