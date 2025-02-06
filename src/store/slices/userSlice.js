@@ -2,12 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "../api/api";
 
+export const userRegisterAsync = CreateApiAsyncThunk(
+  "user/userRegisterAsync",
+  (userData) => api.post(`/api/auth/register`, userData)
+);
+
+export const userLoginAsync = CreateApiAsyncThunk(
+  "user/userLoginAsync",
+  (userData) => api.post(`/api/auth/login`, userData)
+);
+
 const initialState = {
   authUser: {
-    name: "Arjun",
-    role: "instructor",
-//     name: "Khurshid",
-//     role: "admin"
+    name:"khurshid",
+    role:"admin"
+
+const initialState = {
+  authUser: {
+    name: "Khurshid",
+    role: "admin"
   },
   isLoading: {},
   error: {},
@@ -24,6 +37,29 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+
+      .addCase(userRegisterAsync.pending, (state, action) => {
+        state.isLoading["userRegisterAsync"] = true;
+      })
+      .addCase(userRegisterAsync.fulfilled, (state, action) => {
+        state.isLoading["userRegisterAsync"] = false;
+        state.authUser = action.payload?.data;
+      })
+      .addCase(userRegisterAsync.rejected, (state, action) => {
+        state.isLoading["userRegisterAsync"] = false;
+        state.error["userRegisterAsync"] = action.payload;
+      })
+      .addCase(userLoginAsync.pending, (state, action) => {
+        state.isLoading["userLoginAsync"] = true;
+      })
+      .addCase(userLoginAsync.fulfilled, (state, action) => {
+        state.isLoading["userLoginAsync"] = false;
+        state.authUser = action.payload?.data;
+      })
+      .addCase(userLoginAsync.rejected, (state, action) => {
+        state.isLoading["userLoginAsync"] = false;
+        state.error["userLoginAsync"] = action.payload;
+
       .addCase(instructorRegister.pending, (state) => {
         state.isLoading["instructorRegister"] = true;
       })
@@ -32,6 +68,7 @@ const userSlice = createSlice({
       })
       .addCase(instructorRegister.rejected, (state) => {
         state.isLoading["instructorRegister"] = false;
+
       });
   },
 });

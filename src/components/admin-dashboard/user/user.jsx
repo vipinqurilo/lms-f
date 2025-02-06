@@ -54,7 +54,6 @@ const columns = [
    "Action",
 ];
 
-
 const WithdrawalHistory = () => {
   const [statusList, setStatusList] = useState(
     withdrawals.map((withdrawal) => withdrawal.status)
@@ -211,6 +210,7 @@ const WithdrawalHistory = () => {
           </tbody>
         </table>
       </div>
+      
     </div>
   );
 };
