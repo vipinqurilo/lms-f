@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { CourseCard } from "../../../components/student-dashboard/CourseCard";
+
 import { fetchWishlistAsync, removeFromWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
+
 
 export default function WishlistPage() {
   const dispatch = useDispatch();

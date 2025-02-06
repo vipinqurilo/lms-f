@@ -1,4 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
+
 import studentProfileSlice from "./profileSlice";
 import wishlistSlice from "./wishlistSlice";
 import ordersSlice from "./ordersSlice";
@@ -10,10 +11,11 @@ const studentRootReducer = combineReducers({
   profile: studentProfileSlice,
   wishlist: wishlistSlice,
   orders: ordersSlice,
+
   booking: bookingSlice,
   enrolledCourses: enrolledCoursesSlice,
   language: languageSlice,
   review: reviewSlice,
-});
+
 
 export default studentRootReducer;

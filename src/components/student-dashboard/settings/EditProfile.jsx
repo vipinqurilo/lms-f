@@ -12,16 +12,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchProfileAsync,
   updatePersonalInfoAsync,
+
 } from "@/store/slices/student-dashboard/profileSlice";
 
 export function EditProfile() {
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
+
   const profileState = useSelector((state) => state.student?.profile);
   const profile = profileState?.profile;
   const isLoading = profileState?.isLoading;
   const error = profileState?.error;
   console.log(profileState?.profile,'profileState?.profile');
+
 
   const path = usePathname();
 
@@ -37,6 +40,57 @@ export function EditProfile() {
     country: "",
     bio: "",
   });
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [gender, setGender] = useState("");
+  const [idProof, setIdProof] = useState("");
+
+  console.log(processData);
+  
+
+  useEffect(() => {
+    if (path === "/instructor-request" && processData) {
+      if (Object.keys(processData).length > 0) {
+        setProfile({
+          firstName: processData?.profile?.firstName || "",
+          lastName: processData?.profile?.lastName || "",
+          phoneNumber: processData?.profile?.phone?.number || "",
+          bio: "",
+          designation: "",
+          userName: "",
+        });
+        setGender(processData?.profile?.gender || "");
+        setIdProof(processData?.profile?.idProof || "");
+      }
+    }
+  }, [processData, path]);
+
+  const handleReset = () => {
+    setProfile({
+      firstName: "",
+      lastName: "",
+      userName: "",
+      phoneNumber: "",
+      designation: "",
+      bio: "",
+    });
+  };
+
+  // Sync local state with profile data from Redux store
+  useEffect(() => {
+    if (profile) {
+      setLocalProfile({
+        firstName: profile.firstName || "",
+        lastName: profile.lastName || "",
+        userName: profile.userName || "",
+        email: profile.email || "",
+        phoneNumber: profile.phone?.number || "",
+        countryCode: profile.phone?.countryCode || "",
+        gender: profile.gender || "",
+        country: profile.country || "",
+        bio: profile.bio || "",
+      });
+    }
+  }, [profile]);
 
   const [phoneNumberError, setPhoneNumberError] = useState("");
   const [gender, setGender] = useState("");
@@ -88,6 +142,7 @@ export function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const updatedProfile = {
       firstName: localProfile.firstName,
       lastName: localProfile.lastName,
@@ -100,6 +155,7 @@ export function EditProfile() {
       country: localProfile.country,
       bio: localProfile.bio,
     };
+
     dispatch(updatePersonalInfoAsync(updatedProfile));
   };
 
@@ -137,12 +193,15 @@ export function EditProfile() {
     if (isValidPhoneNumber) {
       setLocalProfile({ ...localProfile, phoneNumber: inputValue });
       setPhoneNumberError("");
+
     } else {
       setPhoneNumberError("Please enter a valid 10-digit phone number.");
     }
   };
 
+
   if (!profileState) {
+
     return <div>Loading...</div>;
   }
 
@@ -157,6 +216,7 @@ export function EditProfile() {
         path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"
       }`}
     >
+
         {path !== "/instructor-request" && (
           <div className=" flex flex-col">
             <div className="text-lg font-semibold  ">Personal Details</div>
@@ -319,6 +379,7 @@ export function EditProfile() {
        
 
         {path !== "/instructor-request" && (
+
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label
@@ -327,19 +388,23 @@ export function EditProfile() {
           >
             Gender
           </label>
+
           <select
             id="gender"
             className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
             value={localProfile.gender}
             onChange={(e) =>
               setLocalProfile({ ...localProfile, gender: e.target.value })
+
             }
           >
+
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
+
         </div>
         {path !== "/instructor-request" && (
           <div className="space-y-2">
@@ -379,24 +444,29 @@ export function EditProfile() {
       </div>
       )}
 
+
       {path !== "/instructor-request" && (
         <div className="space-y-2">
           <label
             htmlFor="bio"
+
             className="block text-sm font-medium text-gray-700"
           >
             Bio
           </label>
+
           <textarea
             id="bio"
             className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
             value={localProfile.bio}
             onChange={(e) =>
               setLocalProfile({ ...localProfile, bio: e.target.value })
+
             }
             rows={4}
           />
         </div>
+
       )}
 
       {path === "/instructor-request" ? (
@@ -423,6 +493,7 @@ export function EditProfile() {
           )}
         </>
       )}
+
     </form>
   );
 }

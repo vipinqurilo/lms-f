@@ -35,6 +35,7 @@ const coursesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Handle category fetch actions
       .addCase(fetchCategories.pending, (state) => {
         state.isLoading["fetchCategories"] = true;
         state.error["fetchCategories"] = null;
