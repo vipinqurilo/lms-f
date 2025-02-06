@@ -15,6 +15,7 @@ const api = axios.create({
 const initialState = {
   processStep: 1,
   processData: {},
+  tutorProfile: null,
   isLoading: {},
   error: {},
 };
@@ -22,6 +23,13 @@ const initialState = {
 export const instructorRequest = CreateApiAsyncThunk(
   "tutors/instructorRequest",
   (data) => api.post(`/api/requests/teacher`, data)
+);
+// import { api } from "@/store/api/api";
+
+// Async thunk for fetching tutor profile
+export const fetchTutorProfileAsync = CreateApiAsyncThunk(
+  "tutors/fetchTutorProfileAsync",
+  (tutorId) => api.get(`/api/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
 );
 
 const tutorsSlice = createSlice({
@@ -37,6 +45,13 @@ const tutorsSlice = createSlice({
         ...state.processData,
         [field]: data,
       };
+    clearError: (state, action) => {
+      const errorKey = action.payload;
+      if (errorKey) {
+        delete state.error[errorKey];
+      } else {
+        state.error = {};
+      }
     },
   },
   extraReducers: (builder) => {
@@ -52,7 +67,21 @@ const tutorsSlice = createSlice({
         state.isLoading["instructorRequest"] = action.payload;
       });
   },
+})
+      // Fetch tutor profile
+      .addCase(fetchTutorProfileAsync.pending, (state) => {
+        state.isLoading["fetchTutorProfileAsync"] = true;
+      })
+      .addCase(fetchTutorProfileAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchTutorProfileAsync"] = false;
+        state.tutorProfile = action.payload?.data; // Assuming this structure from your sample
+      })
+      .addCase(fetchTutorProfileAsync.rejected, (state, action) => {
+        state.isLoading["fetchTutorProfileAsync"] = false;
+        state.error["fetchTutorProfileAsync"] = action.payload;
+      });
+  },
 });
 
-export const { updateProcessData, updateProcessStep } = tutorsSlice.actions;
+export const { setTutors, clearError, updateProcessData, updateProcessStep } = tutorsSlice.actions;
 export default tutorsSlice.reducer;

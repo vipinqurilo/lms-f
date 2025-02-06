@@ -14,7 +14,8 @@ export default function App({ Component, pageProps }) {
     "/login",
     "/register",
     "/instructor-dashboard",
-    "/student-dashboard",
+    "/student-dashboard", 
+    "/admin-dashboard"
   ];
   useEffect(() => {
     Aos.init({ duration: 1000 });

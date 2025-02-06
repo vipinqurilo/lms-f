@@ -11,6 +11,7 @@ import {
   FileQuestion,
   ShoppingCart,
   MessageSquare,
+  Grid2x2Check,
   Users,
   LifeBuoy,
   LogOut,
@@ -56,7 +57,11 @@ const studentSidebarLinks = [
     icon: Star,
     href: "/student-dashboard/reviews",
   },
-
+  {
+    title: "My Booking",
+    icon: Grid2x2Check,
+    href: "/student-dashboard/booking",
+  },
   {
     title: "Order History",
     icon: ShoppingCart,
@@ -91,6 +96,7 @@ const instructorSidebarLinks = [
     icon: Wallet,
     href: "/instructor-dashboard/withdrawals",
   },
+
   // {
   //   title: "Quiz Attempts",
   //   icon: FileText,
@@ -113,7 +119,29 @@ const instructorSidebarLinks = [
   },
 ];
 
-const adminSidebarLinks = [];
+const adminSidebarLinks = [
+  {
+    title: "Dashboard",
+    icon: LayoutDashboard,
+    href: "/admin-dashboard",
+    color: "text-primary",
+  },
+  {
+    title: "Courses",
+    icon: GraduationCap,
+    href: "/admin-dashboard/approvals/courses",
+  },
+  {
+    title: "Teachers",
+    icon: GraduationCap,
+    href: "/admin-dashboard/teachers",
+  },
+  {
+    title: "Withdrawals",
+    icon: Wallet,
+    href: "/admin-dashboard/withdrawals",
+  },
+];
 
 export function Sidebar() {
   const pathname = usePathname();

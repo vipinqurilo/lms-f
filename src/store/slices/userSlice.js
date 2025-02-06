@@ -6,6 +6,8 @@ const initialState = {
   authUser: {
     name: "Arjun",
     role: "instructor",
+//     name: "Khurshid",
+//     role: "admin"
   },
   isLoading: {},
   error: {},

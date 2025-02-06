@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import TutorCard from "../../container/tutorCard/TutorCard";
 import TutorFilter from "../../container/tutorCard/TutorFilter";
 import {
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import ContactModal from "../../components/common/ContactModal";
+import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 
 const index = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const index = () => {
   );
 
   return (
-    <div className="text-lg bg-light_bg w-full h-screen p-2 md:p-10 lg:p-20">
+    <div className="text-lg bg-light_bg w-full h-screen p-2 md:p-10 lg:p-20 custom-margin-top">
       <TutorFilter />
       <TutorCard />
       {/* Modal */}

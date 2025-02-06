@@ -122,7 +122,7 @@ const SubjectFilterDropdown = () => {
         </div>
         <hr />
         {/* subject selection */}
-        <div
+        <div  
           style={{
             scrollbarWidth: "thin" /* Firefox ke liye */,
             scrollbarColor: "#888 #f1f1f1" /* Firefox ke liye color */,
