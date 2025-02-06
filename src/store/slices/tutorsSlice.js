@@ -45,13 +45,14 @@ const tutorsSlice = createSlice({
         ...state.processData,
         [field]: data,
       };
-    clearError: (state, action) => {
-      const errorKey = action.payload;
-      if (errorKey) {
-        delete state.error[errorKey];
-      } else {
-        state.error = {};
-      }
+      clearError: (state, action) => {
+        const errorKey = action.payload;
+        if (errorKey) {
+          delete state.error[errorKey];
+        } else {
+          state.error = {};
+        }
+      };
     },
   },
   extraReducers: (builder) => {
@@ -65,9 +66,7 @@ const tutorsSlice = createSlice({
       .addCase(instructorRequest.rejected, (state, action) => {
         state.isLoading["instructorRequest"] = false;
         state.isLoading["instructorRequest"] = action.payload;
-      });
-  },
-})
+      })
       // Fetch tutor profile
       .addCase(fetchTutorProfileAsync.pending, (state) => {
         state.isLoading["fetchTutorProfileAsync"] = true;
@@ -83,5 +82,6 @@ const tutorsSlice = createSlice({
   },
 });
 
-export const { setTutors, clearError, updateProcessData, updateProcessStep } = tutorsSlice.actions;
+export const { setTutors, clearError, updateProcessData, updateProcessStep } =
+  tutorsSlice.actions;
 export default tutorsSlice.reducer;
