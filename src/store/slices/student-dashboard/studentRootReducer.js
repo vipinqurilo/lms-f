@@ -16,6 +16,6 @@ const studentRootReducer = combineReducers({
   enrolledCourses: enrolledCoursesSlice,
   language: languageSlice,
   review: reviewSlice,
-
+});
 
 export default studentRootReducer;
