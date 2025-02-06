@@ -1,27 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
+import { useEffect } from "react";
+import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
 
 export default function ProfilePage() {
-  const [profile] = useState({
-    firstName: "Ronald",
-    lastName: "Richard",
-    userName: "studentdemo",
-    email: "studentdemo@example.com",
-    phoneNumber: "90154-91036",
-    bio: "Hello! I'm Ronald Richard. I'm passionate about developing innovative software solutions, analyzing classic literature. I aspire to become a software developer, work as an editor. In my free time, I enjoy coding, reading, hiking etc.",
-  });
+  const { profile } = useSelector((state) => state.student.profile);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchProfileAsync());
+  }, [dispatch]);
   return (
     <StudentDashboardLayout className="space-y-8">
       {/* Profile Card */}
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="text-2xl font-semibold p-4 px-8 ">My Profile</div>
-        
+        <div className="text-2xl font-semibold p-4 px-8">My Profile</div>
         <hr />
         {/* Profile Info */}
-        <div className="p-4 px-8 ">
+        <div className="p-4 px-8">
           {/* Profile Details */}
           <div className="space-y-6">
             {/* Name Row */}
@@ -30,13 +28,13 @@ export default function ProfilePage() {
                 <label className="block text-sm font-semibold text-dark mb-2">
                   First Name
                 </label>
-                <div className="text-gray-600">{profile.firstName}</div>
+                <div className="text-gray-600">{profile?.firstName}</div>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-dark mb-2">
                   Last Name
                 </label>
-                <div className="text-gray-600">{profile.lastName}</div>
+                <div className="text-gray-600">{profile?.lastName}</div>
               </div>
             </div>
 
@@ -46,13 +44,13 @@ export default function ProfilePage() {
                 <label className="block text-sm font-semibold text-dark mb-2">
                   User Name
                 </label>
-                <div className="text-gray-600">{profile.userName}</div>
+                <div className="text-gray-600">{profile?.userName}</div>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-dark mb-2">
                   Email
                 </label>
-                <div className="text-gray-600">{profile.email}</div>
+                <div className="text-gray-600">{profile?.email}</div>
               </div>
             </div>
 
@@ -61,7 +59,9 @@ export default function ProfilePage() {
               <label className="block text-sm font-semibold text-dark mb-2">
                 Phone Number
               </label>
-              <div className="text-gray-600">{profile.phoneNumber}</div>
+              <div className="text-gray-600">
+                {profile?.phone?.countryCode} {profile?.phone?.number}
+              </div>
             </div>
 
             {/* Bio */}
@@ -69,7 +69,7 @@ export default function ProfilePage() {
               <label className="block text-sm font-semibold text-dark mb-2">
                 Bio
               </label>
-              <div className="text-gray-600">{profile.bio}</div>
+              <div className="text-gray-600">{profile?.bio}</div>
             </div>
           </div>
         </div>

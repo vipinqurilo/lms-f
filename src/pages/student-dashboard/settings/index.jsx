@@ -24,10 +24,7 @@ export default function SettingsPage() {
   const handleAvatarDelete = () => {
     setAvatarUrl("/placeholder.svg");
   };
-  // Fetch profile data on component mount
-  useEffect(() => {
-    dispatch(fetchProfileAsync());
-  }, [dispatch]);
+
   return (
     <StudentDashboardLayout className="space-y-8">
       <div className="bg-white rounded-lg border">

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
+import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
 
 // Define role-based access rules
 const roleBasedRoutes = {

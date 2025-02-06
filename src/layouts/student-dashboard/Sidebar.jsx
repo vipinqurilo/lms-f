@@ -67,11 +67,11 @@ const studentSidebarLinks = [
     icon: ShoppingCart,
     href: "/student-dashboard/orders",
   },
-  {
-    title: "Question & Answer",
-    icon: MessageSquare,
-    href: "/student-dashboard/qa",
-  },
+  // {
+  //   title: "Question & Answer",
+  //   icon: MessageSquare,
+  //   href: "/student-dashboard/qa",
+  // },
   {
     title: "Support Tickets",
     icon: LifeBuoy,
