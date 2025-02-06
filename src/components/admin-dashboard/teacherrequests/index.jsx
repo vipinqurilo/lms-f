@@ -1,20 +1,13 @@
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { FiEye } from "react-icons/fi";
 import TableHeader from "@/components/instructor/TableHeader";
 import { RxCross2 } from "react-icons/rx";
 import { FaRegCalendarCheck } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchData,
-  approveTeacher,
-  rejectTeacher,
-} from "@/store/slices/admin/teacherRequestSlice";
+ 
 import RejectModal from "./rejectModel";
 import ApprovelModal from "./approvel";
+import { approveTeacher, fetchData, rejectTeacher } from "@/store/slices/admin-dashboard/teacherSlice";
  
 const columns = [
   "Sr. No.",
@@ -36,6 +29,7 @@ const TeacherRequests = () => {
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
    const  {teachers}  = useSelector((state) => state.admin?.teacher);
+
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
@@ -64,16 +58,7 @@ const TeacherRequests = () => {
     }
   };
 
-  // const handleApprove = async (teacherId) => {
-  //   try {
-  //     await dispatch(approveTeacher(teacherId)).unwrap();
-  //     console.log("Teacher successfully approved");
-
-  //     dispatch(fetchData());
-  //   } catch (error) {
-  //     console.error("Error approving teacher:", error);
-  //   }
-  // };
+ 
 
   const handleOpenRejectModal = (teacherId) => {
     setSelectedTeacherId(teacherId);
@@ -101,6 +86,8 @@ const TeacherRequests = () => {
   //     console.error("Error rejecting teacher:", error);
   //   }
   // };
+  
+
   
 
   const handleReject = async () => {
@@ -205,7 +192,7 @@ const TeacherRequests = () => {
                 <td className="py-4 px-4 text-gray-700">
                   {teacher.personalInfo?.firstName}
                 </td>
-                <td className="py-4 px-4 text-gray-700">{teacher.email}</td>
+                <td className="py-4 px-4 text-gray-700">{teacher.email}amankumar@gmail.com</td>
                 <td className="py-4 px-4 text-gray-700">
                   {teacher.personalInfo?.firstName}
                 </td>

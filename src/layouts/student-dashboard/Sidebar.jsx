@@ -134,12 +134,12 @@ const adminSidebarLinks = [
   {
     title: "Teachers",
     icon: GraduationCap,
-    href: "/admin-dashboard/teachers",
+    href: "/admin-dashboard/approvals/teachers",
   },
   {
     title: "Withdrawals",
     icon: Wallet,
-    href: "/admin-dashboard/withdrawals",
+    href: "/admin-dashboard/approvals/withdrawals",
   },
 ];
 
