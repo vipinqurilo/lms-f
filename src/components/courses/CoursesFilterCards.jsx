@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/store/slices/coursesSlice";
 
 const CoursesFilterCards = ({ clearTrigger }) => {
-    const dispatch = useDispatch();
-    const { categories, loading, error } = useSelector((state) => state.courses);
-  console.log(categories,"llll")
-    const [expandedCategories, setExpandedCategories] = useState({});
-    const [selectedOptions, setSelectedOptions] = useState({});
+  const dispatch = useDispatch();
+  const { categories, loading, error } = useSelector((state) => state.courses);
+  console.log(categories, "llll");
+  const [expandedCategories, setExpandedCategories] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState({});
 
- useEffect(() => {
+  useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
@@ -19,7 +19,6 @@ const CoursesFilterCards = ({ clearTrigger }) => {
     setSelectedOptions({});
     setExpandedCategories({});
   }, [clearTrigger]);
-
 
   // Category select/unselect + dropdown toggle
   const handleCategoryClick = (category) => {
@@ -57,9 +56,9 @@ const CoursesFilterCards = ({ clearTrigger }) => {
 
   return (
     <div className="lg:w-64 border bg-white border-gray-300 rounded-md p-4 w-full">
-      <h5 className="text-xl font-bold mb-3">Course categories</h5>
+      <h5 className="text-xl font-bold mb-3">Course categories </h5>
       {categories.map((category, index) => (
-        <div key={index} className="mb-2">  
+        <div key={index} className="mb-2">
           {/* Main Category */}
           <div
             className="flex items-center cursor-pointer"
@@ -71,7 +70,8 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                 id={category.name}
                 className="h-4 w-4 appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                 checked={
-                  (selectedOptions[category.name]?.length || 0) === category.options?.length
+                  (selectedOptions[category.name]?.length || 0) ===
+                  category.options?.length
                 }
                 readOnly
               />
@@ -89,7 +89,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
             </label>
           </div>
 
-           {expandedCategories[category.name] && (
+          {expandedCategories[category.name] && (
             <div className="ml-6 mt-2 p-2 rounded shadow-sm">
               <ul className="space-y-2">
                 {category?.options?.map((option, idx) => (
@@ -108,7 +108,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                         )}
                         readOnly
                       />
-                       {selectedOptions[category.name]?.includes(option) && (
+                      {selectedOptions[category.name]?.includes(option) && (
                         <TiTick className="absolute inset-0 m-auto text-white w-4 h-4" />
                       )}
                     </div>

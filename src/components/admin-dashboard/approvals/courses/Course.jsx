@@ -1,13 +1,12 @@
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState } from "react";
-import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing icons
+import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
 const withdrawals = [
   {
     user: "Landen Mosciski",
     ordertype: "webinars",
-    serviceType: "offline",
     netTotal: "20",
     payment: "Is Paid",
     status: "completed",
@@ -19,12 +18,8 @@ const withdrawals = [
 const columns = [
   "ID",
   "Course",
-  "Title  ",
-  "service type",
-  "Net total",
   "Payment",
   "Status",
-  "Date time",
   "Action",
 ];
 
@@ -156,7 +151,7 @@ const Course = () => {
           <TableHeader headingsData={columns} />
 
           <tbody>
-            {courses.map((course, index) => (
+            {courses?.map((course, index) => (
               <tr key={index} className="border-t border-gray-200">
                 <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
 
@@ -165,23 +160,14 @@ const Course = () => {
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   <p>{course.email}</p>
-                  <p className="text-sm text-gray-500">{course.ordertype}</p>
+                  <p className="text-sm text-gray-500">{course.coursePrice}</p>
                 </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {course.serviceType}
-                </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {course.netTotal}
-                </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {course.payment}
-                </td>
+                
+               
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {course.status}
                 </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {course.date}
-                </td>
+             
 
                 <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
@@ -202,5 +188,4 @@ const Course = () => {
     </div>
   );
 };
-
 export default Course;
