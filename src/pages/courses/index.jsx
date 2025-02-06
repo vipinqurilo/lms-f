@@ -6,13 +6,16 @@ import CourseCards from "../../components/courses/CourseCards";
 import CoursesFilter from "../../components/courses/CoursesFilter";
 import CoursesFilterCards from "../../components/courses/CoursesFilterCards";
 import CoursesFilterPrices from "../../components/courses/CoursesFilterPrices";
+import { useSelector } from "react-redux";
+import FeaturedCard from "@/components/common/FeaturedCard";
 
 const Courses = () => {
+  const courses = useSelector((state) => state?.courses?.courses);
+
   const [showFilters, setShowFilters] = useState(false);
   const [clearTrigger, setClearTrigger] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Newly published"); // State for select option
 
-  
   const clearFilters = () => {
     setClearTrigger((prev) => !prev); // Toggle state to trigger effect in child components
     setSelectedOption("Newly published"); // Reset the select option
@@ -98,8 +101,8 @@ const Courses = () => {
           </div>
 
           {/* Course Cards Section */}
-          <div className="mt-7">
-            <CourseCards />
+          <div className="mt-7 grid grid-col-3">
+            <FeaturedCard data={courses} />
           </div>
         </div>
 
@@ -135,7 +138,7 @@ const Courses = () => {
             <CoursesFilterCards clearTrigger={clearTrigger} />
             <CoursesFilterPrices clearTrigger={clearTrigger} />
           </div>
-         </div>
+        </div>
       </div>
 
       <div className="w-11/12 lg:px-10">
