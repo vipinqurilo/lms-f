@@ -16,8 +16,8 @@ export const api2 = axios.create({
   // withCredentials: true,
   headers: {
     Authorization: `Bearer ${token2}`,
-  },
-
+  }
+})
 
 // api.interceptors.request.use((config) => {
 //   if (typeof window !== "undefined") {
