@@ -53,7 +53,7 @@ export default function HeroSection() {
         </h1>
         <div className="flex gap-4 mt-6">
           <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">
-            Join as Student
+            Find a Course
           </button>
           <button className="bg-white text-orange-500 hover:bg-gray-100 px-6 py-2 rounded-full shadow-md">
             Find a Tutor

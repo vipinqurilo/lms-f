@@ -1,7 +1,24 @@
 import React from "react";
+import {
+  addOrderAsync,
+  fetchCoursesAsync,
+  wishlistAsync,
+} from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 
 export default function FeaturedCard({ data }) {
+  const dispatch = useDispatch();
+
+  const handleAddWishlist = (id) => {
+    console.log(id, "iddd");
+    dispatch(wishlistAsync({ course: id }));
+  };
+
+  const handleAddOrder = (id) => {
+    dispatch(addOrderAsync(id));
+  };
+
   return (
     <div className="flex gap-6 md:p-0  p-2">
       <div className="w-96 lg:w-full group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
@@ -22,7 +39,7 @@ export default function FeaturedCard({ data }) {
               />
               <div>
                 <h3 className="text-lg font-semibold group-hover:text-white">
-                  {/* {data?.author} */}  static data
+                  {/* {data?.author} */} static data
                 </h3>
                 <span className="text-sm group-hover:text-white font-medium text-gray-500">
                   Instructor
@@ -31,7 +48,10 @@ export default function FeaturedCard({ data }) {
             </div>
 
             <div>
-              <button className="  text-red-500 group-hover:text-white">
+              <button
+                onClick={() => handleAddWishlist(data?._id)}
+                className="  text-red-500 group-hover:text-white"
+              >
                 <FaRegHeart className="text-xl" />
               </button>
             </div>
@@ -57,7 +77,10 @@ export default function FeaturedCard({ data }) {
                 <span>4.</span> (15)
               </span>
             </div>
-            <button className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] ">
+            <button
+              onClick={() => handleAddOrder(data?._id)}
+              className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] "
+            >
               BUY NOW
             </button>
           </div>
