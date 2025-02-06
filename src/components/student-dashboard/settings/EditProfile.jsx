@@ -197,7 +197,7 @@ export function EditProfile() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {path !== "/instructor-request" ? (
+          {path !== "/instructor-request" && (
             <div className="space-y-2">
               <label
                 htmlFor="userName"
@@ -213,34 +213,6 @@ export function EditProfile() {
                   setLocalProfile({ ...localProfile, userName: e.target.value })
                 }
               />
-            </div>
-          ) : (
-            <div className="w-full flex flex-col gap-2">
-              <label className="text-light text-sm">Gender</label>
-              <div className="flex gap-8">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="male"
-                    checked={gender === "male"}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="cursor-pointer accent-primary scale-150"
-                  />
-                  Male
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="female"
-                    checked={gender === "female"}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="cursor-pointer scale-150 accent-primary"
-                  />
-                  Female
-                </label>
-              </div>
             </div>
           )}
 
