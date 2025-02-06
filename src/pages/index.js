@@ -17,26 +17,35 @@ import Become from "@/components/home/Become";
 import Blog from "@/components/common/BlogCard";
 import BlogSection from "@/container/common/BlogSection";
 import LogoSlider from "@/components/common/LogoSlider";
+import axios from "axios";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state?.courses?.courses);
+
+  useEffect(() => {
+    dispatch(fetchCoursesAsync());
+  }, [dispatch]);
+
   return (
     <>
       <main className=" font-nunito custom-margin-top !overflow-visible">
         <HeroSection />
         <div className="md:mt-0 mt-8">
-        <FeaturedCourses />
+          <FeaturedCourses cardData={courses} />
         </div>
-        
+
         <FeaturedInstructor />
-        <LogoSlider/>
+        <LogoSlider />
         <Mentor />
         <MasterSkill />
         <UserLove />
-        <Become/>
-       <BlogSection/>
+        <Become />
+        <BlogSection />
         <UnlimitedAccess />
-      
-  
       </main>
     </>
   );

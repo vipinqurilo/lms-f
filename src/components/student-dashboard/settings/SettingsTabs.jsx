@@ -2,67 +2,51 @@
 
 import React from "react";
 import { useSelector } from "react-redux";
+import {
+  LuUser,
+  LuLock,
+  LuShare2,
+  LuDollarSign,
+  LuBook,
+  LuBriefcase,
+  LuBanknote,
+} from "react-icons/lu";
 
 const tabs = [
   {
     id: "edit-profile",
     label: "Edit Profile",
-    icon: () => (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-      </svg>
-    ),
+    Icon: LuUser,
   },
   {
     id: "change-password",
     label: "Change Password",
-    icon: () => (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ),
+    Icon: LuLock,
   },
   {
     id: "social-profiles",
     label: "Social Profiles",
-    icon: () => (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-      </svg>
-    ),
+    Icon: LuShare2,
   },
   {
     id: "withdrawal",
     label: "Withdrawal",
-    icon: () => (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-      >
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-      </svg>
-    ),
+    Icon: LuDollarSign,
+  },
+  {
+    id: "subject-language",
+    label: "Subject & Language",
+    Icon: LuBook,
+  },
+  {
+    id: "experience",
+    label: "Experience",
+    Icon: LuBriefcase,
+  },
+  {
+    id: "price",
+    label: "Price",
+    Icon: LuBanknote,
   },
 ];
 
@@ -77,7 +61,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
           authUser?.role === "student"
             ? 3
             : authUser?.role === "instructor"
-            ? 4
+            ? 7
             : undefined
         )
         .map((tab) => (
@@ -90,7 +74,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
                 : "text-gray-500 hover:text-primary"
             }`}
           >
-            <tab.icon />
+            <tab.Icon className="h-5 w-5" />
             {tab.label}
           </button>
         ))}

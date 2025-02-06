@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import TutorCard from "../../container/tutorCard/TutorCard";
 import TutorFilter from "../../container/tutorCard/TutorFilter";
 import {
@@ -39,10 +39,6 @@ const index = () => {
       {isContactModelOpen && (
         <ContactModal onClose={() => dispatch(setIsContactModelOpen(false))} />
       )}
-
-
-
-      <TutorAvailabilityCalendar />
     </div>
   );
 };

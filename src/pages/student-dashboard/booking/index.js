@@ -6,6 +6,8 @@ import { StartEndDateSelector } from "@/components/student-dashboard/StartEndDat
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 import Image from "next/image";
 import index from "@/pages/about";
+import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
+import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
 
 const bookings = [
   {
@@ -39,6 +41,7 @@ const bookings = [
 
 export default function BookingsPage() {
   const [activeTab, setActiveTab] = useState("regular");
+  const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -102,8 +105,33 @@ export default function BookingsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex items-center justify-start mb-6">
+      <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold">My Bookings</h2>
+        <div className="flex w-fit bg-white p-1 rounded-lg">
+      <button
+        className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
+          activeTab2 === "listing"
+            ? "bg-orange-500 text-white"
+            : "text-gray-700"
+        }`}
+
+        onClick={() => setActiveTab2("listing")}
+      >
+        Listing
+      </button>
+      <button
+        className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
+          activeTab2 === "calendar"
+            ? "bg-orange-500 text-white"
+            : "text-gray-700"
+        }`}
+
+        onClick={() => setActiveTab2("calendar")}
+      >
+        Calendar
+      </button>
+    </div>
+
       </div>
 
       {/* Custom Tabs */}
@@ -172,69 +200,75 @@ export default function BookingsPage() {
         </div>
       </div>
       {/* Bookings Content */}
-      <div className="space-y-6">
-        {activeTab === "All lessons" ? (
-          bookings.map((booking) => (
-            <div
-              key={booking.id}
-              className="bg-white rounded-lg shadow-sm overflow-hidden"
-            >
-              <div className="flex gap-6 p-4">
-                <Image
-                  width={128}
-                  height={128}
-                  src="/assets/tutor/Marlenereilly.jpg"
-                  alt="Tutor"
-                  className="rounded-xl object-cover w-[80px] lg:w-[128px] h-[80px] lg:h-[128px]"
-                />
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold mb-2">{booking.title}</h3>
-                  <p className="text-sm text-gray-500 mb-4">
-                    {booking.description}
-                  </p>
-                  <div className="flex items-center gap-6 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span>
-                        {booking.duration} 
-                      </span>
-                    </div>
-                    {/* <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                      <span>{booking.level}</span>
-                    </div> */}
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4" />
-                      <span>by {booking.instructor}</span>
-                      <span className="text-xs text-emerald-700 font-semibold">
-                        Available at {booking.time}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end justify-between">
-                  <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800" ><Video /></span>
-                  {/* <div className="w-32">
-                    <div className="h-2 bg-gray-100 rounded-full">
-                      <div
-                        className="h-full bg-orange-500 rounded-full transition-all duration-300"
-                        style={{ width: `${booking.progress}%` }}
-                      />
-                    </div>
-                    <span className="text-sm text-gray-600 mt-1 block text-right">
-                      {booking.progress}%
-                    </span>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-12 text-gray-500">
-            No one-o-one bookings found
-          </div>
-        )}
-      </div>
+     {activeTab2==="listing"?(
+       <div className="space-y-6">
+       {activeTab === "All lessons" ? (
+         bookings.map((booking) => (
+           <div
+             key={booking.id}
+             className="bg-white rounded-lg shadow-sm overflow-hidden"
+           >
+             <div className="flex gap-6 p-4">
+               <Image
+                 width={128}
+                 height={128}
+                 src="/assets/tutor/Marlenereilly.jpg"
+                 alt="Tutor"
+                 className="rounded-xl object-cover w-[80px] lg:w-[128px] h-[80px] lg:h-[128px]"
+               />
+               <div className="flex-1 min-w-0">
+                 <h3 className="font-semibold mb-2">{booking.title}</h3>
+                 <p className="text-sm text-gray-500 mb-4">
+                   {booking.description}
+                 </p>
+                 <div className="flex items-center gap-6 text-sm text-gray-600">
+                   <div className="flex items-center gap-2">
+                     <Clock className="h-4 w-4" />
+                     <span>
+                       {booking.duration} 
+                     </span>
+                   </div>
+                   {/* <div className="flex items-center gap-2">
+                     <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                     <span>{booking.level}</span>
+                   </div> */}
+                   <div className="flex items-center gap-2">
+                     <User className="h-4 w-4" />
+                     <span>by {booking.instructor}</span>
+                     <span className="text-xs text-emerald-700 font-semibold">
+                       Available at {booking.time}
+                     </span>
+                   </div>
+                 </div>
+               </div>
+               <div className="flex flex-col items-end justify-between">
+                 <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800" ><Video /></span>
+                 {/* <div className="w-32">
+                   <div className="h-2 bg-gray-100 rounded-full">
+                     <div
+                       className="h-full bg-orange-500 rounded-full transition-all duration-300"
+                       style={{ width: `${booking.progress}%` }}
+                     />
+                   </div>
+                   <span className="text-sm text-gray-600 mt-1 block text-right">
+                     {booking.progress}%
+                   </span>
+                 </div> */}
+               </div>
+             </div>
+           </div>
+         ))
+       ) : (
+         <div className="text-center py-12 text-gray-500">
+           No one-o-one bookings found
+         </div>
+       )}
+     </div>
+     ):(
+      <>
+      <AvailabilityCalendar/>
+      </>
+     )}
     </StudentDashboardLayout>
   );
 }

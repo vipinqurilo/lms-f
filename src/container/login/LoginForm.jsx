@@ -4,8 +4,13 @@ import LogoHeader from "@/components/login/LogoHeader";
 import SubmitButton from "@/components/login/SubmitButton";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoginAsync } from "@/store/slices/userSlice";
+import Loader from "@/components/common/Loader";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
   const {
     register,
     formState: { errors },
@@ -13,8 +18,9 @@ const LoginForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    console.log(data);
+    dispatch(userLoginAsync(data));
   };
+
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">
       <div className="py-10 md:px-10 md:py-20 lg:py-20 lg:px-20 px-6 w-full flex flex-col gap-8">
@@ -40,7 +46,6 @@ const LoginForm = () => {
             errors={errors}
             placeHolder={"Enter Your Password"}
           />
-
           <div className="flex items-center justify-between">
             <label className="flex items-center">
               <input
@@ -58,8 +63,7 @@ const LoginForm = () => {
               Forgot Password?
             </button>
           </div>
-
-          <SubmitButton text={"Login"} />
+          {<SubmitButton text={loading ? <Loader /> : "Login"} />}
         </form>
       </div>
       <LoginOptions type={"login"} />

@@ -1,144 +1,85 @@
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { api, api2 } from "../api/api";
+import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
 
-// // API URL
-// const API_URL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/category/filter';
-
-// // Async Thunk using fetch
-// export const fetchCategories = createAsyncThunk('courses/fetchCategories', async () => {
-//   const response = await fetch(API_URL);
-//   if (!response.ok) {
-//     throw new Error('Failed to fetch categories');
-//   }
-
-//   const result = await response.json();
-//   return result.data || []; // Extract 'data' array
-// });
-
-// const coursesSlice = createSlice({
-//   name: 'courses',
-//   initialState: {
-//     categories: [], // Ensure it's an empty array initially
-//     loading: false,
-//     error: null,
-//   },
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(fetchCategories.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(fetchCategories.fulfilled, (state, action) => {
-//         state.loading = false;
-//         state.categories = Array.isArray(action.payload) ? action.payload : [];
-//       })
-//       .addCase(fetchCategories.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.error.message;
-//       });
-//   },
-// });
-
-// export default coursesSlice.reducer;
-
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-// API URLs
-const CATEGORY_API_URL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/category/filter';
-const COURSE_API_URL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/filter/';
-const COURSE_API_URL_ALL = 'https://6g2n7ff0-8000.inc1.devtunnels.ms/api/course/front'; // New endpoint for all courses
-
-// Async Thunk to fetch categories
-export const fetchCategories = createAsyncThunk('courses/fetchCategories', async () => {
-  const response = await fetch(CATEGORY_API_URL);
-  if (!response.ok) {
-    throw new Error('Failed to fetch categories');
-  }
-
-  const result = await response.json();
-  return result.data || [];
-});
-
-// Async Thunk to fetch courses by category
-export const fetchCoursesByCategory = createAsyncThunk(
-  'courses/fetchCoursesByCategory',
-  async (categoryId) => {
-    const response = await fetch(`${COURSE_API_URL}${categoryId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch courses');
-    }
-
-    const result = await response.json();
-    return result.data || [];
-  }
+export const fetchCategories = CreateApiAsyncThunk(
+  "GET/courses/fetchCategories",
+  () => api.get(`api/category/filter`, data)
 );
 
-// Async Thunk to fetch all courses (no filter)
-export const fetchCourses = createAsyncThunk(
-  'courses/fetchCourses',
-  async () => {
-    const response = await fetch(COURSE_API_URL_ALL);
-    if (!response.ok) {
-      throw new Error('Failed to fetch courses');
-    }
+export const fetchCoursesAsync = CreateApiAsyncThunk(
+  "GET/courses/fetchCoursesAsync",
+  () => api.get(`/api/course/admin/get`)
+);
 
-    const result = await response.json();
-    return result.data || [];
-  }
+export const wishlistAsync = CreateApiAsyncThunk(
+  "courses/wishlistAsync",
+  (data) => api2.post(`/api/whishlist`, data)
+);
+
+export const addOrderAsync = CreateApiAsyncThunk(
+  "courses/addOrderAsync",
+  (data) => api2.post(`/api/order`, data)
 );
 
 const coursesSlice = createSlice({
-  name: 'courses',
+  name: "courses",
   initialState: {
     categories: [],
     courses: [],
-    loading: false,
-    error: null,
+    wishlist: [],
+    orders: [],
+    isLoading: {},
+    error: {},
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
       // Handle category fetch actions
       .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.isLoading["fetchCategories"] = true;
+        state.error["fetchCategories"] = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading["fetchCategories"] = false;
         state.categories = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+        state.isLoading["fetchCategories"] = false;
+        state.error["fetchCategories"] = action.error.message;
       })
-
-      // Handle fetch courses by category
-      .addCase(fetchCoursesByCategory.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(wishlistAsync.pending, (state, action) => {
+        state.isLoading["wishlistAsync"] = true;
       })
-      .addCase(fetchCoursesByCategory.fulfilled, (state, action) => {
-        state.loading = false;
-        state.courses = Array.isArray(action.payload) ? action.payload : [];
+      .addCase(wishlistAsync.fulfilled, (state, action) => {
+        state.isLoading["wishlistAsync"] = false;
+        state.wishlist = action.payload?.data;
       })
-      .addCase(fetchCoursesByCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+      .addCase(wishlistAsync.rejected, (state, action) => {
+        state.isLoading["wishlistAsync"] = false;
+        state.error["wishlistAsync"] = action.payload;
       })
-
-      // Handle fetch all courses (no filter)
-      .addCase(fetchCourses.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(fetchCoursesAsync.pending, (state, action) => {
+        state.isLoading["fetchCoursesAsync"] = true;
       })
-      .addCase(fetchCourses.fulfilled, (state, action) => {
-        state.loading = false;
-        state.courses = Array.isArray(action.payload) ? action.payload : [];
+      .addCase(fetchCoursesAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchCoursesAsync"] = false;
+        state.courses = action.payload?.data;
       })
-      .addCase(fetchCourses.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+      .addCase(fetchCoursesAsync.rejected, (state, action) => {
+        state.isLoading["fetchCoursesAsync"] = false;
+        state.error["fetchCoursesAsync"] = action.payload;
+      })
+      .addCase(addOrderAsync.pending, (state, action) => {
+        state.isLoading["addOrderAsync"] = true;
+      })
+      .addCase(addOrderAsync.fulfilled, (state, action) => {
+        state.isLoading["addOrderAsync"] = false;
+        state.orders = action.payload?.data;
+      })
+      .addCase(addOrderAsync.rejected, (state, action) => {
+        state.isLoading["addOrderAsync"] = false;
+        state.error["addOrderAsync"] = action.payload;
       });
   },
 });
