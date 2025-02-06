@@ -1,6 +1,7 @@
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState } from "react";
 import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi";
+import { FaRegEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const columns = ["ID", "Course", "Payment", "Status", "Action"];
@@ -143,7 +144,7 @@ const Course = () => {
                 <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
                     <button className="text-gray-600 hover:text-blue-500">
-                      <FiEye size={15} />
+                      <FaRegEdit size={15} />
                     </button>
 
                     <button className="text-gray-600 hover:text-gray-500">
