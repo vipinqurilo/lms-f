@@ -3,41 +3,14 @@ import React, { useState } from "react";
 import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
-const withdrawals = [
-  {
-    user: "Landen Mosciski",
-    ordertype: "webinars",
-    netTotal: "20",
-    payment: "Is Paid",
-    status: "completed",
-    date: "Sep 11, 2022 16:40",
-    link: "",
-  },
-];
-
-const columns = [
-  "ID",
-  "Course",
-  "Payment",
-  "Status",
-  "Action",
-];
+const columns = ["ID", "Course", "Payment", "Status", "Action"];
 
 const Course = () => {
   const { data: courses } = useSelector(
     (state) => state.admin?.course?.courses
   ) || { data: [] };
 
-  const [statusList, setStatusList] = useState(
-    withdrawals.map((withdrawal) => withdrawal.status)
-  );
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const toggleStatus = (index) => {
-    const updatedStatus = [...statusList];
-    updatedStatus[index] = !updatedStatus[index];
-    setStatusList(updatedStatus);
-  };
 
   return (
     <div className="    rounded-lg p-6 w-full max-w-6xl mx-auto ">
@@ -162,12 +135,10 @@ const Course = () => {
                   <p>{course.email}</p>
                   <p className="text-sm text-gray-500">{course.coursePrice}</p>
                 </td>
-                
-               
+
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {course.status}
                 </td>
-             
 
                 <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
