@@ -102,21 +102,22 @@ export function EditProfile() {
   };
 
   const handleNext = () => {
-    const allFieldsFilled = Object.entries(localProfile).every(
-      ([key, value]) =>
-        key === "bio" ||
-        key === "userName" ||
-        key === "designation" ||
-        value.trim() !== ""
-    );
+    const requiredFields = [
+      localProfile.firstName,
+      localProfile.lastName,
+      localProfile.gender,
+      localProfile.countryCode,
+      localProfile.phoneNumber,
+      idProof,
+    ];
 
-    if (allFieldsFilled && gender !== "" && idProof !== "") {
+    if (requiredFields.every((field) => field && field.trim() !== "")) {
       const data = {
         firstName: localProfile.firstName,
         lastName: localProfile.lastName,
-        gender,
+        gender: localProfile?.gender,
         phone: {
-          countryCode: "+91",
+          countryCode: localProfile.countryCode,
           number: localProfile.phoneNumber,
         },
         idProof,
@@ -155,136 +156,99 @@ export function EditProfile() {
         path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"
       }`}
     >
-        {path !== "/instructor-request" && (
-          <div className=" flex flex-col">
-            <div className="text-lg font-semibold  ">Personal Details</div>
-            <div className="text-gray-800">Edit your personal information</div>
+      {path !== "/instructor-request" && (
+        <div className=" flex flex-col">
+          <div className="text-lg font-semibold  ">Personal Details</div>
+          <div className="text-gray-800">Edit your personal information</div>
+        </div>
+      )}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            First Name
+          </label>
+          <input
+            id="firstName"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            value={localProfile.firstName}
+            onChange={(e) =>
+              setLocalProfile({ ...localProfile, firstName: e.target.value })
+            }
+          />
+        </div>
+        <div className="space-y-2">
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Last Name
+          </label>
+          <input
+            id="lastName"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            value={localProfile.lastName}
+            onChange={(e) =>
+              setLocalProfile({ ...localProfile, lastName: e.target.value })
+            }
+          />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        {path !== "/instructor-request" ? (
+          <div className="space-y-2">
+            <label
+              htmlFor="userName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              User Name
+            </label>
+            <input
+              id="userName"
+              className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              value={localProfile.userName}
+              onChange={(e) =>
+                setLocalProfile({ ...localProfile, userName: e.target.value })
+              }
+            />
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <label
+              htmlFor="gender"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Gender
+            </label>
+            <select
+              id="gender"
+              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              value={localProfile.gender}
+              onChange={(e) =>
+                setLocalProfile({ ...localProfile, gender: e.target.value })
+              }
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
           </div>
         )}
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label
-              htmlFor="firstName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              First Name
-            </label>
-            <input
-              id="firstName"
-              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-              value={localProfile.firstName}
-              onChange={(e) =>
-                setLocalProfile({ ...localProfile, firstName: e.target.value })
-              }
-            />
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="lastName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Last Name
-            </label>
-            <input
-              id="lastName"
-              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-              value={localProfile.lastName}
-              onChange={(e) =>
-                setLocalProfile({ ...localProfile, lastName: e.target.value })
-              }
-            />
-          </div>
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {path !== "/instructor-request" ? (
-            <div className="space-y-2">
-              <label
-                htmlFor="userName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                User Name
-              </label>
-              <input
-                id="userName"
-                className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-                value={localProfile.userName}
-                onChange={(e) =>
-                  setLocalProfile({ ...localProfile, userName: e.target.value })
-                }
-              />
-            </div>
-          ):(
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="gender"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Gender
-                  </label>
-                  <select
-                    id="gender"
-                    className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-                    value={localProfile.gender}
-                    onChange={(e) =>
-                      setLocalProfile({ ...localProfile, gender: e.target.value })
-                    }
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                {path !== "/instructor-request" && (
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Country
-                    </label>
-                    <input
-                      id="country"
-                      className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-                      value={localProfile.country}
-                      onChange={(e) =>
-                        setLocalProfile({ ...localProfile, country: e.target.value })
-                      }
-                    />
-                  </div>
-                )}
-        
-                {path === "/instructor-request" && (
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="designation"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Id Proof (Link of ID Proof)
-                    </label>
-                    <input
-                      id="designation"
-                      className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-                      value={idProof}
-                      onChange={(e) => setIdProof(e.target.value)}
-                    />
-                  </div>
-                )}
-              </div>
-          )}
-
-           <div className="">
-           <label
-              htmlFor="phoneNumber"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Phone Number{" "}
-              {phoneNumberError && (
-                <span className="text-red-500 text-xs">{phoneNumberError}</span>
-              )}
-            </label>
+        <div className="">
+          <label
+            htmlFor="phoneNumber"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Phone Number{" "}
+            {phoneNumberError && (
+              <span className="text-red-500 text-xs">{phoneNumberError}</span>
+            )}
+          </label>
           <div className="flex">
             <input
               id="countryCode"
@@ -311,70 +275,67 @@ export function EditProfile() {
               }
             />
           </div>
-           </div>
         </div>
+      </div>
 
-       
-
-        {path !== "/instructor-request" && (
-      <div className="grid md:grid-cols-2 gap-6">
+      {path !== "/instructor-request" && (
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2 w-full">
+            <label
+              htmlFor="gender"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Gender
+            </label>
+            <select
+              id="gender"
+              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              value={localProfile.gender}
+              onChange={(e) =>
+                setLocalProfile({ ...localProfile, gender: e.target.value })
+              }
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          {path !== "/instructor-request" && (
+            <div className="space-y-2">
+              <label
+                htmlFor="country"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Country
+              </label>
+              <input
+                id="country"
+                className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+                value={localProfile.country}
+                onChange={(e) =>
+                  setLocalProfile({ ...localProfile, country: e.target.value })
+                }
+              />
+            </div>
+          )}
+        </div>
+      )}
+      {path === "/instructor-request" && (
         <div className="space-y-2">
           <label
-            htmlFor="gender"
+            htmlFor="designation"
             className="block text-sm font-medium text-gray-700"
           >
-            Gender
+            Id Proof (Link of ID Proof)
           </label>
-          <select
-            id="gender"
-            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-            value={localProfile.gender}
-            onChange={(e) =>
-              setLocalProfile({ ...localProfile, gender: e.target.value })
-            }
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
+          <input
+            id="designation"
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            value={idProof}
+            onChange={(e) => setIdProof(e.target.value)}
+          />
         </div>
-        {path !== "/instructor-request" && (
-          <div className="space-y-2">
-            <label
-              htmlFor="country"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Country
-            </label>
-            <input
-              id="country"
-              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-              value={localProfile.country}
-              onChange={(e) =>
-                setLocalProfile({ ...localProfile, country: e.target.value })
-              }
-            />
-          </div>
-        )}
-
-        {path === "/instructor-request" && (
-          <div className="space-y-2">
-            <label
-              htmlFor="designation"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Id Proof (Link of ID Proof)
-            </label>
-            <input
-              id="designation"
-              className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-              value={idProof}
-              onChange={(e) => setIdProof(e.target.value)}
-            />
-          </div>
-        )}
-      </div>
       )}
 
       {path !== "/instructor-request" && (

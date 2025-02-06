@@ -32,16 +32,11 @@ const WithdrawalTabProfile = () => {
           accountnumber: profile?.paymentInfo?.accountNumber || "",
           bankname: profile?.paymentInfo?.bankName || "",
           ifscCode: profile?.paymentInfo?.ifscCode || "",
-        });
-      } else if (selectedMethod === methods[1]) {
-        reset({
           paypalemailaddress: profile?.paymentInfo?.paypalEmail || "",
         });
       }
     }
   }, [profile, selectedMethod, reset]);
-
-  console.log(profile);
 
   const submitHandler = (data) => {
     const formdata = {

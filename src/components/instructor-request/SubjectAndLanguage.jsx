@@ -15,10 +15,12 @@ import {
   updateLanguages,
   updateSubjects,
 } from "@/store/slices/instructor/settingsSlice";
+import { getLanguages } from "@/store/slices/languageSlice";
 
 const SubjectAndLanguage = () => {
   const path = usePathname();
   const { profile } = useSelector((state) => state.instructor.setting);
+  const { languages } = useSelector((state) => state.languages);
   const loading = useSelector(
     (state) => state.instructor.setting.isLoading.updateLanguages
   );
@@ -65,9 +67,9 @@ const SubjectAndLanguage = () => {
     dispatch(updateProcessStep(4));
   };
 
-  const languageOptions = data?.languages?.map((language) => ({
+  const languageOptions = languages?.map((language) => ({
     label: language.name,
-    value: language.code,
+    value: language._id,
   }));
 
   const subjectsData = data?.subjects?.map((subject) => ({
@@ -103,6 +105,10 @@ const SubjectAndLanguage = () => {
     };
     dispatch(updateSubjects(data));
   };
+
+  useEffect(() => {
+    dispatch(getLanguages());
+  }, []);
 
   return (
     <div className="w-full space-y-6">
@@ -149,9 +155,6 @@ const SubjectAndLanguage = () => {
                     value: data,
                   })
                 );
-
-                console.log("subSubjectsArray", subSubjectsArray);
-
                 return (
                   <div key={subsubject?.value}>
                     <SettingsInputField
@@ -172,16 +175,18 @@ const SubjectAndLanguage = () => {
         })}
       </div>
 
-      <SettingsInputField
-        control={control}
-        errors={errors}
-        label={"Languages"}
-        isSelect={true}
-        name={"language"}
-        options={languageOptions}
-        register={register}
-        isMulti={true}
-      />
+      {languages && languageOptions?.length > 0 && (
+        <SettingsInputField
+          control={control}
+          errors={errors}
+          label={"Languages"}
+          isSelect={true}
+          name={"language"}
+          options={languageOptions}
+          register={register}
+          isMulti={true}
+        />
+      )}
 
       {path === "/instructor-dashboard/settings" ? (
         <div className="flex items-center gap-5">

@@ -15,7 +15,7 @@ export const userLoginAsync = CreateApiAsyncThunk(
 const initialState = {
   authUser: {
     name: "khurshid",
-    role: "student",
+    role: "instructor",
   },
   isLoading: {},
   error: {},
