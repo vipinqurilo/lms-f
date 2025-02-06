@@ -18,7 +18,7 @@ const withdrawals = [
 
 const columns = [
   "ID",
-  "User",
+  "Course",
   "Title  ",
   "service type",
   "Net total",
@@ -29,9 +29,9 @@ const columns = [
 ];
 
 const Course = () => {
-  const { data } = useSelector((state) => state.admin?.course?.courses);
-
-  console.log(data, "kd datas");
+  const { data: courses } = useSelector(
+    (state) => state.admin?.course?.courses
+  ) || { data: [] };
 
   const [statusList, setStatusList] = useState(
     withdrawals.map((withdrawal) => withdrawal.status)
@@ -156,33 +156,31 @@ const Course = () => {
           <TableHeader headingsData={columns} />
 
           <tbody>
-            {withdrawals.map((withdrawal, index) => (
+            {courses.map((course, index) => (
               <tr key={index} className="border-t border-gray-200">
                 <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
 
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p className="font-mediumtext-sm ">{withdrawal.user}</p>
+                  <p className="font-mediumtext-sm ">{course?.courseTitle}</p>
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p>{withdrawal.email}</p>
-                  <p className="text-sm text-gray-500">
-                    {withdrawal.ordertype}
-                  </p>
+                  <p>{course.email}</p>
+                  <p className="text-sm text-gray-500">{course.ordertype}</p>
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.serviceType}
+                  {course.serviceType}
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.netTotal}
+                  {course.netTotal}
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.payment}
+                  {course.payment}
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.status}
+                  {course.status}
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.date}
+                  {course.date}
                 </td>
 
                 <td className="py-4 px-4 text-center text-sm">
