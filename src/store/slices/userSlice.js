@@ -11,12 +11,13 @@ export const userLoginAsync = CreateApiAsyncThunk(
   "user/userLoginAsync",
   (userData) => api.post(`/api/auth/login`, userData)
 );
- 
+
 
 const initialState = {
   authUser: {
-    name: "Khurshid",
-    role: "admin"
+    name: "khurshid",
+    role: "student",
+
   },
   isLoading: {},
   error: {},
@@ -55,7 +56,10 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.error["userLoginAsync"] = action.payload;
+
       })
+
+
       .addCase(instructorRegister.pending, (state) => {
         state.isLoading["instructorRegister"] = true;
       })

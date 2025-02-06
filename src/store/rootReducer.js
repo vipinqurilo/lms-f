@@ -5,7 +5,10 @@ import uiReducer from "./slices/uiSlice";
 import instructorRootReducer from "./slices/instructor/instructorRootReducer";
 import adminRootReducer from "./slices/admin/adminRootReducer";
 import uploadSlice from "./slices/uploadSlice";
-import studentRootReducer from "./slices/student/studentRootReducer";
+
+import studentRootReducer from "./slices/student-dashboard/studentRootReducer";
+
+
 import userSlice from "./slices/userSlice";
 
 const rootReducer = combineReducers({
