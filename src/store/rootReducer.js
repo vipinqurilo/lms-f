@@ -3,11 +3,9 @@ import coursesReducer from "./slices/coursesSlice";
 import tutorsReducer from "./slices/tutorsSlice";
 import uiReducer from "./slices/uiSlice";
 import instructorRootReducer from "./slices/instructor/instructorRootReducer";
-import adminRootReducer from "./slices/admin-dashboard/adminRootReducer";
+import adminRootReducer from "./slices/admin/adminRootReducer";
 import uploadSlice from "./slices/uploadSlice";
-
 import studentRootReducer from "./slices/student/studentRootReducer";
-
 import userSlice from "./slices/userSlice";
 
 const rootReducer = combineReducers({
