@@ -1,13 +1,16 @@
+import { usePathname } from "next/navigation";
 import React from "react";
 
 export function AvatarUpload({ avatarUrl, onUpload, onDelete }) {
+  const path = usePathname();
+
   return (
-    <div className="flex items-start gap-6 border-b p-4 px-8">
+    <div className={`flex items-start gap-6 border-b py-4 ${path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"}`}>
       <div className="relative">
         <img
           src={avatarUrl || "/placeholder.svg"}
           alt="Profile"
-          className="w-24 h-24 rounded-full object-cover"
+          className="!w-24 h-auto lg:!h-24 rounded-full object-cover"
         />
 
         <input

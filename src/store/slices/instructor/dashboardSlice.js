@@ -1,3 +1,5 @@
+import { api } from "@/store/api/api";
+import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -7,16 +9,31 @@ const initialState = {
   error: {},
 };
 
+export const getCardStats = CreateApiAsyncThunk("dashboard/getCardStats", () =>
+  api.get(``)
+);
+
 const dashboardSlice = createSlice({
   name: "dashboard",
   initialState,
   reducers: {
     toggleIsCollapsed: (state) => {
-        state.isCollapsed = !state.isCollapsed
-    }
+      state.isCollapsed = !state.isCollapsed;
+    },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCardStats.pending, (state) => {
+        state.isLoading["getCardStats"] = true;
+      })
+      .addCase(getCardStats.fulfilled, (state) => {
+        state.isLoading["getCardStats"] = false;
+      })
+      .addCase(getCardStats.rejected, (state) => {
+        state.isLoading["getCardStats"] = false;
+      });
+  },
 });
 
-export const { toggleIsCollapsed } = dashboardSlice.actions
+export const { toggleIsCollapsed } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

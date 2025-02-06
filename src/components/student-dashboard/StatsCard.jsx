@@ -1,9 +1,18 @@
-export function StatsCard({ title, value, subtitle }) {
+import Image from "next/image"
+
+export function StatsCard({ title, value, iconSrc }) {
   return (
-    <div className="bg-white border p-6 rounded-lg shadow-sm">
-      <div className="text-4xl font-bold text-dark mb-2">{value}</div>
-      <h3 className="text-gray-500">{title}</h3>
-      {subtitle && <p className="text-sm text-gray-400 mt-1">{subtitle}</p>}
+    <div className="bg-white p-6 rounded-xl shadow-sm border">
+      <div className="flex items-start gap-4">
+        <div className={`rounded-full `}>
+          <Image src={iconSrc || "/placeholder.svg"} alt={title} width={40} height={40} className="w-16 h-16" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-gray-500 text-sm">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+

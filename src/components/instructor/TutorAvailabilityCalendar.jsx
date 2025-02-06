@@ -1,21 +1,22 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
-
+import { X } from "lucide-react"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
-const AvailabilityCalendar = () => {
-  const [currentWeek, setCurrentWeek] = useState(0)
+const TutorAvailabilityCalendar = () => {
+
   const [selections, setSelections] = useState({})
   const [isSelecting, setIsSelecting] = useState(false)
   const [startCell, setStartCell] = useState(null)
   const [endCell, setEndCell] = useState(null)
   const [isResizing, setIsResizing] = useState(false)
   const [resizeStartCell, setResizeStartCell] = useState(null)
-    console.log(selections,'selections')
+
+  const [resizeDirection, setResizeDirection] = useState(null)
+
   const times = Array.from({ length: 96 }, (_, index) => {
     const hours = Math.floor(index / 4)
       .toString()
@@ -24,9 +25,14 @@ const AvailabilityCalendar = () => {
     return `${hours}:${minutes}`
   })
 
-  const handleMouseDown = (dayIndex, timeIndex) => {
-    if (selections[DAYS[dayIndex]]?.[timeIndex]) {
-      // Start resizing if clicking on an existing selection
+
+  const handleMouseDown = (dayIndex, timeIndex, edge = null) => {
+    if (edge) {
+      setIsResizing(true)
+      setResizeStartCell([dayIndex, timeIndex])
+      setResizeDirection(edge)
+    } else if (selections[DAYS[dayIndex]]?.[timeIndex]) {
+
       setIsResizing(true)
       setResizeStartCell([dayIndex, timeIndex])
     } else {
@@ -65,8 +71,20 @@ const AvailabilityCalendar = () => {
       const [endDay, endTime] = endCell
 
       const day = DAYS[startDay]
-      for (let t = Math.min(startTime, endTime); t <= Math.max(startTime, endTime); t++) {
-        newSelections[day][t] = true
+
+      if (resizeDirection === "top") {
+        const blockEnd = findBlockEnd(day, startTime)
+        const newStart = Math.min(endTime, blockEnd)
+        for (let t = Math.min(newStart, startTime); t <= Math.max(newStart, startTime); t++) {
+          newSelections[day][t] = t >= newStart
+        }
+      } else if (resizeDirection === "bottom") {
+        const blockStart = findBlockStart(day, startTime)
+        const newEnd = Math.max(endTime, blockStart)
+        for (let t = Math.min(newEnd, startTime); t <= Math.max(newEnd, startTime); t++) {
+          newSelections[day][t] = t <= newEnd
+        }
+
       }
 
       setSelections(newSelections)
@@ -77,93 +95,119 @@ const AvailabilityCalendar = () => {
     setStartCell(null)
     setEndCell(null)
     setResizeStartCell(null)
-  }, [isSelecting, isResizing, startCell, endCell, resizeStartCell, selections])
+
+    setResizeDirection(null)
+  }, [isSelecting, isResizing, startCell, endCell, resizeStartCell, resizeDirection, selections])
+
 
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp)
     return () => document.removeEventListener("mouseup", handleMouseUp)
   }, [handleMouseUp])
 
-  const removeBlockSelection = (day, startTimeIndex, endTimeIndex) => {
-    const newSelections = { ...selections }
-    for (let t = startTimeIndex; t <= endTimeIndex; t++) {
-      if (newSelections[day]) {
-        newSelections[day][t] = false
-      }
+  const findBlockStart = (day, timeIndex) => {
+    while (timeIndex > 0 && selections[day][timeIndex - 1]) {
+      timeIndex--
     }
-    setSelections(newSelections)
+    return timeIndex
   }
 
-  const removeSelection = (day, timeIndex) => {
+  const findBlockEnd = (day, timeIndex) => {
+    while (timeIndex < 95 && selections[day][timeIndex + 1]) {
+      timeIndex++
+    }
+    return timeIndex
+  }
+
+  const removeBlockSelection = (day, startTimeIndex) => {
     const newSelections = { ...selections }
-    let t = timeIndex
-    while (newSelections[day]?.[t]) {
-      newSelections[day][t] = false
-      t++
+    let endTimeIndex = startTimeIndex
+    while (newSelections[day]?.[endTimeIndex]) {
+      newSelections[day][endTimeIndex] = false
+      endTimeIndex++
+
     }
     setSelections(newSelections)
   }
 
   const renderCell = (day, dayIndex, timeIndex) => {
     const isSelected = selections[day]?.[timeIndex]
-    const isPartOfBlock = isSelected && selections[day]?.[timeIndex - 1] && selections[day]?.[timeIndex + 1]
 
-    if (isPartOfBlock && (timeIndex === 0 || !selections[day]?.[timeIndex - 1])) {
-      // Find the end of the block
-      let endTimeIndex = timeIndex
-      while (selections[day]?.[endTimeIndex + 1]) {
-        endTimeIndex++
-      }
+    const isFirstInBlock = isSelected && !selections[day]?.[timeIndex - 1]
+    const isLastInBlock = isSelected && !selections[day]?.[timeIndex + 1]
+    const isMiddleOfBlock = isSelected && selections[day]?.[timeIndex - 1] && selections[day]?.[timeIndex + 1]
 
-      return (
-        <div
-          key={`${day}-${timeIndex}`}
-          className="relative h-4 bg-green-200"
-          onMouseDown={() => handleMouseDown(dayIndex, timeIndex)}
-          onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
-        >
-          <button
-            className="absolute top-0 right-0 p-0.5"
-            onClick={() => removeBlockSelection(day, timeIndex, endTimeIndex)}
-          >
-            <X size={8} />
-          </button>
-        </div>
-      )
+    let cellClass = "relative h-4 "
+    if (day === "Sat") cellClass += "border-r "
+    if (isSelected) {
+      cellClass += "bg-green-200 "
+      if (isFirstInBlock) cellClass += "border-t border-l border-r "
+      else if (isLastInBlock) cellClass += "border-b border-l border-r "
+      else if (isMiddleOfBlock) cellClass += "border-l border-r "
+    } else {
+      cellClass += "bg-white border-l border-b "
     }
+    cellClass += "border-gray-200"
+
 
     return (
       <div
         key={`${day}-${timeIndex}`}
-        className={`relative h-4 ${isPartOfBlock ? "bg-green-200" : "border border-gray-200"} ${
-          isSelected ? "bg-green-200" : "bg-white"
-        }`}
+
+        className={cellClass}
         onMouseDown={() => handleMouseDown(dayIndex, timeIndex)}
         onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
       >
-        {isSelected && !isPartOfBlock && (
-          <button className="absolute top-0 right-0 p-0.5" onClick={() => removeSelection(day, timeIndex)}>
-            <X size={8} />
-          </button>
+        {isFirstInBlock && (
+          <>
+            <button className="absolute top-0 right-0 p-0.5" onClick={() => removeBlockSelection(day, timeIndex)}>
+              <X size={8} />
+            </button>
+            <div
+              className="absolute top-0 left-0 right-0 h-1 cursor-ns-resize"
+              onMouseDown={(e) => {
+                e.stopPropagation()
+                handleMouseDown(dayIndex, timeIndex, "top")
+              }}
+            />
+          </>
+        )}
+        {isLastInBlock && (
+          <div
+            className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize"
+            onMouseDown={(e) => {
+              e.stopPropagation()
+              handleMouseDown(dayIndex, timeIndex, "bottom")
+            }}
+          />
+
         )}
       </div>
     )
   }
 
   return (
-    <div className="w-full overflow-x-auto select-none">
+
+    <div className="w-full overflow-x-auto select-none bg-white rounded-lg border border-gray-200 shadow-sm p-4">
       <div className="min-w-[800px]">
-       
         <div className="grid grid-cols-[40px_repeat(7,_1fr)] gap-0">
-          <div></div>
+          <div className="border-l border-y py-2 border-gray-200"></div>
           {DAYS.map((day) => (
-            <div key={day} className="font-semibold text-center">
+            <div
+              key={day}
+              className={`font-semibold text-center border-l border-y py-2 border-gray-200 ${day === "Sat" ? "border-r" : ""}`}
+            >
+
               {day}
             </div>
           ))}
           {times.map((time, timeIndex) => (
             <React.Fragment key={time}>
-              <div className="text-xs">{timeIndex % 4 === 0 ? time : ""}</div>
+
+              <div className="text-[12px] leading-3 border-l border-b text-center border-gray-200">
+                {timeIndex % 2 === 0 ? time : ""}
+              </div>
+
               {DAYS.map((day, dayIndex) => renderCell(day, dayIndex, timeIndex))}
             </React.Fragment>
           ))}
@@ -173,5 +217,7 @@ const AvailabilityCalendar = () => {
   )
 }
 
-export default AvailabilityCalendar
+
+export default TutorAvailabilityCalendar
+
 

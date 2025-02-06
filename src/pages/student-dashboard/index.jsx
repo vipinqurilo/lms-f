@@ -1,13 +1,40 @@
+import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { CourseCard } from "../../components/student-dashboard/CourseCard";
 import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
+import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
 
 const stats = [
-  { title: "Enrolled Courses", value: 12 },
-  { title: "Active Courses", value: "03" },
-  { title: "Completed Courses", value: 13 },
-  { title: "Booked Courses", value: 3 },
-];
+  {
+    title: "Enrolled Courses",
+    value: "04",
+    iconSrc:
+      "assets/student-dashboard/icons/EnrolledCourses.svg",
+    bgColor: "bg-[#EBEAFC]",
+
+  },
+  {
+    title: "Active Courses",
+    value: "03",
+    iconSrc:
+      "assets/student-dashboard/icons/ActiveCourses.svg",
+    bgColor: "bg-[#DBFCDF]",
+  },
+  {
+    title: "Completed Courses",
+    value: "13",
+    iconSrc:
+      "assets/student-dashboard/icons/CompletedCourses.svg",
+    bgColor: "bg-[#F8E9FC]",
+  },
+  {
+    title: "Booked Courses",
+    value: "03",
+    iconSrc:
+      "assets/student-dashboard/icons/BookedCourses.svg",
+    bgColor: "bg-[#E9F6FA]",
+  },
+]
 
 const recentCourses = [
   {
@@ -53,28 +80,49 @@ const recentCourses = [
     reviews: 10,
     price: 65,
     originalPrice: 70,
+  }, {
+    id: "4",
+    title: "Sketch from A to Z (2024): Become an app designer",
+    instructor: {
+      name: "Jenny",
+      image: "/assets/student-dashboard/user/user2.jpg",
+    },
+    thumbnail: "/assets/student-dashboard/course/course-04.jpg",
+    lessons: 10,
+    duration: "40hr 10min",
+    rating: 3,
+    reviews: 18,
+    isFree: true,
   },
 ];
 
 export default function DashboardPage() {
   return (
     <StudentDashboardLayout className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat, index) => (
-          <StatsCard key={index} title={stat.title} value={stat.value} />
-        ))}
+      <div className="flex gap-6">
+        <div className="w-2/3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      {stats.map((stat, index) => (
+        <StatsCard key={index} title={stat.title} value={stat.value} iconSrc={stat.iconSrc} bgColor={stat.bgColor} />
+      ))}
+    </div>
+          <ContinueWatching />
+        </div>
+        <div className="w-2/3">
+          <ScheduleView />
+        </div>
       </div>
-
-      <div className="py-8">
+      <div className="py-8"> 
         <h2 className="text-2xl font-bold text-dark mb-6">
           Recently Enrolled Courses
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recentCourses.map((course) => (
-            <CourseCard key={course.id} course={course} />
+            <CourseCard key={course.id} course={course} type="view" />
           ))}
         </div>
       </div>
+
     </StudentDashboardLayout>
   );
 }

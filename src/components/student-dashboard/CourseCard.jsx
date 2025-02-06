@@ -5,6 +5,7 @@ export function CourseCard({
   course = {}, // Provide empty object as default
   onWishlist = false,
   onWishlistClick = () => {},
+  type = "buy",
 }) {
   // Destructure with default values
   const {
@@ -107,7 +108,7 @@ export function CourseCard({
           </div>
 
           <button className="px-6 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] transition-colors duration-300">
-            BUY NOW
+            {type === "buy" ? "Buy Now" : "View Course"}
           </button>
         </div>
       </div>

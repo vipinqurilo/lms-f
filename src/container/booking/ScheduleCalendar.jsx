@@ -423,7 +423,7 @@ const ScheduleCalendar = ({ slotLimit }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {       
     const calculateDays = () => {
       const today = new Date();
       const startOfWeek = new Date(today);

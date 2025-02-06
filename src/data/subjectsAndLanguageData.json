@@ -1,0 +1,158 @@
+{
+  "languages": [
+    { "code": "en", "name": "English" },
+    { "code": "hi", "name": "Hindi" },
+    { "code": "es", "name": "Spanish" },
+    { "code": "fr", "name": "French" },
+    { "code": "de", "name": "German" },
+    { "code": "zh", "name": "Chinese (Simplified)" },
+    { "code": "zh-TW", "name": "Chinese (Traditional)" },
+    { "code": "ja", "name": "Japanese" },
+    { "code": "ko", "name": "Korean" },
+    { "code": "ru", "name": "Russian" },
+    { "code": "ar", "name": "Arabic" },
+    { "code": "pt", "name": "Portuguese" },
+    { "code": "it", "name": "Italian" },
+    { "code": "nl", "name": "Dutch" },
+    { "code": "tr", "name": "Turkish" },
+    { "code": "pl", "name": "Polish" },
+    { "code": "sv", "name": "Swedish" },
+    { "code": "th", "name": "Thai" },
+    { "code": "el", "name": "Greek" },
+    { "code": "he", "name": "Hebrew" },
+    { "code": "da", "name": "Danish" },
+    { "code": "fi", "name": "Finnish" },
+    { "code": "no", "name": "Norwegian" },
+    { "code": "hu", "name": "Hungarian" },
+    { "code": "cs", "name": "Czech" },
+    { "code": "ro", "name": "Romanian" },
+    { "code": "bg", "name": "Bulgarian" },
+    { "code": "vi", "name": "Vietnamese" },
+    { "code": "uk", "name": "Ukrainian" },
+    { "code": "id", "name": "Indonesian" },
+    { "code": "fil", "name": "Filipino" },
+    { "code": "ms", "name": "Malay" }
+  ],
+  "subjects": [
+    {
+      "subject": "Mathematics",
+      "subSubjects": [
+        "Algebra",
+        "Geometry",
+        "Calculus",
+        "Statistics",
+        "Trigonometry",
+        "Linear Algebra",
+        "Differential Equations"
+      ]
+    },
+    {
+      "subject": "Science",
+      "subSubjects": [
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Earth Sciences",
+        "Astronomy",
+        "Environmental Science",
+        "Genetics"
+      ]
+    },
+    {
+      "subject": "History",
+      "subSubjects": [
+        "Ancient History",
+        "Medieval History",
+        "Modern History",
+        "Modern European History",
+        "World Wars",
+        "Colonial History",
+        "American History"
+      ]
+    },
+    {
+      "subject": "Literature",
+      "subSubjects": [
+        "English Literature",
+        "American Literature",
+        "World Literature",
+        "Poetry",
+        "Drama",
+        "Literary Criticism",
+        "Fiction"
+      ]
+    },
+    {
+      "subject": "Social Studies",
+      "subSubjects": [
+        "Geography",
+        "Civics",
+        "Economics",
+        "Psychology",
+        "Sociology",
+        "Political Science",
+        "Anthropology"
+      ]
+    },
+    {
+      "subject": "Foreign Languages",
+      "subSubjects": [
+        "Spanish",
+        "French",
+        "German",
+        "Italian",
+        "Japanese",
+        "Mandarin Chinese",
+        "Russian"
+      ]
+    },
+    {
+      "subject": "Art",
+      "subSubjects": [
+        "Painting",
+        "Sculpture",
+        "Photography",
+        "Graphic Design",
+        "Digital Art",
+        "Architecture",
+        "Fashion Design"
+      ]
+    },
+    {
+      "subject": "Music",
+      "subSubjects": [
+        "Music Theory",
+        "Instrumental Music",
+        "Vocal Music",
+        "Music Composition",
+        "Music History",
+        "Jazz",
+        "Classical Music"
+      ]
+    },
+    {
+      "subject": "Physical Education",
+      "subSubjects": [
+        "Fitness Training",
+        "Sports Science",
+        "Yoga",
+        "Sports Psychology",
+        "Nutrition",
+        "Athletics",
+        "Kinesiology"
+      ]
+    },
+    {
+      "subject": "Computer Science",
+      "subSubjects": [
+        "Programming",
+        "Data Structures",
+        "Algorithms",
+        "Web Development",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Cybersecurity"
+      ]
+    }
+  ]
+}
