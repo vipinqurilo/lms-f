@@ -197,7 +197,7 @@ export function EditProfile() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {path !== "/instructor-request" && (
+          {path !== "/instructor-request" ? (
             <div className="space-y-2">
               <label
                 htmlFor="userName"
@@ -214,6 +214,65 @@ export function EditProfile() {
                 }
               />
             </div>
+          ):(
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="gender"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Gender
+                  </label>
+                  <select
+                    id="gender"
+                    className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+                    value={localProfile.gender}
+                    onChange={(e) =>
+                      setLocalProfile({ ...localProfile, gender: e.target.value })
+                    }
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                {path !== "/instructor-request" && (
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="country"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Country
+                    </label>
+                    <input
+                      id="country"
+                      className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+                      value={localProfile.country}
+                      onChange={(e) =>
+                        setLocalProfile({ ...localProfile, country: e.target.value })
+                      }
+                    />
+                  </div>
+                )}
+        
+                {path === "/instructor-request" && (
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="designation"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Id Proof (Link of ID Proof)
+                    </label>
+                    <input
+                      id="designation"
+                      className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+                      value={idProof}
+                      onChange={(e) => setIdProof(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
           )}
 
            <div className="">
@@ -257,7 +316,7 @@ export function EditProfile() {
 
        
 
-
+        {path !== "/instructor-request" && (
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label
@@ -316,6 +375,7 @@ export function EditProfile() {
           </div>
         )}
       </div>
+      )}
 
       {path !== "/instructor-request" && (
         <div className="space-y-2">
