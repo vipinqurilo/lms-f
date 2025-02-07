@@ -92,7 +92,7 @@ export function EditProfile() {
       userName: localProfile.userName,
       phone: {
         countryCode: localProfile.countryCode,
-        number: localProfile.phoneNumber,
+        number: localProfile.phoneNumber, 
       },
       gender: localProfile.gender,
       country: localProfile.country,

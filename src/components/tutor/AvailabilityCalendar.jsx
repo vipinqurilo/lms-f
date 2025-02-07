@@ -3,8 +3,6 @@ import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
 
-
-
 const bookings = [
   {
     date: "2025-01-26", // ISO 8601 format (YYYY-MM-DD)
@@ -30,13 +28,30 @@ const bookings = [
 
 const AvailabilityCalendar = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
+  const {
+    bookings: rawBookings,
+    isLoading: bookingLoading,
+    totalPages,
+  } = useSelector((state) => state.student.booking);
+  const bookings = rawBookings.map((session) => ({
+    date: new Date(session.sessionStartTime).toISOString().split("T")[0], // Extract YYYY-MM-DD
+    startTime: new Date(session.sessionStartTime)
+      .toISOString()
+      .split("T")[1]
+      .slice(0, 5), // Extract HH:mm
+    endTime: new Date(session.sessionEndTime)
+      .toISOString()
+      .split("T")[1]
+      .slice(0, 5), // Extract HH:mm
+  }));
+
+  console.log(bookings, "bookings");
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
   const { tutorProfile, isLoading, error } = useSelector(
     (state) => state.tutors
   );
-  console.log(tutorProfile?.calendar?.availability, "tutorProfile");
   const data = tutorProfile?.calendar?.availability.reduce(
     (acc, { day, slots }) => {
       const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
@@ -46,7 +61,6 @@ const AvailabilityCalendar = () => {
     {}
   );
 
-  console.log(data);
   useEffect(() => {
     const calculateDays = () => {
       const today = new Date();
