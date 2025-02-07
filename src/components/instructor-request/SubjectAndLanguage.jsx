@@ -16,6 +16,7 @@ import {
   updateSubjects,
 } from "@/store/slices/instructor/settingsSlice";
 import { getLanguages } from "@/store/slices/languageSlice";
+import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
 
 const SubjectAndLanguage = () => {
   const path = usePathname();
@@ -64,7 +65,7 @@ const SubjectAndLanguage = () => {
         subSubjects: profile?.subjectsTaught,
       });
     }
-  }, [profile]);
+  }, [profile, languages]);
 
   const submitForm = (data) => {
     const formdata = {
@@ -118,6 +119,8 @@ const SubjectAndLanguage = () => {
 
   useEffect(() => {
     dispatch(getLanguages());
+    dispatch(getSubSubjects());
+    dispatch(getSubjects());
   }, []);
 
   useEffect(() => {
@@ -216,6 +219,26 @@ const SubjectAndLanguage = () => {
           register={register}
           isMulti={true}
         />
+        // <div className="space-y-2">
+        //   <label className="block text-sm font-medium text-gray-700">
+        //     Languages
+        //   </label>
+
+        //   <select
+        //     value={languageSelect}
+        //     onChange={(e) =>
+        //       setlanguageSelect((prev) => [...prev, e.target.value])
+        //     }
+        //     className="w-full border border-black"
+        //     multiple
+        //   >
+        //     {languages?.map((lan, index) => (
+        //       <option value={lan?._id} key={index}>
+        //         {lan?.name}
+        //       </option>
+        //     ))}
+        //   </select>
+        // </div>
       )}
 
       {path === "/instructor-dashboard/settings" ? (
@@ -246,3 +269,165 @@ const SubjectAndLanguage = () => {
 };
 
 export default SubjectAndLanguage;
+
+// "use client";
+// import React, { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import Select from "react-select";
+// import {
+//   updateLanguages,
+//   updateSubjects,
+// } from "@/store/slices/instructor/settingsSlice";
+// import { getLanguages } from "@/store/slices/languageSlice";
+// import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
+// import CommonButton from "../common/CommonButton";
+
+// const SubjectAndLanguage = () => {
+//   const dispatch = useDispatch();
+
+//   // Fetch data from Redux store
+//   const { profile } = useSelector((state) => state.instructor.setting);
+//   const { languages } = useSelector((state) => state.languages);
+//   const { subjects } = useSelector((state) => state.category);
+//   const { subSubjects } = useSelector((state) => state.category);
+
+//   // Local states
+//   const [selectedSubjects, setSelectedSubjects] = useState([]);
+//   const [selectedLanguages, setSelectedLanguages] = useState([]);
+//   const [filteredSubSubjects, setFilteredSubSubjects] = useState([]);
+//   const [selectedSubSubjects, setSelectedSubSubjects] = useState([]);
+
+//   // Fetch languages, subjects, and sub-subjects from API when the component mounts
+//   useEffect(() => {
+//     dispatch(getLanguages());
+//     dispatch(getSubjects());
+//     dispatch(getSubSubjects());
+//   }, []);
+
+//   // Load existing profile data if available
+//   useEffect(() => {
+//     if (profile) {
+//       setSelectedLanguages(
+//         profile?.languagesSpoken?.map((lang) => ({
+//           label: languages?.find((l) => l._id === lang)?.name || "Unknown",
+//           value: lang,
+//         })) || []
+//       );
+
+//       setSelectedSubjects(
+//         profile?.subjectsTaught?.map((sub) => ({
+//           label: subjects?.find((s) => s._id === sub)?.name || "Unknown",
+//           value: sub,
+//         })) || []
+//       );
+//     }
+//   }, [profile, languages, subjects]);
+
+//   // Update sub-subjects when subjects change
+//   useEffect(() => {
+//     const updatedSubSubjects = subSubjects.filter((sub) =>
+//       selectedSubjects.some((s) => s.value === sub.courseCategory._id)
+//     );
+//     setFilteredSubSubjects(updatedSubSubjects);
+//     setSelectedSubSubjects([]); // Reset sub-subjects when changing subjects
+//   }, [selectedSubjects, subSubjects]);
+
+//   // Handle subject selection
+//   const handleSubjectChange = (selectedOptions) => {
+//     setSelectedSubjects(selectedOptions || []);
+//   };
+
+//   // Handle language selection
+//   const handleLanguageChange = (selectedOptions) => {
+//     setSelectedLanguages(selectedOptions || []);
+//   };
+
+//   // Handle sub-subject selection
+//   const handleSubSubjectChange = (selectedOptions) => {
+//     setSelectedSubSubjects(selectedOptions || []);
+//   };
+
+//   // Update subjects in the backend
+//   const handleUpdateSubjects = () => {
+//     dispatch(
+//       updateSubjects({
+//         subjectsTaught: selectedSubjects.map((s) => s.value),
+//         subSubjectsTaught: selectedSubSubjects.map((s) => s.value),
+//       })
+//     );
+//   };
+
+//   // Update languages in the backend
+//   const handleUpdateLanguages = () => {
+//     dispatch(
+//       updateLanguages({
+//         languagesSpoken: selectedLanguages.map((l) => l.value),
+//       })
+//     );
+//   };
+
+//   return (
+//     <div className="w-full space-y-6">
+//       {/* Subjects Selection */}
+//       <div className="w-full">
+//         <h2 className="text-light text-sm">Subjects</h2>
+//         <Select
+//           isMulti
+//           options={subjects?.map((sub) => ({
+//             label: sub.name,
+//             value: sub._id,
+//           }))}
+//           value={selectedSubjects}
+//           onChange={handleSubjectChange}
+//           className="w-full"
+//         />
+//       </div>
+
+//       {/* Sub-Subjects Selection */}
+//       {filteredSubSubjects.length > 0 && (
+//         <div className="w-full">
+//           <h2 className="text-light text-sm">Sub-Subjects</h2>
+//           <Select
+//             isMulti
+//             options={filteredSubSubjects?.map((sub) => ({
+//               label: sub.name,
+//               value: sub._id,
+//             }))}
+//             value={selectedSubSubjects}
+//             onChange={handleSubSubjectChange}
+//             className="w-full"
+//           />
+//         </div>
+//       )}
+
+//       {/* Languages Selection */}
+//       <div className="w-full">
+//         <h2 className="text-light text-sm">Languages</h2>
+//         <Select
+//           isMulti
+//           options={languages?.map((lang) => ({
+//             label: lang.name,
+//             value: lang._id,
+//           }))}
+//           value={selectedLanguages}
+//           onChange={handleLanguageChange}
+//           className="w-full"
+//         />
+//       </div>
+
+//       {/* Update Buttons */}
+//       <div className="flex items-center gap-4 justify-end">
+//         <CommonButton
+//           label={"Update Subjects"}
+//           onClick={handleUpdateSubjects}
+//         />
+//         <CommonButton
+//           label={"Update Languages"}
+//           onClick={handleUpdateLanguages}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SubjectAndLanguage;

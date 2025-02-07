@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczODU3NTYzN30.r5Vg-waz8Bixw3rkOAURnBxXZAWKM_k8bmTZmbq8Rs8`;
+const instructorToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OWRiZThiZjE2ODE5N2RmNzA1YTc5OSIsImVtYWlsIjoiaW5zdHJ1Y3RvckBnbWFpbC5jb20iLCJyb2xlIjoiaW5zdHJ1Y3RvciIsImlhdCI6MTczODY1MDgzNn0.ZziknJC4qdMTDqZP5-5Cr2otcMwoEyLTIpo-48Sp06U`;
 export const api = axios.create({
-  baseURL: `https://rvdr9qkh-8000.inc1.devtunnels.ms/`,
+  baseURL: `https://rvdr9qkh-8000.inc1.devtunnels.ms/api`,
   // withCredentials: true,
   headers: {
     Authorization: `Bearer ${token}`,
