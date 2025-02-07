@@ -24,16 +24,12 @@ const tabs = [
     tab: "All",
   },
   {
-    icon: <BiCheckCircle size={20} />,
-    tab: "Publish",
-  },
-  {
     icon: <BiTime size={20} />,
     tab: "Pending",
   },
   {
-    icon: <BiEdit size={20} />,
-    tab: "Draft",
+    icon: <BiCheckCircle size={20} />,
+    tab: "Approved",
   },
 ];
 
