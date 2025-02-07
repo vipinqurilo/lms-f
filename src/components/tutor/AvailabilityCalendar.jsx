@@ -22,7 +22,6 @@ const AvailabilityCalendar = () => {
       .slice(0, 5),
   }));
 
-  console.log(bookings, "bookings");
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");

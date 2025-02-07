@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import ContactModal from "../../components/common/ContactModal";
-import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 import { fetchAllTutorProfileAsync } from "../../store/slices/tutorsSlice";
 import { useEffect } from "react";
 import Tutors from "../../container/tutorCard/Tutors";

@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // Async thunks for booking actions
 export const fetchBookingsAsync = CreateApiAsyncThunk(
   "booking/fetchBookingsAsync",
-  ({ status, startDate, endDate, keyword, page = 1, limit = 1 }) =>
+  ({ status, startDate, endDate, keyword, page = 1, limit = 10 }) =>
     api.get(`/api/bookings`, {
       params: { status, startDate, endDate, keyword, page, limit },
     })
