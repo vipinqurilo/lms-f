@@ -1,21 +1,14 @@
 "use client";
 import InstructorButton from "@/components/instructor/InstructorButton";
-import { CourseCard } from "@/components/student-dashboard/CourseCard";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import React, { useEffect, useState } from "react";
 import { FiEdit, FiEdit3 } from "react-icons/fi";
-import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { BiBook, BiCheckCircle, BiTime, BiEdit } from "react-icons/bi";
 import DeleteModal from "@/components/instructor/DeleteModal";
-import CommonButton from "@/components/common/CommonButton";
 import { useRouter } from "next/navigation";
 import CreatedCourses from "../instructor/dashboard/CreatedCourses";
-import {
-  deleteCourse,
-  editCourseData,
-  getAllIntructorCourses,
-} from "@/store/slices/instructor/courseSlice";
+import { getAllIntructorCourses } from "@/store/slices/instructor/courseSlice";
 import Loader from "@/components/common/Loader";
 
 const tabs = [
@@ -43,7 +36,6 @@ const ManageCourses = () => {
   const getloading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
-  const [isDelete, setisDelete] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [selecteStatus, setselecteStatus] = useState("All");
   const [filteredCourses, setfilteredCourses] = useState([]);
@@ -60,10 +52,6 @@ const ManageCourses = () => {
   }, [selecteStatus]);
 
   const handleStatusChange = (value) => setselecteStatus(value);
-
-  useEffect(() => {
-    dispatch(getAllIntructorCourses());
-  }, []);
 
   const filteredData = filteredCourses?.map((course) => ({
     image: course?.courseImage,
@@ -126,15 +114,6 @@ const ManageCourses = () => {
         totalPages={5}
         onPageChange={(val) => setCurrentPage(val)}
       />
-
-      {isDelete !== null && (
-        <DeleteModal
-          handleDelete={handleDelete}
-          text={"Course"}
-          loading={deleteLoading}
-          onClose={() => setisDelete(null)}
-        />
-      )}
     </section>
   );
 };

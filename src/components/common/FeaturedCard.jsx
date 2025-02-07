@@ -8,11 +8,14 @@ import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
 export default function FeaturedCard({ data }) {
+  if (!data || typeof data !== "object") {
+    return <p>Invalid course data</p>;
+  }
   const dispatch = useDispatch();
 
   const handleAddWishlist = (id) => {
     console.log(id, "iddd");
-    dispatch(wishlistAsync({ course: id }));  
+    dispatch(wishlistAsync({ course: id }));
   };
 
   const handleAddOrder = (id) => {
