@@ -40,17 +40,18 @@ const tabs = [
 const ManageCourses = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { courses } = useSelector((state) => state.instructor.course);
+  const { data: courses } = useSelector(
+    (state) => state.admin?.course?.courses
+  ) || { data: [] };
+
   const getloading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
   const [isDelete, setisDelete] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
   const [selecteStatus, setselecteStatus] = useState("All");
   const [filteredCourses, setfilteredCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const deleteLoading = useSelector(
-    (state) => state.instructor.course.isLoading.deleteCourse
-  );
 
   useEffect(() => {
     if (selecteStatus !== "All") {
@@ -64,37 +65,9 @@ const ManageCourses = () => {
 
   const handleStatusChange = (value) => setselecteStatus(value);
 
-  const handleDelete = () => {
-    console.log(isDelete);
-    dispatch(deleteCourse(isDelete));
-  };
-
   useEffect(() => {
     dispatch(getAllIntructorCourses());
   }, []);
-
-  // const handleFilterCourse
-
-  const handleEditCourse = (course) => {
-    const data = {
-      id: course?._id,
-      basic: {
-        title: course?.courseTitle,
-        category: course?.courseCategory,
-        requirements: course?.courseRequirements,
-        whatYouWillLearn: course?.courseLearning,
-        description: course?.courseDescription,
-      },
-      media: {
-        video: course?.courseVideo,
-        image: course?.courseImage,
-      },
-      curriculum: course?.courseContent,
-      price: course?.coursePrice
-    };
-    dispatch(editCourseData(data));
-    router.push("/instructor-dashboard/my-courses/add-course");
-  };
 
   const filteredData = filteredCourses?.map((course) => ({
     image: course?.courseImage,
@@ -103,15 +76,26 @@ const ManageCourses = () => {
     value1: course?.entrolled || 425,
     value2: (
       <div className="flex items-center gap-5">
-        <button onClick={() => handleEditCourse(course)} className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500">
-          <FiEdit3 size={20} className="" />
-        </button>
-        <button
-          onClick={() => setisDelete(course?._id)}
-          className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500"
-        >
-          <MdDeleteOutline size={20} />
-        </button>
+        {isEdit ? (
+          <div className="flex items-center gap-5">
+            <select name="" id="" className="px-2 py-1">
+              <option onClick={() => setIsEdit(!isEdit)} value="">
+                Pending
+              </option>
+              <option onClick={() => setIsEdit(!isEdit)} value="">
+                Approved
+              </option>
+            </select>
+          </div>
+        ) : (
+          <button
+            onClick={() => setIsEdit(!isEdit)}
+            className="p-1.5 border flex border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500"
+          >
+            <span className="px-2 ">{course?.status}</span>
+            <FiEdit3 size={20} className="" />
+          </button>
+        )}
       </div>
     ),
   }));
@@ -136,7 +120,7 @@ const ManageCourses = () => {
         <Loader color={"text-primary"} isBig={true} />
       ) : (
         <CreatedCourses
-          headingsData={["Courses", "Enrolled", "Action"]}
+          headingsData={["Courses", "Enrolled", "status"]}
           data={filteredData}
         />
       )}
