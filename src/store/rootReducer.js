@@ -8,9 +8,9 @@ import uploadSlice from "./slices/uploadSlice";
 
 import studentRootReducer from "./slices/student-dashboard/studentRootReducer";
 
-
 import userSlice from "./slices/userSlice";
 import languagesSlice from "./slices/languageSlice";
+import supportSlice from "./slices/supportSlice";
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
@@ -22,6 +22,7 @@ const rootReducer = combineReducers({
   upload: uploadSlice,
   student: studentRootReducer,
   languages: languagesSlice,
+  support: supportSlice,
 });
 
 export default rootReducer;

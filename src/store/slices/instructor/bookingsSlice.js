@@ -92,14 +92,16 @@ const initialState = {
 export const getBookigs = CreateApiAsyncThunk(
   "booking/getBookigs",
   (formData) => {
-    // const query = formData?.
-    return api.get(`/bookings`);
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/bookings?${query}`);
   }
 );
 
 export const updateAvailabilityCalender = CreateApiAsyncThunk(
   "booking/updateAvailabilityCalender",
-  (data) => api.put(`/profile/payment-info`, data)
+  (data) => api.put(`/profile/availability-calender`, data)
 );
 
 const bookingSlice = createSlice({

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Clock, User, Search, Video, Calendar } from "lucide-react";
-import { StartEndDateSelector } from "@/components/student-dashboard/StartEndDateSelector";
+import { useState, useEffect } from "react";
+import { Clock, User } from "lucide-react";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
-import Image from "next/image";
 import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
-import { Pagination } from "@/components/student-dashboard/Pagination";
+import BookingView from "@/container/instructor/bookings/BookingView";
+import BookingTabs from "@/container/instructor/bookings/BookingTabs";
+import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
+import BookingList from "@/container/instructor/bookings/BookingList";
 
 export default function BookingsPage() {
   const dispatch = useDispatch();
@@ -122,219 +123,32 @@ export default function BookingsPage() {
       )}
 
       {/* Main Content */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-semibold">My Bookings</h2>
-        <div className="flex w-fit bg-white p-1 rounded-lg">
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
-              activeTab2 === "listing"
-                ? "bg-orange-500 text-white"
-                : "text-gray-700"
-            }`}
-            onClick={() => setActiveTab2("listing")}
-          >
-            Listing
-          </button>
-          <button
-            className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
-              activeTab2 === "calendar"
-                ? "bg-orange-500 text-white"
-                : "text-gray-700"
-            }`}
-            onClick={() => setActiveTab2("calendar")}
-          >
-            Calendar
-          </button>
-        </div>
-      </div>
+      <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
 
       {/* Custom Tabs */}
-      <div className="border-b mb-6">
-        <div className="flex gap-6">
-          {["All lessons", "Scheduled", "Completed", "Canceled"].map(
-            (item, index) => (
-              <button
-                onClick={() => setActiveTab(item)}
-                className={`pb-4 relative ${
-                  activeTab === item ? "text-emerald-600" : "text-gray-600"
-                }`}
-              >
-                {item}
-                {activeTab === item && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
-                )}
-              </button>
-            )
-          )}
-        </div>
-      </div>
-      <div className="flex items-center gap-4 mb-4">
-        <div className="relative h-fit">
-          <input
-            type="text"
-            placeholder="Search by keyword"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            className="pl-10 pr-4 py-2 border rounded-lg w-64"
-          />
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-        </div>
+      <BookingTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <div className=" flex justify-center items-center gap-4 ">
-          <label className="block text-sm text-gray-600">
-            Lesson start date
-          </label>
-          <StartEndDateSelector
-            selectedDate={startDate}
-            onDateSelect={handleStartDateChange}
-            onClose={() => {}}
-          />
-        </div>
+      <BookingsFilter
+        keyword={keyword}
+        setKeyword={setKeyword}
+        endDateError={endDateError}
+        endDate={endDate}
+        startDate={startDate}
+        handleEndDateChange={handleEndDateChange}
+        handleStartDateChange={handleStartDateChange}
+      />
 
-        <div className=" flex justify-center items-center gap-4 ">
-          <label className="block text-sm text-gray-600">
-            Lesson end date
-            {endDateError && (
-              <span className="text-red-500 ml-2">
-                Must be after start date
-              </span>
-            )}
-          </label>
-          <StartEndDateSelector
-            selectedDate={endDate}
-            onDateSelect={handleEndDateChange}
-            onClose={() => {}}
-            minDate={startDate}
-            isError={endDateError}
-          />
-        </div>
-      </div>
       {/* Bookings Content */}
       {activeTab2 === "listing" ? (
-        <div className="space-y-6">
-          {isLoading.fetchBookingsAsync ? (
-            <div className="text-center py-12">Loading...</div>
-          ) : bookings.length > 0 ? (
-            <>
-              {bookings.map((booking) => {
-                const currentTime = new Date();
-                const sessionStartTime = new Date(booking.sessionStartTime);
-                const sessionEndTime = new Date(booking.sessionEndTime);
-                const timeUntilStart = sessionStartTime - currentTime;
-                const timeUntilEnd = sessionEndTime - currentTime;
-                const hours = Math.floor(
-                  (timeUntilStart / (1000 * 60 * 60)) % 24
-                );
-                const minutes = Math.floor((timeUntilStart / (1000 * 60)) % 60);
-                const seconds = Math.floor((timeUntilStart / 1000) % 60);
-
-                return (
-                  <div
-                    key={booking._id}
-                    className="bg-white rounded-lg shadow-sm overflow-hidden"
-                  >
-                    <div className="flex gap-10 p-4">
-                      {/* Tutor Image and Details */}
-                      <div className="flex items-center gap-4">
-                        <Image
-                          width={128}
-                          height={128}
-                          src="/assets/tutor/Marlenereilly.jpg" // Default tutor image
-                          alt="Tutor"
-                          className="rounded-xl object-cover w-[80px] h-[80px]"
-                        />
-                        <div className="items-center gap-2">
-                          <div className="flex items-center gap-2">
-                            <span>{`${booking.teacher.firstName} ${booking.teacher.lastName}`}</span>
-                          </div>
-                          <span className="text-xs text-emerald-700 font-semibold">
-                            {booking.status}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="border-l border-gray-300 mx-4"></div>
-
-                      {/* Booking Details */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold mb-2">
-                          {booking?.subject?.name || "N/A"}
-                        </h3>
-                        <div className="flex items-center gap-6 text-sm text-gray-600">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            <span>
-                              {`${new Date(
-                                booking.sessionStartTime
-                              ).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })} - ${new Date(
-                                booking.sessionEndTime
-                              ).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}`}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
-                            <span>
-                              {new Date(
-                                booking.sessionStartTime
-                              ).toLocaleDateString("en-GB", {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })}
-                            </span>
-                          </div>
-                        </div>
-                        {/* Timer for the booked class */}
-                        <div className="text-sm text-gray-600 mt-2">
-                          {timeUntilEnd < 0 ? (
-                            <span className="text-red-500">
-                              Class has ended
-                            </span>
-                          ) : timeUntilStart > 0 ? (
-                            <span>
-                              Starts in: {hours}h {minutes}m {seconds}s
-                            </span>
-                          ) : (
-                            <span className="text-green-500">
-                              Class is ongoing
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Action Icon */}
-                      <div className="flex flex-col items-end justify-between">
-                        <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800">
-                          <Video />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </>
-          ) : (
-            <div className="text-center py-12 text-gray-500">
-              No one-o-one bookings found
-            </div>
-          )}
-        </div>
+        <BookingList
+          bookings={bookings}
+          currentPage={currentPage}
+          isLoading={isLoading?.fetchBookingsAsync}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       ) : (
-        <>
-          <AvailabilityCalendar />
-        </>
+        <AvailabilityCalendar />
       )}
     </StudentDashboardLayout>
   );
