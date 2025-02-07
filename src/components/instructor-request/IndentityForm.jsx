@@ -37,12 +37,16 @@ export default function IndentityForm() {
   }, [processData]);
 
   const handleNext = (data) => {
-    const formData = {
-      ...data,
-      profile: profilePreview,
-    };
-    dispatch(updateProcessStep(3));
-    dispatch(updateProcessData({ field: "indentity", data: formData }));
+    if (profilePreview) {
+      const formData = {
+        ...data,
+        profile: profilePreview,
+      };
+      dispatch(updateProcessStep(3));
+      dispatch(updateProcessData({ field: "indentity", data: formData }));
+    } else {
+      toast.error("Profile Photos is required");
+    }
   };
 
   const handleImageValidation = (e) => {
@@ -126,9 +130,14 @@ export default function IndentityForm() {
           <input
             type="url"
             placeholder="Enter a valid YouTube video link"
-            {...register("youtubeLink")}
+            {...register("youtubeLink", {
+              required: "Introduction Video Link is required",
+            })}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
           />
+          {errors?.youtubeLink && (
+            <p className="text-xs text-red-500">*{errors.youtubeLink.message}</p>
+          )}
         </div>
 
         {/* Biography */}
@@ -138,9 +147,12 @@ export default function IndentityForm() {
           </label>
           <textarea
             placeholder="Write a short biography about yourself..."
-            {...register("bio")}
+            {...register("bio", { required: "Bio is required" })}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[100px]"
           />
+          {errors?.bio && (
+            <p className="text-xs text-red-500">*{errors.bio.message}</p>
+          )}
         </div>
 
         <div className="w-full flex items-center justify-between">

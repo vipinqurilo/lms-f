@@ -80,12 +80,12 @@ const PricingAccess = () => {
 
     if (courseAddData?.id) {
       dispatch(editCourse({ id: courseAddData?.id, data: formData }))
-        .unwrap()
-        .then(() => {
-          dispatch(updateStep(1));
-          dispatch(updateCourseAddDataState({}));
-          router.push("/instructor-dashboard");
-        });
+        // .unwrap()
+        // .then(() => {
+        //   dispatch(updateStep(1));
+        //   dispatch(updateCourseAddDataState({}));
+        //   router.push("/instructor-dashboard");
+        // });
     } else {
       dispatch(createCourse(formData))
         .unwrap()

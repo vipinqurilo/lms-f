@@ -51,7 +51,7 @@ const AddRemoveInput = ({
       {/* Display the current items */}
       {valueArray?.length > 0 &&
         valueArray.map((item, index) => (
-          <div key={index} className="flex items-start space-x-2 mb-2">
+          <div key={index} className="flex items-start space-x-2 mb-2 w-full justify-between">
             <p className="text-sm  whitespace-normal break-words">
               {item}
             </p>

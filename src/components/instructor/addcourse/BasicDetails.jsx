@@ -9,8 +9,7 @@ import {
 } from "@/store/slices/instructor/courseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitButtonsComp from "./SubmitButtonsComp";
-import AddRemoveInput from "./AddRemoveInput"; // Import the reusable component
-import CommonButton from "@/components/common/CommonButton";
+import AddRemoveInput from "./AddRemoveInput";
 
 const BasicDetails = () => {
   const dispatch = useDispatch();
@@ -31,7 +30,6 @@ const BasicDetails = () => {
   // const [description, setDescription] = useState([]);
 
   const submitHandler = (data) => {
-    console.log(data);
     dispatch(updateCourseAddDataState({ field: "basic", data }));
     dispatch(updateStep(2));
   };

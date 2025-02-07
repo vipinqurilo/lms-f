@@ -14,22 +14,22 @@ export const getAllIntructorCourses = CreateApiAsyncThunk(
   "GET/course/getAllIntructorCourses",
   () => api.get(`/course/instructor/get`)
 );
-// export const getAllIntructorCourses = CreateApiAsyncThunk(
-//   "GET/course/getAllIntructorCourses",
-//   (status) => api.get(`/course/instructor/get/status=${status}`)
-// );
+export const getFilteredInstrcutorCourses = CreateApiAsyncThunk(
+  "GET/course/getFilteredInstrcutorCourses",
+  (status) => api.get(`/course/instructor/filter/${status}`)
+);
 
 export const createCourse = CreateApiAsyncThunk("course/createCourse", (data) =>
   api.post(`/course`, data)
 );
 
 export const deleteCourse = CreateApiAsyncThunk("course/deleteCourse", (id) =>
-  api.delete(`course/instructor/${id}`)
+  api.delete(`/course/instructor/${id}`)
 );
 
 export const editCourse = CreateApiAsyncThunk(
   "course/editCourse",
-  ({ id, data }) => api.put(`course/instructor/${id}`, data)
+  ({ id, data }) => api.put(`/course/instructor/${id}`, data)
 );
 
 const courseSlice = createSlice({
@@ -67,6 +67,19 @@ const courseSlice = createSlice({
         state.isLoading["getAllIntructorCourses"] = false;
         state.error = action.payload;
       })
+      // filtered courses
+      .addCase(getFilteredInstrcutorCourses.pending, (state) => {
+        state.isLoading["getFilteredInstrcutorCourses"] = true;
+      })
+      .addCase(getFilteredInstrcutorCourses.fulfilled, (state, action) => {
+        state.isLoading["getFilteredInstrcutorCourses"] = false;
+        state.courses = action.payload.data;
+      })
+      .addCase(getFilteredInstrcutorCourses.rejected, (state, action) => {
+        state.isLoading["getFilteredInstrcutorCourses"] = false;
+        state.error = action.payload;
+      })
+      // create course
       .addCase(createCourse.pending, (state) => {
         state.isLoading["createCourse"] = true;
       })

@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { CourseCard } from "../../../components/student-dashboard/CourseCard";
+import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
 
 const TabButton = ({ active, onClick, children }) => (
   <button
@@ -18,72 +20,24 @@ const TabButton = ({ active, onClick, children }) => (
   </button>
 );
 
-const courses = {
-  enrolled: [
-    {
-      id: "1",
-      title: "Wordpress for Beginners - Master Wordpress Quickly",
-      instructor: {
-        name: "Cooper",
-        image:
-          "/assets/student-dashboard/course/course-03.jpg",
-      },
-      thumbnail:
-        "/assets/student-dashboard/course/course-03.jpg",
-      lessons: 12,
-      duration: "70hr 30min",
-      rating: 5.0,
-      reviews: 20,
-      price: 80,
-      originalPrice: 99,
-    },
-    {
-      id: "2",
-      title: "Sketch from A to Z (2024): Become an app designer",
-      instructor: {
-        name: "Jenny",
-        image:
-          "/assets/student-dashboard/course/course-03.jpg",
-      },
-      thumbnail:
-        "/assets/student-dashboard/course/course-03.jpg",
-      lessons: 10,
-      duration: "40hr 10min",
-      rating: 3.0,
-      reviews: 18,
-      isFree: true,
-    },
-    {
-      id: "3",
-      title: "Learn Angular Fundamentals From beginning to advance...",
-      instructor: {
-        name: "Nicole Brown",
-        image:
-          "/assets/student-dashboard/course/course-03.jpg",
-      },
-      thumbnail:
-        "/assets/student-dashboard/course/course-03.jpg",
-      lessons: 15,
-      duration: "80hr 40min",
-      rating: 4.0,
-      reviews: 10,
-      price: 65,
-      originalPrice: 70,
-    },
-  ],
-  active: [
-    // Add active courses data here
-  ],
-  completed: [
-    // Add completed courses data here
-  ],
-};
-
 export default function EnrolledCoursesPage() {
   const [activeTab, setActiveTab] = useState("enrolled");
+  const dispatch = useDispatch();
+  const { data: enrolledCourses, isLoading } = useSelector(
+    (state) => state.student.enrolledCourses
+  );
+  console.log(enrolledCourses, "enrolledCourses");
+
+  useEffect(() => {
+    dispatch(fetchEnrolledCoursesAsync());
+  }, [dispatch]);
 
   const tabs = [
-    { id: "enrolled", label: "Enrolled Courses", count: "06" },
+    {
+      id: "enrolled",
+      label: "Enrolled Courses",
+      count: enrolledCourses?.length?.toString(),
+    },
     { id: "active", label: "Active Courses", count: "03" },
     { id: "completed", label: "Completed Courses", count: "03" },
   ];
@@ -105,14 +59,31 @@ export default function EnrolledCoursesPage() {
 
       {/* Course Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-        {courses[activeTab].map((course) => (
-          <CourseCard
-            key={course.id}
-            course={course}
-            onWishlist={false}
-            onWishlistClick={() => {}}
-          />
-        ))}
+        {!isLoading["fetchEnrolledCoursesAsync"] &&
+          activeTab === "enrolled" &&
+          enrolledCourses?.map((enrollment) => (
+            <CourseCard
+              key={enrollment._id}
+              course={{
+                id: enrollment.course._id,
+                title: enrollment.course.courseTitle,
+                instructor: {
+                  name: enrollment.course.courseInstructor || "N/A",
+                  image: enrollment.course.courseImage,
+                },
+                thumbnail: enrollment.course.courseImage,
+                lessons: enrollment.course.courseContent.reduce(
+                  (acc, module) => acc + module.lessons.length,
+                  0
+                ),
+                duration: "N/A", // Replace if duration data is available
+                price: enrollment.course.coursePrice,
+                originalPrice: "N/A", // Replace if original price is available
+              }}
+              onWishlist={false}
+              onWishlistClick={() => {}}
+            />
+          ))}
       </div>
     </StudentDashboardLayout>
   );

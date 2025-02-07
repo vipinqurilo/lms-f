@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { TiTick } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories } from "@/store/slices/coursesSlice";
+import { fetchCategories, fetchCoursesByCategory } from "@/store/slices/coursesSlice";
 
 const CoursesFilterCards = ({ clearTrigger }) => {
   const dispatch = useDispatch();
-  const { categories, loading, error } = useSelector((state) => state.courses);
-  console.log(categories, "llll");
+  const { categories, loading, error, courses } = useSelector((state) => state.courses);
   const [expandedCategories, setExpandedCategories] = useState({});
   const [selectedOptions, setSelectedOptions] = useState({});
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(fetchCategories()); // Fetch categories when the component mounts
   }, [dispatch]);
 
   // Reset selected options and expanded categories when clearTrigger changes
@@ -22,6 +21,9 @@ const CoursesFilterCards = ({ clearTrigger }) => {
 
   // Category select/unselect + dropdown toggle
   const handleCategoryClick = (category) => {
+    // Log the category's _id
+    console.log("Category _id:", category._id);
+
     const isAllSelected =
       selectedOptions[category.name]?.length === category.options?.length;
 
@@ -36,6 +38,9 @@ const CoursesFilterCards = ({ clearTrigger }) => {
         [category.name]: category.options,
       }));
       setExpandedCategories((prev) => ({ ...prev, [category.name]: true }));
+
+      // Dispatch the fetchCoursesByCategory action
+      dispatch(fetchCoursesByCategory(category._id));  // Use category._id to fetch courses
     }
   };
 
@@ -103,9 +108,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                         type="checkbox"
                         id={`${category.name}-${option}`}
                         className="h-4 w-4 cursor-pointer appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                        checked={selectedOptions[category.name]?.includes(
-                          option
-                        )}
+                        checked={selectedOptions[category.name]?.includes(option)}
                         readOnly
                       />
                       {selectedOptions[category.name]?.includes(option) && (
@@ -125,6 +128,24 @@ const CoursesFilterCards = ({ clearTrigger }) => {
           )}
         </div>
       ))}
+
+      {/* Display Courses */}
+      {/* {courses.length > 0 && (
+        <div className="mt-6">
+          <h5 className="text-lg font-bold mb-3">Courses</h5>
+          <ul>
+            {courses.map((course, index) => (
+              <li key={index} className="py-2 border-b border-gray-200">
+                {course.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )} */}
+
+      {/* Loading and Error Handling */}
+      {loading && <p className="text-center mt-4">Loading...</p>}
+      {error && <p className="text-center mt-4 text-red-500">{error}</p>}
     </div>
   );
 };
