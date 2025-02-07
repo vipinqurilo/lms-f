@@ -3,29 +3,6 @@ import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
 
-const bookings = [
-  {
-    date: "2025-01-26", // ISO 8601 format (YYYY-MM-DD)
-    startTime: "20:00", // 24-hour format (HH:mm)
-    endTime: "21:00", // 24-hour format (HH:mm)
-  },
-  {
-    date: "2025-01-27",
-    startTime: "10:00",
-    endTime: "11:30",
-  },
-  {
-    date: "2025-01-28",
-    startTime: "15:00",
-    endTime: "16:00",
-  },
-  {
-    date: "2025-01-29",
-    startTime: "14:00",
-    endTime: "15:30",
-  },
-];
-
 const AvailabilityCalendar = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const {
@@ -38,11 +15,11 @@ const AvailabilityCalendar = () => {
     startTime: new Date(session.sessionStartTime)
       .toISOString()
       .split("T")[1]
-      .slice(0, 5), // Extract HH:mm
+      .slice(0, 5),
     endTime: new Date(session.sessionEndTime)
       .toISOString()
       .split("T")[1]
-      .slice(0, 5), // Extract HH:mm
+      .slice(0, 5),
   }));
 
   console.log(bookings, "bookings");
@@ -301,7 +278,7 @@ const AvailabilityCalendar = () => {
                 zIndex: 1, // Ensure it stays above other elements
               }}
             >
-              {day.label}
+              {`${day.label} ${day.month}`}
             </div>
           ))}
 
