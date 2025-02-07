@@ -7,8 +7,11 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
+import { useDispatch } from "react-redux";
 
 export default function App({ Component, pageProps }) {
+
   const pathname = usePathname();
   const noFooterRoutes = [
     "/login",
@@ -21,6 +24,8 @@ export default function App({ Component, pageProps }) {
     Aos.init({ duration: 1000 });
     Aos.refresh();
   }, []);
+
+ 
 
   const hideNavFooter = noFooterRoutes.some((route) =>
     pathname?.startsWith(route)

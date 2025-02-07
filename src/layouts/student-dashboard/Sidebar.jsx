@@ -141,6 +141,11 @@ const adminSidebarLinks = [
     icon: Wallet,
     href: "/admin-dashboard/approvals/withdrawals",
   },
+  {
+    title: "Manage Courses",
+    icon: Wallet,
+    href: "/admin-dashboard/manage-courses",
+  },
 ];
 
 export function Sidebar() {

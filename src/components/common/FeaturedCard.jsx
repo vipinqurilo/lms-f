@@ -12,7 +12,7 @@ export default function FeaturedCard({ data }) {
 
   const handleAddWishlist = (id) => {
     console.log(id, "iddd");
-    dispatch(wishlistAsync({ course: id }));
+    dispatch(wishlistAsync({ course: id }));  
   };
 
   const handleAddOrder = (id) => {
@@ -20,8 +20,8 @@ export default function FeaturedCard({ data }) {
   };
 
   return (
-    <div className="flex gap-6 md:p-0  p-2">
-      <div className="w-96 lg:w-full group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
+    <div className="flex gap-2 md:p-0  p-2">
+      <div className="w-96   group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
         <div className="relative overflow-hidden rounded-md">
           <img
             src={data?.courseImage}
