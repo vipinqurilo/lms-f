@@ -1,6 +1,6 @@
 import { Clock, User } from "lucide-react";
 
-const BookingReminder = ({ booking }) => {
+const BookingReminder = ({ bookings }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm mb-8">
       <div className="flex items-center justify-between p-4">
@@ -11,16 +11,30 @@ const BookingReminder = ({ booking }) => {
           <div>
             <p className="text-sm text-gray-500">
               Reminder:{" "}
-              {booking?.courseName || booking?.subject?.name || "Your lesson"}
+              {bookings[0]?.courseName ||
+                bookings[0]?.subject?.name ||
+                bookings[0]?.title ||
+                "Your lesson"}
             </p>
-            <h3 className="font-semibold">{booking.title}</h3>
+            <h3 className="font-semibold">{bookings[0].title}</h3>
             <div className="flex items-center gap-2 mt-1">
               <User className="h-4 w-4 text-gray-400" />
               <span className="text-sm text-gray-600">
-                by {booking.teacher.firstName} {booking.teacher.lastName}
+                by {bookings[0]?.teacher?.firstName}{" "}
+                {bookings[0]?.teacher?.lastName}
               </span>
             </div>
           </div>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          <span className="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-sm">
+            Available at{" "}
+            {new Date(bookings[0]?.sessionStartTime)?.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </span>
+          <span className="text-sm text-gray-500">{bookings[0]?.countdown}</span>
         </div>
       </div>
     </div>

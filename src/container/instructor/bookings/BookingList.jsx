@@ -2,6 +2,7 @@
 import { Clock, Calendar, Video } from "lucide-react";
 import Image from "next/image";
 import { Pagination } from "@/components/student-dashboard/Pagination";
+import Loader from "@/components/common/Loader";
 
 const BookingList = ({
   bookings,
@@ -13,7 +14,9 @@ const BookingList = ({
   return (
     <div className="space-y-6">
       {isLoading ? (
-        <div className="text-center py-12">Loading...</div>
+        <div className="text-center py-12">
+          <Loader color={"text-primary"} isBig={true} />
+        </div>
       ) : bookings.length > 0 ? (
         <>
           {bookings.map((booking) => {
