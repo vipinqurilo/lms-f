@@ -6,7 +6,10 @@ import SpeaksSection from "../../components/tutor/single-page/SpeaksSection";
 import PricingSection from "../../components/tutor/single-page/PricingSection";
 import GroupClassesSection from "../../components/tutor/single-page/GroupClassesSection";
 import TeachingExpertiseSection from "../../components/tutor/single-page/TeachingExpertiseSection";
-import  { ExperienceSection ,TeachingQualificationsSection} from "../../components/tutor/single-page/TeachingQualificationsSection";
+import {
+  ExperienceSection,
+  TeachingQualificationsSection,
+} from "../../components/tutor/single-page/TeachingQualificationsSection";
 import ReviewsSection from "../../components/tutor/single-page/ReviewsSection";
 import SidebarActions from "../../components/tutor/single-page/SidebarActions";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
@@ -22,7 +25,6 @@ export default function TeacherProfile() {
   const { tutorProfile, isLoading, error } = useSelector(
     (state) => state.tutors
   );
-user  // Fetch tutor profile data on mount (you might want to pass tutorId dynamically)
   useEffect(() => {
     const tutorId = "67a1acec55d46979078eddd7"; // Replace this with dynamic tutorId if needed
     dispatch(fetchTutorProfileAsync(tutorId));
@@ -54,7 +56,7 @@ user  // Fetch tutor profile data on mount (you might want to pass tutorId dynam
         <div className="h-[600px] border">
           <AvailabilityCalendar />
         </div>
-        <TeachingExpertiseSection />
+        {/* <TeachingExpertiseSection /> */}
         <TeachingQualificationsSection />
         <ExperienceSection />
         <ReviewsSection activeTab={activeTab} setActiveTab={setActiveTab} />

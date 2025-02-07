@@ -1,5 +1,4 @@
 // import React from "react";
-import TutorCard from "../../container/tutorCard/TutorCard";
 import TutorFilter from "../../container/tutorCard/TutorFilter";
 import {
   setIsAvailableModelOpen,
@@ -10,17 +9,22 @@ import { RxCross2 } from "react-icons/rx";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import ContactModal from "../../components/common/ContactModal";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
-
+import { fetchAllTutorProfileAsync } from "../../store/slices/tutorsSlice";
+import { useEffect } from "react";
+import Tutors from "../../container/tutorCard/Tutors";
 const index = () => {
   const dispatch = useDispatch();
   const { isAvailableModelOpen, isContactModelOpen } = useSelector(
     (state) => state.ui
   );
 
+  useEffect(() => {
+    dispatch(fetchAllTutorProfileAsync());
+  }, []);
   return (
-    <div className="text-lg bg-light_bg w-full h-screen p-2 md:p-10 lg:p-20 custom-margin-top">
+    <div className="text-lg bg-light_bg w-full  p-2 md:p-10 lg:px-20  custom-margin-top">
       <TutorFilter />
-      <TutorCard />
+      <Tutors />
       {/* Modal */}
       {isAvailableModelOpen && (
         <div className="fixed w-screen h-screen top-0 left-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">

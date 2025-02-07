@@ -61,7 +61,7 @@ const TeachingQualificationsSection = () => {
   return (
     <div>
       {/* Teaching Qualifications */}
-      <section className="mb-12">
+      <section className="my-12">
         <h2 className="text-2xl font-bold mb-6">Teaching qualifications</h2>
         <div className="space-y-8">
           <div className="flex flex-col lg:flex-row justify-start items-start">
