@@ -160,7 +160,11 @@ const SupportDashboard = () => {
           <CommonButton label={"Raise New Ticket"} onClick={toggleIsAdd} />
         </div>
 
-        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full ${messages && "!grid-cols-2"}`}>
+        <div
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full ${
+            messages && "!grid-cols-2"
+          }`}
+        >
           {stats.map((stat) => (
             <StatsCard
               key={stat.title}
@@ -200,7 +204,11 @@ const SupportDashboard = () => {
               <Loader color={"text-primary"} isBig={true} />
             </div>
           ) : (
-            <SupportTable tickets={tickets} setMessages={setMessages} />
+            <SupportTable
+              tickets={tickets}
+              setMessages={setMessages}
+              messages={messages}
+            />
           )}
 
           {/* Pagination */}
@@ -214,9 +222,7 @@ const SupportDashboard = () => {
         </div>
       </div>
       {isAdd && <RaiseTicketModal toggleIsAdd={toggleIsAdd} />}
-      {messages && (
-        <MessageModal messages={messages} setMessages={setMessages} />
-      )}
+      {messages && <MessageModal ticket={messages} setMessages={setMessages} />}
     </div>
   );
 };

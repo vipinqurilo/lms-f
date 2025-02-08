@@ -2,7 +2,7 @@ import TableHeader from "@/components/instructor/TableHeader";
 import { StatusBadge } from "@/components/student-dashboard/StatusBadge";
 import React from "react";
 
-const SupportTable = ({ tickets, setMessages }) => {
+const SupportTable = ({ tickets, setMessages, messages }) => {
   return (
     <div className="overflow-x-auto border rounded-lg">
       <table className="w-full ">
@@ -21,8 +21,8 @@ const SupportTable = ({ tickets, setMessages }) => {
           {tickets.map((ticket) => (
             <tr
               key={ticket.id}
-              className="hover:bg-gray-50 cursor-pointer"
-              onClick={() => setMessages(ticket?.messages)}
+              className={`hover:bg-gray-50 cursor-pointer ${messages?.id === ticket?.id && "bg-secondary/5"}`}
+              onClick={() => setMessages(ticket)}
             >
               <td className="px-6 py-4 text-sm text-gray-600">{ticket.id}</td>
               <td className="px-6 py-4 text-sm text-gray-600">{ticket.date}</td>
