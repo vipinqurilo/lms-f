@@ -45,10 +45,10 @@ const BookingList = ({
             return (
               <div
                 key={booking._id}
-                className="bg-white rounded-lg shadow-sm px-6 py-5"
+                className="bg-white rounded-lg shadow-sm px-6 py-4"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex-1 pl-6 ">
+                  <div className="flex-1 pl-5 ">
                     <div className="flex items-center gap-2 justify-between">
                       <h2 className="text-lg font-semibold  ">
                         {booking?.subject?.name || "Course Title"}
@@ -195,7 +195,7 @@ const BookingList = ({
         </>
       ) : (
         <div className="text-center py-12 text-gray-500">
-          No one-o-one bookings found
+          No booking found
         </div>
       )}
     </div>
