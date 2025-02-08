@@ -2,38 +2,42 @@
 
 import { Check } from "lucide-react";
 
-const subjects = [
-  { id: "accounting", name: "Accounting" },
-  { id: "biology", name: "Biology" },
-  { id: "geography", name: "Geography" },
-  { id: "literary", name: "Literary Criticism" },
-];
+export function SubjectSelection({ selected, onSelect, sub: subjects }) {
+  if (!subjects?.length) {
+    return (
+      <div className="p-8 flex justify-center items-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-secondary"></div>
+      </div>
+    );
+  }
 
-export function SubjectSelection({ selected, onSelect }) {
   return (
     <div className="p-8">
       <h2 className="text-lg font-semibold text-center mb-4">Select subject</h2>
       <div className="space-y-2  lg:w-1/2 mx-auto">
-        {subjects.map((subject) => (
+        {subjects?.map((subject) => (
           <button
-            key={subject.id}
-            onClick={() => onSelect(subject.id)}
+            key={subject?._id}
+            onClick={() => onSelect(subject?._id)}
             className={`
               w-full flex items-center justify-between p-4 rounded-lg border
               ${
-                selected === subject.id ? "border-secondary" : "border-gray-200"
+                selected === subject?._id
+                  ? "border-secondary"
+                  : "border-gray-200"
               }
               hover:border-secondary transition-colors
+
             `}
           >
             <span
               className={`text-base ${
-                selected === subject.id && "text-secondary"
+                selected === subject?._id && "text-secondary"
               }`}
             >
-              {subject.name}
+              {subject?.name}
             </span>
-            {selected === subject.id && (
+            {selected === subject?._id && (
               <span className="text-secondary">
                 <Check size={20} />
               </span>

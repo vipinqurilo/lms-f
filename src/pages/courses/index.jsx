@@ -10,16 +10,19 @@ import { useSelector } from "react-redux";
 import FeaturedCard from "@/components/common/FeaturedCard";
 
 const Courses = () => {
-  const courses = useSelector((state) => state?.courses?.courses);
-  console.log(courses, "newttt course");
+  const courses = useSelector((state) => state?.courses?.courses || []);
+
+  // console.log(courses, "newttt course");
   const [showFilters, setShowFilters] = useState(false);
   const [clearTrigger, setClearTrigger] = useState(false);
   const [selectedOption, setSelectedOption] = useState(""); // State for select option
 
   const clearFilters = () => {
-    setClearTrigger((prev) => !prev); // Toggle state to trigger effect in child components
-    setSelectedOption(""); // Reset the select option
+    setClearTrigger((prev) => !prev);
+    setSelectedOption("");
   };
+
+  console.log("courses in main page", courses);
 
   return (
     <div className="lg:p-5 bg-gray-100 flex flex-wrap justify-center custom-margin-top">
@@ -96,15 +99,20 @@ const Courses = () => {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="absolute left-0 w-full bg-white shadow-lg rounded-lg overflow-hidden z-50"
             >
-              {showFilters && <CoursesFilter />}
+              {/* {showFilters && <CoursesFilter />} */}
             </motion.div>
           </div>
 
           {/* Course Cards Section */}
-          <div className="mt-7 grid grid-cols-2 ">
-            {courses.map((course, index) => (
-              <FeaturedCard data={course} key={index} />
-            ))}
+          <div className="mt-7 grid grid-cols-2">
+            {Array.isArray(courses) && courses.length > 0 ? (
+              courses.map((course, index) => {
+                console.log("Course data:", course);
+                return <FeaturedCard data={course} key={index} />;
+              })
+            ) : (
+              <p>No courses found</p>
+            )}
           </div>
         </div>
 
@@ -137,8 +145,8 @@ const Courses = () => {
           </div>
           {/* filter part */}
           <div className="lg:mt-7">
-            <CoursesFilterCards clearTrigger={clearTrigger} />
-            <CoursesFilterPrices clearTrigger={clearTrigger} />
+            {/* <CoursesFilterCards clearTrigger={clearTrigger} />
+            <CoursesFilterPrices clearTrigger={clearTrigger} /> */}
           </div>
         </div>
       </div>

@@ -102,7 +102,7 @@ const Navbar = () => {
         </div>
         <DeskTopMenu getLinkCss={getLinkCss} />
 
-        {authUser ? (
+        {Object.keys(authUser).length > 0 ? (
           <div
             className="relative"
             onMouseEnter={() => setIsModalOpen(true)}
