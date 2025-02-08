@@ -33,7 +33,8 @@ const ProfileHeader = () => {
                 data-for={"mytip"}
                 className="text-base font-bold cursor-pointer"
               >
-                {tutorProfile?.userId?.firstName} {tutorProfile?.userId?.lastName}
+                {tutorProfile?.userId?.firstName}{" "}
+                {tutorProfile?.userId?.lastName}
               </h2>
               <IoHeartOutline className="cursor-pointer" />
             </div>
@@ -41,7 +42,8 @@ const ProfileHeader = () => {
               {/* Location */}
               <div className="flex items-center text-sm text-gray-500">
                 <SlLocationPin className="mr-1" />
-                {tutorProfile?.location || "United Kingdom"} {/* Dynamic location */}
+                {tutorProfile?.location || "United Kingdom"}{" "}
+                {/* Dynamic location */}
               </div>
 
               {/* Rating */}
@@ -56,7 +58,8 @@ const ProfileHeader = () => {
                   {tutorProfile?.rating || 3.5} {/* Dynamic rating */}
                 </span>
                 <span className="text-sm text-gray-500">
-                  ({tutorProfile?.reviewsCount || 0}) {/* Dynamic review count */}
+                  ({tutorProfile?.reviewsCount || 0}){" "}
+                  {/* Dynamic review count */}
                 </span>
               </div>
             </div>
@@ -71,23 +74,19 @@ const ProfileHeader = () => {
             <h1 className="text-2xl font-bold">
               {tutorProfile?.userId?.firstName} {tutorProfile?.userId?.lastName}
             </h1>
-            <Image
-              width={24}
-              height={24}
-              src={tutorProfile?.countryFlag || "https://flagcdn.com/eg.svg"} // Dynamic flag image
-              alt="Country flag"
-              className="w-6 h-4"
-            />
           </div>
           <div className="items-center gap-6 mb-4 hidden lg:flex">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              <span>{tutorProfile?.location || "Egypt"}</span> {/* Dynamic location */}
+              <span>{tutorProfile?.location || "Egypt"}</span>{" "}
+              {/* Dynamic location */}
             </div>
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-[#FF9800]" />
               <span>{tutorProfile?.rating || 4.0}</span>
-              <span className="text-gray-500">{tutorProfile?.reviewsCount || 1} Review(s)</span>
+              <span className="text-gray-500">
+                {tutorProfile?.reviewsCount || 1} Review(s)
+              </span>
             </div>
             <div className="flex items-center gap-6">
               <span>{tutorProfile?.learnersCount || 0} Learners</span>
@@ -96,9 +95,11 @@ const ProfileHeader = () => {
           </div>
           <div className="mb-4">
             <div className="mb-2">
-              Pricing ${tutorProfile?.minPrice || 36.0} - ${tutorProfile?.maxPrice || 72.0}
+              Pricing ${tutorProfile?.minPrice || 36.0} - $
+              {tutorProfile?.maxPrice || 72.0}
             </div>
-            <div>Teaches: {tutorProfile?.teaches || "Genres"}</div> {/* Dynamic subjects */}
+            <div>Teaches: {tutorProfile?.teaches || "Genres"}</div>{" "}
+            {/* Dynamic subjects */}
           </div>
           <div className="flex gap-4">
             <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">

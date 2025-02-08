@@ -10,8 +10,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchProfileAsync,
   updatePersonalInfoAsync,
+  fetchProfileAsync,
 } from "@/store/slices/student-dashboard/profileSlice";
 
 export function EditProfile() {
@@ -73,6 +73,10 @@ export function EditProfile() {
     }
   }, [profile]);
 
+  useEffect(() => {
+    dispatch(fetchProfileAsync());
+  }, [dispatch]);
+
   const handleReset = () => {
     setLocalProfile({
       firstName: "",
@@ -92,7 +96,7 @@ export function EditProfile() {
       userName: localProfile.userName,
       phone: {
         countryCode: localProfile.countryCode,
-        number: localProfile.phoneNumber, 
+        number: localProfile.phoneNumber,
       },
       gender: localProfile.gender,
       country: localProfile.country,
@@ -129,17 +133,7 @@ export function EditProfile() {
     }
   };
 
-  const handlePhoneNumberChange = (e) => {
-    const inputValue = e.target.value;
-    const isValidPhoneNumber = /^\d{0,10}$/.test(inputValue);
-
-    if (isValidPhoneNumber) {
-      setLocalProfile({ ...localProfile, phoneNumber: inputValue });
-      setPhoneNumberError("");
-    } else {
-      setPhoneNumberError("Please enter a valid 10-digit phone number.");
-    }
-  };
+  
 
   if (!profileState) {
     return <div>Loading...</div>;
