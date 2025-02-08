@@ -13,84 +13,13 @@ const api = axios.create({
 });
 
 const initialState = {
-  bookings: [
-    {
-      date: "12 May 2025",
-      student: "John Doe",
-      instructor: "Jane Smith",
-      timeSlot: "30 minutes",
-      status: "Confirmed",
-    },
-    {
-      date: "14 May 2025",
-      student: "Alice Brown",
-      instructor: "Mark Wilson",
-      timeSlot: "60 minutes",
-      status: "Pending",
-    },
-    {
-      date: "15 May 2025",
-      student: "Emma Green",
-      instructor: "Chris Taylor",
-      timeSlot: "45 minutes",
-      status: "Completed",
-    },
-    {
-      date: "16 May 2025",
-      student: "Michael Scott",
-      instructor: "Jim Halpert",
-      timeSlot: "15 minutes",
-      status: "Confirmed",
-    },
-    {
-      date: "17 May 2025",
-      student: "Dwight Schrute",
-      instructor: "Pam Beesly",
-      timeSlot: "30 minutes",
-      status: "Pending",
-    },
-    {
-      date: "18 May 2025",
-      student: "Angela Martin",
-      instructor: "Oscar Martinez",
-      timeSlot: "60 minutes",
-      status: "Completed",
-    },
-    {
-      date: "19 May 2025",
-      student: "Kevin Malone",
-      instructor: "Stanley Hudson",
-      timeSlot: "45 minutes",
-      status: "Confirmed",
-    },
-    {
-      date: "20 May 2025",
-      student: "Toby Flenderson",
-      instructor: "Ryan Howard",
-      timeSlot: "15 minutes",
-      status: "Pending",
-    },
-    {
-      date: "21 May 2025",
-      student: "Meredith Palmer",
-      instructor: "Creed Bratton",
-      timeSlot: "30 minutes",
-      status: "Completed",
-    },
-    {
-      date: "22 May 2025",
-      student: "Kelly Kapoor",
-      instructor: "Darryl Philbin",
-      timeSlot: "60 minutes",
-      status: "Confirmed",
-    },
-  ],
+  bookings: [],
   isLoading: {},
   error: {},
 };
 
-export const getBookigs = CreateApiAsyncThunk(
-  "booking/getBookigs",
+export const getBookings = CreateApiAsyncThunk(
+  "GET/booking/getBookings",
   (formData) => {
     const query = Object.keys(formData)
       .map((key) => `${key}=${formData[key]}`)
@@ -111,16 +40,16 @@ const bookingSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // get bookings details
-      .addCase(getBookigs.pending, (state) => {
-        state.isLoading["getBookigs"] = true;
+      .addCase(getBookings.pending, (state) => {
+        state.isLoading["getBookings"] = true;
       })
-      .addCase(getBookigs.fulfilled, (state, action) => {
-        state.isLoading["getBookigs"] = false;
-        // state.bookings = action.payload.data;
+      .addCase(getBookings.fulfilled, (state, action) => {
+        state.isLoading["getBookings"] = false;
+        state.bookings = action.payload.data;
       })
-      .addCase(getBookigs.rejected, (state, action) => {
-        state.isLoading["getBookigs"] = false;
-        state.error["getBookigs"] = action.payload;
+      .addCase(getBookings.rejected, (state, action) => {
+        state.isLoading["getBookings"] = false;
+        state.error["getBookings"] = action.payload;
       })
       // availability calender update
       .addCase(updateAvailabilityCalender.pending, (state) => {

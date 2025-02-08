@@ -11,6 +11,7 @@ import studentRootReducer from "./slices/student-dashboard/studentRootReducer";
 import userSlice from "./slices/userSlice";
 import languagesSlice from "./slices/languageSlice";
 import supportSlice from "./slices/supportSlice";
+import categorySlice from "./slices/categorySlice";
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   student: studentRootReducer,
   languages: languagesSlice,
   support: supportSlice,
+  category: categorySlice,
 });
 
 export default rootReducer;

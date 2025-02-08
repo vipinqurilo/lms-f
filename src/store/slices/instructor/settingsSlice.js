@@ -39,7 +39,7 @@ export const updateExperience = CreateApiAsyncThunk(
 
 export const updateSubjects = CreateApiAsyncThunk(
   "setting/updateSubjects",
-  (data) => api.put(`/profile/experience`, data)
+  (data) => api.put(`/profile/subjects`, data)
 );
 export const updateLanguages = CreateApiAsyncThunk(
   "setting/updateLanguages",

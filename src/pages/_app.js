@@ -7,8 +7,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
-import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
-import { useDispatch } from "react-redux";
+import GetLoggedInUser from "@/components/common/GetLoggedInUser";
 
 export default function App({ Component, pageProps }) {
 
@@ -16,6 +15,7 @@ export default function App({ Component, pageProps }) {
   const noFooterRoutes = [
     "/login",
     "/register",
+    "/admin-login",
     "/instructor-dashboard",
     "/student-dashboard", 
     "/admin-dashboard"
@@ -33,6 +33,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <StoreProvider>
+      <GetLoggedInUser />
       {!hideNavFooter && <Navbar />}
       <Component {...pageProps} />
       {!hideNavFooter && <Footer />}

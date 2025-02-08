@@ -18,6 +18,10 @@ export function EditProfile() {
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.student?.profile);
+  const { profile: instructorProfile } = useSelector(
+    (state) => state.instructor.setting
+  );
+
   const profile = profileState?.profile;
   const isLoading = profileState?.isLoading;
   const error = profileState?.error;
@@ -37,7 +41,6 @@ export function EditProfile() {
   });
 
   const [phoneNumberError, setPhoneNumberError] = useState("");
-  const [gender, setGender] = useState("");
   const [idProof, setIdProof] = useState("");
 
   useEffect(() => {
@@ -47,31 +50,50 @@ export function EditProfile() {
           firstName: processData?.profile?.firstName || "",
           lastName: processData?.profile?.lastName || "",
           phoneNumber: processData?.profile?.phone?.number || "",
+          countryCode: processData?.profile?.phone?.country || "",
+          gender: processData?.profile?.gender,
           bio: "",
           designation: "",
           userName: "",
         });
-        setGender(processData?.profile?.gender || "");
         setIdProof(processData?.profile?.idProof || "");
       }
     }
   }, [processData, path]);
 
   useEffect(() => {
-    if (profile) {
-      setLocalProfile({
-        firstName: profile.firstName || "",
-        lastName: profile.lastName || "",
-        userName: profile.userName || "",
-        email: profile.email || "",
-        phoneNumber: profile.phone?.number || "",
-        countryCode: profile.phone?.countryCode || "",
-        gender: profile.gender || "",
-        country: profile.country || "",
-        bio: profile.bio || "",
-      });
+    if (path === "/instructor-dashboard/settings") {
+      if (instructorProfile) {
+        console.log("instructorProfile from line 67", instructorProfile);
+        
+        setLocalProfile({
+          firstName: instructorProfile?.firstName || "",
+          lastName: instructorProfile?.lastName || "",
+          userName: instructorProfile?.userName || "",
+          email: instructorProfile?.email || "",
+          phoneNumber: instructorProfile?.phone?.number || "",
+          countryCode: instructorProfile?.phone?.countryCode || "",
+          gender: instructorProfile?.gender || "",
+          country: instructorProfile?.country || "",
+          bio: instructorProfile?.bio || "",
+        });
+      }
+    } else {
+      if (profile) {
+        setLocalProfile({
+          firstName: profile.firstName || "",
+          lastName: profile.lastName || "",
+          userName: profile.userName || "",
+          email: profile.email || "",
+          phoneNumber: profile.phone?.number || "",
+          countryCode: profile.phone?.countryCode || "",
+          gender: profile.gender || "",
+          country: profile.country || "",
+          bio: profile.bio || "",
+        });
+      }
     }
-  }, [profile]);
+  }, [profile, instructorProfile]);
 
   useEffect(() => {
     dispatch(fetchProfileAsync());
