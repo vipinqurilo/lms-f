@@ -44,7 +44,7 @@ const ManageCourses = () => {
   useEffect(() => {
     if (selecteStatus !== "All") {
       setfilteredCourses(
-        courses.filter((course) => course.status === selecteStatus)
+        courses?.filter((course) => course.status === selecteStatus)
       );
     } else {
       setfilteredCourses(courses);
