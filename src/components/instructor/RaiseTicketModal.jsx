@@ -98,8 +98,8 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
                 {...register("description", {
                   required: "Description is reuired",
                 })}
-                className="mt-1 block h-20 resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-                placeholder="Enter Course Description"
+                className="mt-1 block h-20 text-sm resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+                placeholder="Enter Short description of problem"
               />
 
               {errors.description && (
@@ -118,10 +118,7 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
                 accept="image/png, image/jpeg, image/jpg"
                 onChange={(e) => handleUploadAttachment(e)}
                 className="block w-full text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-0
-                  file:text-sm file:font-semibold file:cursor-pointer file:bg-secondary file:text-white
-                  hover:file:opacity-90 cursor-pointer disabled:file:cursor-not-allowed disabled:cursor-not-allowed disabled:opacity-60"
+                  file:cursor-pointer cursor-pointer disabled:file:cursor-not-allowed disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={imageLoading}
               />
 

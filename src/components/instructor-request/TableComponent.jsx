@@ -5,8 +5,8 @@ import TableHeader from "../instructor/TableHeader";
 
 const TableComponent = ({ title, data, setData, toggleIsAdd, setIsEdit }) => {
   return (
-    <div className="space-y-2 w-full">
-      <div className="w-full !overflow-x-auto">
+    <div className="space-y-2 w-full !rounded-lg">
+      <div className="w-full !overflow-x-auto rounded-lg border border-black/10">
         <table className="w-full text-nowrap rounded-lg">
           <TableHeader
             headingsData={[
@@ -29,10 +29,10 @@ const TableComponent = ({ title, data, setData, toggleIsAdd, setIsEdit }) => {
                 </td>
               </tr>
             ) : (
-              data?.map((item) => (
+              data?.map((item, index) => (
                 <tr
-                  key={item?.title}
-                  className="text-left border border-t-0 border-black/10"
+                  key={index}
+                  className={`text-left border-b border-black/10 ${index === data?.length-1 && "!border-b-0"}`}
                 >
                   <td className="px-6 py-3 text-left lg:w-96 text-wrap">
                     <h2 className="font-bold">{item?.title}</h2>
