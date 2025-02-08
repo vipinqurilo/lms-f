@@ -1,8 +1,10 @@
 import TableHeader from "@/components/instructor/TableHeader";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import AddCategories from "./addCategoriesModels";
 import EditCategories from "./editCategoriesModels";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCategoryById, editCategoryById, getAllManageSubjects } from "@/store/slices/admin-dashboard/managesubjectsSlice";
 
 const initialCategories = [
   {
@@ -43,21 +45,24 @@ const columns = [
   "Action",
 ];
 const Categories = () => {
-  const [categories, setCategories] = useState(initialCategories);
+  const dispatch = useDispatch();
+  const { subjects, isLoading, error } = useSelector(
+    (state) => state.admin.managesubjects
+  );
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const deleteCategory = (id) => {
-    setCategories(categories.filter((cat) => cat.id !== id));
-  };
+  useEffect(() => {
+    dispatch(getAllManageSubjects());
+  }, [dispatch]);
+
+  console.log("Fetched Subjects:", subjects);
+
+ 
 
   const toggleStatus = (id) => {
-    setCategories(
-      categories.map((cat) =>
-        cat.id === id ? { ...cat, status: !cat.status } : cat
-      )
-    );
+    // Implement toggle logic as needed
   };
 
   const openEditModal = (category) => {
@@ -65,6 +70,34 @@ const Categories = () => {
     setIsEditModalOpen(true);
   };
 
+  const deleteCategory = (id) => {
+    dispatch(deleteCategoryById(id))
+      .unwrap()
+      .then(() => {
+        console.log("Category deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting category:", error);
+      });
+  };
+
+
+  const onSaveCategory = (updatedData) => {
+     if (!selectedCategory) return;
+    dispatch(editCategoryById({ id: selectedCategory._id, updatedData }))
+      .unwrap()
+      .then(() => {
+        console.log("Category updated successfully");
+        setIsEditModalOpen(false); // Close modal after success
+      })
+      .catch((error) => {
+        console.error("Error updating category:", error);
+      });
+  };
+
+
+  
+  
   return (
     <div className="p-6 rounded-lg">
       <div className="flex justify-between items-center mb-4">
@@ -86,7 +119,7 @@ const Categories = () => {
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
           <tbody>
-            {categories.map((cat, index) => (
+            {subjects?.map((cat, index) => (
               <tr key={cat.id} className="border-t border-gray-200">
                 <td className="py-3 px-4 text-sm">{index + 1}</td>
                 <td className="py-3 px-4 text-sm">{cat.name}</td>
@@ -116,8 +149,8 @@ const Categories = () => {
                     <FiEdit2 size={18} />
                   </button>
                   <button
-                    className="text-gray-600 text-sm hover:text-red-500"
-                    onClick={() => deleteCategory(cat.id)}
+                    className="text-gray-600 hover:text-red-500"
+                    onClick={() => deleteCategory(cat._id)}
                   >
                     <FiTrash2 size={18} />
                   </button>
@@ -131,11 +164,13 @@ const Categories = () => {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
       />
-      <EditCategories
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        category={selectedCategory}
-      />
+     <EditCategories
+  isOpen={isEditModalOpen}
+  onClose={() => setIsEditModalOpen(false)}
+  category={selectedCategory}
+  onSave={onSaveCategory}
+/>
+
     </div>
   );
 };

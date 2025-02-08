@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const EditCategories = ({ isOpen, onClose, category, onSave }) => {
   if (!isOpen) return null;
 
-  const [identifier, setIdentifier] = useState(category?.identifier || "");
   const [name, setName] = useState(category?.name || "");
+
+  // Update state when a new category is selected
+  useEffect(() => {
+    if (category) {
+      setName(category.name);
+    }
+  }, [category]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-6/12">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Edit Category</h2>
 
-        
-
-        {/* Name Input */}
         <label className="block text-gray-700 font-medium mb-1">Name</label>
         <input
           type="text"
@@ -29,7 +32,7 @@ const EditCategories = ({ isOpen, onClose, category, onSave }) => {
           </button>
           <button
             className="px-4 py-2 bg-orange-500 text-white rounded"
-            onClick={() => onSave({ identifier, name })}
+            onClick={() => onSave({ name })}
           >
             Save Changes
           </button>
