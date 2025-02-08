@@ -9,6 +9,8 @@ import BookingsFilter from "./BookingsFilter";
 import BookingList from "./BookingList";
 import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";
+import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
+
 
 const BookingsDashboard = () => {
   const dispatch = useDispatch();
@@ -106,7 +108,7 @@ const BookingsDashboard = () => {
           totalPages={totalPages}
         />
       ) : (
-        <AvailabilityCalendar />
+        <TutorAvailabilityCalendar />
       )}
     </div>
   );

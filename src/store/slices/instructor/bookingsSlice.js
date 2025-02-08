@@ -89,8 +89,8 @@ const initialState = {
   error: {},
 };
 
-export const getBookigs = CreateApiAsyncThunk(
-  "booking/getBookigs",
+export const getBookings = CreateApiAsyncThunk(
+  "booking/getBookings",
   (formData) => {
     const query = Object.keys(formData)
       .map((key) => `${key}=${formData[key]}`)
@@ -111,16 +111,16 @@ const bookingSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // get bookings details
-      .addCase(getBookigs.pending, (state) => {
-        state.isLoading["getBookigs"] = true;
+      .addCase(getBookings.pending, (state) => {
+        state.isLoading["getBookings"] = true;
       })
-      .addCase(getBookigs.fulfilled, (state, action) => {
-        state.isLoading["getBookigs"] = false;
+      .addCase(getBookings.fulfilled, (state, action) => {
+        state.isLoading["getBookings"] = false;
         // state.bookings = action.payload.data;
       })
-      .addCase(getBookigs.rejected, (state, action) => {
-        state.isLoading["getBookigs"] = false;
-        state.error["getBookigs"] = action.payload;
+      .addCase(getBookings.rejected, (state, action) => {
+        state.isLoading["getBookings"] = false;
+        state.error["getBookings"] = action.payload;
       })
       // availability calender update
       .addCase(updateAvailabilityCalender.pending, (state) => {
