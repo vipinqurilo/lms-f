@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
+import { useRouter } from "next/router";
 
 const BookingList = ({
   bookings,
@@ -19,6 +20,10 @@ const BookingList = ({
   setCurrentPage,
   totalPages,
 }) => {
+  const router = useRouter();
+  const pathSegment = router.pathname.split("/")[1];
+  const isAdmin = pathSegment === "admin-dashboard";
+
   return (
     <div className="space-y-6">
       {isLoading ? (
@@ -54,7 +59,11 @@ const BookingList = ({
                     </div>
                     <hr className="my-3 w-[80%] " />
 
-                    <div className="grid grid-cols-9 gap-8 relative">
+                    <div
+                      className={`grid ${
+                        isAdmin ? "grid-cols-11" : "grid-cols-9"
+                      } gap-8 relative`}
+                    >
                       {/* Instructor */}
                       <div className="col-span-2">
                         <p className=" mb-1 font-semibold">{`${booking.teacher.firstName} ${booking.teacher.lastName}`}</p>
@@ -71,7 +80,24 @@ const BookingList = ({
                           </span>
                         </div>
                       </div>
-
+                      
+                      {isAdmin ? (
+                        <div className="col-span-2">
+                          <p className=" mb-1 font-semibold">{`${booking?.student?.firstName} ${booking?.student?.lastName}`}</p>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              width={28}
+                              height={28}
+                              src="/assets/tutor/Marlenereilly.jpg"
+                              alt="Tutor"
+                              className="rounded-full"
+                            />
+                            <span className="text-sm text-gray-600 ">
+                              Student{" "}
+                            </span>
+                          </div>
+                        </div>
+                      ) : null}
                       {/* Custom divider */}
                       <div className="absolute h-10 w-px bg-gray-300 left-[22%] top-1/2 -translate-y-1/2"></div>
 

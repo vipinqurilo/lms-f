@@ -148,6 +148,11 @@ const adminSidebarLinks = [
     icon: Wallet,
     href: "/admin-dashboard/manage-courses",
   },
+  {
+    title: "Manage Bookings",
+    icon: Wallet,
+    href: "/admin-dashboard/manage-booking",
+  },
 ];
 
 export function Sidebar() {
