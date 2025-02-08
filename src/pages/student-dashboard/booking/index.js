@@ -16,6 +16,7 @@ export default function BookingsPage() {
   const { bookings, isLoading, totalPages } = useSelector(
     (state) => state.student.booking
   );
+  
   const [activeTab, setActiveTab] = useState("All lessons");
   const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");

@@ -54,7 +54,7 @@ export default function TeacherProfile() {
           Calendar
         </h2>
         <div className="h-[600px] border">
-          <AvailabilityCalendar />
+          <AvailabilityCalendar calendar={tutorProfile?.calendar} />
         </div>
         {/* <TeachingExpertiseSection /> */}
         <TeachingQualificationsSection />

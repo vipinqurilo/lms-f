@@ -3,7 +3,7 @@ import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
 
-const AvailabilityCalendar = () => {
+const AvailabilityCalendar = ({ calendar }) => {
   const [currentWeek, setCurrentWeek] = useState(0);
   const {
     bookings: rawBookings,
@@ -25,17 +25,12 @@ const AvailabilityCalendar = () => {
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
-  const { tutorProfile, isLoading, error } = useSelector(
-    (state) => state.tutors
-  );
-  const data = tutorProfile?.calendar?.availability.reduce(
-    (acc, { day, slots }) => {
-      const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
-      acc[dayName] = slots;
-      return acc;
-    },
-    {}
-  );
+  
+  const data = calendar?.availability.reduce((acc, { day, slots }) => {
+    const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
+    acc[dayName] = slots;
+    return acc;
+  }, {});
 
   useEffect(() => {
     const calculateDays = () => {
