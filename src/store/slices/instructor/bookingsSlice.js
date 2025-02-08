@@ -19,7 +19,9 @@ const initialState = {
 };
 
 export const getBookings = CreateApiAsyncThunk(
+
   "GET/booking/getBookings",
+
   (formData) => {
     const query = Object.keys(formData)
       .map((key) => `${key}=${formData[key]}`)
@@ -45,7 +47,7 @@ const bookingSlice = createSlice({
       })
       .addCase(getBookings.fulfilled, (state, action) => {
         state.isLoading["getBookings"] = false;
-        state.bookings = action.payload.data;
+
       })
       .addCase(getBookings.rejected, (state, action) => {
         state.isLoading["getBookings"] = false;

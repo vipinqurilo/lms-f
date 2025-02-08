@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
+import { useState, useEffect } from "react";
 
 const BookingList = ({
   bookings,
@@ -19,6 +20,16 @@ const BookingList = ({
   setCurrentPage,
   totalPages,
 }) => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="space-y-6">
       {isLoading ? (
@@ -28,7 +39,6 @@ const BookingList = ({
       ) : bookings.length > 0 ? (
         <>
           {bookings.map((booking) => {
-            const currentTime = new Date();
             const sessionStartTime = new Date(booking.sessionStartTime);
             const sessionEndTime = new Date(booking.sessionEndTime);
             const timeUntilStart = sessionStartTime - currentTime;
@@ -40,7 +50,7 @@ const BookingList = ({
             return (
               <div
                 key={booking._id}
-                className="bg-white rounded-lg shadow-sm px-6 py-4"
+                className="bg-white relative rounded-lg shadow-sm px-6 py-4"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1 pl-5 ">
@@ -48,16 +58,13 @@ const BookingList = ({
                       <h2 className="text-lg font-semibold  ">
                         {booking?.subject?.name || "Course Title"}
                       </h2>
-                      <span className="text-sm bg-green-50 rounded-full px-4 py-1  text-green-500">
-                        Scheduled
-                      </span>
                     </div>
                     <hr className="my-3 w-[80%] " />
 
                     <div className="grid grid-cols-9 gap-8 relative">
                       {/* Instructor */}
                       <div className="col-span-2">
-                        <p className=" mb-1 font-semibold">{`${booking.teacher.firstName} ${booking.teacher.lastName}`}</p>
+                        <p className=" mb-1 font-semibold">{`${booking?.teacher?.firstName} ${booking?.teacher?.lastName}`}</p>
                         <div className="flex items-center gap-2">
                           <Image
                             width={28}
@@ -75,9 +82,9 @@ const BookingList = ({
                       {/* Custom divider */}
                       <div className="absolute h-10 w-px bg-gray-300 left-[22%] top-1/2 -translate-y-1/2"></div>
 
-                      {/* Course Timing */}
+                      {/* Session Timing */}
                       <div className="col-span-2 pl-8">
-                        <p className="mb-1 font-semibold">Course Timing</p>
+                        <p className="mb-1 font-semibold">Session Timing</p>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-orange-500" />
                           <span className="text-sm">
@@ -168,9 +175,7 @@ const BookingList = ({
           />
         </>
       ) : (
-        <div className="text-center py-12 text-gray-500">
-          No booking found
-        </div>
+        <div className="text-center py-12 text-gray-500">No booking found</div>
       )}
     </div>
   );

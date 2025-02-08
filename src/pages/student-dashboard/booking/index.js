@@ -71,7 +71,7 @@ export default function BookingsPage() {
         status: activeTab === "All lessons" ? undefined : activeTab,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        keyword: debouncedKeyword, // Use debounced keyword
+        search: debouncedKeyword, // Use debounced keyword
         page: currentPage, // Add page parameter
       })
     );

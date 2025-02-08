@@ -20,11 +20,14 @@ export const verifyLoggedInUser = CreateApiAsyncThunk(
 const initialState = {
   authUser: {
     name: "khurshid",
+
     role: "instructor",
     // role: "student",
+
     // role: "admin",
   },
   isLoading: {},
+
   error: {},
 };
 
