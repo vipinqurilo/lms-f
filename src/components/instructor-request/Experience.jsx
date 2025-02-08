@@ -17,6 +17,8 @@ import {
   updateExperience,
 } from "@/store/slices/instructor/settingsSlice";
 import TableComponent from "./TableComponent";
+import BackgroundModal from "../instructor/BackgroundModal";
+import ModalHeading from "../common/ModalHeading";
 
 const Experience = () => {
   const { processData } = useSelector((state) => state.tutors);
@@ -125,7 +127,14 @@ const Experience = () => {
       `}
     >
       <div className="w-full border border-black/10 rounded-lg px-5 lg:px-8 py-5 flex flex-col gap-6 lg:gap-6">
-        <h2 className="text-lg font-bold">Experience</h2>
+        <div className="w-full flex items-center justify-between">
+          <h2 className="text-lg font-bold">Experience</h2>
+          <CommonButton
+            label={"Add Experience"}
+            onClick={() => setisAdd("experience")}
+            variant="third"
+          />
+        </div>
         <TableComponent
           title="Experience"
           data={experience}
@@ -133,20 +142,17 @@ const Experience = () => {
           toggleIsAdd={() => setisAdd("experience")}
           setIsEdit={setIsEdit}
         />
-
-        <AddExperience
-          addExperience={addExperience}
-          control={control}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          register={register}
-          type={"education" || isAdd}
-          addEducation={addEducation}
-        />
       </div>
 
       <div className="w-full border border-black/10 rounded-lg px-5 lg:px-8 py-5 flex flex-col gap-6 lg:gap-6">
-        <h2 className="text-lg font-bold">Education</h2>
+        <div className="w-full flex items-center justify-between">
+          <h2 className="text-lg font-bold">Education</h2>
+          <CommonButton
+            label={"Add Education"}
+            onClick={() => setisAdd("education")}
+            variant="third"
+          />
+        </div>
 
         <TableComponent
           title="Education"
@@ -155,18 +161,6 @@ const Experience = () => {
           toggleIsAdd={() => setisAdd("education")}
           setIsEdit={setIsEdit}
         />
-
-        {/* {path !== "/instructor-dashboard/settings" && ( */}
-        <AddExperience
-          addExperience={addExperience}
-          control={control}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          register={register}
-          type={"experience"}
-          addEducation={addEducation}
-        />
-        {/* )} */}
       </div>
 
       {path === "/instructor-dashboard/settings" ? (
@@ -193,6 +187,24 @@ const Experience = () => {
             loading={loading}
           />
         </div>
+      )}
+
+      {isAdd !== null && (
+        <BackgroundModal
+          PropComponent={
+            <div className="w-[50%] border border-black/10 rounded-lg bg-white px-10 py-5 flex flex-col gap-5">
+              <ModalHeading
+                title={`Add ${isAdd}`}
+                onClose={() => {
+                  setisAdd(null);
+                  setIsEdit(null);
+                }}
+                PaddingAdd={true}
+              />
+              <AddExperience addEducation={addEducation} addExperience={addExperience} errors={errors} handleSubmit={handleSubmit} register={register} type={isAdd} />
+            </div>
+          }
+        />
       )}
     </div>
   );

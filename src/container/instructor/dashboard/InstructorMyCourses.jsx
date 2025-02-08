@@ -136,6 +136,10 @@ const InstructorMyCourses = () => {
 
       {getloading || filyterLoading ? (
         <Loader color={"text-primary"} isBig={true} />
+      ) : courses?.length === 0 ? (
+        <div className="w-full py-12 flex items-center justify-center text-light">
+          No Courses Created
+        </div>
       ) : (
         <CreatedCourses
           headingsData={["Courses", "Enrolled", "Action"]}
