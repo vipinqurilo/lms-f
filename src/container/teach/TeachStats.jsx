@@ -43,7 +43,7 @@ const TeachStats = () => {
 
   return (
     <div className="bg-primary/10 custom-container lg:py-10">
-      <div className=" grid grid-cols-2 md:grid-cols-5 gap-5">
+      <div className=" grid grid-cols-2 md:grid-cols-5 gap-8">
         {stats.map((stat, index) => (
           <div key={index} className="text-center lg:flex lg:items-start lg:justify-start lg:gap-4">
             <div
@@ -52,7 +52,7 @@ const TeachStats = () => {
             >
               {stat.icon}
             </div>
-            <div className="text-start">
+            <div className="lg:text-start">
               <div className="font-bold text-2xl">{stat.value}</div>
               <div className="text-gray-600">{stat.label}</div>
             </div>
