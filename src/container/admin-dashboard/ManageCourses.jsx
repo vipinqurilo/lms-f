@@ -36,10 +36,17 @@ const ManageCourses = () => {
   const getloading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
-  const [isEdit, setIsEdit] = useState(false);
+  const [editCourseId, setEditCourseId] = useState(null);
   const [selecteStatus, setselecteStatus] = useState("All");
   const [filteredCourses, setfilteredCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const handleEditClick = (courseId) => {
+   
+    console.log(courseId,'course id kd')
+    
+    setEditCourseId(editCourseId === courseId ? null : courseId);
+  };
 
   useEffect(() => {
     if (selecteStatus !== "All") {
@@ -60,24 +67,24 @@ const ManageCourses = () => {
     value1: course?.entrolled || 425,
     value2: (
       <div className="flex items-center gap-5">
-        {isEdit ? (
+        {editCourseId === course?._id ? (
           <div className="flex items-center gap-5">
             <select name="" id="" className="px-2 py-1">
-              <option onClick={() => setIsEdit(!isEdit)} value="">
+              <option onClick={() => setEditCourseId(null)} value="Pending">
                 Pending
               </option>
-              <option onClick={() => setIsEdit(!isEdit)} value="">
+              <option onClick={() => setEditCourseId(null)} value="Approved">
                 Approved
               </option>
             </select>
           </div>
         ) : (
           <button
-            onClick={() => setIsEdit(!isEdit)}
+            onClick={() => handleEditClick(course?._id)}
             className="p-1.5 border flex border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500"
           >
-            <span className="px-2 ">{course?.status}</span>
-            <FiEdit3 size={20} className="" />
+            <span className="px-2">{course?.status}</span>
+            <FiEdit3 size={20} />
           </button>
         )}
       </div>

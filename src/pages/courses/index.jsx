@@ -26,7 +26,7 @@ const Courses = () => {
 
   return (
     <div className="lg:p-5 bg-gray-100 flex flex-wrap justify-center custom-margin-top">
-      <div className="w-full lg:px-20 gap-6 flex mt-9">
+      <div className="w-full  gap-6 flex mt-9">
         {/* Course Cards Section */}
         <div className="lg:w-9/12 w-full mx-auto p-4">
           <div className="flex flex-wrap justify-between items-center mb-6">
@@ -117,38 +117,7 @@ const Courses = () => {
         </div>
 
         {/* Desktop Filter Section */}
-        <div className="hidden lg:block lg:w-3/12 mt-9 sticky top-0 h-screen  overflow-y-auto">
-          <div className="w-64 h-10 flex justify-between items-center px-1">
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 5.25h16.5M6.75 10.5h10.5M10.5 15.75h3"
-                />
-              </svg>
-              <span className="text-sm font-medium text-gray-700">Filters</span>
-            </div>
-            <button
-              className="text-sm font-medium text-gray-500 hover:text-gray-700"
-              onClick={clearFilters} // Trigger clear function
-            >
-              CLEAR
-            </button>
-          </div>
-          {/* filter part */}
-          <div className="lg:mt-7">
-            {/* <CoursesFilterCards clearTrigger={clearTrigger} />
-            <CoursesFilterPrices clearTrigger={clearTrigger} /> */}
-          </div>
-        </div>
+      
       </div>
 
       <div className="w-11/12 lg:px-10">
