@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SubmitButtonsComp from "./SubmitButtonsComp";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +12,7 @@ import { uploadImage, uploadVideo } from "@/store/slices/uploadSlice";
 
 const CourseMedia = () => {
   const dispatch = useDispatch();
+  const { courseAddData } = useSelector((state) => state.instructor.course);
   const [media, setMedia] = useState({
     video: "",
     image: "",
@@ -22,6 +23,15 @@ const CourseMedia = () => {
   const videoLoading = useSelector(
     (state) => state.upload.isLoading.uploadVideo
   );
+
+  useEffect(() => {
+    if (courseAddData && courseAddData?.media) {
+      setMedia({
+        video: courseAddData?.media?.video || "",
+        image: courseAddData?.media?.image || "",
+      });
+    }
+  }, [courseAddData]);
 
   const handleImageUpload = (event) => {
     const selectedFile = event.target.files[0];

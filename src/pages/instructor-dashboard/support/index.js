@@ -6,7 +6,7 @@ import React from "react";
 export default function SupportPage() {
   return (
     <StudentDashboardLayout>
-      <main className="dashboard-container">
+      <main className="">
         {/* <TitleComp
           heading={"Support Tickets"}
           des={

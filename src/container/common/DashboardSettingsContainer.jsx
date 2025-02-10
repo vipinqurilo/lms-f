@@ -10,18 +10,44 @@ import PriceTab from "@/components/student-dashboard/settings/PriceTab";
 import { SettingsTabs } from "@/components/student-dashboard/settings/SettingsTabs";
 import { SocialProfiles } from "@/components/student-dashboard/settings/SocialProfiles";
 import WithdrawalTabProfile from "@/components/student-dashboard/settings/WithdrawalTabProfile";
+import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
 import { getProfile } from "@/store/slices/instructor/settingsSlice";
+import { getLanguages } from "@/store/slices/languageSlice";
+import { uploadImage } from "@/store/slices/uploadSlice";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 const DashboardSettingsContainer = () => {
+  const pathName = usePathname();
   const [activeTab, setActiveTab] = useState("edit-profile");
   const [avatarUrl, setAvatarUrl] = useState("/assets/tutor/Marlenereilly.jpg");
+  const { profile } = useSelector((state) => state.instructor.setting);
   const dispatch = useDispatch();
 
-  const handleAvatarUpload = (file) => {
-    const url = URL.createObjectURL(file);
-    setAvatarUrl(url);
+  const handleImageValidation = (imageFile) => {
+    const formData = new FormData();
+    formData.append("courseImage", imageFile);
+
+    if (imageFile) {
+      if (imageFile.size > 1 * 1024 * 1024) {
+        toast.error("File size must be less than 1MB");
+        return;
+      }
+      dispatch(uploadImage(formData))
+        .unwrap()
+        .then((res) => {
+          if (res?.data) {
+            setAvatarUrl(res.data);
+          } else {
+            toast.error("Invalid image response", res);
+          }
+        })
+        .catch((error) => {
+          toast.error("Image upload failed:", error);
+        });
+    }
   };
 
   const handleAvatarDelete = () => {
@@ -29,8 +55,22 @@ const DashboardSettingsContainer = () => {
   };
 
   useEffect(() => {
+    if (pathName === "/instructor-dashboard/settings") {
+      if (profile) {
+        setAvatarUrl(profile?.profilePhoto);
+      }
+    }
+  }, [profile]);
+
+  useEffect(() => {
     dispatch(getProfile());
   }, []);
+
+  useEffect(() => {
+    dispatch(getLanguages());
+    dispatch(getSubSubjects());
+    dispatch(getSubjects());
+  }, [dispatch]);
 
   return (
     <div className="bg-white rounded-lg border">
@@ -48,7 +88,7 @@ const DashboardSettingsContainer = () => {
           <div className="space-y-8">
             <AvatarUpload
               avatarUrl={avatarUrl}
-              onUpload={handleAvatarUpload}
+              onUpload={handleImageValidation}
               onDelete={handleAvatarDelete}
             />
             <EditProfile />

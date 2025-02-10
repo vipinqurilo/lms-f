@@ -10,22 +10,24 @@ const AvailabilityCalendar = ({ calendar }) => {
     isLoading: bookingLoading,
     totalPages,
   } = useSelector((state) => state.student.booking);
-  const bookings = rawBookings.map((session) => ({
-    date: new Date(session.sessionStartTime).toISOString().split("T")[0], // Extract YYYY-MM-DD
-    startTime: new Date(session.sessionStartTime)
-      .toISOString()
-      .split("T")[1]
-      .slice(0, 5),
-    endTime: new Date(session.sessionEndTime)
-      .toISOString()
-      .split("T")[1]
-      .slice(0, 5),
-  }));
-
+  console.log(rawBookings, "rawBookings");
+  const bookings = rawBookings.map((session) => {
+    const startTime = new Date(session.sessionStartTime);
+    const endTime = new Date(session.sessionEndTime);
+    startTime.setMinutes(startTime.getMinutes() + 330); // Add 5:30
+    endTime.setMinutes(endTime.getMinutes() + 330); // Add 5:30
+    
+    return {
+      date: startTime.toISOString().split("T")[0], // Extract YYYY-MM-DD
+      startTime: startTime.toISOString().split("T")[1].slice(0, 5),
+      endTime: endTime.toISOString().split("T")[1].slice(0, 5),
+    };
+  });
+  console.log(bookings, "bookings");
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
-  
+
   const data = calendar?.availability.reduce((acc, { day, slots }) => {
     const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
     acc[dayName] = slots;

@@ -249,6 +249,32 @@ export function Sidebar() {
                 isCollapsed={isCollapsed}
               />
             )}
+            {pathname?.startsWith("/student-dashboard") && (
+              <LinkComponent
+                isActive={pathname === "/student-dashboard/support"}
+                handleIsHovered={handleIsHovered}
+                isHovered={isHovered}
+                link={{
+                  title: "Support Tickets",
+                  icon: LuTickets,
+                  href: "/student-dashboard/support",
+                }}
+                isCollapsed={isCollapsed}
+              />
+            )}
+            {pathname?.startsWith("/admin-dashboard") && (
+              <LinkComponent
+                isActive={pathname === "/admin-dashboard/support"}
+                handleIsHovered={handleIsHovered}
+                isHovered={isHovered}
+                link={{
+                  title: "Support Tickets",
+                  icon: LuTickets,
+                  href: "/admin-dashboard/support",
+                }}
+                isCollapsed={isCollapsed}
+              />
+            )}
 
             <button
               onMouseEnter={() => handleIsHovered("logout")}

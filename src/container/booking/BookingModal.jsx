@@ -42,7 +42,7 @@ export function BookingModal({ onClose, tutor }) {
   const createBooking = () => {
     console.log({
       subjectId: subject,
-      teacherId: tutor?._id,
+      teacherId: tutor?.user?._id,
       studentId: profile?._id,
       scheduledDate,
       sessionStartTime,
@@ -50,18 +50,18 @@ export function BookingModal({ onClose, tutor }) {
       sessionDuration: duration,
       paymentId: "67a1acec55d46979078eddd8",
     });
-    // dispatch(
-    //   createBookingAsync({
-    //     subjectId: subject,
-    //     teacherId: tutor?._id,
-    //     studentId: profile?._id,
-    //     scheduledDate,
-    //     sessionStartTime,
-    //     sessionEndTime,
-    //     sessionDuration: duration,
-    //     paymentId: "67a1acec55d46979078eddd8",
-    //   })
-    // );
+    dispatch(
+      createBookingAsync({
+        subjectId: subject,
+        teacherId: tutor?.user?._id,
+        studentId: profile?._id,
+        scheduledDate,
+        sessionStartTime,
+        sessionEndTime,
+        sessionDuration: duration,
+        paymentId: "67a1acec55d46979078eddd8",
+      })
+    );
   };
 
   // Add useEffect to handle scroll locking

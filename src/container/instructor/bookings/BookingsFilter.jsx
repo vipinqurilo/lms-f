@@ -2,7 +2,15 @@ import { StartEndDateSelector } from "@/components/student-dashboard/StartEndDat
 import { Search } from "lucide-react";
 import React from "react";
 
-const BookingsFilter = ({ keyword, setKeyword, endDateError=null, startDate, handleStartDateChange, endDate, handleEndDateChange }) => {
+const BookingsFilter = ({
+  keyword,
+  setKeyword,
+  endDateError = null,
+  startDate,
+  handleStartDateChange,
+  endDate,
+  handleEndDateChange,
+}) => {
   return (
     <div className="flex items-center gap-4 mb-4">
       <div className="relative h-fit">
@@ -11,9 +19,9 @@ const BookingsFilter = ({ keyword, setKeyword, endDateError=null, startDate, han
           placeholder="Search by keyword"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          className="pl-10 pr-4 py-2 border rounded-lg w-64"
+          className="pl-10 pr-4 py-2 border rounded-lg w-64 focus:border-gray-500 focus:outline-none"
         />
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2  -translate-y-1/2 h-4 w-4 text-gray-400" />
       </div>
 
       <div className=" flex justify-center items-center gap-4 ">
