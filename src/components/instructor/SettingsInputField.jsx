@@ -33,12 +33,21 @@ const SettingsInputField = ({
                 isMulti={isMulti}
                 getOptionLabel={(e) => e.label}
                 getOptionValue={(e) => e.value}
-                value={options.find((c) => c.value === value)}
+                value={
+                  isMulti
+                    ? options.filter((opt) =>
+                        value?.some((v) => v.value === opt.value)
+                      )
+                    : options.find((c) => c.value === value?.value)
+                }
                 onChange={(selectedOption) =>
                   onChange(
                     isMulti
-                      ? selectedOption.map((opt) => opt.value)
-                      : selectedOption.value
+                      ? selectedOption.map((opt) => ({
+                          label: opt.label,
+                          value: opt.value,
+                        }))
+                      : selectedOption
                   )
                 }
                 styles={{

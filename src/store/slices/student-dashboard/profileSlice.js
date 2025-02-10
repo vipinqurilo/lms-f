@@ -62,7 +62,7 @@ const profileSlice = createSlice({
         state.isLoading["updatePersonalInfoAsync"] = false;
         state.error["updatePersonalInfoAsync"] = action.payload;
       })
-       .addCase(updateSocialProfilesAsync.pending, (state) => {
+      .addCase(updateSocialProfilesAsync.pending, (state) => {
         state.isLoading["updateSocialProfilesAsync"] = true;
       })
       .addCase(updateSocialProfilesAsync.fulfilled, (state, action) => {

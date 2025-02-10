@@ -11,9 +11,9 @@ const CommonButton = ({
     "px-4 h-fit py-2 rounded-md shadow text-sm font-semibold transition";
 
   const styles = {
-    primary: `bg-background text-white hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-95`,
-    secondary: `border border-backbg-background text-[#223142] hover:bg-[#223142] hover:text-white`,
-    third: `border border-secondary text-[#223142] hover:bg-[#223142] hover:text-white`,
+    primary: `bg-secondary text-white hover:bg-background disabled:cursor-not-allowed disabled:opacity-95`,
+    secondary: `border border-backbg-background text-[#223142] hover:bg-secondary hover:text-white`,
+    third: `border border-secondary text-[#223142] hover:bg-secondary hover:text-white`,
   };
 
   return (

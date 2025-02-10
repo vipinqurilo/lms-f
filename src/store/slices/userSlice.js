@@ -12,14 +12,22 @@ export const userLoginAsync = CreateApiAsyncThunk(
   (userData) => api.post(`/api/auth/login`, userData)
 );
 
+export const verifyLoggedInUser = CreateApiAsyncThunk(
+  "GET/user/verifyLoggedInUser",
+  () => api.post(`/api/auth/verify-token`)
+);
 
 const initialState = {
   authUser: {
     name: "khurshid",
-    role: "admin",
 
+    role: "instructor",
+    // role: "student",
+
+    // role: "admin",
   },
   isLoading: {},
+
   error: {},
 };
 
@@ -56,10 +64,7 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.error["userLoginAsync"] = action.payload;
-
-
       })
-
 
       .addCase(instructorRegister.pending, (state) => {
         state.isLoading["instructorRegister"] = true;
@@ -69,7 +74,16 @@ const userSlice = createSlice({
       })
       .addCase(instructorRegister.rejected, (state) => {
         state.isLoading["instructorRegister"] = false;
-
+      })
+      .addCase(verifyLoggedInUser.pending, (state) => {
+        state.isLoading["verifyLoggedInUser"] = true;
+      })
+      .addCase(verifyLoggedInUser.fulfilled, (state, action) => {
+        state.isLoading["verifyLoggedInUser"] = false;
+        state.authUser = action.payload.data;
+      })
+      .addCase(verifyLoggedInUser.rejected, (state) => {
+        state.isLoading["verifyLoggedInUser"] = false;
       });
   },
 });

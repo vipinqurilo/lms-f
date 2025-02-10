@@ -13,7 +13,7 @@ const paymentMethods = [
   { id: "paystack", name: "Paystack" },
 ];
 
-export function PaymentSelection({ selected, onSelect }) {
+export function PaymentSelection({ selected, onSelect, createBooking }) {
   return (
     <div className="lg:grid grid-cols-2 gap-8 p-8">
       <div>
@@ -86,7 +86,10 @@ export function PaymentSelection({ selected, onSelect }) {
             </div>
           </div>
 
-          <button className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black">
+          <button
+            onClick={createBooking}
+            className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black"
+          >
             Confirm payment
           </button>
 

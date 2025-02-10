@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SubmitButtonsComp from "./SubmitButtonsComp";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,20 +12,26 @@ import { uploadImage, uploadVideo } from "@/store/slices/uploadSlice";
 
 const CourseMedia = () => {
   const dispatch = useDispatch();
+  const { courseAddData } = useSelector((state) => state.instructor.course);
   const [media, setMedia] = useState({
-    video: "https://res.cloudinary.com/dxyt4v9lc/image/upload/v1732340717/qllrpxbyrvupuvxxvbn4.jpg",
-    image: "https://res.cloudinary.com/dxyt4v9lc/image/upload/v1732340717/qllrpxbyrvupuvxxvbn4.jpg",
+    video: "",
+    image: "",
   });
-  // const [media, setMedia] = useState({
-  //   video: null,
-  //   image: null,
-  // });
   const imageLoader = useSelector(
     (state) => state.upload.isLoading.uploadImage
   );
   const videoLoading = useSelector(
     (state) => state.upload.isLoading.uploadVideo
   );
+
+  useEffect(() => {
+    if (courseAddData && courseAddData?.media) {
+      setMedia({
+        video: courseAddData?.media?.video || "",
+        image: courseAddData?.media?.image || "",
+      });
+    }
+  }, [courseAddData]);
 
   const handleImageUpload = (event) => {
     const selectedFile = event.target.files[0];
@@ -84,7 +90,7 @@ const CourseMedia = () => {
           className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:cursor-not-allowed disabled:opacity-60"
           disabled={imageLoader}
         />
-        {media.imagePreview && (
+        {media.image && (
           <div
             className="w-full h-80 bg-no-repeat bg-cover bg-center mt-5 rounded-lg"
             style={{ backgroundImage: `url(${media.image})` }}
@@ -105,7 +111,7 @@ const CourseMedia = () => {
           className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:opacity-60 disabled:cursor-not-allowed"
           disabled={videoLoading}
         />
-        {media.videoPreview && (
+        {media.video && (
           <div className="w-full h-80 rounded-lg">
             <video
               src={media.video}

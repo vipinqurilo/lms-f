@@ -1,8 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import data from "@/data/subjectsAndLanguageData.json";
-import { useForm } from "react-hook-form";
-import SettingsInputField from "../instructor/SettingsInputField";
+import React, { useEffect, useMemo, useState } from "react";
 import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,10 +12,18 @@ import {
   updateLanguages,
   updateSubjects,
 } from "@/store/slices/instructor/settingsSlice";
+import Select from "react-select";
 
 const SubjectAndLanguage = () => {
   const path = usePathname();
+  const dispatch = useDispatch();
+
   const { profile } = useSelector((state) => state.instructor.setting);
+  const { languages } = useSelector((state) => state.languages);
+  const { subjects: category, subSubjects: subCategory } = useSelector(
+    (state) => state.category
+  );
+
   const loading = useSelector(
     (state) => state.instructor.setting.isLoading.updateLanguages
   );
@@ -26,174 +31,210 @@ const SubjectAndLanguage = () => {
     (state) => state.instructor.setting.isLoading.updateSubjects
   );
 
-  const [subjects, setSubjects] = useState([]);
   const { processData } = useSelector((state) => state.tutors);
-  const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    control,
-    watch,
-    setValue,
-    reset,
-  } = useForm();
-  const selectedSubjects = watch("subjects");
-  const selectedLanguages = watch("language");
+
+  const [subjects, setSubjects] = useState([]);
+  const [subSubjects, setSubSubjects] = useState({});
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+  const handleSubSubjectsChange = (subjectValue, selected) => {
+    setSubSubjects((prev) => ({
+      ...prev,
+      [subjectValue]: selected, // Store selected subSubjects per subject
+    }));
+  };
 
   useEffect(() => {
     if (processData && Object.keys(processData).length > 0) {
-      reset({
-        subjects: processData?.subjectAndlanguage?.subjects || [],
-        language: processData?.subjectAndlanguage?.language || [],
-      });
       setSubjects(processData?.subjectAndlanguage?.subjects || []);
+      setSelectedLanguages(processData?.subjectAndlanguage?.language || []);
     }
-  }, [processData, reset]);
+  }, [processData]);
 
   useEffect(() => {
     if (profile && path === "/instructor-dashboard/settings") {
-      reset({
-        language: profile?.languagesSpoken,
-        subjects: profile?.subjectsTaught,
-      });
+      setSelectedLanguages(
+        profile?.languagesSpoken
+          ?.map((lang) => languages?.find((l) => l?._id === lang))
+          ?.map((match) => ({ label: match?.name, value: match?._id })) || []
+      );
+      setSubjects(profile?.subjectsTaught || []);
     }
-  }, [profile]);
+  }, [profile, languages]);
 
-  const submitForm = (data) => {
-    dispatch(updateProcessData({ field: "subjectAndlanguage", data }));
+  const submitForm = () => {
+    const formdata = {
+      language: selectedLanguages,
+      subjects: subSubjects,
+    };
+
+    dispatch(
+      updateProcessData({ field: "subjectAndlanguage", data: formdata })
+    );
     dispatch(updateProcessStep(4));
   };
-
-  const languageOptions = data?.languages?.map((language) => ({
-    label: language.name,
-    value: language.code,
-  }));
-
-  const subjectsData = data?.subjects?.map((subject) => ({
-    label: subject?.subject,
-    value: subject?.subject,
-    subSubjects: subject?.subSubjects,
-  }));
 
   const handleAddRemoveSubjects = (data) => {
     setSubjects((prevSubjects) => {
       const updatedSubjects = prevSubjects.some(
-        (sub) => sub.label === data.label
+        (sub) => sub.value === data.value
       )
-        ? prevSubjects.filter((sub) => sub.label !== data.label)
+        ? prevSubjects.filter((sub) => sub.value !== data.value)
         : [...prevSubjects, data];
-
-      setValue("subjects", updatedSubjects);
 
       return updatedSubjects;
     });
   };
 
   const handleUpdateLanguage = () => {
-    const data = {
-      languagesSpoken: selectedLanguages,
-    };
+    const data = { languagesSpoken: selectedLanguages };
     dispatch(updateLanguages(data));
   };
 
   const handleUpdateSubjects = () => {
     const data = {
-      subjectsTaught: selectedSubjects,
+      subjectsTaught: Object.values(subSubjects)
+        .flat()
+        .map((s) => s.value),
     };
     dispatch(updateSubjects(data));
   };
 
+  const languageOptions = languages?.map((language) => ({
+    label: language.name,
+    value: language._id,
+  }));
+
+  const subjectsData = useMemo(
+    () =>
+      category?.map((subject) => ({
+        label: subject?.name,
+        value: subject?._id,
+        subSubjects: subCategory
+          ?.filter((sub) => sub?.courseCategory?._id === subject?._id)
+          ?.map((sub) => ({ label: sub?.name, value: sub?._id })),
+      })),
+    [category]
+  );
+
+  useEffect(() => {
+    if (profile && path === "/instructor-dashboard/settings") {
+      // Extract selected subSubjects from profile
+      const selectedSubSubjects = subCategory.filter((sub) =>
+        profile?.subjectsTaught.includes(sub._id)
+      );
+
+      // Extract unique subjects from the subSubjects
+      const selectedSubjects = [
+        ...new Map(
+          selectedSubSubjects.map((sub) => [
+            sub.courseCategory._id,
+            category.find((c) => c._id === sub.courseCategory._id),
+          ])
+        ).values(),
+      ].filter(Boolean); // Remove undefined values
+
+      setSubjects(
+        selectedSubjects.map((sub) => ({
+          label: sub.name,
+          value: sub._id,
+          subSubjects: subCategory
+            ?.filter((s) => s?.courseCategory?._id === sub?._id)
+            ?.map((s) => ({ label: s?.name, value: s?._id })),
+        }))
+      );
+
+      // Store subSubjects as an object mapped to their parent subject
+      const subSubjectsMap = selectedSubjects.reduce((acc, subject) => {
+        acc[subject._id] = selectedSubSubjects
+          .filter((s) => s.courseCategory._id === subject._id)
+          .map((s) => ({ label: s.name, value: s._id }));
+        return acc;
+      }, {});
+
+      setSubSubjects(subSubjectsMap);
+    }
+  }, [profile, subCategory, category]);
+
+  // console.log("subjects", subjects);
+  // console.log("subjectsData", subjectsData);
+  // console.log("subSubjects", subSubjects);
+
   return (
     <div className="w-full space-y-6">
-      <div className="lg:hidden">
+      {/* <div className="lg:hidden">
         <SettingsInputField
-          control={control}
-          errors={errors}
           label={"Subjects"}
           isSelect={true}
           name={"subjects"}
           options={subjectsData}
-          register={register}
           isMulti={true}
+          value={subjects}
+          onChange={(selected) => setSubjects(selected)}
         />
-      </div>
+      </div> */}
 
-      <div className="lg:grid grid-cols-5 gap-10">
-        {subjectsData?.map((subject, index) => (
-          <button
-            key={index}
-            onClick={() => handleAddRemoveSubjects(subject)}
-            className={`${
-              subjects.some((sub) => sub.label === subject.label)
-                ? "bg-background text-white" // Subject is selected
-                : "bg-none" // Subject is not selected
-            } px-3 py-2 text-sm border border-black/10 w-full rounded-lg`}
-          >
-            {subject?.label}
-          </button>
-        ))}
+      <div className="w-full flex flex-col gap-4">
+        <h2 className="text-light text-sm">Subjects</h2>
+        <div className="lg:grid grid-cols-5 gap-5">
+          {subjectsData?.map((subject, index) => (
+            <button
+              key={index}
+              onClick={() => handleAddRemoveSubjects(subject)}
+              className={`${
+                subjects.some((sub) => sub.label === subject.label)
+                  ? "bg-background text-white"
+                  : "bg-none hover:bg-background transition-custom hover:text-white"
+              } px-3 py-2 text-sm border border-black/10 w-full rounded-lg`}
+            >
+              {subject?.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="w-full grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-        {selectedSubjects?.map((subject) => {
-          const filteredSubjects = subjectsData?.filter(
-            (mainSubject) => mainSubject?.value === subject?.value
-          );
+        {subjects?.map((subject) => {
           return (
             <div className="space-y-4" key={subject?.value}>
-              {filteredSubjects?.map((subsubject) => {
-                const subSubjectsArray = subsubject?.subSubjects?.map(
-                  (data) => ({
-                    label: data,
-                    value: data,
-                  })
-                );
-
-                console.log("subSubjectsArray", subSubjectsArray);
-
-                return (
-                  <div key={subsubject?.value}>
-                    <SettingsInputField
-                      control={control}
-                      errors={errors}
-                      label={subsubject?.label}
-                      name={subsubject?.label?.toLowerCase()}
-                      options={subSubjectsArray}
-                      register={register}
-                      isMulti={true}
-                      isSelect={true}
-                    />
-                  </div>
-                );
-              })}
+              <Select
+                options={subject?.subSubjects} // Dropdown options
+                isMulti={true} // Allow multiple selections
+                value={subSubjects[subject.value] || []} // Get subSubjects for the specific subject
+                onChange={(selected) =>
+                  handleSubSubjectsChange(subject.value, selected)
+                } // Handle selection change
+                getOptionLabel={(e) => e.label} // Ensure correct label display
+                getOptionValue={(e) => e.value} // Ensure correct value selection
+                className="w-full" // Optional: Adjust width as needed
+              />
             </div>
           );
         })}
       </div>
 
-      <SettingsInputField
-        control={control}
-        errors={errors}
-        label={"Languages"}
-        isSelect={true}
-        name={"language"}
-        options={languageOptions}
-        register={register}
-        isMulti={true}
-      />
+      {languages && languageOptions?.length > 0 && (
+        <Select
+          options={languageOptions} // Dropdown options for languages
+          isMulti={true} // Allow multiple selections
+          value={selectedLanguages} // Selected values
+          onChange={(selected) => setSelectedLanguages(selected)} // Handle selection change
+          getOptionLabel={(e) => e.label} // Display correct language label
+          getOptionValue={(e) => e.value} // Use correct value selection
+          className="w-full" // Optional styling for width
+        />
+      )}
 
       {path === "/instructor-dashboard/settings" ? (
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-16 w-full justify-end">
           <CommonButton
             label={"Update Subjects"}
-            onClick={() => handleUpdateSubjects()}
+            onClick={handleUpdateSubjects}
             loading={subjectsloading}
           />
           <CommonButton
             label={"Update Languages"}
-            variant="secondary"
-            onClick={() => handleUpdateLanguage()}
+            onClick={handleUpdateLanguage}
             loading={loading}
           />
         </div>
@@ -203,7 +244,7 @@ const SubjectAndLanguage = () => {
             cancelText={"Go Back"}
             onCancel={() => dispatch(updateProcessStep(2))}
             saveText={"Save and Continue"}
-            handleClick={handleSubmit((data) => submitForm(data))}
+            handleClick={submitForm}
           />
         </div>
       )}

@@ -2,359 +2,6 @@ import React, { useState, useEffect } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 
-const data = {
-  Sun: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ],
-  Mon: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-  ],
-  Tue: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    false,
-    true,
-    true,
-    true,
-    true,
-  ],
-  Wed: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    false,
-  ],
-  Thu: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ],
-  Fri: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-  ],
-  Sat: [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ],
-};
- 
 const bookings = [
   {
     date: "2025-01-26", // ISO 8601 format (YYYY-MM-DD)
@@ -378,52 +25,95 @@ const bookings = [
   },
 ];
 
-const ScheduleCalendar = ({ slotLimit }) => {
+const ScheduleCalendar = ({
+  duration,
+  calendar,
+  scheduledDate,
+  setScheduledDate,
+  sessionStartTime,
+  setSessionStartTime,
+  sessionEndTime,
+  setSessionEndTime,
+}) => {
+  const data = calendar?.availability.reduce((acc, { day, slots }) => {
+    const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
+    acc[dayName] = slots;
+    return acc;
+  }, {});
   const [currentWeek, setCurrentWeek] = useState(0);
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
   const [selectedSlots, setSelectedSlots] = useState([]);
+
   const handleSlotSelect = (isBeforeCurrentTime, rowIndex, colIndex) => {
-    if (
-      isAvailable(colIndex, rowIndex) && // Check if cell is available
-      !isBeforeCurrentTime
-    ) {
-      const spanStart = rowIndex - (rowIndex % 2); // Find start of 30-minute block
+    if (isAvailable(colIndex, rowIndex) && !isBeforeCurrentTime) {
+      const slotsPerDuration = duration / 15;
+      const spanStart = rowIndex - (rowIndex % slotsPerDuration);
       const isAlreadySelected = selectedSlots.some(
-        (slot) => slot.dayIndex === colIndex && slot.timeIndex === spanStart
+        (slot) =>
+          slot.dayIndex === colIndex &&
+          slot.timeIndex >= spanStart &&
+          slot.timeIndex < spanStart + slotsPerDuration
       );
 
       if (isAlreadySelected) {
         // Deselect the entire block
-        setSelectedSlots((prev) =>
-          prev.filter(
-            (slot) =>
-              !(
-                slot.dayIndex === colIndex &&
-                (slot.timeIndex === spanStart ||
-                  slot.timeIndex === spanStart + 1)
-              )
-          )
-        );
+        setSelectedSlots([]);
+        setScheduledDate(null);
+        setSessionStartTime(null);
+        setSessionEndTime(null);
       } else {
         // Check if adding the new slot exceeds the limit
-        if (selectedSlots.length >= slotLimit * 2) {
-          alert(`You can only select up to ${slotLimit} slots.`);
+        if (selectedSlots.length >= 1) {
+          alert(`You can only select 1 slot.`);
           return;
         }
 
-        // Select both cells in the 30-minute section
-        setSelectedSlots((prev) => [
-          ...prev,
-          { dayIndex: colIndex, timeIndex: spanStart },
-          { dayIndex: colIndex, timeIndex: spanStart + 1 },
-        ]);
+        // Select all cells in the duration
+        const newSlots = Array.from({ length: slotsPerDuration }, (_, i) => ({
+          dayIndex: colIndex,
+          timeIndex: spanStart + i,
+        }));
+        setSelectedSlots(newSlots);
+
+        // Calculate the selected date
+        const selectedDate = new Date();
+        selectedDate.setDate(
+          selectedDate.getDate() + currentWeek * 7 + colIndex
+        );
+        selectedDate.setHours(0, 0, 0, 0);
+
+        // Format scheduledDate
+        setScheduledDate(selectedDate.toISOString());
+
+        // Calculate and format session start time
+        const [startHours, startMinutes] = times[spanStart].split(":");
+        const startTime = new Date(selectedDate);
+        startTime.setHours(
+          Number.parseInt(startHours),
+          Number.parseInt(startMinutes),
+          0,
+          0
+        );
+        setSessionStartTime(startTime.toISOString());
+
+        // Calculate and format session end time
+        const [endHours, endMinutes] =
+          times[spanStart + slotsPerDuration].split(":");
+        const endTime = new Date(selectedDate);
+        endTime.setHours(
+          Number.parseInt(endHours),
+          Number.parseInt(endMinutes),
+          0,
+          0
+        );
+        setSessionEndTime(endTime.toISOString());
       }
     }
   };
 
-  useEffect(() => {       
+  useEffect(() => {
     const calculateDays = () => {
       const today = new Date();
       const startOfWeek = new Date(today);
@@ -494,7 +184,12 @@ const ScheduleCalendar = ({ slotLimit }) => {
       // Adjust the selected time slot into the same date format as booking start and end
       const [hours, minutes] = timeSlot.split(":");
       const slotTime = new Date(selectedDate);
-      slotTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+      slotTime.setHours(
+        Number.parseInt(hours, 10),
+        Number.parseInt(minutes, 10),
+        0,
+        0
+      );
 
       return (
         bookingDate.toDateString() === selectedDate.toDateString() &&
@@ -539,21 +234,26 @@ const ScheduleCalendar = ({ slotLimit }) => {
       }
     }
 
-    const spanIndex = Math.floor(timeIndex / 2); // Every two 15-minute slots correspond to one 30-minute span
+    const slotsPerDuration = duration / 15;
+    const spanStart =
+      Math.floor(timeIndex / slotsPerDuration) * slotsPerDuration;
 
-    // If the spanIndex is out of bounds, return false
-    if (!dayAvailability || spanIndex >= dayAvailability.length) {
-      return false;
+    // Check if all slots within the duration are available
+    for (let i = 0; i < slotsPerDuration; i++) {
+      const spanIndex = Math.floor((spanStart + i) / 2);
+      if (
+        !dayAvailability ||
+        spanIndex >= dayAvailability.length ||
+        !dayAvailability[spanIndex]
+      ) {
+        return false;
+      }
+      if (isBooked(dayIndex, spanStart + i)) {
+        return false;
+      }
     }
 
-    const available = dayAvailability[spanIndex];
-
-    // Check if the slot is booked
-    if (isBooked(dayIndex, timeIndex)) {
-      return false; // Booked slots are not available
-    }
-
-    return available; // Return true only if the 30-minute span is available
+    return true;
   };
 
   useEffect(() => {
@@ -570,6 +270,9 @@ const ScheduleCalendar = ({ slotLimit }) => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
+
+ 
+
 
   return (
     <div className=" h-full ">
@@ -701,6 +404,15 @@ const ScheduleCalendar = ({ slotLimit }) => {
                         15
                     );
 
+                const slotsPerDuration = duration / 15;
+                const spanStart = rowIndex - (rowIndex % slotsPerDuration);
+                const isSelected = selectedSlots.some(
+                  (slot) =>
+                    slot.dayIndex === colIndex &&
+                    slot.timeIndex >= spanStart &&
+                    slot.timeIndex < spanStart + slotsPerDuration
+                );
+
                 return (
                   <div
                     key={`${rowIndex}-${colIndex}`}
@@ -709,11 +421,7 @@ const ScheduleCalendar = ({ slotLimit }) => {
                         ? "bg-red-500 border-t border-red-600"
                         : isAvailable(colIndex, rowIndex) &&
                           !isBeforeCurrentTime
-                        ? selectedSlots.some(
-                            (slot) =>
-                              slot.dayIndex === colIndex &&
-                              slot.timeIndex === rowIndex
-                          )
+                        ? isSelected
                           ? "bg-blue-300 border-t border-blue-400" // Highlight selected cells
                           : "bg-bg_green border-t border-light_green"
                         : isBeforeCurrentTime

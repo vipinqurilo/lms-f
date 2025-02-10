@@ -7,12 +7,15 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import GetLoggedInUser from "@/components/common/GetLoggedInUser";
 
 export default function App({ Component, pageProps }) {
+
   const pathname = usePathname();
   const noFooterRoutes = [
     "/login",
     "/register",
+    "/admin-login",
     "/instructor-dashboard",
     "/student-dashboard", 
     "/admin-dashboard"
@@ -22,12 +25,15 @@ export default function App({ Component, pageProps }) {
     Aos.refresh();
   }, []);
 
+ 
+
   const hideNavFooter = noFooterRoutes.some((route) =>
     pathname?.startsWith(route)
   );
 
   return (
     <StoreProvider>
+      <GetLoggedInUser />
       {!hideNavFooter && <Navbar />}
       <Component {...pageProps} />
       {!hideNavFooter && <Footer />}

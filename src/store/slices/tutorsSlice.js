@@ -16,6 +16,7 @@ const initialState = {
   processStep: 1,
   processData: {},
   tutorProfile: null,
+  allTutorProfile: null,
   isLoading: {},
   error: {},
 };
@@ -31,20 +32,28 @@ export const fetchTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchTutorProfileAsync",
   (tutorId) => api.get(`/api/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
 );
+export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
+  "tutors/fetchAllTutorProfileAsync",
+  () => api.get(`/api/tutors`) // Assuming you have an endpoint like this
+);
 
 const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
-  reducers: {
+  reducers: { 
     updateProcessStep: (state, action) => {
       state.processStep = action.payload;
     },
     updateProcessData: (state, action) => {
       const { field, data } = action.payload;
-      state.processData = {
-        ...state.processData,
-        [field]: data,
-      };
+      if (state.processData.hasOwnProperty(field)) {
+        state.processData[field] = data;
+      } else {
+        state.processData = {
+          ...state.processData,
+          [field]: data,
+        };
+      }
       clearError: (state, action) => {
         const errorKey = action.payload;
         if (errorKey) {
@@ -78,6 +87,18 @@ const tutorsSlice = createSlice({
       .addCase(fetchTutorProfileAsync.rejected, (state, action) => {
         state.isLoading["fetchTutorProfileAsync"] = false;
         state.error["fetchTutorProfileAsync"] = action.payload;
+      })
+      .addCase(fetchAllTutorProfileAsync.pending, (state) => {
+        state.isLoading["fetchAllTutorProfileAsync"] = true;
+      })
+      .addCase(fetchAllTutorProfileAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchAllTutorProfileAsync"] = false;
+        state.allTutorProfile = action.payload?.data;
+      })
+
+      .addCase(fetchAllTutorProfileAsync.rejected, (state, action) => {
+        state.isLoading["fetchAllTutorProfileAsync"] = false;
+        state.error["fetchAllTutorProfileAsync"] = action.payload;
       });
   },
 });

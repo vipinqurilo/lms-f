@@ -7,14 +7,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllIntructorCourses } from "@/store/slices/instructor/courseSlice";
 import Loader from "@/components/common/Loader";
 import ScheduleView from "./ScheduleView";
+import { FaBook, FaPlay, FaCheckCircle, FaUsers, FaDollarSign } from 'react-icons/fa';
 
 const stats = [
-  { title: "Enrolled Courses", value: 12 },
-  { title: "Active Courses", value: 3 },
-  { title: "Completed Courses", value: 13 },
-  { title: "Total Students", value: 20 },
-  { title: "Total Courses", value: 20 },
-  { title: "Total Earnings", value: 456 },
+  {
+    title: "Enrolled Courses",
+    value: 12,
+    icon: <FaBook size={22} className="text-blue-500" />,
+    color: "bg-blue-100"
+  },
+  {
+    title: "Active Courses",
+    value: 3,
+    icon: <FaPlay size={22} className="text-green-500" />,
+    color: "bg-green-100"
+  },
+  {
+    title: "Completed Courses",
+    value: 13,
+    icon: <FaCheckCircle size={22} className="text-yellow-500" />,
+    color: "bg-yellow-100"
+  },
+  {
+    title: "Total Students",
+    value: 20,
+    icon: <FaUsers size={22} className="text-purple-500" />,
+    color: "bg-purple-100"
+  },
+  {
+    title: "Total Courses",
+    value: 20,
+    icon: <FaBook size={22} className="text-blue-600" />,
+    color: "bg-blue-100"
+  },
+  {
+    title: "Total Earnings",
+    value: 456,
+    icon: <FaDollarSign size={22} className="text-green-600" />,
+    color: "bg-green-100"
+  },
 ];
 
 const recentCourses = [
@@ -144,6 +175,9 @@ const InstructorDashboard = () => {
                     key={index}
                     title={stat.title}
                     value={stat.value}
+                    isIcon={true}
+                    Icon={stat.icon}
+                    color={stat.color}
                   />
                 ))}
               </div>
