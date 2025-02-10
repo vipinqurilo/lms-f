@@ -22,13 +22,14 @@ const Courses = () => {
     setSelectedOption("");
   };
 
+    
   console.log("courses in main page", courses);
 
   return (
-    <div className="lg:p-5 bg-gray-100 flex flex-wrap justify-center custom-margin-top">
-      <div className="w-full  gap-6 flex mt-9">
+    <div className="lg:p-5 bg-gray-100 md:px-20 flex flex-wrap justify-center custom-margin-top">
+      <div className="  gap-6 flex mt-9">
         {/* Course Cards Section */}
-        <div className="lg:w-9/12 w-full mx-auto p-4">
+        <div className=" w-full  p-4">
           <div className="flex flex-wrap justify-between items-center mb-6">
             {/* Icon and Results Text */}
             <div className="flex items-center space-x-3">
@@ -104,7 +105,7 @@ const Courses = () => {
           </div>
 
           {/* Course Cards Section */}
-          <div className="mt-7 grid grid-cols-2">
+          <div className="mt-7 grid grid-cols-3 gap-6">
             {Array.isArray(courses) && courses.length > 0 ? (
               courses.map((course, index) => {
                 console.log("Course data:", course);
