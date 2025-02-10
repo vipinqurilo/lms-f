@@ -21,7 +21,7 @@ const initialState = {
   authUser: {
     name: "khurshid",
 
-    role: "instructor",
+    role: "admin",
     // role: "student",
 
     // role: "admin",
