@@ -20,10 +20,10 @@ const CreatedCourses = ({
     <div className="pt-8">
       <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
       <div className="bg-white rounded-lg shadow-md overflow-hiddenp-4 ">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-lg">
           <table className="w-full rounded-lg">
             <TableHeader headingsData={headingsData} />
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-100">
               {data?.map((course, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 w-[60%]">
@@ -51,7 +51,7 @@ const CreatedCourses = ({
                   <td className="px-6 py-4">
                     <div
                       className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm ${
-                        headingsData[2] === "Status" && getStatusCss(course?.value2)
+                        headingsData[2] === "Status" && `${getStatusCss(course?.value2)} w-fit capitalize`
                       }`}
                     >
                       {course?.value2}

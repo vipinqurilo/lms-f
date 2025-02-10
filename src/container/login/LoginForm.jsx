@@ -7,9 +7,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginAsync } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
   const {
     register,
@@ -18,8 +20,13 @@ const LoginForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    dispatch(userLoginAsync(data));
+    dispatch(userLoginAsync(data)).unwrap().then((res) => {
+      console.log(res);
+      
+
+    });
   };
+
 
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">

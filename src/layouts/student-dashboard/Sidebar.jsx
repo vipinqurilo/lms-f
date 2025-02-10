@@ -29,6 +29,8 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { useSelector } from "react-redux";
+import { LinkComponent } from "@/components/layout/LinkComponent";
+import { LuTickets } from "react-icons/lu";
 
 const studentSidebarLinks = [
   {
@@ -141,6 +143,11 @@ const adminSidebarLinks = [
     icon: Wallet,
     href: "/admin-dashboard/approvals/withdrawals",
   },
+  {
+    title: "Manage Courses",
+    icon: Wallet,
+    href: "/admin-dashboard/manage-courses",
+  },
 ];
 
 export function Sidebar() {
@@ -224,16 +231,45 @@ export function Sidebar() {
               />
             )}
 
-            <LinkComponent
-              handleIsHovered={handleIsHovered}
-              isHovered={isHovered}
-              link={{
-                title: "Announcements",
-                icon: Megaphone,
-                href: "/instructor-dashboard/announcements",
-              }}
-              isCollapsed={isCollapsed}
-            />
+            {pathname?.startsWith("/instructor-dashboard") && (
+              <LinkComponent
+                isActive={pathname === "/instructor-dashboard/support"}
+                handleIsHovered={handleIsHovered}
+                isHovered={isHovered}
+                link={{
+                  title: "Support Tickets",
+                  icon: LuTickets,
+                  href: "/instructor-dashboard/support",
+                }}
+                isCollapsed={isCollapsed}
+              />
+            )}
+            {pathname?.startsWith("/student-dashboard") && (
+              <LinkComponent
+                isActive={pathname === "/student-dashboard/support"}
+                handleIsHovered={handleIsHovered}
+                isHovered={isHovered}
+                link={{
+                  title: "Support Tickets",
+                  icon: LuTickets,
+                  href: "/student-dashboard/support",
+                }}
+                isCollapsed={isCollapsed}
+              />
+            )}
+            {pathname?.startsWith("/admin-dashboard") && (
+              <LinkComponent
+                isActive={pathname === "/admin-dashboard/support"}
+                handleIsHovered={handleIsHovered}
+                isHovered={isHovered}
+                link={{
+                  title: "Support Tickets",
+                  icon: LuTickets,
+                  href: "/admin-dashboard/support",
+                }}
+                isCollapsed={isCollapsed}
+              />
+            )}
 
             <button
               onMouseEnter={() => handleIsHovered("logout")}
@@ -263,42 +299,5 @@ export function Sidebar() {
         </div>
       </nav>
     </div>
-  );
-}
-
-function LinkComponent({
-  link,
-  isCollapsed,
-  isActive,
-  handleIsHovered,
-  isHovered,
-}) {
-  return (
-    <Link
-      key={link.href}
-      href={link.href}
-      onMouseEnter={() => handleIsHovered(link?.href)}
-      onMouseLeave={() => handleIsHovered(null)}
-      className={`flex items-center gap-3 rounded-lg transition-colors relative
-    ${
-      isActive
-        ? "text-background bg-gray-50"
-        : "hover:text-background hover:bg-gray-50"
-    } ${isCollapsed ? "p-2 justify-center" : "px-3 py-2"}`}
-    >
-      <link.icon className="w-6 h-6" />
-      {isCollapsed && (
-        <p
-          className={`absolute top-1/2 -translate-y-1/2 left-[66px] text-sm !z-[20] bg-background px-2 py-1 rounded-full !text-white text-nowrap ${
-            isHovered === link?.href ? "scale-100" : "scale-0"
-          } transition-custom`}
-        >
-          {link.title}
-        </p>
-      )}
-      <span className={`${isCollapsed ? "hidden" : "block"} transition-custom`}>
-        {link.title}
-      </span>
-    </Link>
   );
 }

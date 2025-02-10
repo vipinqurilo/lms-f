@@ -61,7 +61,7 @@ const CoursesFilterCards = ({ clearTrigger }) => {
 
   return (
     <div className="lg:w-64 border bg-white border-gray-300 rounded-md p-4 w-full">
-      <h5 className="text-xl font-bold mb-3">Course categories</h5>
+      <h5 className="text-xl font-bold mb-3">Course categories </h5>
       {categories.map((category, index) => (
         <div key={index} className="mb-2">
           {/* Main Category */}
@@ -75,7 +75,8 @@ const CoursesFilterCards = ({ clearTrigger }) => {
                 id={category.name}
                 className="h-4 w-4 appearance-none border border-gray-300 rounded-sm relative flex items-center justify-center checked:bg-orange-600 checked:border-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                 checked={
-                  (selectedOptions[category.name]?.length || 0) === category.options?.length
+                  (selectedOptions[category.name]?.length || 0) ===
+                  category.options?.length
                 }
                 readOnly
               />

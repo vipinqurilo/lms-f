@@ -13,7 +13,7 @@ const steps = [
   },
   {
     id: 2,
-    title: "Indentity",
+    title: "Profile and Bio",
     active: false,
     completed: true,
   },

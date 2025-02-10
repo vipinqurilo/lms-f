@@ -1,56 +1,115 @@
 "use client";
 
-import { BookingsTable } from "@/components/instructor/bookings/BookingsTable";
-import { Filters } from "@/components/instructor/bookings/Filters";
-import { Header } from "@/components/instructor/bookings/Header";
-import { StatsCard } from "@/components/student-dashboard/StatsCard";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import BookingReminder from "./BookingReminder";
+import BookingView from "./BookingView";
+import BookingTabs from "./BookingTabs";
+import BookingsFilter from "./BookingsFilter";
+import BookingList from "./BookingList";
+import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
+import { getBookings } from "@/store/slices/instructor/bookingsSlice";
+import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 
-const timeSlots = ["15 minutes", "30 minutes", "45 minutes", "60 minutes"];
 
 const BookingsDashboard = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSlot, setSelectedSlot] = useState("");
-  const { bookings } = useSelector((state) => state.instructor.booking);
+  const dispatch = useDispatch();
+  const [activeTab, setActiveTab] = useState("All lessons");
+  const [activeTab2, setActiveTab2] = useState("listing");
+  const [keyword, setKeyword] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [debouncedKeyword, setDebouncedKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const statsData = [
-    { title: "Total Bookings", value: "120", percentage: "+5%" },
-    { title: "Completed Sessions", value: "98", percentage: "+3%" },
-    { title: "Upcoming Sessions", value: "45", percentage: "+7%" },
-    { title: "Canceled Sessions", value: "10", percentage: "-2%" },
-    { title: "New Students", value: "25", percentage: "+4%" },
-    { title: "Total Earnings", value: "$12,500", percentage: "+8%" },
-    { title: "Active Instructors", value: "20", percentage: "+6%" },
-    { title: "Average Rating", value: "4.8", percentage: "+1%" },
-  ];
+  // Redux state
+  const { bookings, isLoading, totalPages } = useSelector((state) => ({
+    bookings: state.instructor.booking.bookings || [],
+    isLoading: state.instructor.booking.isLoading?.getBookings || false,
+    totalPages: state.instructor.booking.totalPages || 1,
+  }));
+
+  // Fetch bookings on mount & when filters change
+  useEffect(() => {
+    const status = activeTab === "All lessons" ? undefined : activeTab;
+
+    // Initialize the request data object
+    const requestData = {
+      page: currentPage,
+    };
+    if (status) {
+      requestData.status = status;
+    }
+    if (startDate) {
+      requestData.startDate = startDate.toISOString();
+    }
+    if (endDate) {
+      requestData.endDate = endDate.toISOString();
+    }
+    if (debouncedKeyword) {
+      requestData.keyword = debouncedKeyword;
+    }
+
+    dispatch(getBookings(requestData));
+  }, [dispatch, activeTab, startDate, endDate, debouncedKeyword, currentPage]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedKeyword(keyword);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [keyword]);
+
+  useEffect(() => {
+    if (endDate < startDate) setEndDate(startDate);
+  }, [startDate, endDate]);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    // If end date is less than new start date, update end date
+    if (endDate < date) {
+      setEndDate(date);
+    }
+  };
+
+  const handleEndDateChange = (date) => {
+    if (date >= startDate) {
+      setEndDate(date);
+    }
+  };
 
   return (
-    <div className="px-5 py-6 flex flex-col gap-6">
-      {/* <Header /> */}
-      <div className="grid md:grid-cols-4 gap-6 ">
-        {statsData?.map((stat) => (
-          <StatsCard
-            title={stat?.title}
-            value={stat?.value}
-            percentage={stat?.percentage}
-          />
-        ))}
-      </div>
-      <main className="">
-        <Filters
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          selectedSlot={selectedSlot}
-          setSelectedSlot={setSelectedSlot}
-          timeSlots={timeSlots}
-        />
-        <BookingsTable
+    <div className="px-5 py-0 flex flex-col gap-6">
+      {bookings.length > 0 && <BookingReminder bookings={bookings} />}
+      <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
+
+      {/* Custom Tabs */}
+      <BookingTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {/* Filters */}
+      <BookingsFilter
+        keyword={keyword}
+        setKeyword={setKeyword}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        handleEndDateChange={handleEndDateChange}
+        handleStartDateChange={handleStartDateChange}
+      />
+
+      {/* Bookings Content */}
+      {activeTab2 === "listing" ? (
+        <BookingList
           bookings={bookings}
-          searchQuery={searchQuery}
-          selectedSlot={selectedSlot}
+          currentPage={currentPage}
+          isLoading={isLoading}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
         />
-      </main>
+      ) : (
+        <TutorAvailabilityCalendar />
+      )}
     </div>
   );
 };

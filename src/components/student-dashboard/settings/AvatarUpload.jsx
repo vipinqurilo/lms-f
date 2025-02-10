@@ -1,11 +1,18 @@
+"use client";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export function AvatarUpload({ avatarUrl, onUpload, onDelete }) {
   const path = usePathname();
+  const imageLoad = useSelector((state) => state.upload.isLoading.uploadImage);
 
   return (
-    <div className={`flex items-start gap-6 border-b py-4 ${path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"}`}>
+    <div
+      className={`flex items-start gap-6 border-b py-4 ${
+        path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"
+      }`}
+    >
       <div className="relative">
         <img
           src={avatarUrl || "/placeholder.svg"}
@@ -31,8 +38,9 @@ export function AvatarUpload({ avatarUrl, onUpload, onDelete }) {
         </p>
         <div className=" flex gap-3">
           <button
-            className="w-8 h-8 rounded  text-gray-600 bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+            className="w-8 h-8 rounded  text-gray-600 bg-gray-100 hover:bg-gray-200 flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
             onClick={() => document.getElementById("avatar-upload")?.click()}
+            disabled={imageLoad}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +56,8 @@ export function AvatarUpload({ avatarUrl, onUpload, onDelete }) {
             </svg>
           </button>
           <button
-            className="w-8 h-8 rounded bg-red-100 text-red-600 hover:bg-red-200 flex items-center justify-center"
+            className="w-8 h-8 rounded bg-red-100 text-red-600 hover:bg-red-200 flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={imageLoad}
             onClick={onDelete}
           >
             <svg

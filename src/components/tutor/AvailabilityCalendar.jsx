@@ -3,50 +3,37 @@ import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
 
-
-
-const bookings = [
-  {
-    date: "2025-01-26", // ISO 8601 format (YYYY-MM-DD)
-    startTime: "20:00", // 24-hour format (HH:mm)
-    endTime: "21:00", // 24-hour format (HH:mm)
-  },
-  {
-    date: "2025-01-27",
-    startTime: "10:00",
-    endTime: "11:30",
-  },
-  {
-    date: "2025-01-28",
-    startTime: "15:00",
-    endTime: "16:00",
-  },
-  {
-    date: "2025-01-29",
-    startTime: "14:00",
-    endTime: "15:30",
-  },
-];
-
-const AvailabilityCalendar = () => {
+const AvailabilityCalendar = ({ calendar }) => {
   const [currentWeek, setCurrentWeek] = useState(0);
+  const {
+    bookings: rawBookings,
+    isLoading: bookingLoading,
+    totalPages,
+  } = useSelector((state) => state.student.booking);
+  console.log(rawBookings, "rawBookings");
+  const bookings = rawBookings.map((session) => {
+    const startTime = new Date(session.sessionStartTime);
+    const endTime = new Date(session.sessionEndTime);
+    startTime.setMinutes(startTime.getMinutes() + 330); // Add 5:30
+    endTime.setMinutes(endTime.getMinutes() + 330); // Add 5:30
+    
+    return {
+      date: startTime.toISOString().split("T")[0], // Extract YYYY-MM-DD
+      startTime: startTime.toISOString().split("T")[1].slice(0, 5),
+      endTime: endTime.toISOString().split("T")[1].slice(0, 5),
+    };
+  });
+  console.log(bookings, "bookings");
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
-  const { tutorProfile, isLoading, error } = useSelector(
-    (state) => state.tutors
-  );
-  console.log(tutorProfile?.calendar?.availability, "tutorProfile");
-  const data = tutorProfile?.calendar?.availability.reduce(
-    (acc, { day, slots }) => {
-      const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
-      acc[dayName] = slots;
-      return acc;
-    },
-    {}
-  );
 
-  console.log(data);
+  const data = calendar?.availability.reduce((acc, { day, slots }) => {
+    const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
+    acc[dayName] = slots;
+    return acc;
+  }, {});
+
   useEffect(() => {
     const calculateDays = () => {
       const today = new Date();
@@ -287,7 +274,7 @@ const AvailabilityCalendar = () => {
                 zIndex: 1, // Ensure it stays above other elements
               }}
             >
-              {day.label}
+              {`${day.label} ${day.month}`}
             </div>
           ))}
 

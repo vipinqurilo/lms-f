@@ -5,17 +5,23 @@ import { createSlice } from "@reduxjs/toolkit";
 // Async thunks for booking actions
 export const fetchBookingsAsync = CreateApiAsyncThunk(
   "booking/fetchBookingsAsync",
-  ({ status = "Scheduled", startDate, endDate }) =>
+  ({ status, startDate, endDate, search, page = 1, limit = 10 }) =>
     api.get(`/api/bookings`, {
-      params: { status, startDate, endDate },
+      params: { status, startDate, endDate, search, page, limit },
     })
 );
 
+export const createBookingAsync = CreateApiAsyncThunk(
+  "booking/createBookingAsync",
+  (bookingData) => api.post("/api/bookings", bookingData)
+);
 // Initial state for bookings
 const initialState = {
   bookings: [],
+
   isLoading: {},
   error: {},
+  totalPages: 1,
 };
 
 const bookingSlice = createSlice({
@@ -40,10 +46,21 @@ const bookingSlice = createSlice({
       .addCase(fetchBookingsAsync.fulfilled, (state, action) => {
         state.isLoading["fetchBookingsAsync"] = false;
         state.bookings = action.payload?.data || [];
+        state.totalPages = action.payload?.totalPages || 1;
       })
       .addCase(fetchBookingsAsync.rejected, (state, action) => {
         state.isLoading["fetchBookingsAsync"] = false;
         state.error["fetchBookingsAsync"] = action.payload;
+      })
+      .addCase(createBookingAsync.pending, (state) => {
+        state.isLoading["createBookingAsync"] = true;
+      })
+      .addCase(createBookingAsync.fulfilled, (state, action) => {
+        state.isLoading["createBookingAsync"] = false;
+      })
+      .addCase(createBookingAsync.rejected, (state, action) => {
+        state.isLoading["createBookingAsync"] = false;
+        state.error["createBookingAsync"] = action.payload;
       });
   },
 });

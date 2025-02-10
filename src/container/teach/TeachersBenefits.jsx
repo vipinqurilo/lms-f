@@ -69,16 +69,16 @@ const TeachersBenefits = () => {
             className="bg-white rounded-lg p-6 shadow-md flex gap-3 items-start"
           >
             <div
-              className="text-3xl mb-2 w-14 h-14 flex items-center justify-center rounded-lg !bg-opacity-40"
+              className="text-2xl mb-2 w-14 h-14 flex items-center justify-center rounded-2xl !bg-opacity-40"
               style={{
                 color: feature.color,
-                backgroundColor: hexToRGBA(feature?.color, 0.4),
+                backgroundColor: hexToRGBA(feature?.color, 0.1),
               }}
             >
               {feature.icon}
             </div>
             <div className="">
-              <h3 className="font-bold text-lg mb-1">{feature.label}</h3>
+              <h3 className="font-bold text-lg lg:text-xl mb-1">{feature.label}</h3>
               <p className="">{feature.description}</p>
             </div>
           </div>
