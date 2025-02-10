@@ -11,6 +11,9 @@ import {
 import Image from "next/image";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
+
+import { useRouter } from "next/router";
+
 import { useState, useEffect } from "react";
 
 const BookingList = ({
@@ -20,6 +23,11 @@ const BookingList = ({
   setCurrentPage,
   totalPages,
 }) => {
+
+  const router = useRouter();
+  const pathSegment = router.pathname.split("/")[1];
+  const isAdmin = pathSegment === "admin-dashboard";
+
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -29,6 +37,7 @@ const BookingList = ({
 
     return () => clearInterval(timer);
   }, []);
+
 
   return (
     <div className="space-y-6">
