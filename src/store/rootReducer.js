@@ -5,7 +5,7 @@ import uiReducer from "./slices/uiSlice";
 import instructorRootReducer from "./slices/instructor/instructorRootReducer";
 import adminRootReducer from "./slices/admin-dashboard/adminRootReducer";
 import uploadSlice from "./slices/uploadSlice";
-
+import managesubjectsReducer from "./slices/admin-dashboard/managesubjectsSlice"; // Import new slice
 import studentRootReducer from "./slices/student-dashboard/studentRootReducer";
 
 import userSlice from "./slices/userSlice";
@@ -22,9 +22,11 @@ const rootReducer = combineReducers({
   admin: adminRootReducer,
   upload: uploadSlice,
   student: studentRootReducer,
-  languages: languagesSlice,
+  
+ 
+   languages: languagesSlice,
   support: supportSlice,
   category: categorySlice,
-});
+ });
 
 export default rootReducer;
