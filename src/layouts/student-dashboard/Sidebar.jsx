@@ -13,6 +13,8 @@ import {
   MessageSquare,
   Grid2x2Check,
   Users,
+  BookCheck,
+  LibraryBig ,
   LifeBuoy,
   LogOut,
   Settings,
@@ -31,6 +33,7 @@ import {
 import { useSelector } from "react-redux";
 import { LinkComponent } from "@/components/layout/LinkComponent";
 import { LuTickets } from "react-icons/lu";
+import { FaBook } from "react-icons/fa";
 
 const studentSidebarLinks = [
   {
@@ -135,7 +138,7 @@ const adminSidebarLinks = [
   },
   {
     title: "Teachers",
-    icon: GraduationCap,
+    icon: Users,
     href: "/admin-dashboard/approvals/teachers",
   },
   {
@@ -145,12 +148,12 @@ const adminSidebarLinks = [
   },
   {
     title: "Manage Courses",
-    icon: Wallet,
+    icon: LibraryBig,
     href: "/admin-dashboard/manage-courses",
   },
   {
     title: "Manage Bookings",
-    icon: Wallet,
+    icon: BookCheck,
     href: "/admin-dashboard/manage-booking",
   },
 ];
