@@ -17,6 +17,10 @@ export const verifyLoggedInUser = CreateApiAsyncThunk(
   () => api.post(`/api/auth/verify-token`)
 );
 
+export const logout = CreateApiAsyncThunk("user/logout", () =>
+  api.post(`/api/auth/verify-token`)
+);
+
 const initialState = {
   authUser: {
     name: "khurshid",
@@ -84,6 +88,15 @@ const userSlice = createSlice({
       })
       .addCase(verifyLoggedInUser.rejected, (state) => {
         state.isLoading["verifyLoggedInUser"] = false;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading["logout"] = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoading["logout"] = false;
+      })
+      .addCase(logout.rejected, (state) => {
+        state.isLoading["logout"] = false;
       });
   },
 });

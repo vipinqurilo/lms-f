@@ -14,6 +14,7 @@ import AddRemoveInput from "./AddRemoveInput";
 const BasicDetails = () => {
   const dispatch = useDispatch();
   const { courseAddData } = useSelector((state) => state.instructor.course);
+  const { subSubjects, subjects } = useSelector((state) => state.category);
 
   const {
     register,
@@ -99,7 +100,7 @@ const BasicDetails = () => {
   }, [courseAddData]);
 
   return (
-    <form className="w-full grid grid-cols-3 gap-8">
+    <div className="w-full grid grid-cols-3 gap-8">
       <SettingsInputField
         errors={errors}
         label={"Course Title"}
@@ -209,7 +210,7 @@ const BasicDetails = () => {
           saveText={"Save and Continue"}
         />
       </div>
-    </form>
+    </div>
   );
 };
 
