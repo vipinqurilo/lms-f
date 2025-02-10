@@ -58,7 +58,7 @@ const RegisterProcess = () => {
             }}
           >
             <div className="w-full flex items-center gap-2 justify-center">
-              <h4 className="text-lg font-bold lg:text-2xl text-[#696969]">
+              <h4 className="text-2xl font-bold lg:text-2xl text-[#696969]">
                 0{index+1}
               </h4>
               <h4 className="text-lg font-bold ">{step?.label}</h4>

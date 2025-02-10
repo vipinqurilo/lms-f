@@ -85,7 +85,7 @@ const Navbar = () => {
       }`}
     >
       <NavbarTopContactBanner />
-      <div className="w-full flex items-center justify-between custom-container !mt-0 !py-8 md:!py-4">
+      <div className="w-full flex items-center justify-between custom-container !mt-0 !py-5 md:!py-4">
         <div className="flex items-center gap-2">
           <button onClick={toggleMenu} className="lg:hidden">
             <SlMenu size={30} />
