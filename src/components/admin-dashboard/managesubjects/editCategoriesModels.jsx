@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const EditCategories = ({ isOpen, onClose, category, onSave }) => {
   if (!isOpen) return null;
 
-  const [name, setName] = useState(category?.name || "");
+  const [name, setName] = useState(category?.name || "Null");
 
   // Update state when a new category is selected
   useEffect(() => {
