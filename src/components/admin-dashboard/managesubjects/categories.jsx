@@ -4,7 +4,7 @@ import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import AddCategories from "./addCategoriesModels";
 import EditCategories from "./editCategoriesModels";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCategoryById, editCategoryById, getAllManageSubjects } from "@/store/slices/admin-dashboard/managesubjectsSlice";
+import { deleteCategoryById, editCategoryById, getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 
 const initialCategories = [
   {

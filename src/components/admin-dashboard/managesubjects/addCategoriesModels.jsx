@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addCategory } from "@/store/slices/admin-dashboard/managesubjectsSlice";
+import { addCategory } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 
 const AddCategories = ({ isOpen, onClose }) => {
   if (!isOpen) return null;

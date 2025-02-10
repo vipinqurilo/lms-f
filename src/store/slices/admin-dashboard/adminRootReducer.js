@@ -1,7 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import adminCourseReducer from "./courseSlice";
 import teacherRequestSlice from "./teacherSlice";
-import  manageSubjectsSlice  from "./managesubjectsSlice";
+import  manageSubjectsSlice  from "./manageSubjectsCategorySlice";
 
 const adminRootReducer = combineReducers({
   course: adminCourseReducer,

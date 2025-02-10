@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
  import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import AddCategories from "./addCategoriesModels";
 import EditCategories from "./editCategoriesModels";
-import { getAllManageSubjects } from "@/store/slices/admin-dashboard/managesubjectsSlice";
+import { getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 
 const columns = ["S.No", "Name", "Sub Categories", "Updated", "Status", "Action"];
 
