@@ -10,10 +10,8 @@ export const api = axios.create({
   baseURL: baseURL,
   headers: {
     Authorization: `Bearer ${tutorToken}`,
-
   },
 });
-
 
 // api.interceptors.request.use((config) => {
 //   if (typeof window !== "undefined") {
@@ -29,7 +27,7 @@ export const api = axios.create({
 // const studentToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnQxQGdtYWlsLmNvbSIsInJvbGUiOiJzdHVkZW50IiwiaWQiOiI2N2E3NGJkMjAzYjE3MmMxODg1NzY0YjEiLCJuYW1lIjoiU3R1ZGVudCAiLCJwcm9maWxlUGhvdG8iOm51bGwsImlhdCI6MTczOTAxNzIxM30.4wvj6bGxV2kC-xUi8QCoDs1OP7YZ-EyvlpVtjF_M9Js`;
 // export const api = axios.create({
 //   baseURL: baseUrlAbhiSir,
-//   headers: {  
+//   headers: {
 //     Authorization: `Bearer ${studentToken}`,
 //   },
 // });
@@ -43,4 +41,3 @@ export const api = axios.create({
 //   }
 //   return config;
 // });
- 

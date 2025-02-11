@@ -9,6 +9,7 @@ import BookingsFilter from "./BookingsFilter";
 import BookingList from "./BookingList";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
+import { fetchAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
 
 const BookingsDashboard = () => {
   const dispatch = useDispatch();
@@ -20,12 +21,8 @@ const BookingsDashboard = () => {
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { availability, isLoading: availabilityLoading } = useSelector(
-    (state) => ({
-      availability: state.instructor.availability.availability || [],
-      isLoading: state.instructor.availability.isLoading || false,
-    })
+    (state) => state.instructor.availability
   );
-  console.log(availability, "availability");
   // Redux state
   const { bookings, isLoading, totalPages } = useSelector((state) => ({
     bookings: state.instructor.booking.bookings || [],
@@ -33,7 +30,7 @@ const BookingsDashboard = () => {
     totalPages: state.instructor.booking.totalPages || 1,
   }));
 
-  // Fetch bookings on mount & when filters change
+  // Fetch bookings on mount & when fi  lters change
   useEffect(() => {
     const status = activeTab === "All lessons" ? undefined : activeTab;
 
@@ -81,7 +78,9 @@ const BookingsDashboard = () => {
       setEndDate(date);
     }
   };
-
+  useEffect(() => {
+    dispatch(fetchAvailabilityAsync());
+  }, []);
   return (
     <div className="px-5 py-0 flex flex-col gap-6">
       {bookings.length > 0 && <BookingReminder bookings={bookings} />}
@@ -112,7 +111,7 @@ const BookingsDashboard = () => {
           totalPages={totalPages}
         />
       ) : (
-        <TutorAvailabilityCalendar rawBookings={bookings} />
+        <TutorAvailabilityCalendar calendar={availability.availability} />
       )}
     </div>
   );

@@ -11,7 +11,9 @@ export const fetchAvailabilityAsync = CreateApiAsyncThunk(
 export const updateAvailabilityAsync = CreateApiAsyncThunk(
   "availability/updateAvailabilityAsync",
   (availabilityData) =>
-    api.post("/api/profile/availability-calendar", availabilityData)
+    api.put("/api/profile/availability-calendar", {
+      availability: availabilityData,
+    })
 );
 // Initial state for bookings
 const initialState = {
