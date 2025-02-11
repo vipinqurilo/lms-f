@@ -6,10 +6,10 @@ import { X } from "lucide-react"
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
-const TutorAvailabilityCalendar = () => {
+const TutorAvailabilityCalendar = ({ calendar, rawBookings }) => {
 
   const [selections, setSelections] = useState({})
-  console.log(selections, "selections")
+  // console.log(selections, "selections")
   const [isSelecting, setIsSelecting] = useState(false)
   const [startCell, setStartCell] = useState(null)
   const [endCell, setEndCell] = useState(null)

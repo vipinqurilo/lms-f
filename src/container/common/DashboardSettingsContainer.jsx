@@ -11,6 +11,7 @@ import { SettingsTabs } from "@/components/student-dashboard/settings/SettingsTa
 import { SocialProfiles } from "@/components/student-dashboard/settings/SocialProfiles";
 import WithdrawalTabProfile from "@/components/student-dashboard/settings/WithdrawalTabProfile";
 import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
+import { fetchAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
 import { getProfile } from "@/store/slices/instructor/settingsSlice";
 import { getLanguages } from "@/store/slices/languageSlice";
 import { uploadImage } from "@/store/slices/uploadSlice";
@@ -70,6 +71,7 @@ const DashboardSettingsContainer = () => {
     dispatch(getLanguages());
     dispatch(getSubSubjects());
     dispatch(getSubjects());
+    dispatch(fetchAvailabilityAsync());
   }, [dispatch]);
 
   return (

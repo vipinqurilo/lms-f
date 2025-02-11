@@ -34,7 +34,6 @@ const TeacherRequests = () => {
     dispatch(fetchData());
   }, [dispatch]);
 
-  console.log(teachers,"lloloo")
 
 
 

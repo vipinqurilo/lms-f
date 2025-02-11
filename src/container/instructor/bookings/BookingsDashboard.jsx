@@ -7,10 +7,8 @@ import BookingView from "./BookingView";
 import BookingTabs from "./BookingTabs";
 import BookingsFilter from "./BookingsFilter";
 import BookingList from "./BookingList";
-import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
-
 
 const BookingsDashboard = () => {
   const dispatch = useDispatch();
@@ -21,7 +19,13 @@ const BookingsDashboard = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
+  const { availability, isLoading: availabilityLoading } = useSelector(
+    (state) => ({
+      availability: state.instructor.availability.availability || [],
+      isLoading: state.instructor.availability.isLoading || false,
+    })
+  );
+  console.log(availability, "availability");
   // Redux state
   const { bookings, isLoading, totalPages } = useSelector((state) => ({
     bookings: state.instructor.booking.bookings || [],
@@ -108,7 +112,7 @@ const BookingsDashboard = () => {
           totalPages={totalPages}
         />
       ) : (
-        <TutorAvailabilityCalendar />
+        <TutorAvailabilityCalendar rawBookings={bookings} />
       )}
     </div>
   );

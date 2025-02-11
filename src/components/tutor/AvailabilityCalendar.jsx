@@ -3,27 +3,21 @@ import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { useSelector } from "react-redux";
 
-const AvailabilityCalendar = ({ calendar }) => {
+const AvailabilityCalendar = ({ calendar, rawBookings }) => {
   const [currentWeek, setCurrentWeek] = useState(0);
-  const {
-    bookings: rawBookings,
-    isLoading: bookingLoading,
-    totalPages,
-  } = useSelector((state) => state.student.booking);
-  console.log(rawBookings, "rawBookings");
-  const bookings = rawBookings.map((session) => {
+
+  const bookings = rawBookings?.map((session) => {
     const startTime = new Date(session.sessionStartTime);
     const endTime = new Date(session.sessionEndTime);
     startTime.setMinutes(startTime.getMinutes() + 330); // Add 5:30
     endTime.setMinutes(endTime.getMinutes() + 330); // Add 5:30
-    
+
     return {
       date: startTime.toISOString().split("T")[0], // Extract YYYY-MM-DD
       startTime: startTime.toISOString().split("T")[1].slice(0, 5),
       endTime: endTime.toISOString().split("T")[1].slice(0, 5),
     };
   });
-  console.log(bookings, "bookings");
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
@@ -97,7 +91,7 @@ const AvailabilityCalendar = ({ calendar }) => {
 
     const timeSlot = times[timeIndex]; // Time in "HH:mm" format
 
-    return bookings.some((booking) => {
+    return bookings?.some((booking) => {
       const bookingDate = new Date(booking.date);
       const bookingStart = new Date(`${booking.date}T${booking.startTime}`);
       const bookingEnd = new Date(`${booking.date}T${booking.endTime}`);
