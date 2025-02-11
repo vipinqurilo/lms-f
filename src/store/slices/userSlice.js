@@ -27,7 +27,6 @@ const initialState = {
     id: "679dbe8bf168197df705a799",
     role: "instructor",
     // role: "student",
-
     // role: "admin",
   },
   isLoading: {},

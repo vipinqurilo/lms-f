@@ -1,36 +1,43 @@
 "use client";
-
 import React, { useState, useEffect, useCallback } from "react";
-
 import { X } from "lucide-react";
-
+import { updateAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
+import { useDispatch } from "react-redux";
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-const TutorAvailabilityCalendar = () => {
-  const [selections, setSelections] = useState({});
-  console.log(selections, "selections");
+const TutorAvailabilityCalendar = ({ calendar }) => {
+  const [selections, setSelections] = useState([
+    { day: "sun", slots: Array(48).fill(false) },
+    { day: "mon", slots: Array(48).fill(false) },
+    { day: "tue", slots: Array(48).fill(false) },
+    { day: "wed", slots: Array(48).fill(false) },
+    { day: "thu", slots: Array(48).fill(false) },
+    { day: "fri", slots: Array(48).fill(false) },
+    { day: "sat", slots: Array(48).fill(false) },
+  ]);
+  console.log(calendar, "calendar");
   const [isSelecting, setIsSelecting] = useState(false);
   const [startCell, setStartCell] = useState(null);
   const [endCell, setEndCell] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStartCell, setResizeStartCell] = useState(null);
-
+  const dispatch = useDispatch();
   const [resizeDirection, setResizeDirection] = useState(null);
-
-  const times = Array.from({ length: 96 }, (_, index) => {
-    const hours = Math.floor(index / 4)
+  const times = Array.from({ length: 48 }, (_, index) => {
+    const hours = Math.floor(index / 2)
       .toString()
       .padStart(2, "0");
-    const minutes = ((index % 4) * 15).toString().padStart(2, "0");
+    const minutes = index % 2 === 0 ? "00" : "30";
     return `${hours}:${minutes}`;
   });
-
+  const handleSave = () => {
+    dispatch(updateAvailabilityAsync(selections));
+  };
   const handleMouseDown = (dayIndex, timeIndex, edge = null) => {
     if (edge) {
       setIsResizing(true);
       setResizeStartCell([dayIndex, timeIndex]);
       setResizeDirection(edge);
-    } else if (selections[DAYS[dayIndex]]?.[timeIndex]) {
+    } else if (selections[dayIndex].slots[timeIndex]) {
       setIsResizing(true);
       setResizeStartCell([dayIndex, timeIndex]);
     } else {
@@ -39,7 +46,6 @@ const TutorAvailabilityCalendar = () => {
       setEndCell([dayIndex, timeIndex]);
     }
   };
-
   const handleMouseEnter = (dayIndex, timeIndex) => {
     if (isSelecting && startCell) {
       setEndCell([dayIndex, timeIndex]);
@@ -47,68 +53,57 @@ const TutorAvailabilityCalendar = () => {
       setEndCell([dayIndex, timeIndex]);
     }
   };
-
   const handleMouseUp = useCallback(() => {
     if (isSelecting && startCell && endCell) {
-      const newSelections = { ...selections };
+      const newSelections = [...selections];
       const [startDay, startTime] = startCell;
       const [endDay, endTime] = endCell;
-
       for (
         let d = Math.min(startDay, endDay);
         d <= Math.max(startDay, endDay);
         d++
       ) {
-        const day = DAYS[d];
-        if (!newSelections[day]) newSelections[day] = Array(96).fill(false);
         for (
           let t = Math.min(startTime, endTime);
           t <= Math.max(startTime, endTime);
           t++
         ) {
-          newSelections[day][t] = true;
+          newSelections[d].slots[t] = true;
         }
       }
-
       setSelections(newSelections);
     } else if (isResizing && resizeStartCell && endCell) {
-      const newSelections = { ...selections };
+      const newSelections = [...selections];
       const [startDay, startTime] = resizeStartCell;
       const [endDay, endTime] = endCell;
-
-      const day = DAYS[startDay];
-
       if (resizeDirection === "top") {
-        const blockEnd = findBlockEnd(day, startTime);
+        const blockEnd = findBlockEnd(startDay, startTime);
         const newStart = Math.min(endTime, blockEnd);
         for (
           let t = Math.min(newStart, startTime);
           t <= Math.max(newStart, startTime);
           t++
         ) {
-          newSelections[day][t] = t >= newStart;
+          newSelections[startDay].slots[t] = t >= newStart;
         }
       } else if (resizeDirection === "bottom") {
-        const blockStart = findBlockStart(day, startTime);
+        const blockStart = findBlockStart(startDay, startTime);
         const newEnd = Math.max(endTime, blockStart);
         for (
           let t = Math.min(newEnd, startTime);
           t <= Math.max(newEnd, startTime);
           t++
         ) {
-          newSelections[day][t] = t <= newEnd;
+          newSelections[startDay].slots[t] = t <= newEnd;
         }
       }
-
       setSelections(newSelections);
     }
-
     setIsSelecting(false);
     setIsResizing(false);
     setStartCell(null);
     setEndCell(null);
     setResizeStartCell(null);
-
     setResizeDirection(null);
   }, [
     isSelecting,
@@ -119,48 +114,55 @@ const TutorAvailabilityCalendar = () => {
     resizeDirection,
     selections,
   ]);
-
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp);
     return () => document.removeEventListener("mouseup", handleMouseUp);
   }, [handleMouseUp]);
-
-  const findBlockStart = (day, timeIndex) => {
-    while (timeIndex > 0 && selections[day][timeIndex - 1]) {
+  useEffect(() => {
+    if (calendar && Array.isArray(calendar)) {
+      const newSelections = selections.map((dayObj) => {
+        const calendarDay = calendar.find((item) => item.day === dayObj.day);
+        return {
+          day: dayObj.day,
+          slots: calendarDay ? [...calendarDay.slots] : Array(48).fill(false),
+        };
+      });
+      setSelections(newSelections);
+    }
+  }, [calendar]);
+  const findBlockStart = (dayIndex, timeIndex) => {
+    while (timeIndex > 0 && selections[dayIndex].slots[timeIndex - 1]) {
       timeIndex--;
     }
     return timeIndex;
   };
-
-  const findBlockEnd = (day, timeIndex) => {
-    while (timeIndex < 95 && selections[day][timeIndex + 1]) {
+  const findBlockEnd = (dayIndex, timeIndex) => {
+    while (timeIndex < 47 && selections[dayIndex].slots[timeIndex + 1]) {
       timeIndex++;
     }
     return timeIndex;
   };
-
-  const removeBlockSelection = (day, startTimeIndex) => {
-    const newSelections = { ...selections };
+  const removeBlockSelection = (dayIndex, startTimeIndex) => {
+    const newSelections = [...selections];
     let endTimeIndex = startTimeIndex;
-    while (newSelections[day]?.[endTimeIndex]) {
-      newSelections[day][endTimeIndex] = false;
+    while (newSelections[dayIndex].slots[endTimeIndex]) {
+      newSelections[dayIndex].slots[endTimeIndex] = false;
       endTimeIndex++;
     }
     setSelections(newSelections);
   };
-
-  const renderCell = (day, dayIndex, timeIndex) => {
-    const isSelected = selections[day]?.[timeIndex];
-
-    const isFirstInBlock = isSelected && !selections[day]?.[timeIndex - 1];
-    const isLastInBlock = isSelected && !selections[day]?.[timeIndex + 1];
+  const renderCell = (dayIndex, timeIndex) => {
+    const isSelected = selections[dayIndex].slots[timeIndex];
+    const isFirstInBlock =
+      isSelected && !selections[dayIndex].slots[timeIndex - 1];
+    const isLastInBlock =
+      isSelected && !selections[dayIndex].slots[timeIndex + 1];
     const isMiddleOfBlock =
       isSelected &&
-      selections[day]?.[timeIndex - 1] &&
-      selections[day]?.[timeIndex + 1];
-
+      selections[dayIndex].slots[timeIndex - 1] &&
+      selections[dayIndex].slots[timeIndex + 1];
     let cellClass = "relative h-4 ";
-    if (day === "Sat") cellClass += "border-r ";
+    if (DAYS[dayIndex] === "Sat") cellClass += "border-r ";
     if (isSelected) {
       cellClass += "bg-green-200 ";
       if (isFirstInBlock) cellClass += "border-t border-l border-r ";
@@ -170,10 +172,9 @@ const TutorAvailabilityCalendar = () => {
       cellClass += "bg-white border-l border-b ";
     }
     cellClass += "border-gray-200";
-
     return (
       <div
-        key={`${day}-${timeIndex}`}
+        key={`${DAYS[dayIndex]}-${timeIndex}`}
         className={cellClass}
         onMouseDown={() => handleMouseDown(dayIndex, timeIndex)}
         onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
@@ -182,7 +183,7 @@ const TutorAvailabilityCalendar = () => {
           <>
             <button
               className="absolute top-0 right-0 p-0.5"
-              onClick={() => removeBlockSelection(day, timeIndex)}
+              onClick={() => removeBlockSelection(dayIndex, timeIndex)}
             >
               <X size={8} />
             </button>
@@ -207,9 +208,9 @@ const TutorAvailabilityCalendar = () => {
       </div>
     );
   };
-
   return (
     <div className="w-full overflow-x-auto select-none bg-white rounded-lg border border-gray-200 shadow-sm p-4">
+      <button onClick={handleSave}>Save</button>
       <div className="min-w-[800px]">
         <div className="grid grid-cols-[40px_repeat(7,_1fr)] gap-0">
           <div className="border-l border-y py-2 border-gray-200"></div>
@@ -228,10 +229,7 @@ const TutorAvailabilityCalendar = () => {
               <div className="text-[12px] leading-3 border-l border-b text-center border-gray-200">
                 {timeIndex % 2 === 0 ? time : ""}
               </div>
-
-              {DAYS.map((day, dayIndex) =>
-                renderCell(day, dayIndex, timeIndex)
-              )}
+              {DAYS.map((day, dayIndex) => renderCell(dayIndex, timeIndex))}
             </React.Fragment>
           ))}
         </div>
@@ -239,5 +237,4 @@ const TutorAvailabilityCalendar = () => {
     </div>
   );
 };
-
 export default TutorAvailabilityCalendar;

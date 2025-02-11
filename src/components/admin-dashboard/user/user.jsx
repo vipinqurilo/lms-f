@@ -374,8 +374,7 @@ const columns = [
   "Email/Phone",
   "Type",
   "Registered",
-  "Featured",
-  "Verified",
+   "Verified",
   "Status", // Added status column
   "Action",
 ];
@@ -434,9 +433,7 @@ const WithdrawalHistory = () => {
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.registered}
                 </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.featured}
-                </td>
+                
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {withdrawal.verified}
                 </td>
