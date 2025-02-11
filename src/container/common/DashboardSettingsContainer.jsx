@@ -71,7 +71,6 @@ const DashboardSettingsContainer = () => {
     dispatch(getLanguages());
     dispatch(getSubSubjects());
     dispatch(getSubjects());
-    dispatch(fetchAvailabilityAsync());
   }, [dispatch]);
 
   return (
