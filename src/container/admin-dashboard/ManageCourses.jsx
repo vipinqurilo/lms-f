@@ -29,11 +29,10 @@ const tabs = [
 
 const ManageCourses = () => {
   const dispatch = useDispatch();
-  const courses =
-    useSelector((state) => state.admin?.course?.courses) || [];
+  const courses = useSelector((state) => state.admin?.course?.courses) || [];
 
-  const getloading = useSelector(
-    (state) => state.instructor.course.isLoading.getAllIntructorCourses
+  const isLoading = useSelector(
+    (state) => state.admin.course.isLoading.getAllAdminCourses
   );
 
   const [editCourseId, setEditCourseId] = useState(null);
@@ -54,6 +53,7 @@ const ManageCourses = () => {
     dispatch(updateAdminCourseStatus({ courseId, status: newStatus })).then(
       () => {
         setEditCourseId(null);
+        dispatch(getAllAdminCourses({ status: selectedStatus }));
       }
     );
   };
@@ -62,38 +62,42 @@ const ManageCourses = () => {
     setSelectedStatus(value);
   };
 
-  const filteredData = courses?.map((course) => ({
-    image: course?.courseImage,
-    title: course?.courseTitle,
-    des: course?.courseDescription,
-    value1: course?.entrolled || 425,
-    value2: (
-      <div className="flex items-center gap-5">
-        {editCourseId === course?._id ? (
+  const filteredData = Array.isArray(courses)
+    ? courses?.map((course) => ({
+        image: course?.courseImage,
+        title: course?.courseTitle,
+        des: course?.courseDescription,
+        value1: course?.entrolled || 425,
+        value2: (
           <div className="flex items-center gap-5">
-            <select
-              className="px-2 py-1 border rounded  bg-transparent border-none"
-              value={course.status}
-              onChange={(e) => handleStatusUpdate(course?._id, e.target.value)}
-            >
-              <option value="pending">Pending</option>
-              <option className="text-green-600" value="published">
-                Approved
-              </option>
-            </select>
+            {editCourseId === course?._id ? (
+              <div className="flex items-center gap-5">
+                <select
+                  className="px-2 py-1 border rounded  bg-transparent border-none"
+                  value={course.status}
+                  onChange={(e) =>
+                    handleStatusUpdate(course?._id, e.target.value)
+                  }
+                >
+                  <option value="pending">Pending</option>
+                  <option className="text-green-600" value="published">
+                    Published
+                  </option>
+                </select>
+              </div>
+            ) : (
+              <button
+                onClick={() => handleEditClick(course?._id)}
+                className={`p-1.5 border  bg-transparent border-none flex border-black/10 rounded  transition-custom `}
+              >
+                <span className="px-2">{course?.status}</span>
+                <FiEdit3 size={20} />
+              </button>
+            )}
           </div>
-        ) : (
-          <button
-            onClick={() => handleEditClick(course?._id)}
-            className="p-1.5 border  bg-transparent border-none flex border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500"
-          >
-            <span className="px-2">{course?.status}</span>
-            <FiEdit3 size={20} />
-          </button>
-        )}
-      </div>
-    ),
-  }));
+        ),
+      }))
+    : [];
 
   console.log(filteredData, "filtereddatakd");
 
@@ -113,7 +117,7 @@ const ManageCourses = () => {
         ))}
       </div>
 
-      {getloading ? (
+      {isLoading ? (
         <Loader color={"text-primary"} isBig={true} />
       ) : (
         <CreatedCourses

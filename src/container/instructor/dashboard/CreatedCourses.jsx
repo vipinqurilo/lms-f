@@ -6,13 +6,14 @@ const CreatedCourses = ({
   title = "Recently Created Courses",
   headingsData,
   data,
+  status,
 }) => {
   const getStatusCss = (status) => {
     return status === "Draft"
       ? "bg-gray-200 text-gray-800"
-      : status === "Publish"
+      : status === "publish"
       ? "bg-green-200 text-green-800"
-      : status === "Pending"
+      : status === "pending"
       ? "bg-yellow-200 text-yellow-800"
       : "bg-red-200 text-red-800";
   };
@@ -51,7 +52,8 @@ const CreatedCourses = ({
                   <td className="px-6 py-4">
                     <div
                       className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm ${
-                        headingsData[2] === "Status" && `${getStatusCss(course?.value2)} w-fit capitalize`
+                        headingsData[2] === "Status" &&
+                        `${getStatusCss(course?.value2)} w-fit capitalize`
                       }`}
                     >
                       {course?.value2}
