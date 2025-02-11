@@ -11,15 +11,15 @@ const TeachTopSecton = () => {
       }}
     >
       <div data-aos="fade-up" className="">
-        <div className="flex items-start gap-3">
-          <div className="p-2 text-white bg-green-600 rounded">
-            <VscWorkspaceTrusted size={20} />
+        <div className="flex items-start gap-2">
+          <div className="w-16 md:w-7 h-12 md:h-7 lg:w-7 lg:h-7 flex items-center justify-center lg:text-base text-white bg-green-600 rounded text-2xl md:text-lg">
+            <VscWorkspaceTrusted />
           </div>
-          <h3 className="md:text-xl text-base font-semibold border-b text-white mb-4">
+          <h3 className="md:text-base text-base font-semibold border-b text-white mb-4">
             Trusted by over 15K Users worldwide since 2024
           </h3>
         </div>
-        <h1 className="text-2xl lg:text-5xl font-bold mt-2 text-white leading-tight md:mt-2 mb-6">
+        <h1 className="text-3xl lg:text-5xl font-bold mt-2 text-white leading-tight md:mt-2 mb-6">
           Unlock Knowledge,{" "}
           <span className="text-orange-500">Elevate Your </span>Future, Achieve
           Success

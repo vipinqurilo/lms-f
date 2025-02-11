@@ -52,7 +52,7 @@ const TeacherRegisterForm = () => {
           <div className="py-10 lg:w-full flex items-center justify-center">
             <Link
               href={"/instructor-request"}
-              className="!w-full px-4 py-2 text-center rounded-md shadow font-semibold transition bg-background text-white hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-95"
+              className="!w-full px-4 py-2 text-center rounded-md shadow font-semibold transition bg-background text-white hover:bg-secondary text-lg disabled:cursor-not-allowed disabled:opacity-95"
             >
               Become an Instructor
             </Link>
