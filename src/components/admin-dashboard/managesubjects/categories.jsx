@@ -4,7 +4,11 @@ import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import AddCategories from "./addCategoriesModels";
 import EditCategories from "./editCategoriesModels";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCategoryById, editCategoryById, getAllManageSubjects } from "@/store/slices/admin-dashboard/managesubjectsSlice";
+import {
+  deleteCategoryById,
+  editCategoryById,
+  getAllManageSubjects,
+} from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 
 const initialCategories = [
   {
@@ -59,8 +63,6 @@ const Categories = () => {
 
   console.log("Fetched Subjects:", subjects);
 
- 
-
   const toggleStatus = (id) => {
     // Implement toggle logic as needed
   };
@@ -81,9 +83,8 @@ const Categories = () => {
       });
   };
 
-
   const onSaveCategory = (updatedData) => {
-     if (!selectedCategory) return;
+    if (!selectedCategory) return;
     dispatch(editCategoryById({ id: selectedCategory._id, updatedData }))
       .unwrap()
       .then(() => {
@@ -95,9 +96,6 @@ const Categories = () => {
       });
   };
 
-
-  
-  
   return (
     <div className="p-6 rounded-lg">
       <div className="flex justify-between items-center mb-4">
@@ -164,13 +162,12 @@ const Categories = () => {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
       />
-     <EditCategories
-  isOpen={isEditModalOpen}
-  onClose={() => setIsEditModalOpen(false)}
-  category={selectedCategory}
-  onSave={onSaveCategory}
-/>
-
+      <EditCategories
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        category={selectedCategory}
+        onSave={onSaveCategory}
+      />
     </div>
   );
 };

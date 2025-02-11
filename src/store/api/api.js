@@ -17,6 +17,8 @@ export const api = axios.create({
     Authorization: `Bearer ${adminToken}`,
   },
 });
+
+
 // api.interceptors.request.use((config) => {
 //   if (typeof window !== "undefined") {
 //     const token = localStorage.getItem("token");

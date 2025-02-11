@@ -22,8 +22,7 @@ const LoginForm = () => {
   const submitHandler = (data) => {
     dispatch(userLoginAsync(data)).unwrap().then((res) => {
       console.log(res);
-      
-
+      router.push("/")
     });
   };
 
