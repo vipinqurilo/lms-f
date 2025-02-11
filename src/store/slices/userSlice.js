@@ -4,27 +4,27 @@ import { api } from "../api/api";
 
 export const userRegisterAsync = CreateApiAsyncThunk(
   "user/userRegisterAsync",
-  (userData) => api.post(`/api/auth/register`, userData)
+  (userData) => api.post(`/auth/register`, userData)
 );
 
 export const userLoginAsync = CreateApiAsyncThunk(
   "user/userLoginAsync",
-  (userData) => api.post(`/api/auth/login`, userData)
+  (userData) => api.post(`/auth/login`, userData)
 );
 
 export const verifyLoggedInUser = CreateApiAsyncThunk(
   "GET/user/verifyLoggedInUser",
-  () => api.post(`/api/auth/verify-token`)
+  () => api.post(`/auth/verify-token`)
 );
 
 export const logout = CreateApiAsyncThunk("user/logout", () =>
-  api.post(`/api/auth/verify-token`)
+  api.post(`/auth/verify-token`)
 );
 
 const initialState = {
   authUser: {
     name: "khurshid",
-
+    id: "679dbe8bf168197df705a799",
     role: "instructor",
     // role: "student",
 
