@@ -14,6 +14,11 @@ import TutorCard from "../../container/tutorCard/TutorCard";
 import { BookingModal } from "@/container/booking/BookingModal";
 
 const index = () => {
+  const {
+    bookings: rawBookings,
+    isLoading: bookingLoading,
+    totalPages,
+  } = useSelector((state) => state.student.booking);
   const dispatch = useDispatch();
   const { isAvailableModelOpen, isContactModelOpen } = useSelector(
     (state) => state.ui
@@ -36,7 +41,7 @@ const index = () => {
   }, [isAvailableModelOpen]);
 
   return (
-    <div className="text-lg bg-light_bg w-full  p-2 md:p-10 lg:px-20  custom-margin-top">
+    <div className="text-lg bg-light_bg w-full min-h-screen  p-2 md:p-10 lg:px-20  custom-margin-top">
       <TutorFilter />
       {isLoading["fetchAllTutorProfileAsync"] ? (
         <div>Loading...</div>
@@ -77,7 +82,7 @@ const index = () => {
               <h2 className="text-lg font-semibold">Availability Calendar</h2>
               <RxCross2 />
             </div>
-            <AvailabilityCalendar calendar={tutor?.calendar} />
+            <AvailabilityCalendar calendar={tutor?.calendar} rawBookings={rawBookings} />
           </div>
         </div>
       )}
