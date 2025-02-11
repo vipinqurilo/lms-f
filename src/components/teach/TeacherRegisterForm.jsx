@@ -33,7 +33,7 @@ const TeacherRegisterForm = () => {
   const onSubmit = (data) => {
     const formData = {
       ...data,
-      role: "instructor",
+      role: "teacher",
     };
     console.log(formData);
     dispatch(instructorRegister(formData))

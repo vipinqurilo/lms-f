@@ -20,12 +20,13 @@ const LoginForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    dispatch(userLoginAsync(data)).unwrap().then((res) => {
-      console.log(res);
-      router.push("/")
-    });
+    dispatch(userLoginAsync(data))
+      .unwrap()
+      .then((res) => {
+        localStorage.setItem("token", JSON.stringify(res?.token));
+        router.push("/");
+      });
   };
-
 
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">

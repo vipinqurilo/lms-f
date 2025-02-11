@@ -5,13 +5,13 @@ import { createSlice } from "@reduxjs/toolkit";
 // Async thunks for booking actions
 export const fetchAvailabilityAsync = CreateApiAsyncThunk(
   "availability/fetchAvailabilityAsync",
-  () => api.get(`/api/profile/availability-calendar`)
+  () => api.get(`/profile/availability-calendar`)
 );
 
 export const updateAvailabilityAsync = CreateApiAsyncThunk(
   "availability/updateAvailabilityAsync",
   (availabilityData) =>
-    api.put("/api/profile/availability-calendar", {
+    api.put("/profile/availability-calendar", {
       availability: availabilityData,
     })
 );

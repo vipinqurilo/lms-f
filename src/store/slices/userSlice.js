@@ -22,13 +22,7 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 );
 
 const initialState = {
-  authUser: {
-    name: "khurshid",
-    id: "679dbe8bf168197df705a799",
-    role: "instructor",
-    // role: "student",
-    // role: "admin",
-  },
+  authUser: {},
   isLoading: {},
 
   error: {},
