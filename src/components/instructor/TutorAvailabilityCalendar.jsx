@@ -30,7 +30,7 @@ const TutorAvailabilityCalendar = () => {
       setIsResizing(true);
       setResizeStartCell([dayIndex, timeIndex]);
       setResizeDirection(edge);
-    } else if (selections[DAYS[dayIndex]]?.includes(times[timeIndex])) {
+    } else if (selections[DAYS[dayIndex]]?.[timeIndex]) {
       setIsResizing(true);
       setResizeStartCell([dayIndex, timeIndex]);
     } else {
@@ -60,45 +60,44 @@ const TutorAvailabilityCalendar = () => {
         d++
       ) {
         const day = DAYS[d];
-        if (!newSelections[day]) newSelections[day] = []; // Initialize as an array
-
+        if (!newSelections[day]) newSelections[day] = Array(96).fill(false);
         for (
           let t = Math.min(startTime, endTime);
           t <= Math.max(startTime, endTime);
           t++
         ) {
-          const timeSlot = times[t]; // Get time string like "11:00"
-          if (!newSelections[day].includes(timeSlot)) {
-            newSelections[day].push(timeSlot); // Only push unique time slots
-          }
+          newSelections[day][t] = true;
         }
       }
 
       setSelections(newSelections);
-    }
-    // Handle Resizing
-    else if (isResizing && resizeStartCell && endCell) {
+    } else if (isResizing && resizeStartCell && endCell) {
       const newSelections = { ...selections };
       const [startDay, startTime] = resizeStartCell;
       const [endDay, endTime] = endCell;
+
       const day = DAYS[startDay];
 
-      if (!newSelections[day]) return;
-
       if (resizeDirection === "top") {
-        // Find where the block currently starts
         const blockEnd = findBlockEnd(day, startTime);
         const newStart = Math.min(endTime, blockEnd);
-        newSelections[day] = newSelections[day]
-          .filter((time) => times.indexOf(time) >= newStart)
-          .sort((a, b) => times.indexOf(a) - times.indexOf(b));
+        for (
+          let t = Math.min(newStart, startTime);
+          t <= Math.max(newStart, startTime);
+          t++
+        ) {
+          newSelections[day][t] = t >= newStart;
+        }
       } else if (resizeDirection === "bottom") {
-        // Find where the block currently ends
         const blockStart = findBlockStart(day, startTime);
         const newEnd = Math.max(endTime, blockStart);
-        newSelections[day] = newSelections[day]
-          .filter((time) => times.indexOf(time) <= newEnd)
-          .sort((a, b) => times.indexOf(a) - times.indexOf(b));
+        for (
+          let t = Math.min(newEnd, startTime);
+          t <= Math.max(newEnd, startTime);
+          t++
+        ) {
+          newSelections[day][t] = t <= newEnd;
+        }
       }
 
       setSelections(newSelections);
@@ -109,6 +108,7 @@ const TutorAvailabilityCalendar = () => {
     setStartCell(null);
     setEndCell(null);
     setResizeStartCell(null);
+
     setResizeDirection(null);
   }, [
     isSelecting,
@@ -139,38 +139,25 @@ const TutorAvailabilityCalendar = () => {
     return timeIndex;
   };
 
-  const removeBlockSelection = (day, startTime) => {
-    const res = confirm("Do you want to remove?");
-    if (res) {
-      if (!selections[day]) return;
-      const newSelections = { ...selections };
-      newSelections[day] = newSelections[day].filter(
-        (time) => time !== times[startTime]
-      );
-      if (newSelections[day].length === 0) {
-        delete newSelections[day];
-      }
-      setSelections(newSelections);
-    } else {
-      return;
+  const removeBlockSelection = (day, startTimeIndex) => {
+    const newSelections = { ...selections };
+    let endTimeIndex = startTimeIndex;
+    while (newSelections[day]?.[endTimeIndex]) {
+      newSelections[day][endTimeIndex] = false;
+      endTimeIndex++;
     }
+    setSelections(newSelections);
   };
 
   const renderCell = (day, dayIndex, timeIndex) => {
-    const timeSlot = times[timeIndex]; // Get time as "HH:MM"
-    const isSelected = selections[day]?.includes(timeSlot); // Check if time exists in array
+    const isSelected = selections[day]?.[timeIndex];
 
-    const isFirstInBlock =
-      isSelected &&
-      (!selections[day]?.includes(times[timeIndex - 1]) || timeIndex === 0);
-    const isLastInBlock =
-      isSelected &&
-      (!selections[day]?.includes(times[timeIndex + 1]) ||
-        timeIndex === times.length - 1);
+    const isFirstInBlock = isSelected && !selections[day]?.[timeIndex - 1];
+    const isLastInBlock = isSelected && !selections[day]?.[timeIndex + 1];
     const isMiddleOfBlock =
       isSelected &&
-      selections[day]?.includes(times[timeIndex - 1]) &&
-      selections[day]?.includes(times[timeIndex + 1]);
+      selections[day]?.[timeIndex - 1] &&
+      selections[day]?.[timeIndex + 1];
 
     let cellClass = "relative h-4 ";
     if (day === "Sat") cellClass += "border-r ";
@@ -191,12 +178,6 @@ const TutorAvailabilityCalendar = () => {
         onMouseDown={() => handleMouseDown(dayIndex, timeIndex)}
         onMouseEnter={() => handleMouseEnter(dayIndex, timeIndex)}
       >
-        {isSelected && (
-          <span className="text-[10px] absolute -top-0.5 left-1 p-0.5">
-            {timeSlot}
-          </span>
-        )}
-
         {isFirstInBlock && (
           <>
             <button
@@ -214,7 +195,6 @@ const TutorAvailabilityCalendar = () => {
             />
           </>
         )}
-
         {isLastInBlock && (
           <div
             className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize"
@@ -246,7 +226,6 @@ const TutorAvailabilityCalendar = () => {
           {times.map((time, timeIndex) => (
             <React.Fragment key={time}>
               <div className="text-[12px] leading-3 border-l border-b text-center border-gray-200">
-                {/* {time} */}
                 {timeIndex % 2 === 0 ? time : ""}
               </div>
 
