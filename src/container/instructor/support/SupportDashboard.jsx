@@ -102,6 +102,7 @@ const SupportDashboard = () => {
   const getInstrcutorLoading = useSelector(
     (state) => state.support.isLoading.getInstructorTickets
   );
+  const { authUser } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("All");
   const [isAdd, setisAdd] = useState(false);
   const toggleIsAdd = () => setisAdd(!isAdd);
@@ -157,7 +158,10 @@ const SupportDashboard = () => {
               Raise and manage tickets for quick resolution of your issues.
             </p>
           </div>
-          <CommonButton label={"Raise New Ticket"} onClick={toggleIsAdd} />
+          {Object?.keys(authUser).length > 0 &&
+          authUser?.role === "admin" ? null : (
+            <CommonButton label={"Raise New Ticket"} onClick={toggleIsAdd} />
+          )}
         </div>
 
         <div
@@ -165,9 +169,9 @@ const SupportDashboard = () => {
             messages && "!grid-cols-2"
           }`}
         >
-          {stats.map((stat) => (
+          {stats.map((stat, index) => (
             <StatsCard
-              key={stat.title}
+              key={index}
               title={stat.title}
               value={stat.value}
               Icon={stat.icon}

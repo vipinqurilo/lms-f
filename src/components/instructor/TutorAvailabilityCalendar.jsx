@@ -1,13 +1,9 @@
 "use client";
-
 import React, { useState, useEffect, useCallback } from "react";
-
 import { X } from "lucide-react";
 import { updateAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
 import { useDispatch } from "react-redux";
-
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 const TutorAvailabilityCalendar = ({ calendar }) => {
   const [selections, setSelections] = useState([
     { day: "sun", slots: Array(48).fill(false) },
@@ -19,7 +15,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     { day: "sat", slots: Array(48).fill(false) },
   ]);
   console.log(calendar, "calendar");
-
   const [isSelecting, setIsSelecting] = useState(false);
   const [startCell, setStartCell] = useState(null);
   const [endCell, setEndCell] = useState(null);
@@ -27,7 +22,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
   const [resizeStartCell, setResizeStartCell] = useState(null);
   const dispatch = useDispatch();
   const [resizeDirection, setResizeDirection] = useState(null);
-
   const times = Array.from({ length: 48 }, (_, index) => {
     const hours = Math.floor(index / 2)
       .toString()
@@ -35,11 +29,9 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     const minutes = index % 2 === 0 ? "00" : "30";
     return `${hours}:${minutes}`;
   });
-
   const handleSave = () => {
     dispatch(updateAvailabilityAsync(selections));
   };
-
   const handleMouseDown = (dayIndex, timeIndex, edge = null) => {
     if (edge) {
       setIsResizing(true);
@@ -54,7 +46,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
       setEndCell([dayIndex, timeIndex]);
     }
   };
-
   const handleMouseEnter = (dayIndex, timeIndex) => {
     if (isSelecting && startCell) {
       setEndCell([dayIndex, timeIndex]);
@@ -62,13 +53,11 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
       setEndCell([dayIndex, timeIndex]);
     }
   };
-
   const handleMouseUp = useCallback(() => {
     if (isSelecting && startCell && endCell) {
       const newSelections = [...selections];
       const [startDay, startTime] = startCell;
       const [endDay, endTime] = endCell;
-
       for (
         let d = Math.min(startDay, endDay);
         d <= Math.max(startDay, endDay);
@@ -82,13 +71,11 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
           newSelections[d].slots[t] = true;
         }
       }
-
       setSelections(newSelections);
     } else if (isResizing && resizeStartCell && endCell) {
       const newSelections = [...selections];
       const [startDay, startTime] = resizeStartCell;
       const [endDay, endTime] = endCell;
-
       if (resizeDirection === "top") {
         const blockEnd = findBlockEnd(startDay, startTime);
         const newStart = Math.min(endTime, blockEnd);
@@ -110,16 +97,13 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
           newSelections[startDay].slots[t] = t <= newEnd;
         }
       }
-
       setSelections(newSelections);
     }
-
     setIsSelecting(false);
     setIsResizing(false);
     setStartCell(null);
     setEndCell(null);
     setResizeStartCell(null);
-
     setResizeDirection(null);
   }, [
     isSelecting,
@@ -130,12 +114,10 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     resizeDirection,
     selections,
   ]);
-
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp);
     return () => document.removeEventListener("mouseup", handleMouseUp);
   }, [handleMouseUp]);
-
   useEffect(() => {
     if (calendar && Array.isArray(calendar)) {
       const newSelections = selections.map((dayObj) => {
@@ -148,21 +130,18 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
       setSelections(newSelections);
     }
   }, [calendar]);
-
   const findBlockStart = (dayIndex, timeIndex) => {
     while (timeIndex > 0 && selections[dayIndex].slots[timeIndex - 1]) {
       timeIndex--;
     }
     return timeIndex;
   };
-
   const findBlockEnd = (dayIndex, timeIndex) => {
     while (timeIndex < 47 && selections[dayIndex].slots[timeIndex + 1]) {
       timeIndex++;
     }
     return timeIndex;
   };
-
   const removeBlockSelection = (dayIndex, startTimeIndex) => {
     const newSelections = [...selections];
     let endTimeIndex = startTimeIndex;
@@ -172,7 +151,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     }
     setSelections(newSelections);
   };
-
   const renderCell = (dayIndex, timeIndex) => {
     const isSelected = selections[dayIndex].slots[timeIndex];
     const isFirstInBlock =
@@ -183,7 +161,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
       isSelected &&
       selections[dayIndex].slots[timeIndex - 1] &&
       selections[dayIndex].slots[timeIndex + 1];
-
     let cellClass = "relative h-4 ";
     if (DAYS[dayIndex] === "Sat") cellClass += "border-r ";
     if (isSelected) {
@@ -195,7 +172,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
       cellClass += "bg-white border-l border-b ";
     }
     cellClass += "border-gray-200";
-
     return (
       <div
         key={`${DAYS[dayIndex]}-${timeIndex}`}
@@ -232,7 +208,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
       </div>
     );
   };
-
   return (
     <div className="w-full overflow-x-auto select-none bg-white rounded-lg border border-gray-200 shadow-sm p-4">
       <button onClick={handleSave}>Save</button>
@@ -254,7 +229,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
               <div className="text-[12px] leading-3 border-l border-b text-center border-gray-200">
                 {timeIndex % 2 === 0 ? time : ""}
               </div>
-
               {DAYS.map((day, dayIndex) => renderCell(dayIndex, timeIndex))}
             </React.Fragment>
           ))}
@@ -263,5 +237,4 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     </div>
   );
 };
-
 export default TutorAvailabilityCalendar;

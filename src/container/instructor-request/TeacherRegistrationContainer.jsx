@@ -6,11 +6,19 @@ import Experience from "@/components/instructor-request/Experience";
 import IndentityForm from "@/components/instructor-request/IndentityForm";
 import SubjectAndLanguage from "@/components/instructor-request/SubjectAndLanguage";
 import TeacherRegistrationProcess from "@/components/instructor-request/TeacherRegistrationProcess";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
 
 const TeacherRegistrationContainer = () => {
-  const { processStep: step } = useSelector((state) => state.tutors);
+  const path = usePathname();
+  const { processStep: step, requestStatus } = useSelector(
+    (state) => state.tutors
+  );
+  const isRejected = requestStatus === "rejected";
+  const isApproved = requestStatus === "approved";
+
+  const isInstructorRequest = path.startsWith("/instructor-request");
 
   const h2Styles = "font-bold uppercase";
   const stepContainerCss =
@@ -22,27 +30,35 @@ const TeacherRegistrationContainer = () => {
         {step === 1 ? (
           <div className={`${stepContainerCss} space-y-6`}>
             <h2 className={h2Styles}>PERSONAL INFO</h2>
-            <BasicDetailsForm />
+            <BasicDetailsForm isInstructorRequest={isInstructorRequest} />
           </div>
         ) : step === 2 ? (
           <div className={`${stepContainerCss} space-y-6`}>
-            <h2 className={h2Styles}>Add profile photo, video, and biography</h2>
-            <IndentityForm />
+            <h2 className={h2Styles}>
+              Add profile photo, video, and biography
+            </h2>
+            <IndentityForm isInstructorRequest={isInstructorRequest} />
           </div>
         ) : step === 3 ? (
           <div className={`${stepContainerCss} space-y-6`}>
             <h2 className={h2Styles}>Subject and Language</h2>
-            <SubjectAndLanguage />
+            <SubjectAndLanguage isInstructorRequest={isInstructorRequest} />
           </div>
         ) : step === 4 ? (
           <div className={`${stepContainerCss} space-y-6`}>
             <h2 className={h2Styles}>Experience</h2>
-            <Experience />
+            <Experience isInstructorRequest={isInstructorRequest} />
           </div>
         ) : step === 5 ? (
-          <div className={`${stepContainerCss} space-y-6`}>
+          <div
+            className={`${stepContainerCss} space-y-6 ${
+              isRejected && "!bg-red-50/50"
+            } ${
+              isApproved && "!bg-green-50/50"
+            }`}
+          >
             <h2 className={h2Styles}>CONFIRMATION</h2>
-            <Confirmation />
+            <Confirmation isInstructorRequest={isInstructorRequest} />
           </div>
         ) : undefined}
       </div>

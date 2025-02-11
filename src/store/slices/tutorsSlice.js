@@ -3,7 +3,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import axios from "axios";
 
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWQiOiI2NzkyMjE1YWVjOTlhMTA4ZDQzMzYxOTEiLCJpYXQiOjE3Mzg2NDY4MDN9.8sgatuSVPhKF_vwLw9jYy1pFae5jsw8pgnVCJVWV_Uw";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1heEBnbWFpbC5jb20iLCJyb2xlIjoidGVhY2hlciIsImlkIjoiNjdhYjNhZDgwNzgxMmY1MmI1MGVmOWViIiwiaWF0IjoxNzM5Mjc1MDM3fQ.-gumJo43eoyliiRzHa59YczVwqbVyWSiG3rEQChsay4";
 
 const api = axios.create({
   baseURL: "https://56kjq9dz-8000.inc1.devtunnels.ms",
@@ -15,6 +15,7 @@ const api = axios.create({
 const initialState = {
   processStep: 1,
   processData: {},
+  requestStatus: "",
   tutorProfile: null,
   allTutorProfile: null,
   isLoading: {},
@@ -25,6 +26,25 @@ export const instructorRequest = CreateApiAsyncThunk(
   "tutors/instructorRequest",
   (data) => api.post(`/api/requests/teacher`, data)
 );
+
+// from the admin side
+export const getTutorRequestData = CreateApiAsyncThunk(
+  "GET/tutors/getTutorRequestData",
+  (id) => api.get(`/api/requests/teacher/${id}`)
+);
+
+// from the admin side
+export const editTutorRequestData = CreateApiAsyncThunk(
+  "tutors/editTutorRequestData",
+  (id) => api.get(`/api/requests/teacher/${id}`)
+);
+
+// from me
+export const GetLoggedInTutorRequestData = CreateApiAsyncThunk(
+  "GET/tutors/GetLoggedInTutorRequestData",
+  () => api.get(`/api/requests/teacher/me`)
+);
+
 // import { api } from "@/store/api/api";
 
 // Async thunk for fetching tutor profile
@@ -40,7 +60,7 @@ export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
 const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
-  reducers: { 
+  reducers: {
     updateProcessStep: (state, action) => {
       state.processStep = action.payload;
     },
@@ -99,6 +119,90 @@ const tutorsSlice = createSlice({
       .addCase(fetchAllTutorProfileAsync.rejected, (state, action) => {
         state.isLoading["fetchAllTutorProfileAsync"] = false;
         state.error["fetchAllTutorProfileAsync"] = action.payload;
+      })
+      // get requested tutor data
+      .addCase(getTutorRequestData.pending, (state) => {
+        state.isLoading["getTutorRequestData"] = true;
+      })
+      .addCase(getTutorRequestData.fulfilled, (state, action) => {
+        state.isLoading["getTutorRequestData"] = false;
+        state.requestStatus = action.payload.data.approvalStatus;
+        state.processStep = 5;
+        const {
+          personalInfo,
+          bio,
+          profilePhoto,
+          experience,
+          education,
+          subjectsTaught,
+          languagesSpoken,
+        } = action.payload.data;
+        state.processData = {
+          profile: personalInfo,
+          indentity: {
+            bio,
+            profile: profilePhoto,
+          },
+          subjectAndlanguage: {
+            language: languagesSpoken,
+            subjects: subjectsTaught,
+          },
+          education,
+          experience,
+        };
+      })
+
+      .addCase(getTutorRequestData.rejected, (state, action) => {
+        state.isLoading["getTutorRequestData"] = false;
+        state.error["getTutorRequestData"] = action.payload;
+      })
+      // get logged in tutor data
+      .addCase(GetLoggedInTutorRequestData.pending, (state) => {
+        state.isLoading["GetLoggedInTutorRequestData"] = true;
+      })
+      .addCase(GetLoggedInTutorRequestData.fulfilled, (state, action) => {
+        state.isLoading["GetLoggedInTutorRequestData"] = false;
+        state.requestStatus = action.payload.data.approvalStatus;
+        state.processStep = 5;
+        const {
+          personalInfo,
+          bio,
+          profilePhoto,
+          experience,
+          education,
+          subjectsTaught,
+          languagesSpoken,
+        } = action.payload.data;
+        state.processData = {
+          profile: personalInfo,
+          indentity: {
+            bio,
+            profile: profilePhoto,
+          },
+          subjectAndlanguage: {
+            language: languagesSpoken,
+            subjects: subjectsTaught,
+          },
+          education,
+          experience,
+        };
+      })
+
+      .addCase(GetLoggedInTutorRequestData.rejected, (state, action) => {
+        state.isLoading["GetLoggedInTutorRequestData"] = false;
+        state.error["GetLoggedInTutorRequestData"] = action.payload;
+      })
+      // edit logged in tutor requested data
+      .addCase(editTutorRequestData.pending, (state) => {
+        state.isLoading["editTutorRequestData"] = true;
+      })
+      .addCase(editTutorRequestData.fulfilled, (state, action) => {
+        state.isLoading["editTutorRequestData"] = false;
+      })
+
+      .addCase(editTutorRequestData.rejected, (state, action) => {
+        state.isLoading["editTutorRequestData"] = false;
+        state.error["editTutorRequestData"] = action.payload;
       });
   },
 });

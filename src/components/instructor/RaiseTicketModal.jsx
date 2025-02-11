@@ -28,7 +28,7 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
     (state) => state.upload.isLoading.uploadImage
   );
   const loading = useSelector((state) => state.support.isLoading.raiseTicket);
-  const [attachment, setattachment] = useState(null);
+  const [attachment, setattachment] = useState([]);
   const {
     register,
     handleSubmit,
@@ -58,16 +58,27 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
 
   const handleUploadAttachment = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("courseImage", file);
-      dispatch(uploadImage(formData))
-        .unwrap()
-        .then((res) => {
-          setattachment(res?.data);
-        });
+    const files = Array.from(e.target.files);
+
+    if (files.length > 0) {
+      setattachment((prevAttachments) => [
+        ...prevAttachments,
+        ...files.map((file) => URL.createObjectURL(file)),
+      ]);
     }
+
+    // if (file) {
+    //   const formData = new FormData();
+    //   formData.append("courseImage", file);
+    //   dispatch(uploadImage(formData))
+    //     .unwrap()
+    //     .then((res) => {
+    //       setattachment(res?.data);
+    //     });
+    // }
   };
+
+  console.log("attachment", attachment);
 
   return (
     <BackgroundModal
@@ -120,15 +131,27 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
                 className="block w-full text-sm text-gray-500
                   file:cursor-pointer cursor-pointer disabled:file:cursor-not-allowed disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={imageLoading}
+                multiple
+                maxLength={5}
               />
 
-              {attachment && (
+              {attachment?.length > 0 && (
                 <div
-                  className="w-32 h-32 mt-4 bg-gray-400 rounded-lg bg-center bg-no-repeat bg-cover"
+                  className="w-full flex items-center flex-nowrap overflow-y-auto gap-5"
                   style={{
-                    backgroundImage: `url(${attachment})`,
+                    scrollbarWidth: "thin",
                   }}
-                ></div>
+                >
+                  {attachment?.map((att, index) => (
+                    <div
+                      key={index}
+                      className="w-32 h-32 flex-shrink-0 mt-4 bg-gray-400 rounded-lg bg-center bg-no-repeat bg-cover"
+                      style={{
+                        backgroundImage: `url(${att})`,
+                      }}
+                    ></div>
+                  ))}
+                </div>
               )}
             </div>
 

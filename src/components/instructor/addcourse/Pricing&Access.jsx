@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 const PricingAccess = () => {
   const router = useRouter();
   const { courseAddData } = useSelector((state) => state.instructor.course);
+  const { authUser } = useSelector((state) => state.user);
   const loading = useSelector(
     (state) => state.instructor.course.isLoading.createCourse
   );
@@ -46,10 +47,14 @@ const PricingAccess = () => {
       "courseDescription",
       courseAddData?.basic?.description || ""
     );
-    formData.append("courseCategory", "67947a79e3e4521f62c0046c");
-    // formData.append("courseCategory", courseAddData?.basic?.category || "");
-    formData.append("courseSubCategory", "67947b29e3e4521f62c0046e");
-    // formData.append("courseSubCategory", courseAddData?.basic?.subCategory || "");
+    formData.append(
+      "courseCategory",
+      courseAddData?.basic?.courseCategory || ""
+    );
+    formData.append(
+      "courseSubCategory",
+      courseAddData?.basic?.courseSubCategory || ""
+    );
     formData.append("courseLevel", courseAddData?.basic?.level || "");
     formData.append("coursePrice", data.price || "");
     formData.append(
@@ -68,24 +73,18 @@ const PricingAccess = () => {
       "courseContent",
       JSON.stringify(courseAddData?.curriculum || [])
     );
-    formData.append("courseInstructor", "Arjun Nagar");
-    // formData.append("courseInstructor", courseAddData?.instructor || "");
+    formData.append("courseInstructor", authUser?.id || "");
     formData.append("courseImage", courseAddData?.media?.image);
     formData.append("courseVideo", courseAddData?.media?.video);
 
-    // Debugging: Check FormData Entries
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     if (courseAddData?.id) {
       dispatch(editCourse({ id: courseAddData?.id, data: formData }))
-        // .unwrap()
-        // .then(() => {
-        //   dispatch(updateStep(1));
-        //   dispatch(updateCourseAddDataState({}));
-        //   router.push("/instructor-dashboard");
-        // });
+        .unwrap()
+        .then(() => {
+          dispatch(updateStep(1));
+          dispatch(updateCourseAddDataState({}));
+          router.push("/instructor-dashboard");
+        });
     } else {
       dispatch(createCourse(formData))
         .unwrap()
