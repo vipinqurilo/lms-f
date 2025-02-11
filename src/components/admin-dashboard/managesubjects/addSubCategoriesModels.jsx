@@ -48,7 +48,15 @@ const AddSubCategories = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-7/12">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-5/12 relative">
+        {/* Close button */}
+        <button
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl"
+          onClick={onClose}
+        >
+          ✖
+        </button>
+
         <h2 className="text-xl font-semibold mb-4">Add Sub-Category</h2>
 
         <label className="block mb-2 text-sm font-medium">
