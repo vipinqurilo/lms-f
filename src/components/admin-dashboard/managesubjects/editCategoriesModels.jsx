@@ -14,7 +14,15 @@ const EditCategories = ({ isOpen, onClose, category, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-6/12">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-6/12 relative">
+        {/* Close button */}
+        <button
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl"
+          onClick={onClose}
+        >
+          ✖
+        </button>
+
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Edit Category</h2>
 
         <label className="block text-gray-700 font-medium mb-1">Name</label>

@@ -4,7 +4,7 @@ import { api } from "@/store/api/api";
 
 export const fetchOrderHistoryAsync = CreateApiAsyncThunk(
   "orders/fetchOrderHistoryAsync",
-  () => api.get(`/api/order`)
+  () => api.get(`/order`)
 );
 
 const initialState = {

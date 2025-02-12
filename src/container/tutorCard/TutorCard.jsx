@@ -11,6 +11,7 @@ import {
   setIsContactModelOpen,
 } from "../../store/slices/uiSlice";
 import { useRouter } from "next/router";
+import Rating from "./Rating";
 
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
   const router = useRouter();
@@ -52,19 +53,9 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                     <SlLocationPin className="mr-1" />
                     {tutor.user.country || "Unknown Location"}
                   </div>
-                  {/* Rating */}
-                  <div className="flex items-center space-x-1">
-                    <span className="flex items-center gap-1 text-sm font-semibold text-dark_text">
-                      <Image
-                        width={16}
-                        height={16}
-                        src={"/assets/icons/star-fill.svg"}
-                        alt="Star"
-                      />
-                      3.50
-                    </span>
-                    <span className="text-sm text-gray-500">(2)</span>
-                  </div>
+                  {tutor.rating && (
+                    <Rating rating={tutor.rating} reviews={tutor.reviews} />
+                  )}
                 </div>
               </div>
             </div>

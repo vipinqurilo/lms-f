@@ -22,11 +22,8 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 );
 
 const initialState = {
-  authUser: {
-    role: "admin"
-  },
+  authUser: {},
   isLoading: {},
-
   error: {},
 };
 
@@ -38,7 +35,14 @@ export const instructorRegister = CreateApiAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser: (state) => {
+      state.authUser = null;
+      localStorage.removeItem("token");
+      localStorage.removeItem("authToken");
+      window.location.reload();
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -58,7 +62,7 @@ const userSlice = createSlice({
       })
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
-        state.authUser = action.payload?.data;
+        state.authUser = action.payload;
       })
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
@@ -95,5 +99,5 @@ const userSlice = createSlice({
       });
   },
 });
-
+export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;

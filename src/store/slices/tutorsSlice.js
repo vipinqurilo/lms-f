@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
-import { api } from "../api/api";
+
+import { api } from "@/store/api/api";
 
 const initialState = {
   processStep: 3,
@@ -35,8 +36,6 @@ export const GetLoggedInTutorRequestData = CreateApiAsyncThunk(
   () => api.get(`/requests/teacher/me`)
 );
 
-// import { api } from "@/store";
-
 // Async thunk for fetching tutor profile
 export const fetchTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchTutorProfileAsync",
@@ -44,7 +43,8 @@ export const fetchTutorProfileAsync = CreateApiAsyncThunk(
 );
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchAllTutorProfileAsync",
-  () => api.get(`/tutors`) // Assuming you have an endpoint like this
+  ({ search, timeRanges }) =>
+    api.get(`/tutors?search=${search}&timeRanges=${timeRanges}`) // Assuming you have an endpoint like this
 );
 
 const tutorsSlice = createSlice({
