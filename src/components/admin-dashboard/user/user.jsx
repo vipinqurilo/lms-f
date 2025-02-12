@@ -1,371 +1,16 @@
+
 import TableHeader from "@/components/instructor/TableHeader";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing icons
 import EditModal from "./EditModel";
 import { Pagination } from "@/components/student-dashboard/Pagination";
+import { useDispatch, useSelector } from "react-redux";  // Import useDispatch, useSelector
+import { getAllUsers, updateUserStatus } from "@/store/slices/admin-dashboard/userSlice";
+import { CiLogin } from "react-icons/ci";
+import { MdLogin } from "react-icons/md";
+import UsersFilter from "./UserFilter";
+import UserFilter from "./UserFilter";
 
-const initialWithdrawals = [
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Landen Mosciski",
-    email: "landen.mosciski194@dummyid.com",
-    phone: "+599 28571271",
-    userId: "109",
-    type: "Affiliate",
-    registered: "Sep 11, 2022 16:40",
-    featured: "No",
-    verified: "Yes",
-    status: true, // Default status
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Larissa Mosciski",
-    email: "larissa.mosciski974@dummyid.com",
-    phone: "+855 13253244",
-    userId: "108",
-    type: "Affiliate",
-    registered: "Oct 02, 2022 01:02",
-    featured: "No",
-    verified: "Yes",
-    status: false,
-  },
-  {
-    image: "https://via.placeholder.com/40",
-    method: "Vaughn Rowe",
-    email: "vaughn.rowe476@dummyid.com",
-    phone: "+39 69147863",
-    userId: "107",
-    type: "Affiliate",
-    registered: "Oct 14, 2022 14:59",
-    featured: "No",
-    verified: "Yes",
-    status: true,
-  },
-];
 
 const columns = [
   "ID",
@@ -374,105 +19,97 @@ const columns = [
   "Email/Phone",
   "Type",
   "Registered",
-   "Verified",
-  "Status", // Added status column
+  "Verified",
+  "Status",
   "Action",
 ];
 
-const WithdrawalHistory = () => {
-  const [withdrawals, setWithdrawals] = useState(initialWithdrawals); // Set the withdrawals data in state
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedWithdrawal, setSelectedWithdrawal] = useState(null);
+const UsersHistory = () => {
+  const dispatch = useDispatch();
+ 
 
-  const openModal = (withdrawal) => {
-    setSelectedWithdrawal(withdrawal);
-    setIsModalOpen(true);
+  // Get users from Redux store
+  const { users, isLoading } = useSelector((state) => state.admin.user);
+
+  console.log(users,"admin user ")
+  // Fetch users when the component mounts
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, [dispatch]);
+ 
+
+  const toggleStatus = (user) => {
+    const newStatus = user.userStatus === "active" ? "inactive" : "active";
+    
+    // Optimistically update the UI
+    dispatch(updateUserStatus({ userId: user._id, status: newStatus }))
+      .then(() => {
+        // If successful, update the Redux state manually (if needed)
+        dispatch(getAllUsers());  // Fetch updated users list
+      })
+      .catch((error) => {
+        console.error("Error updating user status:", error);
+      });
   };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedWithdrawal(null);
-  };
-
-  const toggleStatus = (index) => {
-    const updatedWithdrawals = [...withdrawals];
-    updatedWithdrawals[index].status = !updatedWithdrawals[index].status;
-    setWithdrawals(updatedWithdrawals); // Update withdrawals state
-  };
-
+  
   return (
     <div className="rounded-lg p-6 w-full max-w-6xl mx-auto">
+      <UserFilter/>
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
 
           <tbody>
-            {withdrawals.map((withdrawal, index) => (
+            {users?.map((user, index) => (
               <tr key={index} className="border-t border-gray-200">
                 <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
                 <td className="py-4 px-4">
                   <img
-                    src={withdrawal.image}
+                    src={user.profilePhoto || "https://via.placeholder.com/40"}
                     alt="User"
                     className="w-10 h-10 rounded-full"
                   />
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p className="font-medium text-sm">{withdrawal.method}</p>
-                  <p className="text-sm text-gray-500">
-                    User ID: {withdrawal.userId}
-                  </p>
+                  <p className="font-medium text-sm">{user.firstName} {user.lastName}</p>
+                  <p className="text-sm text-gray-500">User ID: {user._id}</p>
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p>{withdrawal.email}</p>
-                  <p className="text-sm text-gray-500">{withdrawal.phone}</p>
+                  <p>{user.email}</p>
+                  <p className="text-sm text-gray-500">{user.phone?.number}</p>
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.type}
+                  {user.role}
                 </td>
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.registered}
+                  {user.registered || "N/A"}
                 </td>
-                
                 <td className="py-4 px-4 text-gray-700 text-sm">
-                  {withdrawal.verified}
+                  {user.userStatus === "active" ? "Verified" : "Not Verified"}
                 </td>
 
                 {/* Status Toggle */}
-                <td className="py-4 px-3 text-center text-sm">
-                  <button
-                    className={`py-2 px-4 rounded-full ${
-                      withdrawal.status
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-300 text-gray-700"
-                    }`}
-                    onClick={() => toggleStatus(index)}
-                  >
-                    {withdrawal.status ? "Active" : "Inactive"}
-                  </button>
+                <td className="py-4 px-3 text-center text-sm  ">
+                <button className="flex items-center text-gray-600 hover:text-yellow-500">
+                      <label className="inline-flex items-center cursor-pointer">
+                      <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={user.userStatus === "active"}
+                          onChange={() => toggleStatus(user)}
+                        />
+                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                      </label>
+                    </button>
                 </td>
 
                 <td className="py-4 px-4 text-center text-sm">
                   <div className="flex items-center justify-center space-x-3">
-                    <button className="text-gray-600 hover:text-blue-500">
-                      <FiEye size={15} />
+                    <button className="text-gray-700 hover:text-blue-500">
+                      <MdLogin size={23} />
                     </button>
-                    <button className="flex items-center text-gray-600 hover:text-yellow-500">
-                      <label className="inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          value=""
-                          className="sr-only peer"
-                          checked={withdrawal.status}
-                          onChange={() => toggleStatus(index)} // Toggle status when clicked
-                        />
-                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[3px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-                      </label>
-                    </button>
-
-                    <button className="text-gray-600 hover:text-gray-500">
-                      <FiMoreVertical size={15} />
-                    </button>
+                   
+                     
                   </div>
                 </td>
               </tr>
@@ -480,25 +117,9 @@ const WithdrawalHistory = () => {
           </tbody>
         </table>
       </div>
-      
-      {/* Pagination
-      <div className="px-6 py-4 ">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={2}
-              onPageChange={setCurrentPage}
-            />
-          </div> */}
-
-
-
-      <EditModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        withdrawal={selectedWithdrawal}
-      />
+ 
     </div>
   );
 };
 
-export default WithdrawalHistory;
+export default UsersHistory;
