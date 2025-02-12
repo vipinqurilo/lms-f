@@ -27,17 +27,14 @@ const LoginForm = () => {
         if (res?.role === "student") {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
-          dispatch(verifyLoggedInUser());
           router.push("/");
         } else if (res?.role === "teacher") {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
-          dispatch(verifyLoggedInUser());
           router.push("/teacher-dashboard");
         } else if (res?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);
           localStorage.removeItem("token");
-          dispatch(verifyLoggedInUser());
           router.push("/admin-dashboard");
         }
       });

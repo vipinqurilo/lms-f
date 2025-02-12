@@ -6,43 +6,53 @@ import { useEffect, useRef, useState } from "react";
 import MobileMenu from "./navbar/MobileMenu";
 import DeskTopMenu from "./navbar/DeskTopMenu";
 import NavbarTopContactBanner from "./navbar/NavbarTopContactBanner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { VscTriangleUp } from "react-icons/vsc";
-
-const profileData = [
-  {
-    title: "My Profile",
-    href: "/profile",
-    description: "View and edit your personal details",
-  },
-  {
-    title: "Account Settings",
-    href: "/profile/settings",
-    description: "Manage your account preferences and security",
-  },
-  {
-    title: "Notifications",
-    href: "/profile/notifications",
-    description: "Control your notification settings",
-  },
-  {
-    title: "Payment Methods",
-    href: "/profile/payments",
-    description: "Manage your saved payment options",
-  },
-  {
-    title: "Order History",
-    href: "/profile/orders",
-    description: "View your past purchases and transactions",
-  },
-  {
-    title: "Logout",
-    href: "/logout",
-    description: "Sign out of your account securely",
-  },
-];
+import { logoutUser } from "@/store/slices/userSlice";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+
+  const profileData = [
+    {
+      title: "My Profile",
+      href: "/profile",
+      description: "View and edit your personal details",
+    },
+    {
+      title: "Account Settings",
+      href: "/profile/settings",
+      description: "Manage your account preferences and security",
+    },
+    {
+      title: "Notifications",
+      href: "/profile/notifications",
+      description: "Control your notification settings",
+    },
+    {
+      title: "Payment Methods",
+      href: "/profile/payments",
+      description: "Manage your saved payment options",
+    },
+    {
+      title: "Order History",
+      href: "/profile/orders",
+      description: "View your past purchases and transactions",
+    },
+    {
+      title: "Logout",
+      href: "#",
+      description: "Sign out of your account securely",
+      onClick: async (e) => {
+        e.preventDefault();
+        await dispatch(logoutUser());
+        router.push("/login");
+      },
+    },
+  ];
+
+  const dispatch = useDispatch();
   const { authUser } = useSelector((state) => state.user);
   console.log(authUser, "authUser");
   const [isScrolled, setisScrolled] = useState(false);
@@ -131,6 +141,7 @@ const Navbar = () => {
                     >
                       <Link
                         href={subLink?.href}
+                        onClick={subLink?.onClick}
                         className={`text-black group-hover:!text-secondary transition-custom w-full md:w-fit`}
                       >
                         {subLink?.title}

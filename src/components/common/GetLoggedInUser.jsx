@@ -7,7 +7,7 @@ const GetLoggedInUser = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(verifyLoggedInUser());
-  }, []);
+  }, [dispatch]);
 
   return null;
 };
