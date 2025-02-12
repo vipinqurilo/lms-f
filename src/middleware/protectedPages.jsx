@@ -13,27 +13,39 @@ const roleBasedRoutes = {
 function protectedPages(Component) {
   return function AuthenticatedComponent(props) {
     const router = useRouter();
-    const { authUser } = useSelector((state) => state.user);
+    const { authUser, isAuthenticated } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      if (!authUser || !authUser.role) {
-        // Redirect to login if not authenticated
-        router.replace("/").then(() => setLoading(false));
-      } else {
-        const allowedRoutes = roleBasedRoutes[authUser.role] || [];
-        const isAuthorized = allowedRoutes.some((route) =>
-          router.pathname.startsWith(route)
-        );
+      const handleAuth = async () => {
+        try {
+          // Wait for authentication state to be determined
+          if (isAuthenticated === false) {
+            await router.replace("/");
+            return;
+          }
 
-        if (!isAuthorized) {
-          // Redirect unauthorized users
-          router.replace("/").then(() => setLoading(false));
-        } else {
+          // Only proceed with route checking if we have a user
+          if (authUser) {
+            const allowedRoutes = roleBasedRoutes[authUser.role] || [];
+            const isAuthorized = allowedRoutes.some((route) =>
+              router.pathname.startsWith(route)
+            );
+
+            if (!isAuthorized) {
+              await router.replace("/");
+            }
+          }
+        } catch (error) {
+          console.error("Navigation error:", error);
+        } finally {
           setLoading(false);
         }
-      }
-    }, [authUser, router]);
+      };
+
+      handleAuth();
+    }, [authUser, isAuthenticated, router]);
 
     if (loading)
       return (
