@@ -4,25 +4,25 @@ import { api } from "@/store/api/api";
 
 export const getAllManageSubjects = CreateApiAsyncThunk(
   "GET/category/getAllManageSubjects",
-  () => api.get(`/api/category`)
+  () => api.get(`/category`)
 );
 
 export const deleteCategoryById = CreateApiAsyncThunk(
   "DELETE/category/deleteCategoryById",
-  (id) => api.delete(`/api/category/${id}`)
+  (id) => api.delete(`/category/${id}`)
 );
 
 export const editCategoryById = CreateApiAsyncThunk(
     "PUT/category/editCategoryById",
     async ({ id, updatedData }) => {
-      return await api.put(`/api/category/${id}`, updatedData);
+      return await api.put(`/category/${id}`, updatedData);
     }
   );
 
   export const addCategory = CreateApiAsyncThunk(
     "POST/category/addCategory",
     async (categoryData) => {
-      return await api.post(`/api/category`, categoryData);
+      return await api.post(`/category`, categoryData);
     }
   );
 

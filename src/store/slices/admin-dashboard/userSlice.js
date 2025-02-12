@@ -5,14 +5,14 @@ import { api } from "@/store/api/api";
 // Fetch all users
 export const getAllUsers = CreateApiAsyncThunk(
   "GET/users/getAllUsers",
-  () => api.get("/api/users")
+  () => api.get("/users")
 );
 
 // Update user status
 export const updateUserStatus = CreateApiAsyncThunk(
   "PATCH/users/updateUserStatus",
   async ({ userId, status }) => {
-    const response = await api.patch(`/api/users/${userId}/user-status`, {
+    const response = await api.patch(`/users/${userId}/user-status`, {
       userStatus: status,
     });
     return { userId, status, data: response.data };
