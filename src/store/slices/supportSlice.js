@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "../api/api";
 
-
 const initialState = {
   instructorTickets: [],
   studentTickets: [],
@@ -12,14 +11,19 @@ const initialState = {
 
 export const getInstructorTickets = CreateApiAsyncThunk(
   "GET/support/getInstructorTickets",
-  (status) => api.get(`https://dummyjson.com/comments?status=${status}`)
+  () => api.get(`/ticket`)
+);
+
+export const getFilteredInstructorTickets = CreateApiAsyncThunk(
+  "GET/support/getFilteredInstructorTickets",
+  (status) => api.get(`/ticket/filter/${status}`)
 );
 export const getStudentTickets = CreateApiAsyncThunk(
   "GET/support/getStudentTickets",
-  () => api.get(`/tickets`)
+  () => api.get(`/ticket`)
 );
 export const raiseTicket = CreateApiAsyncThunk("support/raiseTicket", (data) =>
-  api.post(`/tickets`, data)
+  api.post(`/ticket`, data)
 );
 
 const supportSlice = createSlice({
@@ -33,18 +37,29 @@ const supportSlice = createSlice({
       })
       .addCase(getInstructorTickets.fulfilled, (state, action) => {
         state.isLoading["getInstructorTickets"] = false;
-        state.instructorTickets = action.payload;
+        state.instructorTickets = action.payload.data;
       })
       .addCase(getInstructorTickets.rejected, (state, action) => {
         state.isLoading["getInstructorTickets"] = false;
         state.isLoading["getInstructorTickets"] = action.payload;
+      })
+      .addCase(getFilteredInstructorTickets.pending, (state) => {
+        state.isLoading["getFilteredInstructorTickets"] = true;
+      })
+      .addCase(getFilteredInstructorTickets.fulfilled, (state, action) => {
+        state.isLoading["getFilteredInstructorTickets"] = false;
+        state.instructorTickets = action.payload.data;
+      })
+      .addCase(getFilteredInstructorTickets.rejected, (state, action) => {
+        state.isLoading["getFilteredInstructorTickets"] = false;
+        state.isLoading["getFilteredInstructorTickets"] = action.payload;
       })
       .addCase(getStudentTickets.pending, (state) => {
         state.isLoading["getStudentTickets"] = true;
       })
       .addCase(getStudentTickets.fulfilled, (state, action) => {
         state.isLoading["getStudentTickets"] = false;
-        state.studentTickets = action.payload;
+        state.studentTickets = action.payload.data;
       })
       .addCase(getStudentTickets.rejected, (state, action) => {
         state.isLoading["getStudentTickets"] = false;

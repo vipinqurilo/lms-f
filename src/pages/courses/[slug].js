@@ -1,46 +1,65 @@
-import React from "react";
-import path from "path";
-import fs from "fs";
-import CourseDetails from "@/container/courses/CourseDetails";
+"use client";
 
-export default function CourseDetailsPage({ pageData }) {
+import React, { useEffect } from "react";
+// import path from "path";
+// import fs from "fs";
+import CourseDetails from "@/container/courses/CourseDetails";
+import { useParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { fetchSingleCourse } from "@/store/slices/coursesSlice";
+
+// export default function CourseDetailsPage({ pageData }) {
+export default function CourseDetailsPage() {
+  const params = useParams();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (params?.slug) {
+      dispatch(fetchSingleCourse(params?.slug));
+    }
+  }, [dispatch, params?.slug]);
+
+  if (!params?.slug) {
+    return <p>Loading...</p>;
+  }
   return (
     <main className="font-nunito custom-margin-top">
-      <CourseDetails data={pageData?.courseDetails} />
+      <CourseDetails />
     </main>
   );
 }
 
-export async function getStaticPaths() {
-  const dataDir = path.join(process.cwd(), "src/data/courses");
-  console.log("dataDir", dataDir);
-  const files = fs.readdirSync(dataDir);
-  console.log("files", files);
-  const paths = files.map((filename) => ({
-    params: { slug: filename.replace(/\.json$/, "") },
-  }));
-  console.log("paths", paths);
+// export async function getStaticPaths() {
+//   const dataDir = path.join(process.cwd(), "src/data/courses");
+//   console.log("dataDir", dataDir);
+//   const files = fs.readdirSync(dataDir);
+//   console.log("files", files);
+//   const paths = files.map((filename) => ({
+//     params: { slug: filename.replace(/\.json$/, "") },
+//   }));
+//   console.log("paths", paths);
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// }
 
-export async function getStaticProps({ params }) {
-  const { slug } = params;
-  const dataFilePath = path.join(
-    process.cwd(),
-    "src/data/courses",
-    `${slug}.json`
-  );
-  console.log("dataFilePath", dataFilePath);
-  const rawData = fs.readFileSync(dataFilePath, "utf-8");
-  console.log("rawData", rawData);
-  const pageData = JSON.parse(rawData);
-  return {
-    props: {
-      pageData,
-    },
-  };
-}
+// export async function getStaticProps({ params }) {
+//   const { slug } = params;
+//   const dataFilePath = path.join(
+//     process.cwd(),
+//     "src/data/courses",
+//     `${slug}.json`
+//   );
+//   console.log("dataFilePath", dataFilePath);
+//   const rawData = fs.readFileSync(dataFilePath, "utf-8");
+//   console.log("rawData", rawData);
+//   const pageData = JSON.parse(rawData);
+//   return {
+//     props: {
+//       pageData,
+//     },
+//   };
+// }

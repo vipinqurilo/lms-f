@@ -27,6 +27,7 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
   const imageLoading = useSelector(
     (state) => state.upload.isLoading.uploadImage
   );
+  const { subjects } = useSelector((state) => state.category);
   const loading = useSelector((state) => state.support.isLoading.raiseTicket);
   const [attachment, setattachment] = useState([]);
   const {
@@ -36,17 +37,13 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
     control,
   } = useForm();
 
-  const catetoryOptions = ticketCategories?.map((ticket) => ({
-    label: ticket,
-    value: ticket,
-  }));
-
   const OnSubmit = (data) => {
     console.log(data);
     const formData = attachment
       ? {
           ...data,
           attachment,
+          messages: {},
         }
       : data;
     dispatch(raiseTicket(formData))
@@ -78,8 +75,6 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
     // }
   };
 
-  console.log("attachment", attachment);
-
   return (
     <BackgroundModal
       PropComponent={
@@ -92,15 +87,22 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
             request and respond as soon as possible.
           </p>
           <form className="flex flex-col gap-5 px-10">
-            <SettingsInputField
-              isSelect={true}
-              errors={errors}
-              control={control}
-              label={"Select Category"}
-              name={"category"}
-              options={catetoryOptions}
-              register={register}
-            />
+            <div className="col-span-3">
+              <label className="block text-sm font-medium text-light mb-2">
+                Category
+              </label>
+              <select
+                {...register("category", { required: "category is required" })}
+                className="mt-1 block text-sm resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              >
+                <option value="">Select Category</option>
+                {subjects?.map((sub, i) => (
+                  <option key={i} value={sub?._id}>
+                    {sub?.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <SettingsInputField
               errors={errors}
               label={"Subject"}

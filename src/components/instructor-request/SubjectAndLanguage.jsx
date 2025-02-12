@@ -100,14 +100,14 @@ export default function SubjectAndLanguage() {
                   onClick={() => toggleSection(category?.categoryId)}
                   className={`flex justify-between items-center w-full font-medium text-lg text-left bg-secondary/5 p-2 px-4 rounded border border-black/10 ${
                     category?.subCategories?.some((sub) =>
-                      selectedSubjects.includes(sub.id)
+                      selectedSubjects?.includes(sub?.id)
                     )
                       ? "!bg-gray-100"
                       : ""
                   }`}
                 >
                   <span className="font-[700] text-base">
-                    {category.categoryName}
+                    {category?.categoryName}
                   </span>
                   <svg
                     className={`transition-transform ${
@@ -138,16 +138,20 @@ export default function SubjectAndLanguage() {
                     <button
                       key={i}
                       className={`w-full border border-black/10 rounded-lg md:flex md:items-center md:justify-between px-2 py-2 md:py-2 ${
-                        selectedSubjects.includes(lecture?.id)
+                        selectedSubjects?.includes(lecture?.id)
                           ? "bg-gray-100"
                           : "bg-white"
                       } ${i === 0 && "mt-4"}`}
                       onClick={() => {
-                        setselectedSubjects((prev) =>
-                          prev.includes(lecture?.id)
-                            ? prev.filter((id) => id !== lecture?.id)
-                            : [...prev, lecture?.id]
-                        );
+                        setselectedSubjects((prev) => {
+                          if (Array.isArray(prev) && prev.length > 0) {
+                            return prev.includes(lecture?.id)
+                              ? prev.filter((id) => id !== lecture?.id) // Remove if already present
+                              : [...prev, lecture?.id]; // Add if not present
+                          } else {
+                            return [lecture?.id]; // Initialize as an array
+                          }
+                        });
                       }}
                     >
                       <h6 className="flex items-start gap-1 ">
@@ -158,7 +162,7 @@ export default function SubjectAndLanguage() {
                       <div className="w-5 h-5 border border-black/10 rounded-full flex items-center justify-center">
                         <div
                           className={`w-3 h-3 bg-background rounded-full transition-custom ${
-                            selectedSubjects.includes(lecture?.id)
+                            selectedSubjects?.includes(lecture?.id)
                               ? "scale-100"
                               : "scale-0"
                           }`}
@@ -183,16 +187,20 @@ export default function SubjectAndLanguage() {
               <button
                 key={i}
                 className={`w-full border border-black/10 rounded-lg md:flex md:items-center md:justify-between px-2 py-2 md:py-2 ${
-                  selectedLanguages.includes(lan?._id)
+                  selectedLanguages?.includes(lan?._id)
                     ? "bg-gray-100"
                     : "bg-white"
                 }`}
                 onClick={() => {
-                  setselectedLanguages((prev) =>
-                    prev.includes(lan?._id)
-                      ? prev.filter((id) => id !== lan?._id)
-                      : [...prev, lan?._id]
-                  );
+                  setselectedLanguages((prev) => {
+                    if (Array.isArray(prev) && prev.length > 0) {
+                      return prev.includes(lan?._id)
+                        ? prev.filter((id) => id !== lan?._id) // Remove if already selected
+                        : [...prev, lan?._id]; // Add if not present
+                    } else {
+                      return [lan?._id]; // Initialize as an array
+                    }
+                  });
                 }}
               >
                 <h6 className="flex items-start gap-1">
@@ -203,7 +211,7 @@ export default function SubjectAndLanguage() {
                 <div className="w-5 h-5 border border-black/10 rounded-full flex items-center justify-center">
                   <div
                     className={`w-3 h-3 bg-background rounded-full transition-custom ${
-                      selectedLanguages.includes(lan?._id)
+                      selectedLanguages?.includes(lan?._id)
                         ? "scale-100"
                         : "scale-0"
                     }`}

@@ -45,10 +45,10 @@ const TeacherRegisterForm = () => {
 
   return (
     <div className="flex items-center justify-center ">
-      <div className="bg-white/40 backdrop-blur-sm text-white p-8 lg:w-full rounded-lg shadow-md">
+      <div className="bg-white/40 backdrop-blur-sm text-white p-8 md:w-full rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className=" mb-4">Teach what you are passionate about</p>
-        {Object.keys(authUser).length > 0 ? (
+        {authUser !== null ? (
           <>
             {authUser?.role === "admin" ? (
               <div className="py-10 lg:w-full flex items-center justify-center">
@@ -59,7 +59,7 @@ const TeacherRegisterForm = () => {
                   Go To Admin Dashboard
                 </Link>
               </div>
-            ) : (
+            ) : authUser?.role === "teacher" ? (
               <div className="py-10 lg:w-full flex items-center justify-center">
                 <Link
                   href={"/instructor-request"}
@@ -68,93 +68,93 @@ const TeacherRegisterForm = () => {
                   Become an Instructor
                 </Link>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {" "}
+                {/* Added space between form elements */}
+                <div>
+                  <label htmlFor="email" className="block font-medium mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                    placeholder="Enter Email Address"
+                    className={`w-full text-black border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary ${
+                      errors.email ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="password" className="block font-medium mb-1">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      {...register("password", {
+                        required: "Password is required",
+                      })}
+                      placeholder="Enter Password"
+                      className={`w-full text-black border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary ${
+                        errors.password ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+
+                    {showPassword ? (
+                      <FaEye
+                        className={`${getIconCss()}`}
+                        onClick={togglePassword}
+                      />
+                    ) : (
+                      <FaEyeSlash
+                        className={`${getIconCss()}`}
+                        onClick={togglePassword}
+                      />
+                    )}
+                  </div>
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-secondary hover:bg-background transition-custom text-white font-bold py-2 rounded-md"
+                >
+                  {loading ? (
+                    <Loader text={"Please Wait"} />
+                  ) : (
+                    "Register with email"
+                  )}
+                </button>
+                <p className="text-center text-sm">
+                  By Signing up with Platform, you agree to{" "}
+                  <Link
+                    href={"/terms-of-service"}
+                    className="text-secondary hover:underline"
+                  >
+                    Terms & Conditions
+                  </Link>
+                </p>
+              </form>
             )}
           </>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {" "}
-            {/* Added space between form elements */}
-            <div>
-              <label htmlFor="email" className="block font-medium mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
-                placeholder="Enter Email Address"
-                className={`w-full text-black border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="password" className="block font-medium mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
-                  placeholder="Enter Password"
-                  className={`w-full text-black border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary ${
-                    errors.password ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-
-                {showPassword ? (
-                  <FaEye
-                    className={`${getIconCss()}`}
-                    onClick={togglePassword}
-                  />
-                ) : (
-                  <FaEyeSlash
-                    className={`${getIconCss()}`}
-                    onClick={togglePassword}
-                  />
-                )}
-              </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-secondary hover:bg-background transition-custom text-white font-bold py-2 rounded-md"
-            >
-              {loading ? (
-                <Loader text={"Please Wait"} />
-              ) : (
-                "Register with email"
-              )}
-            </button>
-            <p className="text-center text-sm">
-              By Signing up with Platform, you agree to{" "}
-              <Link
-                href={"/terms-of-service"}
-                className="text-secondary hover:underline"
-              >
-                Terms & Conditions
-              </Link>
-            </p>
-          </form>
-        )}
+        ) : null}
       </div>
     </div>
   );
