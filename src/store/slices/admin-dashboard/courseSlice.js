@@ -4,14 +4,14 @@ import { api } from "@/store/api/api";
 
 export const getAllAdminCourses = CreateApiAsyncThunk(
   "GET/course/getAllAdminCourses",
-  ({status}) => api.get(`/api/course/admin/get?status=${status}`)
+  ({status}) => api.get(`/course/admin/get?status=${status}`)
 );
 
 
 export const updateAdminCourseStatus = CreateApiAsyncThunk(
   "GET/course/updateAdminCourseStatus",
   ({ courseId, status }) =>
-    api.put(`/api/course/admin-status/${courseId}`, { status })
+    api.put(`/course/admin-status/${courseId}`, { status })
 );
 
 export const courseSlice = createSlice({

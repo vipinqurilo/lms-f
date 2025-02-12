@@ -12,8 +12,10 @@ import { fetchAllTutorProfileAsync } from "../../store/slices/tutorsSlice";
 import { useEffect, useState } from "react";
 import TutorCard from "../../container/tutorCard/TutorCard";
 import { BookingModal } from "@/container/booking/BookingModal";
+import LoginModel from "@/container/login/LoginModel";
 
 const index = () => {
+  const { authUser } = useSelector((state) => state.user);
   const {
     bookings: rawBookings,
     isLoading: bookingLoading,
@@ -68,7 +70,14 @@ const index = () => {
 
       <div className="p-4">
         {showBooking && (
-          <BookingModal tutor={tutor} onClose={() => setShowBooking(false)} />
+          authUser?.role !== "student" ? (
+            <LoginModel onClose={() => setShowBooking(false)} />
+          ) : (
+            <BookingModal
+              tutor={tutor}
+              onClose={() => setShowBooking(false)}
+            />
+          )
         )}
       </div>
       {/* Modal */}
@@ -82,7 +91,10 @@ const index = () => {
               <h2 className="text-lg font-semibold">Availability Calendar</h2>
               <RxCross2 />
             </div>
-            <AvailabilityCalendar calendar={tutor?.calendar} rawBookings={rawBookings} />
+            <AvailabilityCalendar
+              calendar={tutor?.calendar}
+              rawBookings={rawBookings}
+            />
           </div>
         </div>
       )}

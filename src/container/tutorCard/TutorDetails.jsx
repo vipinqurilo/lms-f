@@ -3,6 +3,7 @@ import React from "react";
 import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { useRouter } from "next/router";
+import Rating from "./Rating";
 
 const TutorDetails = ({ tutor }) => {
   const router = useRouter();
@@ -30,21 +31,9 @@ const TutorDetails = ({ tutor }) => {
           <SlLocationPin className="mr-1" />
           {tutor.user.country || "Unknown Location"}
         </div>
-
-        {/* Rating */}
-        <div className="flex items-center space-x-1">
-          <span className="flex items-center gap-1 text-sm font-semibold text-dark_text">
-            <Image
-              width={16}
-              height={16}
-              src={"/assets/icons/star-fill.svg"}
-              alt="Star"
-            />
-            {tutor.rating || "N/A"}
-          </span>
-          <span className="text-sm text-gray-500">({tutor.reviews || 0})</span>
-        </div>
-
+        {tutor.rating && (
+          <Rating rating={tutor.rating} reviews={tutor.reviews} />
+        )}
         {/* Learners and Sessions */}
         <div className="text-sm text-gray-500">
           <span className="font-bold">{tutor.learners || 0}</span> Learners ·{" "}

@@ -9,7 +9,7 @@ import { userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/router";
 
-const LoginForm = () => {
+const LoginForm = ({ type }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
@@ -27,15 +27,21 @@ const LoginForm = () => {
         if (res?.role === "student") {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
-          router.push("/");
+          if (type !== "model") {
+            router.push("/");
+          }
         } else if (res?.role === "teacher") {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
-          router.push("/teacher-dashboard");
+          if (type !== "model") {
+            router.push("/teacher-dashboard");
+          }
         } else if (res?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);
           localStorage.removeItem("token");
-          router.push("/admin-dashboard");
+          if (type !== "model") {
+            router.push("/admin-dashboard");
+          }
         }
       });
   };
