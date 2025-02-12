@@ -32,7 +32,7 @@ export function BookingModal({ onClose, tutor }) {
       setStep(step + 1);
     }
   };
-
+  // console.log(tutor, "tutor?.subjectsTaughttutor?.subjectsTaught");
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
@@ -96,7 +96,11 @@ export function BookingModal({ onClose, tutor }) {
       )}
 
       {step === 2 && (
-        <DurationSelection selected={duration} onSelect={setDuration} />
+        <DurationSelection
+          slots={tutor?.tutionSlots}
+          selected={duration}
+          onSelect={setDuration}
+        />
       )}
 
       {step === 3 && (
