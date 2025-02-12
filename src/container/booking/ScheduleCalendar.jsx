@@ -176,7 +176,7 @@ const ScheduleCalendar = ({
 
     const timeSlot = times[timeIndex]; // Time in "HH:mm" format
 
-    return bookings.some((booking) => {
+    return bookings?.some((booking) => {
       const bookingDate = new Date(booking.date);
       const bookingStart = new Date(`${booking.date}T${booking.startTime}`);
       const bookingEnd = new Date(`${booking.date}T${booking.endTime}`);

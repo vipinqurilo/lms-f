@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(verifyLoggedInUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(verifyLoggedInUser());
+  // }, []);
 
   return null;
 };

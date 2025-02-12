@@ -26,7 +26,6 @@ const Teacher = () => {
 
   const handleSubmit = (index) => {
     // Logic to update the status
-    console.log("Updated Status for", index, updatedStatus[index]);
     setEditIndex(null);
   };
 

@@ -14,7 +14,7 @@ import {
 } from "@/store/slices/instructor/settingsSlice";
 import Select from "react-select";
 
-const SubjectAndLanguage = () => {
+const SubjectAndLanguage = ({ isInstructorRequest = null }) => {
   const path = usePathname();
   const dispatch = useDispatch();
 
@@ -45,11 +45,60 @@ const SubjectAndLanguage = () => {
   };
 
   useEffect(() => {
-    if (processData && Object.keys(processData).length > 0) {
-      setSubjects(processData?.subjectAndlanguage?.subjects || []);
-      setSelectedLanguages(processData?.subjectAndlanguage?.language || []);
+    if (processData && Object.keys(processData).length > 0 && isInstructorRequest) {
+      console.log("🚀 processData Loaded:", processData);
+
+      // Extract selected subSubjects from processData
+      const selectedSubSubjects = subCategory.filter((sub) =>
+        processData?.subjectAndLanguage?.subjects?.includes(sub._id)
+      );
+
+      console.log("✅ selectedSubSubjects:", selectedSubSubjects);
+
+      // Extract unique subjects from the selected subSubjects
+      const selectedSubjects = [
+        ...new Map(
+          selectedSubSubjects.map((sub) => [
+            sub.courseCategory._id,
+            category.find((c) => c._id === sub.courseCategory._id),
+          ])
+        ).values(),
+      ].filter(Boolean); // Remove undefined values
+
+      console.log("✅ selectedSubjects:", selectedSubjects);
+
+      // Set subjects state
+      setSubjects(
+        selectedSubjects.map((sub) => ({
+          label: sub.name,
+          value: sub._id,
+          subSubjects: subCategory
+            ?.filter((s) => s?.courseCategory?._id === sub?._id)
+            ?.map((s) => ({ label: s?.name, value: s?._id })),
+        }))
+      );
+
+      // Store subSubjects as an object mapped to their parent subject
+      const subSubjectsMap = selectedSubjects.reduce((acc, subject) => {
+        acc[subject._id] = selectedSubSubjects
+          .filter((s) => s.courseCategory._id === subject._id)
+          .map((s) => ({ label: s.name, value: s._id }));
+        return acc;
+      }, {});
+
+      console.log("✅ subSubjectsMap:", subSubjectsMap);
+      setSubSubjects(subSubjectsMap);
+
+      // Set selected languages
+      const selectedLanguages =
+        processData?.subjectAndLanguage?.language
+          ?.map((lang) => languages?.find((l) => l?._id === lang))
+          ?.map((match) => ({ label: match?.name, value: match?._id })) || [];
+
+      console.log("✅ selectedLanguages:", selectedLanguages);
+      setSelectedLanguages(selectedLanguages);
     }
-  }, [processData]);
+  }, [processData, subCategory, category, languages]);
 
   useEffect(() => {
     if (profile && path === "/instructor-dashboard/settings") {
@@ -155,10 +204,6 @@ const SubjectAndLanguage = () => {
       setSubSubjects(subSubjectsMap);
     }
   }, [profile, subCategory, category]);
-
-  // console.log("subjects", subjects);
-  // console.log("subjectsData", subjectsData);
-  // console.log("subSubjects", subSubjects);
 
   return (
     <div className="w-full space-y-6">

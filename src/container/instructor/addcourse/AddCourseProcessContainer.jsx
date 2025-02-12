@@ -5,11 +5,18 @@ import BasicDetails from "@/components/instructor/addcourse/BasicDetails";
 import CourseMedia from "@/components/instructor/addcourse/CourseMedia";
 import Curriculum from "@/components/instructor/addcourse/Curriculum";
 import PricingAccess from "@/components/instructor/addcourse/Pricing&Access";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddCourseProcessContainer = () => {
   const { step } = useSelector((state) => state.instructor.course);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getSubjects());
+    dispatch(getSubSubjects());
+  }, []);
 
   return (
     <div className="space-y-4">

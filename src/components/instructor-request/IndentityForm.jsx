@@ -37,16 +37,16 @@ export default function IndentityForm() {
   }, [processData]);
 
   const handleNext = (data) => {
-    if (profilePreview) {
+    // if (profilePreview) {
       const formData = {
         ...data,
         profile: profilePreview,
       };
       dispatch(updateProcessStep(3));
       dispatch(updateProcessData({ field: "indentity", data: formData }));
-    } else {
-      toast.error("Profile Photos is required");
-    }
+    // } else {
+    //   toast.error("Profile Photos is required");
+    // }
   };
 
   const handleImageValidation = (e) => {
@@ -93,7 +93,7 @@ export default function IndentityForm() {
             Profile Picture*
           </label>
           <div className="flex items-start space-x-4 mt-2">
-            <div className="w-24 h-auto lg:h-24 rounded-lg bg-gray-200 flex items-center justify-center">
+            <div className="w-24 h-24 lg:h-24 rounded-lg bg-gray-200 flex items-center justify-center">
               {loading ? (
                 <span className="text-gray-500 text-sm">Uploading...</span>
               ) : profilePreview ? (

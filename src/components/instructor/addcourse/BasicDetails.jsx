@@ -14,6 +14,12 @@ import AddRemoveInput from "./AddRemoveInput";
 const BasicDetails = () => {
   const dispatch = useDispatch();
   const { courseAddData } = useSelector((state) => state.instructor.course);
+  const { subjects: category, subSubjects: subCategory } = useSelector(
+    (state) => state.category
+  );
+
+  const [selectedSubject, setSelectedSubject] = useState("");
+  const [selectedSubSubject, setSelectedSubSubject] = useState("");
 
   const {
     register,
@@ -30,23 +36,14 @@ const BasicDetails = () => {
   // const [description, setDescription] = useState([]);
 
   const submitHandler = (data) => {
-    dispatch(updateCourseAddDataState({ field: "basic", data }));
+    const formData = {
+      ...data,
+      courseCategory: selectedSubject,
+      courseSubCategory: selectedSubSubject,
+    };
+    dispatch(updateCourseAddDataState({ field: "basic", data: formData }));
     dispatch(updateStep(2));
   };
-
-  const courseCategories = [
-    { value: "", label: "Select Course Category" },
-    { value: "web-development", label: "Web Development" },
-    { value: "data-science", label: "Data Science" },
-    { value: "graphic-design", label: "Graphic Design" },
-    { value: "digital-marketing", label: "Digital Marketing" },
-    { value: "business", label: "Business & Management" },
-    { value: "personal-development", label: "Personal Development" },
-    { value: "photography", label: "Photography & Video Editing" },
-    { value: "language-learning", label: "Language Learning" },
-    { value: "ai-ml", label: "AI & Machine Learning" },
-    { value: "cybersecurity", label: "Cybersecurity" },
-  ];
 
   const courseLevels = [
     { value: "", label: "Select Course Level" },
@@ -77,6 +74,8 @@ const BasicDetails = () => {
     setFeatures(courseAddData.basic.features || [""]);
     setWhatYouWillLearn(courseAddData.basic.whatYouWillLearn || [""]);
     setRequirements(courseAddData.basic.requirements || [""]);
+    setSelectedSubject(courseAddData.basic.courseCategory || [""]);
+    setSelectedSubSubject(courseAddData.basic.courseSubCategory || [""]);
     // setDescription(courseAddData.basic.description || [""]);
 
     // Reset the form values to match the initial state
@@ -99,7 +98,7 @@ const BasicDetails = () => {
   }, [courseAddData]);
 
   return (
-    <form className="w-full grid grid-cols-3 gap-8">
+    <div className="w-full grid grid-cols-3 gap-8">
       <SettingsInputField
         errors={errors}
         label={"Course Title"}
@@ -107,7 +106,7 @@ const BasicDetails = () => {
         placeholder={"Enter Course Title"}
         register={register}
       />
-      <SettingsInputField
+      {/* <SettingsInputField
         errors={errors}
         label={"Course Category"}
         options={courseCategories}
@@ -115,7 +114,51 @@ const BasicDetails = () => {
         register={register}
         isSelect={true}
         control={control}
-      />
+      /> */}
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          Category
+        </label>
+        <div className="">
+          <select
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none text-black"
+          >
+            <option value="">Select Category</option>
+            {category?.map((cat, index) => (
+              <option key={index} value={cat?._id}>
+                {cat?.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          Sub Category
+        </label>
+        <div className="">
+          <select
+            value={selectedSubSubject}
+            onChange={(e) => setSelectedSubSubject(e.target.value)}
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none text-black"
+          >
+            <option value="">Select Sub Category</option>
+
+            {subCategory
+              ?.filter((sub) => sub?.courseCategory?._id === selectedSubject)
+              ?.map((sub, index) => (
+                <option key={index} value={sub?._id}>
+                  {sub?.name}
+                </option>
+              ))}
+          </select>
+        </div>
+      </div>
+
       <SettingsInputField
         errors={errors}
         label={"Course Level"}
@@ -209,7 +252,7 @@ const BasicDetails = () => {
           saveText={"Save and Continue"}
         />
       </div>
-    </form>
+    </div>
   );
 };
 

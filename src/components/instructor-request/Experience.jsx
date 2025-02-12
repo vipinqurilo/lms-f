@@ -89,8 +89,8 @@ const Experience = () => {
         personalInfo: processData?.profile,
         bio: processData?.indentity?.bio,
         profilePhoto: processData?.indentity?.profile,
-        subjectsTaught: [],
-        languagesSpoken: [],
+        subjectsTaught: processData?.subjectAndlanguage?.language || [],
+        languagesSpoken: processData?.subjectAndlanguage?.subjects || [],
         education: education,
         experience,
       };
@@ -192,7 +192,7 @@ const Experience = () => {
       {isAdd !== null && (
         <BackgroundModal
           PropComponent={
-            <div className="w-[50%] border border-black/10 rounded-lg bg-white px-10 py-5 flex flex-col gap-5">
+            <div className="w-[90%] md:w-[60%] lg:w-[50%] border border-black/10 rounded-lg bg-white px-5 md:px-10 py-5 flex flex-col gap-5">
               <ModalHeading
                 title={`Add ${isAdd}`}
                 onClose={() => {
@@ -201,7 +201,14 @@ const Experience = () => {
                 }}
                 PaddingAdd={true}
               />
-              <AddExperience addEducation={addEducation} addExperience={addExperience} errors={errors} handleSubmit={handleSubmit} register={register} type={isAdd} />
+              <AddExperience
+                addEducation={addEducation}
+                addExperience={addExperience}
+                errors={errors}
+                handleSubmit={handleSubmit}
+                register={register}
+                type={isAdd}
+              />
             </div>
           }
         />

@@ -3,7 +3,10 @@ import CommonButton from "@/components/common/CommonButton";
 import TitleComp from "@/components/instructor/TitleComp";
 import AddCourseProcessContainer from "@/container/instructor/addcourse/AddCourseProcessContainer";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
-import { editCourse } from "@/store/slices/instructor/courseSlice";
+import {
+  editCourseData,
+  updateStep,
+} from "@/store/slices/instructor/courseSlice";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -17,7 +20,8 @@ export default function AddCoursePage() {
         <CommonButton
           label={"Back"}
           onClick={() => {
-            dispatch(editCourse({}));
+            dispatch(editCourseData({}));
+            dispatch(updateStep(1));
             router.back();
           }}
           variant="primary"

@@ -1,10 +1,13 @@
+"use client";
 import CommonButton from "@/components/common/CommonButton";
 import { EllipsisVertical, SendHorizontal } from "lucide-react";
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { VscTriangleUp } from "react-icons/vsc";
+import { useSelector } from "react-redux";
 
 const MessageModal = ({ ticket, setMessages }) => {
+  const { authUser } = useSelector((state) => state.user);
   const [newMessage, setNewMessage] = useState("");
   const [isDropDown, setisDropDown] = useState(false);
   const toggleIsDropDown = () => setisDropDown(!isDropDown);
@@ -14,7 +17,7 @@ const MessageModal = ({ ticket, setMessages }) => {
       ...prev,
       messages: [
         ...prev?.messages,
-        { sender: messages[0]?.sender, message: newMessage },
+        { sender: ticket?.sender, message: newMessage },
       ],
     }));
     setNewMessage("");
@@ -32,41 +35,44 @@ const MessageModal = ({ ticket, setMessages }) => {
           >
             <IoClose size={18} />
           </button>
-          <div className="relative">
-            <button
-              onClick={toggleIsDropDown}
-              className=" rounded-lg p-1 text-white hover:text-background transition-custom "
-            >
-              <EllipsisVertical size={20} />
-            </button>
-            {isDropDown && (
-              <div className="absolute top-[60%] -right-1.5 pt-0">
-                <div className="-mb-3.5 w-full flex items-center justify-end text-white ">
-                  <VscTriangleUp size={40} />
+
+          {Object?.keys(authUser).length > 0 && authUser?.role === "admin" && (
+            <div className="relative">
+              <button
+                onClick={toggleIsDropDown}
+                className=" rounded-lg p-1 text-white hover:text-background transition-custom "
+              >
+                <EllipsisVertical size={20} />
+              </button>
+              {isDropDown && (
+                <div className="absolute top-[60%] -right-1.5 pt-0">
+                  <div className="-mb-3.5 w-full flex items-center justify-end text-white ">
+                    <VscTriangleUp size={40} />
+                  </div>
+                  <ul className=" bg-white text-nowrap rounded border border-t-0 shadow">
+                    <li className=" text-light group w-full text-base border-b border-black/10 px-6 py-3">
+                      <button
+                        onClick={() => {
+                          setMessages((prev) => ({
+                            ...prev,
+                            status: "Resolved",
+                          }));
+                          toggleIsDropDown();
+                        }}
+                        className={`text-black group-hover:!text-secondary transition-custom w-full text-sm md:w-fit disabled:opacity-60 disabled:cursor-not-allowed`}
+                        disabled={ticket?.status === "Resolved"}
+                      >
+                        Mark AS Resolved
+                      </button>
+                    </li>
+                  </ul>
                 </div>
-                <ul className=" bg-white text-nowrap rounded border border-t-0 shadow">
-                  <li className=" text-light group w-full text-base border-b border-black/10 px-6 py-3">
-                    <button
-                      onClick={() => {
-                        setMessages((prev) => ({
-                          ...prev,
-                          status: "Resolved",
-                        }));
-                        toggleIsDropDown();
-                      }}
-                      className={`text-black group-hover:!text-secondary transition-custom w-full text-sm md:w-fit disabled:opacity-60 disabled:cursor-not-allowed`}
-                      disabled={ticket?.status === "Resolved"}
-                    >
-                      Mark AS Resolved
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
-      <div className="bg-background text-white px-3 py-2">
+      <div className="bg-background text-white px-3 py-2 text-sm font-medium">
         <span>Subject</span>: {ticket?.subject}
       </div>
 

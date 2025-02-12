@@ -14,7 +14,7 @@ import {
   fetchProfileAsync,
 } from "@/store/slices/student-dashboard/profileSlice";
 
-export function EditProfile() {
+export function EditProfile({ isInstructorRequest = null }) {
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.student?.profile);
@@ -27,7 +27,6 @@ export function EditProfile() {
   const error = profileState?.error;
 
   const path = usePathname();
-
   const [localProfile, setLocalProfile] = useState({
     firstName: "",
     lastName: "",
@@ -44,14 +43,14 @@ export function EditProfile() {
   const [idProof, setIdProof] = useState("");
 
   useEffect(() => {
-    if (path === "/instructor-request" && processData) {
+    if (isInstructorRequest && processData) {
       if (Object.keys(processData).length > 0) {
         setLocalProfile({
           firstName: processData?.profile?.firstName || "",
           lastName: processData?.profile?.lastName || "",
           phoneNumber: processData?.profile?.phone?.number || "",
-          countryCode: processData?.profile?.phone?.country || "",
-          gender: processData?.profile?.gender,
+          countryCode: processData?.profile?.phone?.countryCode || "",
+          gender: processData?.profile?.gender?.toLowerCase() || "",
           bio: "",
           designation: "",
           userName: "",
@@ -65,7 +64,7 @@ export function EditProfile() {
     if (path === "/instructor-dashboard/settings") {
       if (instructorProfile) {
         console.log("instructorProfile from line 67", instructorProfile);
-        
+
         setLocalProfile({
           firstName: instructorProfile?.firstName || "",
           lastName: instructorProfile?.lastName || "",
@@ -96,7 +95,9 @@ export function EditProfile() {
   }, [profile, instructorProfile]);
 
   useEffect(() => {
-    dispatch(fetchProfileAsync());
+    if (!isInstructorRequest) {
+      dispatch(fetchProfileAsync());
+    }
   }, [dispatch]);
 
   const handleReset = () => {
@@ -155,8 +156,6 @@ export function EditProfile() {
     }
   };
 
-  
-
   if (!profileState) {
     return <div>Loading...</div>;
   }
@@ -168,11 +167,9 @@ export function EditProfile() {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`space-y-6 ${
-        path === "/instructor-request" ? "" : "lg:p-4 lg:px-8"
-      }`}
+      className={`space-y-6 ${isInstructorRequest ? "" : "lg:p-4 lg:px-8"}`}
     >
-      {path !== "/instructor-request" && (
+      {!isInstructorRequest && (
         <div className=" flex flex-col">
           <div className="text-lg font-semibold  ">Personal Details</div>
           <div className="text-gray-800">Edit your personal information</div>
@@ -214,7 +211,7 @@ export function EditProfile() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {path !== "/instructor-request" ? (
+        {!isInstructorRequest ? (
           <div className="space-y-2">
             <label
               htmlFor="userName"
@@ -294,7 +291,7 @@ export function EditProfile() {
         </div>
       </div>
 
-      {path !== "/instructor-request" && (
+      {!isInstructorRequest && (
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2 w-full">
             <label
@@ -317,7 +314,7 @@ export function EditProfile() {
               <option value="other">Other</option>
             </select>
           </div>
-          {path !== "/instructor-request" && (
+          {!isInstructorRequest && (
             <div className="space-y-2">
               <label
                 htmlFor="country"
@@ -337,7 +334,7 @@ export function EditProfile() {
           )}
         </div>
       )}
-      {path === "/instructor-request" && (
+      {isInstructorRequest && (
         <div className="space-y-2">
           <label
             htmlFor="designation"
@@ -354,7 +351,7 @@ export function EditProfile() {
         </div>
       )}
 
-      {path !== "/instructor-request" && (
+      {!isInstructorRequest && (
         <div className="space-y-2">
           <label
             htmlFor="bio"
@@ -374,7 +371,7 @@ export function EditProfile() {
         </div>
       )}
 
-      {path === "/instructor-request" ? (
+      {isInstructorRequest ? (
         <div className="w-full flex items-center justify-between">
           <SubmitButtonsComp
             cancelText={"Cancel"}

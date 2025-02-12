@@ -25,7 +25,7 @@ const MobileMenu = ({ menuRef, toggleMenu, getLinkCss }) => {
       >
         <RxCross1 size={25} />
       </button>
-      <Link href={"/"}>
+      <Link href={"/"} className="md:ml-8">
         <Image
           src={"/assets/common/logo.png"}
           alt="logo"
@@ -35,7 +35,7 @@ const MobileMenu = ({ menuRef, toggleMenu, getLinkCss }) => {
         />
       </Link>
 
-      <div className="w-full px-5 space-y-4">
+      <div className="w-full px-5 md:px-10 space-y-4">
         {data?.mainNavItems?.map((item, index) => (
           <div className="" key={index}>
             <div className="w-full flex items-center justify-between text-xl font-medium group">

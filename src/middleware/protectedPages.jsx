@@ -6,7 +6,7 @@ import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice
 
 // Define role-based access rules
 const roleBasedRoutes = {
-  admin: ["/admin-dashboard", "/instructor-dashboard", "/student-dashboard"],
+  admin: ["/admin-dashboard"],
   instructor: ["/instructor-dashboard"],
   student: ["/student-dashboard"],
 };
