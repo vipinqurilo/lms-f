@@ -54,7 +54,6 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
   const { authUser } = useSelector((state) => state.user);
-  console.log(authUser, "authUser");
   const [isScrolled, setisScrolled] = useState(false);
   const [isMenuOpen, setisMenuOpen] = useState(false);
   const toggleMenu = () => setisMenuOpen(!isMenuOpen);

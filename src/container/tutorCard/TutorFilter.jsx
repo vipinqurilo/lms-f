@@ -7,6 +7,7 @@ import PriceFilterDropdown from "./PriceFilterDropdown";
 import TimeFilterDropdown from "./TimeFilterDropdown";
 import SortBy from "./SortBy";
 import GenderSelector from "./GenderSelector";
+import { useSelector } from "react-redux";
 
 const data = [
   {
@@ -103,10 +104,25 @@ const data = [
   },
 ];
 
-const TutorFilter = () => {
+const TutorFilter = ({ search, setSearch }) => {
   const [gender, setGender] = useState("Any");
   const [sortBy, setSortBy] = useState("By popularity");
   const [filterOpened, setfilterOpened] = useState("");
+  const { timeRanges } = useSelector((state) => state.ui);
+  // Add useEffect to handle body scroll
+  useEffect(() => {
+    if (filterOpened) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [filterOpened]);
+
   const hancleSubjectClick = () => {
     if (filterOpened === "subject") {
       setfilterOpened("");
@@ -180,6 +196,8 @@ const TutorFilter = () => {
         <div className="flex flex-col cursor-pointer justify-center px-4 py-2 w-full md:w-1/4 h-[72px] rounded-l-lg bg-white   ">
           <div className="text-[13px] leading-3 text-[#a6a6a6]">Search</div>
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             type="text"
             placeholder="By tutor name"
             className="text-black placeholder:text-black text-[16px] outline-none"
@@ -217,10 +235,16 @@ const TutorFilter = () => {
             Availability
           </div>
           <div className="flex justify-between items-center">
-            Select timing
+            {timeRanges
+              ? timeRanges.length > 3
+                ? `${timeRanges[0]}, ${timeRanges[1]}, ${timeRanges[2]}...`
+                : timeRanges.join(", ")
+              : "Select timing"}
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "availability" && <TimeFilterDropdown />}
+          {filterOpened === "availability" && (
+            <TimeFilterDropdown onClose={() => setfilterOpened("")} />
+          )}
         </div>
       </div>
 
