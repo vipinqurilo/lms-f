@@ -18,21 +18,22 @@ const Confirmation = () => {
   );
   const isRejected = requestStatus === "rejected";
   const isApproved = requestStatus === "approved";
+  const { authUser } = useSelector((state) => state.user);
 
   const handleBack = () => {
     dispatch(updateProcessStep(processStep - 1));
   };
 
   const handleApprovedAction = () => {
-    router.push("/instructor-dashboard");
     dispatch(updateProcessStep(1));
     dispatch(updateProcessData({}));
+    router.push("/instructor-dashboard");
   };
 
   const handlePendingAction = () => {
-    router.push("/");
     dispatch(updateProcessStep(1));
     dispatch(updateProcessData({}));
+    router.push("/");
   };
 
   const getMessage = () => {
@@ -97,9 +98,18 @@ const Confirmation = () => {
       {isRejected ? (
         <CommonButton label={buttonLabel} onClick={buttonAction} />
       ) : (
-        <Link href={"/"}>
-          <CommonButton label={buttonLabel} variant="secondary" />
-        </Link>
+        <>
+          {authUser?.role === "admin" ? (
+            <CommonButton
+              label={"Review Request"}
+              onClick={() => dispatch(updateProcessStep(processStep - 1))}
+            />
+          ) : (
+            <Link href={"/"}>
+              <CommonButton label={buttonLabel} variant="secondary" />
+            </Link>
+          )}
+        </>
       )}
     </div>
   );

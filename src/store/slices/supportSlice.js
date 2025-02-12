@@ -1,16 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
-import axios from "axios";
+import { api } from "../api/api";
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWQiOiI2NzkyMjE1YWVjOTlhMTA4ZDQzMzYxOTEiLCJpYXQiOjE3Mzg2NDY4MDN9.8sgatuSVPhKF_vwLw9jYy1pFae5jsw8pgnVCJVWV_Uw";
-
-const api = axios.create({
-  baseURL: "https://56kjq9dz-8000.inc1.devtunnels.ms",
-  headers: {
-    Authorization: token && `Bearer ${token}`,
-  },
-});
 
 const initialState = {
   instructorTickets: [],
@@ -25,10 +16,10 @@ export const getInstructorTickets = CreateApiAsyncThunk(
 );
 export const getStudentTickets = CreateApiAsyncThunk(
   "GET/support/getStudentTickets",
-  () => api.get(`/api/tickets`)
+  () => api.get(`/tickets`)
 );
 export const raiseTicket = CreateApiAsyncThunk("support/raiseTicket", (data) =>
-  api.post(`/api/tickets`, data)
+  api.post(`/tickets`, data)
 );
 
 const supportSlice = createSlice({

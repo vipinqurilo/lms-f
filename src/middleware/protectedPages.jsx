@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
 
 // Define role-based access rules
 const roleBasedRoutes = {
   admin: ["/admin-dashboard"],
-  instructor: ["/instructor-dashboard"],
+  teacher: ["/instructor-dashboard"],
   student: ["/student-dashboard"],
 };
 
