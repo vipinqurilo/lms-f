@@ -3,7 +3,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "../api/api";
 
 const initialState = {
-  processStep: 1,
+  processStep: 3,
   processData: {},
   requestStatus: "",
   tutorProfile: null,

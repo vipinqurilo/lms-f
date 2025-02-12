@@ -5,6 +5,7 @@ import { api } from "../api/api";
 const initialState = {
   subjects: [],
   subSubjects: [],
+  categories: [],
   isLoading: {},
   error: {},
 };
@@ -21,7 +22,31 @@ export const getSubSubjects = CreateApiAsyncThunk(
 const categorySlice = createSlice({
   name: "category",
   initialState,
-  reducers: {},
+  reducers: {
+    makeCategorySubCategoryArray: (state) => {
+      const formattedData =
+        state.subjects?.length > 0 &&
+        state.subjects.reduce((acc, category) => {
+          const matchedSubcategories =
+            state.subSubjects?.length > 0 &&
+            state.subSubjects
+              .filter((sub) => sub.courseCategory._id === category._id)
+              .map((sub) => ({
+                name: sub.name,
+                id: sub._id,
+              }));
+
+          acc.push({
+            categoryName: category.name,
+            categoryId: category._id,
+            subCategories: matchedSubcategories,
+          });
+
+          return acc;
+        }, []);
+      state.categories = formattedData;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSubjects.pending, (state) => {
@@ -48,5 +73,7 @@ const categorySlice = createSlice({
       });
   },
 });
+
+export const { makeCategorySubCategoryArray } = categorySlice?.actions;
 
 export default categorySlice.reducer;

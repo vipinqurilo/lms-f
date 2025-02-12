@@ -23,7 +23,7 @@ const LoginForm = () => {
     dispatch(userLoginAsync(data))
       .unwrap()
       .then((res) => {
-        localStorage.setItem("token", JSON.stringify(res?.token));
+        localStorage.setItem("token", res?.token);
         router.push("/");
       });
   };

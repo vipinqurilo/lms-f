@@ -4,11 +4,16 @@ import TableHeader from "@/components/instructor/TableHeader";
 import { RxCross2 } from "react-icons/rx";
 import { FaRegCalendarCheck } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
- 
+
 import RejectModal from "./rejectModel";
 import ApprovelModal from "./approvel";
-import { approveTeacher, fetchData, rejectTeacher } from "@/store/slices/admin-dashboard/teacherSlice";
- 
+import {
+  approveTeacher,
+  fetchData,
+  rejectTeacher,
+} from "@/store/slices/admin-dashboard/teacherSlice";
+import Link from "next/link";
+
 const columns = [
   "Sr. No.",
   "Reference number",
@@ -28,16 +33,12 @@ const TeacherRequests = () => {
   const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
-   const  {teachers}  = useSelector((state) => state.admin?.teacher);
+  const { teachers } = useSelector((state) => state.admin?.teacher);
 
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
 
-
-
-
-  
   const handleOpenApproveModal = (teacherId) => {
     setSelectedTeacherId(teacherId);
     setIsApproveModalOpen(true);
@@ -57,24 +58,18 @@ const TeacherRequests = () => {
     }
   };
 
- 
-
   const handleOpenRejectModal = (teacherId) => {
     setSelectedTeacherId(teacherId);
     setIsRejectModalOpen(true);
   };
 
-
-
-
-
   // const handleReject = async () => {
   //   if (!selectedTeacherId || !rejectionReason) return;
-  
+
   //   // Log the teacher ID and rejection reason to the console
   //   console.log("Teacher ID:", selectedTeacherId);
   //   console.log("Rejection Reason:", rejectionReason);
-  
+
   //   try {
   //     // Dispatch rejectTeacher action with teacherId and reason
   //     await dispatch(rejectTeacher({ id: selectedTeacherId, reason: rejectionReason })).unwrap();
@@ -85,24 +80,23 @@ const TeacherRequests = () => {
   //     console.error("Error rejecting teacher:", error);
   //   }
   // };
-  
-
-  
 
   const handleReject = async () => {
     if (!selectedTeacherId || !rejectionReason) return;
-  
+
     // Log the teacher ID and rejection reason to the console
     console.log("Teacher ID:", selectedTeacherId);
     console.log("Rejection Reason:", rejectionReason);
-  
+
     try {
       // Dispatch rejectTeacher action with teacherId and reason
-      await dispatch(rejectTeacher({ teacherId: selectedTeacherId, reason: rejectionReason })).unwrap();
-      
+      await dispatch(
+        rejectTeacher({ teacherId: selectedTeacherId, reason: rejectionReason })
+      ).unwrap();
+
       // Log success message after successful rejection
       console.log("Teacher successfully rejected");
-  
+
       // Close the modal and clear the rejection reason
       setIsRejectModalOpen(false);
       setRejectionReason(""); // Clear the reason
@@ -111,7 +105,6 @@ const TeacherRequests = () => {
       console.error("Error rejecting teacher:", error);
     }
   };
-  
 
   return (
     <div className="bg-white rounded-lg p-6 w-full max-w-6xl mx-auto">
@@ -191,7 +184,9 @@ const TeacherRequests = () => {
                 <td className="py-4 px-4 text-gray-700">
                   {teacher.personalInfo?.firstName}
                 </td>
-                <td className="py-4 px-4 text-gray-700">{teacher.email}amankumar@gmail.com</td>
+                <td className="py-4 px-4 text-gray-700">
+                  {teacher.email}amankumar@gmail.com
+                </td>
                 <td className="py-4 px-4 text-gray-700">
                   {teacher.personalInfo?.firstName}
                 </td>
@@ -203,15 +198,17 @@ const TeacherRequests = () => {
                 </td>
                 <td className="py-4 px-4 text-center">
                   <div className="flex items-center justify-center space-x-3">
-                  <button
-        className="text-gray-600 hover:text-blue-500"
-        onClick={() => handleOpenApproveModal(teacher._id)}
-      >
-        <FaRegCalendarCheck size={18} />
-      </button>
-                    <button className="text-gray-600 hover:text-yellow-500">
-                      <FiEye />
+                    <button
+                      className="text-gray-600 hover:text-blue-500"
+                      onClick={() => handleOpenApproveModal(teacher._id)}
+                    >
+                      <FaRegCalendarCheck size={18} />
                     </button>
+                    <Link href={`/instructor-request/${teacher?.userId}`}>
+                      <button className="text-gray-600 hover:text-yellow-500">
+                        <FiEye />
+                      </button>
+                    </Link>
                     <button
                       className="text-gray-600 hover:text-red-500"
                       onClick={() => handleOpenRejectModal(teacher._id)}
