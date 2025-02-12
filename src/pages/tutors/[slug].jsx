@@ -16,29 +16,42 @@ import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import { fetchTutorProfileAsync } from "@/store/slices/tutorsSlice";
+import LoginModel from "@/container/login/LoginModel";
+import { BookingModal } from "@/container/booking/BookingModal";
+import { Loader } from "lucide-react";
 
 export default function TeacherProfile() {
   const [activeTab, setActiveTab] = useState("newest");
-  const dispatch = useDispatch();
+  const [showBooking, setShowBooking] = useState(false);
 
+  const dispatch = useDispatch();
+  const { tutorId } = useSelector((state) => state.tutors);
+  const { authUser } = useSelector((state) => state.user);
   // Get tutor profile from Redux store
   const { tutorProfile, isLoading, error } = useSelector(
     (state) => state.tutors
   );
   useEffect(() => {
-    const tutorId = "67a1acec55d46979078eddd7"; // Replace this with dynamic tutorId if needed
     dispatch(fetchTutorProfileAsync(tutorId));
-  }, [dispatch]);
+  }, [dispatch, tutorId]);
 
   if (isLoading["fetchTutorProfileAsync"]) {
-    return <div>Loading...</div>; // You can replace with a loading spinner or message
+    return (
+      <div className="text-center w-full h-screen custion-margin-top">
+        <Loader text="Loading..." />
+      </div>
+    ); // You can replace with a loading spinner or message
   }
 
   if (error["fetchTutorProfileAsync"]) {
-    return <div>Error loading tutor profile</div>; // Handle error scenario
+    return (
+      <div className="text-center w-full h-screen custion-margin-top">
+        Error loading tutor profile
+      </div>
+    ); // Handle error scenario
   }
   return (
-    <div className="block lg:flex   px-2 lg:px-10 py-8 w-full custom-margin-top">
+    <div className="block lg:flex  min-h-screen px-2 lg:px-10 py-8 w-full custom-margin-top">
       {/* Left side */}
       <div className="w-full lg:max-w-7xl mx-auto px-2 lg:px-4 py-8">
         <ProfileHeader />
@@ -62,7 +75,18 @@ export default function TeacherProfile() {
         <ReviewsSection activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
       <div className="hidden lg:block">
-        <SidebarActions />
+        <SidebarActions setShowBooking={setShowBooking} />
+      </div>
+      <div className="p-4">
+        {showBooking &&
+          (authUser?.role !== "student" ? (
+            <LoginModel onClose={() => setShowBooking(false)} />
+          ) : (
+            <BookingModal
+              tutor={tutorProfile}
+              onClose={() => setShowBooking(false)}
+            />
+          ))}
       </div>
     </div>
   );

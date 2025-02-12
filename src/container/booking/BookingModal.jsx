@@ -9,8 +9,10 @@ import ScheduleCalendar from "./ScheduleCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
 import { createBookingAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { toast } from "react-hot-toast";
 
 export function BookingModal({ onClose, tutor }) {
+  console.log(tutor, "tutortutortutortutortutor");
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const { profile } = useSelector((state) => state.student.profile);
@@ -40,19 +42,36 @@ export function BookingModal({ onClose, tutor }) {
   };
 
   const createBooking = () => {
-    console.log({
-      subjectId: subject,
-      teacherId: tutor?.user?._id,
-      studentId: profile?._id,
-      scheduledDate,
-      sessionStartTime,
-      sessionEndTime,
-      sessionDuration: duration,
-      paymentId: "67a1acec55d46979078eddd8",
-    });
+    // Validate required fields
+    if (!subject?._id) {
+      toast.error("Please select a subject");
+      return;
+    }
+    if (!tutor?.user?._id) {
+      toast.error("Invalid tutor information");
+      return;
+    }
+    if (!profile?._id) {
+      toast.error("Please log in to make a booking");
+      return;
+    }
+    if (!scheduledDate) {
+      toast.error("Please select a date");
+      return;
+    }
+    if (!sessionStartTime || !sessionEndTime) {
+      toast.error("Please select session time");
+      return;
+    }
+    if (!duration) {
+      toast.error("Please select session duration");
+      return;
+    }
+
+    // If all validations pass, proceed with booking
     dispatch(
       createBookingAsync({
-        subjectId: subject,
+        subjectId: subject?._id,
         teacherId: tutor?.user?._id,
         studentId: profile?._id,
         scheduledDate,

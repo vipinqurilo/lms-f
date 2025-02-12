@@ -6,7 +6,9 @@ const PricingSection = () => {
   const { tutorProfile } = useSelector((state) => state.tutors);
 
   // Handle the selected slot and its charge
-  const [selectedSlot, setSelectedSlot] = useState(tutorProfile?.tutionSlots[0]);
+  const [selectedSlot, setSelectedSlot] = useState(
+    tutorProfile?.tutionSlots[0]
+  );
 
   // If tutorProfile or tuitionSlots are not loaded yet, return a loading message or placeholder
   if (!tutorProfile || !tutorProfile.tutionSlots) {
@@ -37,7 +39,11 @@ const PricingSection = () => {
             <div>Slot price</div>
           </div>
           <div className="flex justify-between items-center">
-            <div>Genres</div>
+            <div>
+              {tutorProfile?.subjectsTaught
+                ?.map((subject) => subject.name)
+                .join(", ")}
+            </div>
             <div className="flex items-center gap-4">
               {/* Display dynamic price based on selected slot */}
               <div>${calculatePrice(selectedSlot).toFixed(2)}</div>

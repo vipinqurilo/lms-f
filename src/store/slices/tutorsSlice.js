@@ -4,6 +4,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "@/store/api/api";
 
 const initialState = {
+  tutorId: "",
   processStep: 1,
   processData: {},
   requestStatus: "",
@@ -51,6 +52,9 @@ const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
   reducers: {
+    setTutorId: (state, action) => {
+      state.tutorId = action.payload;
+    },
     updateProcessStep: (state, action) => {
       state.processStep = action.payload;
     },
@@ -197,6 +201,6 @@ const tutorsSlice = createSlice({
   },
 });
 
-export const { setTutors, clearError, updateProcessData, updateProcessStep } =
+export const { setTutorId, clearError, updateProcessData, updateProcessStep } =
   tutorsSlice.actions;
 export default tutorsSlice.reducer;

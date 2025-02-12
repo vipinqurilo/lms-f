@@ -18,12 +18,12 @@ export const verifyLoggedInUser = CreateApiAsyncThunk(
 );
 
 export const logout = CreateApiAsyncThunk("user/logout", () =>
-  api.post(`/auth/verify-token`)
+  api.post(`/auth/logout`)
 );
 
 const initialState = {
   authUser: null,
-
+  isAuthenticated: null,
   isLoading: {},
   error: {},
 };
@@ -37,12 +37,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logoutUser: (state) => {
-      state.authUser = null;
-      localStorage.removeItem("token");
-      localStorage.removeItem("authToken");
-      window.location.reload();
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,11 +57,13 @@ const userSlice = createSlice({
       })
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
-        state.authUser = action.payload;
+        state.authUser = action.payload?.data;
+        state.isAuthenticated = true;
       })
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.error["userLoginAsync"] = action.payload;
+        state.isAuthenticated = false;
       })
 
       .addCase(instructorRegister.pending, (state) => {
@@ -85,20 +81,27 @@ const userSlice = createSlice({
       .addCase(verifyLoggedInUser.fulfilled, (state, action) => {
         state.isLoading["verifyLoggedInUser"] = false;
         state.authUser = action.payload.data;
+        state.isAuthenticated = true;
       })
       .addCase(verifyLoggedInUser.rejected, (state) => {
         state.isLoading["verifyLoggedInUser"] = false;
+        state.isAuthenticated = false;
       })
       .addCase(logout.pending, (state) => {
         state.isLoading["logout"] = true;
+        
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.isLoading["logout"] = false;
+        state.authUser = null;
+        state.isAuthenticated = false;
+        localStorage.removeItem("token");
+        localStorage.removeItem("authToken");
       })
       .addCase(logout.rejected, (state) => {
         state.isLoading["logout"] = false;
+        state.isAuthenticated = false;
       });
   },
 });
-export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;
