@@ -13,14 +13,18 @@ import { useEffect, useState } from "react";
 import TutorCard from "../../container/tutorCard/TutorCard";
 import { BookingModal } from "@/container/booking/BookingModal";
 import LoginModel from "@/container/login/LoginModel";
+import { debounce } from "lodash";
+import { Loader } from "lucide-react";
 
 const index = () => {
+  const [search, setSearch] = useState("");
   const { authUser } = useSelector((state) => state.user);
   const {
     bookings: rawBookings,
     isLoading: bookingLoading,
     totalPages,
   } = useSelector((state) => state.student.booking);
+  const { timeRanges } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const { isAvailableModelOpen, isContactModelOpen } = useSelector(
     (state) => state.ui
@@ -29,9 +33,26 @@ const index = () => {
   const [showBooking, setShowBooking] = useState(false);
   const [tutor, setTutor] = useState(null);
 
+  const debouncedFetch = debounce((searchTerm, timeRanges) => {
+    if (timeRanges) {
+      const timeRangesString = timeRanges
+        .map((time) => time.replace(/\s*-\s*/g, "-"))
+        .join(",");
+      dispatch(
+        fetchAllTutorProfileAsync({
+          search: searchTerm,
+          timeRanges: timeRangesString,
+        })
+      );
+    } else {
+      dispatch(fetchAllTutorProfileAsync({ search: searchTerm }));
+    }
+  }, 1000);
+
   useEffect(() => {
-    dispatch(fetchAllTutorProfileAsync());
-  }, []);
+    debouncedFetch(search, timeRanges);
+    return () => debouncedFetch.cancel();
+  }, [search, timeRanges]);
 
   useEffect(() => {
     if (isAvailableModelOpen) {
@@ -44,9 +65,11 @@ const index = () => {
 
   return (
     <div className="text-lg bg-light_bg w-full min-h-screen  p-2 md:p-10 lg:px-20  custom-margin-top">
-      <TutorFilter />
+      <TutorFilter search={search} setSearch={setSearch} />
       {isLoading["fetchAllTutorProfileAsync"] ? (
-        <div>Loading...</div>
+        <div className="flex justify-center items-center ">
+          <Loader />
+        </div>
       ) : (
         <>
           {allTutorProfile?.length > 0 ? (
@@ -69,16 +92,12 @@ const index = () => {
       )}
 
       <div className="p-4">
-        {showBooking && (
-          authUser?.role !== "student" ? (
+        {showBooking &&
+          (authUser?.role !== "student" ? (
             <LoginModel onClose={() => setShowBooking(false)} />
           ) : (
-            <BookingModal
-              tutor={tutor}
-              onClose={() => setShowBooking(false)}
-            />
-          )
-        )}
+            <BookingModal tutor={tutor} onClose={() => setShowBooking(false)} />
+          ))}
       </div>
       {/* Modal */}
       {isAvailableModelOpen && (
