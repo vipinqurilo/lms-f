@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 const TutorDetails = ({ tutor }) => {
   const router = useRouter();
+  console.log(tutor, "tutor");
   return (
     <div className="flex-1 flex flex-col py-6 w-full">
       {/* Profile Info */}
@@ -55,7 +56,8 @@ const TutorDetails = ({ tutor }) => {
       <div className="mt-4">
         <h3 className="font-semibold text-gray-700">Teaches</h3>
         <div className="text-gray-600 text-sm">
-          {tutor.subjects?.join(", ") || "N/A"}
+          {tutor?.subjectsTaught?.map((subject) => subject.name).join(", ") ||
+            "N/A"}
         </div>
       </div>
 
@@ -63,7 +65,9 @@ const TutorDetails = ({ tutor }) => {
       <div className="mt-2">
         <h3 className="font-semibold text-gray-700">Speaks</h3>
         <div className="text-gray-600 text-sm">
-          {tutor.languages?.join(", ") || "N/A"}
+          {tutor?.languagesSpoken
+            ?.map((language) => language.name)
+            .join(", ") || "N/A"}
         </div>
       </div>
 

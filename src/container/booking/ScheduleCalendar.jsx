@@ -270,10 +270,7 @@ const ScheduleCalendar = ({
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
-
  
-
-
   return (
     <div className=" h-full ">
       <div
