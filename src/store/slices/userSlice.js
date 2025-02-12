@@ -18,11 +18,8 @@ export const verifyLoggedInUser = CreateApiAsyncThunk(
 );
 
 const initialState = {
-  authUser: {
-    
-  },
+  authUser: null,
   isLoading: {},
-
   error: {},
 };
 
@@ -54,7 +51,7 @@ const userSlice = createSlice({
       })
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
-        state.authUser = action.payload?.data;
+        state.authUser = action.payload;
       })
       .addCase(userLoginAsync.rejected, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
