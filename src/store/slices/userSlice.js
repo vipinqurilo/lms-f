@@ -25,9 +25,9 @@ const initialState = {
   authUser: {
     name: "khurshid",
     id: "679dbe8bf168197df705a799",
-    role: "instructor",
+    // role: "instructor",
     // role: "student",
-    // role: "admin",
+    role: "admin",
   },
   isLoading: {},
 
