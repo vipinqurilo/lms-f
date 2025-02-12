@@ -2,11 +2,10 @@ import { getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubje
 import { getAllSubCategories } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
- 
+
 const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
   const dispatch = useDispatch();
   const { subjects: categories, isLoading } = useSelector((state) => state.admin.managesubjects);
-  console.log(categories  ,"popoppopppp")
 
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -28,7 +27,15 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-6/12">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-6/12 relative">
+        {/* Close button */}
+        <button
+          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl"
+          onClick={onClose}
+        >
+          ✖
+        </button>
+
         <h2 className="text-lg font-semibold text-gray-700 mb-4">Edit Subcategory</h2>
 
         {/* Subcategory Name Input */}
