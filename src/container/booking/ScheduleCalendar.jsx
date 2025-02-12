@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
+import { RxCross2 } from "react-icons/rx";
 
 const bookings = [
   {
@@ -271,9 +272,6 @@ const ScheduleCalendar = ({
     return () => clearInterval(intervalId);
   }, []);
 
- 
-
-
   return (
     <div className=" h-full ">
       <div
@@ -432,6 +430,27 @@ const ScheduleCalendar = ({
                       handleSlotSelect(isBeforeCurrentTime, rowIndex, colIndex)
                     }
                   >
+                    {/* Add duration text for selected slots */}
+                    {isSelected && rowIndex === spanStart && (
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-medium">
+                        {duration}min
+                      </div>
+                    )}
+                    {/* Cross button */}
+                    {isSelected && rowIndex === spanStart && (
+                      <button
+                        className="absolute top-0 right-0 w-3 h-3 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedSlots([]);
+                          setScheduledDate(null);
+                          setSessionStartTime(null);
+                          setSessionEndTime(null);
+                        }}
+                      >
+                        <RxCross2 size={10} />
+                      </button>
+                    )}
                     {/* Add red timeline to first two columns */}
                     {colIndex === 0 &&
                       currentTime &&

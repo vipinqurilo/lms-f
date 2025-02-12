@@ -5,16 +5,16 @@ import { createSlice } from "@reduxjs/toolkit";
 // Async thunks for profile actions
 export const fetchProfileAsync = CreateApiAsyncThunk(
   "profile/fetchProfileAsync",
-  () => api.get(`/api/profile`)
+  () => api.get(`/profile`)
 );
 
 export const updatePersonalInfoAsync = CreateApiAsyncThunk(
   "profile/updatePersonalInfoAsync",
-  (personalInfo) => api.put(`/api/profile/personal-info`, personalInfo)
+  (personalInfo) => api.put(`/profile/personal-info`, personalInfo)
 );
 export const updateSocialProfilesAsync = CreateApiAsyncThunk(
   "socialProfile/updateSocialProfilesAsync",
-  (socialLinks) => api.put(`/api/profile/social-links`, { socialLinks })
+  (socialLinks) => api.put(`/profile/social-links`, { socialLinks })
 );
 // Initial state for profile
 const initialState = {

@@ -5,11 +5,11 @@ import SubmitButton from "@/components/login/SubmitButton";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { userLoginAsync } from "@/store/slices/userSlice";
+import { userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/router";
 
-const LoginForm = () => {
+const LoginForm = ({ type }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
@@ -20,12 +20,31 @@ const LoginForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    dispatch(userLoginAsync(data)).unwrap().then((res) => {
-      console.log(res);
-      router.push("/")
-    });
+    dispatch(userLoginAsync(data))
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res?.role === "student") {
+          localStorage.setItem("token", res?.token);
+          localStorage.removeItem("adminToken");
+          if (type !== "model") {
+            router.push("/");
+          }
+        } else if (res?.role === "teacher") {
+          localStorage.setItem("token", res?.token);
+          localStorage.removeItem("adminToken");
+          if (type !== "model") {
+            router.push("/teacher-dashboard");
+          }
+        } else if (res?.role === "admin") {
+          localStorage.setItem("adminToken", res?.token);
+          localStorage.removeItem("token");
+          if (type !== "model") {
+            router.push("/admin-dashboard");
+          }
+        }
+      });
   };
-
 
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">

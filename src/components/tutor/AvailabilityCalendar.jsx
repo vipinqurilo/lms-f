@@ -18,6 +18,7 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
       endTime: endTime.toISOString().split("T")[1].slice(0, 5),
     };
   });
+
   const [currentTime, setCurrentTime] = useState(null);
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
@@ -82,6 +83,7 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
     const minutes = (index % 4) * 15;
     return `${hours}:${minutes.toString().padStart(2, "0")}`;
   });
+
   const isBooked = (dayIndex, timeIndex) => {
     if (!days[dayIndex]) return false;
 
@@ -108,6 +110,7 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
       );
     });
   };
+  
   const isAvailable = (dayIndex, timeIndex) => {
     if (!data || !days[dayIndex]) return false;
 

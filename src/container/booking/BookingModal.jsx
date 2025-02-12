@@ -14,8 +14,8 @@ export function BookingModal({ onClose, tutor }) {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const { profile } = useSelector((state) => state.student.profile);
-  const [subject, setSubject] = useState(null);
-  const [duration, setDuration] = useState("15");
+  const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
+  const [duration, setDuration] = useState(tutor?.tutionSlots[0] || null);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
@@ -32,7 +32,7 @@ export function BookingModal({ onClose, tutor }) {
       setStep(step + 1);
     }
   };
-
+  // console.log(tutor, "tutor?.subjectsTaughttutor?.subjectsTaught");
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
@@ -96,7 +96,11 @@ export function BookingModal({ onClose, tutor }) {
       )}
 
       {step === 2 && (
-        <DurationSelection selected={duration} onSelect={setDuration} />
+        <DurationSelection
+          slots={tutor?.tutionSlots}
+          selected={duration}
+          onSelect={setDuration}
+        />
       )}
 
       {step === 3 && (
@@ -116,6 +120,10 @@ export function BookingModal({ onClose, tutor }) {
 
       {step === 4 && (
         <PaymentSelection
+          tutor={tutor}
+          duration={duration}
+          subject={subject}
+          scheduledDate={scheduledDate}
           createBooking={createBooking}
           selected={paymentMethod}
           onSelect={setPaymentMethod}

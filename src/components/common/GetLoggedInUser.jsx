@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    // dispatch(verifyLoggedInUser());
+    dispatch(verifyLoggedInUser());
   }, [dispatch]);
 
   return null;

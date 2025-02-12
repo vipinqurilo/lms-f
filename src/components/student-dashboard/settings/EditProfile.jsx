@@ -13,8 +13,11 @@ import {
   updatePersonalInfoAsync,
   fetchProfileAsync,
 } from "@/store/slices/student-dashboard/profileSlice";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export function EditProfile({ isInstructorRequest = null }) {
+  const { authUser } = useSelector(state => state.user);
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.student?.profile);
@@ -190,6 +193,7 @@ export function EditProfile({ isInstructorRequest = null }) {
             onChange={(e) =>
               setLocalProfile({ ...localProfile, firstName: e.target.value })
             }
+            disabled={isInstructorRequest && authUser?.role === "admin"}
           />
         </div>
         <div className="space-y-2">
@@ -206,6 +210,7 @@ export function EditProfile({ isInstructorRequest = null }) {
             onChange={(e) =>
               setLocalProfile({ ...localProfile, lastName: e.target.value })
             }
+            disabled={isInstructorRequest && authUser?.role === "admin"}
           />
         </div>
       </div>
@@ -243,6 +248,8 @@ export function EditProfile({ isInstructorRequest = null }) {
               onChange={(e) =>
                 setLocalProfile({ ...localProfile, gender: e.target.value })
               }
+              disabled={isInstructorRequest && authUser?.role === "admin"}
+
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -252,7 +259,7 @@ export function EditProfile({ isInstructorRequest = null }) {
           </div>
         )}
 
-        <div className="">
+        <div className="space-y-2">
           <label
             htmlFor="phoneNumber"
             className="block text-sm font-medium text-gray-700"
@@ -263,29 +270,31 @@ export function EditProfile({ isInstructorRequest = null }) {
             )}
           </label>
           <div className="flex">
-            <input
-              id="countryCode"
-              className={`mt-1 block px-4 py-2 w-1/4 rounded-l-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none ${
-                error?.updatePersonalInfoAsync ? "border-red-500" : ""
-              }`}
-              value={localProfile.countryCode}
-              onChange={(e) =>
+            <PhoneInput
+              country={"in"} // Default country (India)
+              value={localProfile.phoneNumber} // Store only the phone number, not the country code
+              onChange={(value, country) => {
+                const phoneWithoutCountryCode = value
+                  .replace(`+${country.dialCode}`, "")
+                  .trim(); // Remove country code
                 setLocalProfile({
                   ...localProfile,
-                  countryCode: e.target.value,
-                })
-              }
-            />
-            <input
-              id="phoneNumber"
-              className="mt-1 block px-4 py-2 w-3/4 rounded-r-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
-              value={localProfile.phoneNumber}
-              onChange={(e) =>
-                setLocalProfile({
-                  ...localProfile,
-                  phoneNumber: e.target.value,
-                })
-              }
+                  countryCode: `+${country.dialCode}`, // Store only the country code separately
+                  phoneNumber: phoneWithoutCountryCode, // Store only the number part
+                });
+              }}
+              inputProps={{
+                name: "phone",
+                required: true,
+                autoFocus: true,
+              }}
+              inputStyle={{
+                width: "100%",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                paddingLeft: "60px", // Space for country flag
+              }}
+              disabled={isInstructorRequest && authUser?.role === "admin"}
             />
           </div>
         </div>
@@ -307,6 +316,7 @@ export function EditProfile({ isInstructorRequest = null }) {
               onChange={(e) =>
                 setLocalProfile({ ...localProfile, gender: e.target.value })
               }
+
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -347,6 +357,8 @@ export function EditProfile({ isInstructorRequest = null }) {
             className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
             value={idProof}
             onChange={(e) => setIdProof(e.target.value)}
+            disabled={isInstructorRequest && authUser?.role === "admin"}
+
           />
         </div>
       )}
