@@ -20,7 +20,9 @@ import TableComponent from "./TableComponent";
 import BackgroundModal from "../instructor/BackgroundModal";
 import ModalHeading from "../common/ModalHeading";
 
-const Experience = () => {
+const Experience = ({ isInstructorRequest = null }) => {
+  const { authUser } = useSelector((state) => state.user);
+
   const { processData } = useSelector((state) => state.tutors);
   const loading = useSelector(
     (state) => state.tutors.isLoading.instructorRequest
@@ -129,11 +131,13 @@ const Experience = () => {
       <div className="w-full border border-black/10 rounded-lg px-5 lg:px-8 py-5 flex flex-col gap-6 lg:gap-6">
         <div className="w-full flex items-center justify-between">
           <h2 className="text-lg font-bold">Experience</h2>
-          <CommonButton
-            label={"Add Experience"}
-            onClick={() => setisAdd("experience")}
-            variant="third"
-          />
+          {isInstructorRequest && authUser?.role === "admin" ? null : (
+            <CommonButton
+              label={"Add Experience"}
+              onClick={() => setisAdd("experience")}
+              variant="third"
+            />
+          )}
         </div>
         <TableComponent
           title="Experience"
@@ -141,17 +145,21 @@ const Experience = () => {
           setData={setExperience}
           toggleIsAdd={() => setisAdd("experience")}
           setIsEdit={setIsEdit}
+          isInstructorRequest={isInstructorRequest}
+          authUser={authUser}
         />
       </div>
 
       <div className="w-full border border-black/10 rounded-lg px-5 lg:px-8 py-5 flex flex-col gap-6 lg:gap-6">
         <div className="w-full flex items-center justify-between">
           <h2 className="text-lg font-bold">Education</h2>
-          <CommonButton
-            label={"Add Education"}
-            onClick={() => setisAdd("education")}
-            variant="third"
-          />
+          {isInstructorRequest && authUser?.role === "admin" ? null : (
+            <CommonButton
+              label={"Add Education"}
+              onClick={() => setisAdd("education")}
+              variant="third"
+            />
+          )}
         </div>
 
         <TableComponent
@@ -160,6 +168,8 @@ const Experience = () => {
           setData={setEducation}
           toggleIsAdd={() => setisAdd("education")}
           setIsEdit={setIsEdit}
+          isInstructorRequest={isInstructorRequest}
+          authUser={authUser}
         />
       </div>
 

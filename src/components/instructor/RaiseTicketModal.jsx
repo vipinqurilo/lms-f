@@ -101,6 +101,12 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
               options={catetoryOptions}
               register={register}
             />
+            <SettingsInputField
+              errors={errors}
+              label={"Subject"}
+              name={"subject"}
+              register={register}
+            />
             <div className="col-span-3">
               <label className="block text-sm font-medium text-light mb-2">
                 Description

@@ -33,7 +33,7 @@ const TeacherRegisterForm = () => {
   const onSubmit = (data) => {
     const formData = {
       ...data,
-      role: "instructor",
+      role: "teacher",
     };
     console.log(formData);
     dispatch(instructorRegister(formData))
@@ -48,15 +48,28 @@ const TeacherRegisterForm = () => {
       <div className="bg-white/40 backdrop-blur-sm text-white p-8 lg:w-full rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className=" mb-4">Teach what you are passionate about</p>
-        {authUser && Object?.keys(authUser).length > 0 ? (
-          <div className="py-10 lg:w-full flex items-center justify-center">
-            <Link
-              href={"/instructor-request"}
-              className="!w-full px-4 py-2 text-center rounded-md shadow font-semibold transition bg-background text-white hover:bg-secondary text-lg disabled:cursor-not-allowed disabled:opacity-95"
-            >
-              Become an Instructor
-            </Link>
-          </div>
+        {Object.keys(authUser).length > 0 ? (
+          <>
+            {authUser?.role === "admin" ? (
+              <div className="py-10 lg:w-full flex items-center justify-center">
+                <Link
+                  href={"/admin-dashboard"}
+                  className="!w-full px-4 py-2 text-center rounded-md shadow font-semibold transition bg-background text-white hover:bg-secondary text-lg disabled:cursor-not-allowed disabled:opacity-95"
+                >
+                  Go To Admin Dashboard
+                </Link>
+              </div>
+            ) : (
+              <div className="py-10 lg:w-full flex items-center justify-center">
+                <Link
+                  href={"/instructor-request"}
+                  className="!w-full px-4 py-2 text-center rounded-md shadow font-semibold transition bg-background text-white hover:bg-secondary text-lg disabled:cursor-not-allowed disabled:opacity-95"
+                >
+                  Become an Instructor
+                </Link>
+              </div>
+            )}
+          </>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {" "}
@@ -75,6 +88,7 @@ const TeacherRegisterForm = () => {
                     message: "Invalid email address",
                   },
                 })}
+                placeholder="Enter Email Address"
                 className={`w-full text-black border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
@@ -96,6 +110,7 @@ const TeacherRegisterForm = () => {
                   {...register("password", {
                     required: "Password is required",
                   })}
+                  placeholder="Enter Password"
                   className={`w-full text-black border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   }`}
