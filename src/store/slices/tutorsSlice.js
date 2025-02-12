@@ -15,37 +15,37 @@ const initialState = {
 
 export const instructorRequest = CreateApiAsyncThunk(
   "tutors/instructorRequest",
-  (data) => api.post(`/api/requests/teacher`, data)
+  (data) => api.post(`/requests/teacher`, data)
 );
 
 // from the admin side
 export const getTutorRequestData = CreateApiAsyncThunk(
   "GET/tutors/getTutorRequestData",
-  (id) => api.get(`/api/requests/teacher/${id}`)
+  (id) => api.get(`/requests/teacher/${id}`)
 );
 
 // from the admin side
 export const editTutorRequestData = CreateApiAsyncThunk(
   "tutors/editTutorRequestData",
-  (id) => api.get(`/api/requests/teacher/${id}`)
+  (id) => api.get(`/requests/teacher/${id}`)
 );
 
 // from me
 export const GetLoggedInTutorRequestData = CreateApiAsyncThunk(
   "GET/tutors/GetLoggedInTutorRequestData",
-  () => api.get(`/api/requests/teacher/me`)
+  () => api.get(`/requests/teacher/me`)
 );
 
-// import { api } from "@/store/api/api";
+// import { api } from "@/store/api";
 
 // Async thunk for fetching tutor profile
 export const fetchTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchTutorProfileAsync",
-  (tutorId) => api.get(`/api/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
+  (tutorId) => api.get(`/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
 );
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchAllTutorProfileAsync",
-  () => api.get(`/api/tutors`) // Assuming you have an endpoint like this
+  () => api.get(`/tutors`) // Assuming you have an endpoint like this
 );
 
 const tutorsSlice = createSlice({

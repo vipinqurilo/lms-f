@@ -48,7 +48,7 @@ const TeacherRegisterForm = () => {
       <div className="bg-white/40 backdrop-blur-sm text-white p-8 lg:w-full rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className=" mb-4">Teach what you are passionate about</p>
-        {Object.keys(authUser).length > 0 ? (
+        {authUser && Object?.keys(authUser).length > 0 ? (
           <div className="py-10 lg:w-full flex items-center justify-center">
             <Link
               href={"/instructor-request"}

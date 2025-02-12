@@ -44,6 +44,7 @@ const profileData = [
 
 const Navbar = () => {
   const { authUser } = useSelector((state) => state.user);
+  console.log(authUser, "authUser");
   const [isScrolled, setisScrolled] = useState(false);
   const [isMenuOpen, setisMenuOpen] = useState(false);
   const toggleMenu = () => setisMenuOpen(!isMenuOpen);
@@ -102,7 +103,7 @@ const Navbar = () => {
         </div>
         <DeskTopMenu getLinkCss={getLinkCss} />
 
-        {Object.keys(authUser).length > 0 ? (
+        {authUser && Object?.keys(authUser).length > 0 ? (
           <div
             className="relative"
             onMouseEnter={() => setIsModalOpen(true)}

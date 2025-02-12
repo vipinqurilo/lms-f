@@ -4,7 +4,7 @@ import { api } from "@/store/api/api";
 
 export const fetchLanguageAsync = CreateApiAsyncThunk(
   "language/fetchLanguageAsync",
-  () => api.get(`/api/language`)
+  () => api.get(`/language`)
 );
 
 const initialState = {
