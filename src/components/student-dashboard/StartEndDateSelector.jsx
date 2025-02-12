@@ -85,7 +85,7 @@ export function StartEndDateSelector({
         className={`w-full px-4 py-1 border text-sm rounded-lg text-left flex items-center justify-between
           ${isError ? "border-red-500" : "border-gray-300"}`}
       >
-        {selectedDate.toLocaleDateString("en-CA")}
+        {selectedDate?.toLocaleDateString("en-CA")}
 
         <span className="text-gray-800 mx-1">
           <Calendar size={14} className="" />

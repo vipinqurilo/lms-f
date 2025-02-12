@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   User,
@@ -30,10 +30,12 @@ import {
   DollarSign,
   CalendarCheck,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkComponent } from "@/components/layout/LinkComponent";
 import { LuTickets } from "react-icons/lu";
 import { FaBook } from "react-icons/fa";
+import { logout } from "@/store/slices/userSlice";
+import Loader from "@/components/common/Loader";
 
 const studentSidebarLinks = [
   {
@@ -159,9 +161,11 @@ const adminSidebarLinks = [
 ];
 
 export function Sidebar() {
+  const dispatch = useDispatch();
   const pathname = usePathname();
+  const router = useRouter();
   const { isCollapsed } = useSelector((state) => state.instructor.dashboard);
-  4;
+  const logoutLoading = useSelector((state) => state.user.isLoading.logout);
   const [isHovered, setisHovered] = useState(null);
   const handleIsHovered = (val) => setisHovered(val);
 
@@ -172,6 +176,14 @@ export function Sidebar() {
     : pathname?.startsWith("/admin-dashboard")
     ? adminSidebarLinks
     : "";
+
+  const handleLogOut = () => {
+    dispatch(logout())
+      .unwrap()
+      .then(() => {
+        router.push("/");
+      });
+  };
 
   return (
     <div className={`h-full !transition-custom`}>
@@ -282,26 +294,34 @@ export function Sidebar() {
             <button
               onMouseEnter={() => handleIsHovered("logout")}
               onMouseLeave={() => handleIsHovered(null)}
-              className={`flex w-full items-center gap-3 rounded-lg transition-colors relative hover:text-primary hover:bg-gray-50
+              onClick={() => handleLogOut()}
+              className={`flex w-full items-center gap-3 rounded-lg transition-colors relative hover:text-background hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60
     ${isCollapsed ? "p-2 justify-center" : "px-3 py-2"}`}
+              disabled={logoutLoading}
             >
-              <LogOut className="w-6 h-6" />
-              {isCollapsed && (
-                <p
-                  className={`absolute top-1/2 -translate-y-1/2 left-[66px] text-sm !z-[20] bg-background px-2 py-1 rounded-full !text-white text-nowrap ${
-                    isHovered === "logout" ? "scale-100" : "scale-0"
-                  } transition-custom`}
-                >
-                  Logout
-                </p>
+              {logoutLoading ? (
+                <Loader />
+              ) : (
+                <>
+                  <LogOut className="w-6 h-6" />
+                  {isCollapsed && (
+                    <p
+                      className={`absolute top-1/2 -translate-y-1/2 left-[66px] text-sm !z-[20] bg-background px-2 py-1 rounded-full !text-white text-nowrap ${
+                        isHovered === "logout" ? "scale-100" : "scale-0"
+                      } transition-custom`}
+                    >
+                      Logout
+                    </p>
+                  )}
+                  <span
+                    className={`${
+                      isCollapsed ? "hidden" : "block"
+                    } transition-custom`}
+                  >
+                    Logout
+                  </span>
+                </>
               )}
-              <span
-                className={`${
-                  isCollapsed ? "hidden" : "block"
-                } transition-custom`}
-              >
-                Logout
-              </span>
             </button>
           </div>
         </div>

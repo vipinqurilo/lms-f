@@ -89,8 +89,8 @@ const Experience = () => {
         personalInfo: processData?.profile,
         bio: processData?.indentity?.bio,
         profilePhoto: processData?.indentity?.profile,
-        subjectsTaught: [],
-        languagesSpoken: [],
+        subjectsTaught: processData?.subjectAndlanguage?.language || [],
+        languagesSpoken: processData?.subjectAndlanguage?.subjects || [],
         education: education,
         experience,
       };
@@ -201,7 +201,14 @@ const Experience = () => {
                 }}
                 PaddingAdd={true}
               />
-              <AddExperience addEducation={addEducation} addExperience={addExperience} errors={errors} handleSubmit={handleSubmit} register={register} type={isAdd} />
+              <AddExperience
+                addEducation={addEducation}
+                addExperience={addExperience}
+                errors={errors}
+                handleSubmit={handleSubmit}
+                register={register}
+                type={isAdd}
+              />
             </div>
           }
         />
