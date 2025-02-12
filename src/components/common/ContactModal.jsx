@@ -1,18 +1,9 @@
 import React, { useState } from "react";
+import { MdEmail } from "react-icons/md";
+import Phone from "./Phone";
 
-const ContactModal = ({ onClose }) => {
-  const [message, setMessage] = useState("");
-  const [file, setFile] = useState(null);
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleSend = () => {
-    // Add your send logic here
-    console.log({ message, file });
-    onClose();
-  };
+const ContactModal = ({ onClose, tutor }) => {
+  console.log(tutor, "tutor");
 
   return (
     <div
@@ -37,41 +28,16 @@ const ContactModal = ({ onClose }) => {
           </button>
         </div>
         <hr className="my-4" />
-        <div>
-          <label className="block text-sm font-medium mb-2" htmlFor="message">
-            Message<span className="text-red-500">*</span>
-          </label>
-          <textarea
-            id="message"
-            rows="4"
-            className="w-full p-2 border rounded-lg focus:ring focus:ring-secondary"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <div className="mt-4">
-          <label className="block text-sm font-medium mb-2" htmlFor="file">
-            Choose a file
-          </label>
-          <input
-            id="file"
-            type="file"
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-secondary file:text-white hover:file:bg-secondary"
-            onChange={handleFileChange}
-          />
-          <p className="text-xs text-gray-500 mt-2">
-            File size should be less than 2.00 MB & Supported file formats are
-            png, jpeg, jpg, gif, pdf, doc, docx, zip, txt, rtf, mp3
-          </p>
-        </div>
-        <div className="mt-6 text-right">
-          <button
-            onClick={handleSend}
-            className="bg-secondary hover:bg-opacity-90 text-white py-2 px-4 rounded-lg"
-          >
-            Send
-          </button>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Phone phone={tutor?.user?.phone} />
+          </div>
+          <div className="flex justify-center items-center gap-2">
+            <span className="text-sm text-gray-500">
+              <MdEmail />
+            </span>
+            <span className="text-sm text-gray-500">{tutor?.user?.email}</span>
+          </div>
         </div>
       </div>
     </div>

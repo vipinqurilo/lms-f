@@ -118,7 +118,10 @@ const index = () => {
         </div>
       )}
       {isContactModelOpen && (
-        <ContactModal onClose={() => dispatch(setIsContactModelOpen(false))} />
+        <ContactModal
+          tutor={tutor}
+          onClose={() => dispatch(setIsContactModelOpen(false))}
+        />
       )}
     </div>
   );

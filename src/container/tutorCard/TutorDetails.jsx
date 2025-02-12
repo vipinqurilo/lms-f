@@ -4,20 +4,23 @@ import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { useRouter } from "next/router";
 import Rating from "./Rating";
+import { setTutorId } from "@/store/slices/tutorsSlice";
+import { useDispatch } from "react-redux";
 
 const TutorDetails = ({ tutor }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
-  console.log(tutor, "tutor");
   return (
     <div className="flex-1 flex flex-col py-6 w-full">
       {/* Profile Info */}
       <div className="flex justify-between items-center">
         <h2
-          onClick={() =>
+          onClick={() => {
+            dispatch(setTutorId(tutor._id));
             router.push(
               `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
-            )
-          }
+            );
+          }}
           data-tip={"Tip Here"}
           data-for={"mytip"}
           className="text-xl font-bold cursor-pointer"
