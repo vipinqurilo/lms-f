@@ -4,7 +4,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 
 export const fetchCategories = CreateApiAsyncThunk(
   "GET/courses/fetchCategories",
-  () => api.get(`api/category/filter`, data)
+  () => api.get(`api/category`)
 );
 
 export const fetchCoursesAsync = CreateApiAsyncThunk(
@@ -42,7 +42,8 @@ const coursesSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.isLoading["fetchCategories"] = false;
-        state.categories = Array.isArray(action.payload) ? action.payload : [];
+        state.categories = action.payload?.data;
+        // state.categories = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.isLoading["fetchCategories"] = false;

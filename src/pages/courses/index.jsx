@@ -1,31 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import FeaturedCard from "@/components/common/FeaturedCard";
+import { fetchCategories } from "@/store/slices/coursesSlice";
+import { useDispatch } from "react-redux";
 
 const Courses = () => {
   const courses = useSelector((state) => state?.courses?.courses || []);
+  const categories = useSelector((state) => state?.courses?.categories || []);
+
+  console.log(categories, "kd categories");
 
   const [showFilters, setShowFilters] = useState(false);
   const [clearTrigger, setClearTrigger] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(""); 
+  const [selectedOption, setSelectedOption] = useState("");
 
- 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; 
+  const itemsPerPage = 6;
 
- ``
   const totalPages = Math.ceil(courses.length / itemsPerPage);
-
- 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentCourses = courses.slice(indexOfFirstItem, indexOfLastItem);
-
-  
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
   return (
     <div className="lg:p-5 bg-gray-100 md:px-20 flex flex-wrap justify-center custom-margin-top">
       <div className="gap-6 flex mt-9 w-full">
@@ -46,18 +51,19 @@ const Courses = () => {
 
             {/* Search and Dropdown */}
             <div className="flex items-center lg:space-x-4 lg:w-auto w-full flex-wrap lg:mt-5 mt-3">
-              <input
+              {/* <input
                 type="text"
                 placeholder="Search our courses"
                 className="border rounded-lg px-4 py-2 w-full sm:w-48"
-              />
+              /> */}
               <select
                 className="border bg-white rounded-lg lg:px-4 lg:py-2 px-3 py-2 w-full sm:w-52 lg:mt-auto mt-3"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
               >
-                <option>Newly published</option>
-                <option>Most popular</option>
+                {categories.map((category) => (
+                  <option className="text-black">{category?.name}</option>
+                ))}
               </select>
             </div>
           </div>
