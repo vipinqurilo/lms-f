@@ -5,6 +5,7 @@ import {
 } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 export default function FeaturedCard({ data }) {
   if (!data || typeof data !== "object") {
@@ -58,9 +59,9 @@ export default function FeaturedCard({ data }) {
               </button>
             </div>
           </div>
-          <p className="mt-2 text-xl group-hover:text-white text-gray-700">
+          <Link href={`/courses/${data?._id}`} className="mt-2 text-xl group-hover:text-white text-gray-700">
             {data?.courseTitle}
-          </p>
+          </Link>
           <div className="flex items-center justify-between gap-4 mt-4">
             <span className="text-sm text-gray-600 group-hover:text-white">
               📚 {data?.lesson}

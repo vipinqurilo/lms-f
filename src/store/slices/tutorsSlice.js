@@ -7,9 +7,6 @@ const initialState = {
   userID: "",
   tutorId: "",
   processStep: 1,
-
-  processStep: 3,
-
   processData: {},
   requestStatus: "",
   tutorProfile: null,
@@ -32,7 +29,7 @@ export const getTutorRequestData = CreateApiAsyncThunk(
 // from the admin side
 export const editTutorRequestData = CreateApiAsyncThunk(
   "tutors/editTutorRequestData",
-  (id) => api.get(`/requests/teacher/${id}`)
+  ({ id, data }) => api.put(`/requests/teacher/${id}`, data)
 );
 
 // from me
@@ -64,6 +61,9 @@ const tutorsSlice = createSlice({
     },
     updateProcessStep: (state, action) => {
       state.processStep = action.payload;
+    },
+    updateRequestStatus: (state, action) => {
+      state.requestStatus = action.payload;
     },
     updateProcessData: (state, action) => {
       const { field, data } = action.payload;
@@ -127,30 +127,33 @@ const tutorsSlice = createSlice({
       })
       .addCase(getTutorRequestData.fulfilled, (state, action) => {
         state.isLoading["getTutorRequestData"] = false;
-        state.requestStatus = action.payload.data.approvalStatus;
-        state.processStep = 5;
-        const {
-          personalInfo,
-          bio,
-          profilePhoto,
-          experience,
-          education,
-          subjectsTaught,
-          languagesSpoken,
-        } = action.payload.data;
-        state.processData = {
-          profile: personalInfo,
-          indentity: {
+        state.requestStatus =
+          action.payload.data && action.payload.data?.approvalStatus;
+        if (action.payload.data) {
+          state.processStep = 5;
+          const {
+            personalInfo,
             bio,
-            profile: profilePhoto,
-          },
-          subjectAndlanguage: {
-            language: languagesSpoken,
-            subjects: subjectsTaught,
-          },
-          education,
-          experience,
-        };
+            profilePhoto,
+            experience,
+            education,
+            subjectsTaught,
+            languagesSpoken,
+          } = action.payload.data;
+          state.processData = {
+            profile: personalInfo,
+            indentity: {
+              bio,
+              profile: profilePhoto,
+            },
+            subjectAndlanguage: {
+              language: languagesSpoken,
+              subjects: subjectsTaught,
+            },
+            education,
+            experience,
+          };
+        }
       })
 
       .addCase(getTutorRequestData.rejected, (state, action) => {
@@ -163,30 +166,35 @@ const tutorsSlice = createSlice({
       })
       .addCase(GetLoggedInTutorRequestData.fulfilled, (state, action) => {
         state.isLoading["GetLoggedInTutorRequestData"] = false;
-        state.requestStatus = action.payload.data.approvalStatus;
-        state.processStep = 5;
-        const {
-          personalInfo,
-          bio,
-          profilePhoto,
-          experience,
-          education,
-          subjectsTaught,
-          languagesSpoken,
-        } = action.payload.data;
-        state.processData = {
-          profile: personalInfo,
-          indentity: {
+        state.requestStatus =
+          action.payload.data && action.payload.data?.approvalStatus;
+        if (action.payload.data) {
+          state.processStep = 5;
+          const {
+            personalInfo,
             bio,
-            profile: profilePhoto,
-          },
-          subjectAndlanguage: {
-            language: languagesSpoken,
-            subjects: subjectsTaught,
-          },
-          education,
-          experience,
-        };
+            profilePhoto,
+            experience,
+            education,
+            subjectsTaught,
+            languagesSpoken,
+            _id,
+          } = action.payload.data;
+          state.processData = {
+            profile: personalInfo,
+            indentity: {
+              bio,
+              profile: profilePhoto,
+            },
+            subjectAndlanguage: {
+              language: languagesSpoken,
+              subjects: subjectsTaught,
+            },
+            education,
+            experience,
+            id: _id,
+          };
+        }
       })
 
       .addCase(GetLoggedInTutorRequestData.rejected, (state, action) => {
@@ -208,11 +216,6 @@ const tutorsSlice = createSlice({
   },
 });
 
-export const {
-  setTutorId,
-  setUserID,
-  clearError,
-  updateProcessData,
-  updateProcessStep,
-} = tutorsSlice.actions;
+export const { setTutorId, clearError, updateProcessData, updateProcessStep, updateRequestStatus, setUserID } =
+  tutorsSlice.actions;
 export default tutorsSlice.reducer;
