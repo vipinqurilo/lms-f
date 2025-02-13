@@ -42,13 +42,11 @@ const userSlice = createSlice({
       state.authUser = null;
       localStorage.removeItem("token");
       localStorage.removeItem("authToken");
-      window.location.reload();
     },
   },
 
   extraReducers: (builder) => {
     builder
-
       .addCase(userRegisterAsync.pending, (state, action) => {
         state.isLoading["userRegisterAsync"] = true;
       })
@@ -112,7 +110,5 @@ const userSlice = createSlice({
   },
 });
 
-
 export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;
-
