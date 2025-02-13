@@ -24,7 +24,6 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 const initialState = {
   authUser: null,
   isAuthenticated: null,
-
   isLoading: {},
   error: {},
 };
@@ -37,6 +36,7 @@ export const instructorRegister = CreateApiAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
+
   reducers: {
     logoutUser: (state) => {
       state.authUser = null;
@@ -45,6 +45,7 @@ const userSlice = createSlice({
       window.location.reload();
     },
   },
+
   extraReducers: (builder) => {
     builder
 
@@ -111,5 +112,7 @@ const userSlice = createSlice({
   },
 });
 
+
 export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;
+

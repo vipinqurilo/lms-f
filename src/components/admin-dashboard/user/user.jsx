@@ -1,4 +1,3 @@
-
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState, useEffect } from "react";
 import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing icons
@@ -34,7 +33,7 @@ const UsersHistory = () => {
   console.log(users,"admin user ")
   // Fetch users when the component mounts
   useEffect(() => {
-    dispatch(getAllUsers());
+    dispatch(getAllUsers({ search: '', userStatus: '', role: '' }));
   }, [dispatch]);
  
 
@@ -52,9 +51,16 @@ const UsersHistory = () => {
       });
   };
   
+
+    const handleApplyFilters = (filters) => {
+      const {role,status,search} = filters;
+      dispatch(getAllUsers({role,userStatus:status,search})); // Fetch filtered users
+    };
+
+
   return (
-    <div className="rounded-lg p-6 w-full max-w-6xl mx-auto">
-      <UserFilter/>
+    <div className="rounded-lg p-1 w-11/12   mx-auto">
+      <UserFilter onApplyFilters={handleApplyFilters} />
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
@@ -98,7 +104,7 @@ const UsersHistory = () => {
                           checked={user.userStatus === "active"}
                           onChange={() => toggleStatus(user)}
                         />
-                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[#12a449] dark:peer-checked:bg-blue-600"></div>
                       </label>
                     </button>
                 </td>
