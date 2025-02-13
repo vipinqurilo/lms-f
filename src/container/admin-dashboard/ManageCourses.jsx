@@ -13,10 +13,6 @@ import {
 import CreatedCourses from "../instructor/dashboard/CreatedCourses";
 
 const tabs = [
-  // {
-  //   icon: <BiBook size={20} />,
-  //   tab: "All",
-  // },
   {
     icon: <BiTime size={20} />,
     tab: "pending",
@@ -30,7 +26,6 @@ const tabs = [
 const ManageCourses = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.admin?.course?.courses) || [];
-
   const isLoading = useSelector(
     (state) => state.admin.course.isLoading.getAllAdminCourses
   );
@@ -38,8 +33,7 @@ const ManageCourses = () => {
   const [editCourseId, setEditCourseId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
-
-  console.log(selectedStatus, "selctedkd");
+  const itemsPerPage = 2;
 
   useEffect(() => {
     dispatch(getAllAdminCourses({ status: selectedStatus }));
@@ -60,46 +54,44 @@ const ManageCourses = () => {
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
+    setCurrentPage(1);
   };
 
-  const filteredData = Array.isArray(courses)
-    ? courses?.map((course) => ({
-        image: course?.courseImage,
-        title: course?.courseTitle,
-        des: course?.courseDescription,
-        value1: course?.entrolled || 425,
-        value2: (
-          <div className="flex items-center gap-5">
-            {editCourseId === course?._id ? (
-              <div className="flex items-center gap-5">
-                <select
-                  className="px-2 py-1 border rounded  bg-transparent border-none"
-                  value={course.status}
-                  onChange={(e) =>
-                    handleStatusUpdate(course?._id, e.target.value)
-                  }
-                >
-                  <option value="pending">Pending</option>
-                  <option className="text-green-600" value="publish">
-                    Published
-                  </option>
-                </select>
-              </div>
-            ) : (
-              <button
-                onClick={() => handleEditClick(course?._id)}
-                className={`p-1.5 border  bg-transparent border-none flex border-black/10 rounded  transition-custom `}
-              >
-                <span className="px-2">{course?.status}</span>
-                <FiEdit3 size={20} />
-              </button>
-            )}
-          </div>
-        ),
-      }))
-    : [];
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedCourses = courses.slice(startIndex, startIndex + itemsPerPage);
 
-  console.log(filteredData, "filtereddatakd");
+  const filteredData = paginatedCourses.map((course) => ({
+    image: course?.courseImage,
+    title: course?.courseTitle,
+    des: course?.courseDescription,
+    value1: course?.entrolled || 425,
+    value2: (
+      <div className="flex items-center gap-5">
+        {editCourseId === course?._id ? (
+          <div className="flex items-center gap-5">
+            <select
+              className="px-2 py-1 border rounded bg-transparent border-none"
+              value={course.status}
+              onChange={(e) => handleStatusUpdate(course?._id, e.target.value)}
+            >
+              <option value="pending">Pending</option>
+              <option className="text-green-600" value="publish">
+                Published
+              </option>
+            </select>
+          </div>
+        ) : (
+          <button
+            onClick={() => handleEditClick(course?._id)}
+            className="p-1.5 border bg-transparent border-none flex border-black/10 rounded transition-custom"
+          >
+            <span className="px-2">{course?.status}</span>
+            <FiEdit3 size={20} />
+          </button>
+        )}
+      </div>
+    ),
+  }));
 
   return (
     <section className="dashboard-sub-container flex flex-col gap-6">
@@ -128,7 +120,7 @@ const ManageCourses = () => {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={5}
+        totalPages={Math.ceil(courses.length / itemsPerPage)}
         onPageChange={(val) => setCurrentPage(val)}
       />
     </section>
