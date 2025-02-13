@@ -4,15 +4,15 @@ import { api } from "@/store/api/api";
 
 export const fetchReviewAsync = CreateApiAsyncThunk(
   "review/fetchReviewAsync",
-  () => api.get(`/api/review`)
+  () => api.get(`/review`)
 );
 export const deleteReviewAsync = CreateApiAsyncThunk(
   "review/deleteReviewAsync",
-  (id) => api.delete(`/api/review/${id}`)
+  (id) => api.delete(`/review/${id}`)
 );
 export const editReviewAsync = CreateApiAsyncThunk(
   "review/editReviewAsync",
-  (data) => api.put(`/api/review`, data)
+  (data) => api.put(`/review`, data)
 );
 const initialState = {
   data: [],

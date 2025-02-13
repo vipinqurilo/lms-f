@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 
 export function SubjectSelection({ selected, onSelect, sub: subjects }) {
+  console.log(selected, "selected");
   if (!subjects?.length) {
     return (
       <div className="p-8 flex justify-center items-center">
@@ -18,11 +19,11 @@ export function SubjectSelection({ selected, onSelect, sub: subjects }) {
         {subjects?.map((subject) => (
           <button
             key={subject?._id}
-            onClick={() => onSelect(subject?._id)}
+            onClick={() => onSelect(subject)}
             className={`
               w-full flex items-center justify-between p-4 rounded-lg border
               ${
-                selected === subject?._id
+                selected?._id === subject?._id
                   ? "border-secondary"
                   : "border-gray-200"
               }
@@ -32,12 +33,12 @@ export function SubjectSelection({ selected, onSelect, sub: subjects }) {
           >
             <span
               className={`text-base ${
-                selected === subject?._id && "text-secondary"
+                selected?._id === subject?._id && "text-secondary"
               }`}
             >
               {subject?.name}
             </span>
-            {selected === subject?._id && (
+            {selected?._id === subject?._id && (
               <span className="text-secondary">
                 <Check size={20} />
               </span>

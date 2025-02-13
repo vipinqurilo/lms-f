@@ -11,6 +11,8 @@ import {
   setIsContactModelOpen,
 } from "../../store/slices/uiSlice";
 import { useRouter } from "next/router";
+import Rating from "./Rating";
+import { setTutorId } from "@/store/slices/tutorsSlice";
 
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
   const router = useRouter();
@@ -36,11 +38,12 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
               <div className="px-2 w-full block lg:hidden">
                 <div className="flex justify-between items-center">
                   <h2
-                    onClick={() =>
+                    onClick={() => {
+                      dispatch(setTutorId(tutor._id));
                       router.push(
                         `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
-                      )
-                    }
+                      );
+                    }}
                     className="text-base font-bold cursor-pointer"
                   >
                     {tutor.user.firstName} {tutor.user.lastName}
@@ -52,19 +55,9 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                     <SlLocationPin className="mr-1" />
                     {tutor.user.country || "Unknown Location"}
                   </div>
-                  {/* Rating */}
-                  <div className="flex items-center space-x-1">
-                    <span className="flex items-center gap-1 text-sm font-semibold text-dark_text">
-                      <Image
-                        width={16}
-                        height={16}
-                        src={"/assets/icons/star-fill.svg"}
-                        alt="Star"
-                      />
-                      3.50
-                    </span>
-                    <span className="text-sm text-gray-500">(2)</span>
-                  </div>
+                  {tutor.rating && (
+                    <Rating rating={tutor.rating} reviews={tutor.reviews} />
+                  )}
                 </div>
               </div>
             </div>
@@ -95,7 +88,10 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                 Book now
               </button>
               <button
-                onClick={() => dispatch(setIsContactModelOpen(true))}
+                onClick={() => {
+                  setTutor(tutor);
+                  dispatch(setIsContactModelOpen(true));
+                }}
                 className="border border-secondary text-secondary px-4 flex justify-center items-center rounded-lg  hover:bg-orange-50 w-[140px] h-[40px]"
               >
                 Contact

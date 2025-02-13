@@ -1,19 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
-import axios from "axios";
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1heEBnbWFpbC5jb20iLCJyb2xlIjoidGVhY2hlciIsImlkIjoiNjdhYjNhZDgwNzgxMmY1MmI1MGVmOWViIiwiaWF0IjoxNzM5Mjc1MDM3fQ.-gumJo43eoyliiRzHa59YczVwqbVyWSiG3rEQChsay4";
-
-const api = axios.create({
-  baseURL: "https://56kjq9dz-8000.inc1.devtunnels.ms",
-  headers: {
-    Authorization: token && `Bearer ${token}`,
-  },
-});
+import { api } from "@/store/api/api";
 
 const initialState = {
+
+  tutorId: "",
   processStep: 1,
+
+  processStep: 3,
+
   processData: {},
   requestStatus: "",
   tutorProfile: null,
@@ -24,43 +20,45 @@ const initialState = {
 
 export const instructorRequest = CreateApiAsyncThunk(
   "tutors/instructorRequest",
-  (data) => api.post(`/api/requests/teacher`, data)
+  (data) => api.post(`/requests/teacher`, data)
 );
 
 // from the admin side
 export const getTutorRequestData = CreateApiAsyncThunk(
   "GET/tutors/getTutorRequestData",
-  (id) => api.get(`/api/requests/teacher/${id}`)
+  (id) => api.get(`/requests/teacher/${id}`)
 );
 
 // from the admin side
 export const editTutorRequestData = CreateApiAsyncThunk(
   "tutors/editTutorRequestData",
-  (id) => api.get(`/api/requests/teacher/${id}`)
+  (id) => api.get(`/requests/teacher/${id}`)
 );
 
 // from me
 export const GetLoggedInTutorRequestData = CreateApiAsyncThunk(
   "GET/tutors/GetLoggedInTutorRequestData",
-  () => api.get(`/api/requests/teacher/me`)
+  () => api.get(`/requests/teacher/me`)
 );
-
-// import { api } from "@/store/api/api";
 
 // Async thunk for fetching tutor profile
 export const fetchTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchTutorProfileAsync",
-  (tutorId) => api.get(`/api/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
+  (tutorId) => api.get(`/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
 );
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
   "tutors/fetchAllTutorProfileAsync",
-  () => api.get(`/api/tutors`) // Assuming you have an endpoint like this
+  ({ search, timeRanges }) =>
+    api.get(`/tutors?search=${search}&timeRanges=${timeRanges}`) // Assuming you have an endpoint like this
 );
 
 const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
   reducers: {
+    setTutorId: (state, action) => {
+      state.tutorId = action.payload;
+    },
     updateProcessStep: (state, action) => {
       state.processStep = action.payload;
     },
@@ -207,6 +205,6 @@ const tutorsSlice = createSlice({
   },
 });
 
-export const { setTutors, clearError, updateProcessData, updateProcessStep } =
+export const { setTutorId, clearError, updateProcessData, updateProcessStep } =
   tutorsSlice.actions;
 export default tutorsSlice.reducer;

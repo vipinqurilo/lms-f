@@ -1,7 +1,6 @@
 import React from "react";
 import {
   addOrderAsync,
-  fetchCoursesAsync,
   wishlistAsync,
 } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";

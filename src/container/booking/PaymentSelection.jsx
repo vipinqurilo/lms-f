@@ -13,7 +13,15 @@ const paymentMethods = [
   { id: "paystack", name: "Paystack" },
 ];
 
-export function PaymentSelection({ selected, onSelect, createBooking }) {
+export function PaymentSelection({
+  tutor,
+  duration,
+  subject,
+  scheduledDate,
+  selected,
+  onSelect,
+  createBooking,
+}) {
   return (
     <div className="lg:grid grid-cols-2 gap-8 p-8">
       <div>
@@ -75,9 +83,9 @@ export function PaymentSelection({ selected, onSelect, createBooking }) {
               <span>Lesson Count: 1</span>
               <span>$38.75</span>
             </div>
-            <div>Lesson(s) Duration: 15 Mins/lesson</div>
+            <div>Lesson(s) Duration: {duration} Minutes</div>
             <div>Item price: $38.75/lesson</div>
-            <div>Teach subject: Accounting</div>
+            <div>Teach subject: {subject?.name}</div>
             <div className="pt-4 border-t mt-4">
               <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>

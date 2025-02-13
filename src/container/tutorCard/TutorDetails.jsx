@@ -3,19 +3,24 @@ import React from "react";
 import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { useRouter } from "next/router";
+import Rating from "./Rating";
+import { setTutorId } from "@/store/slices/tutorsSlice";
+import { useDispatch } from "react-redux";
 
 const TutorDetails = ({ tutor }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <div className="flex-1 flex flex-col py-6 w-full">
       {/* Profile Info */}
       <div className="flex justify-between items-center">
         <h2
-          onClick={() =>
+          onClick={() => {
+            dispatch(setTutorId(tutor._id));
             router.push(
               `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
-            )
-          }
+            );
+          }}
           data-tip={"Tip Here"}
           data-for={"mytip"}
           className="text-xl font-bold cursor-pointer"
@@ -29,21 +34,9 @@ const TutorDetails = ({ tutor }) => {
           <SlLocationPin className="mr-1" />
           {tutor.user.country || "Unknown Location"}
         </div>
-
-        {/* Rating */}
-        <div className="flex items-center space-x-1">
-          <span className="flex items-center gap-1 text-sm font-semibold text-dark_text">
-            <Image
-              width={16}
-              height={16}
-              src={"/assets/icons/star-fill.svg"}
-              alt="Star"
-            />
-            {tutor.rating || "N/A"}
-          </span>
-          <span className="text-sm text-gray-500">({tutor.reviews || 0})</span>
-        </div>
-
+        {tutor.rating && (
+          <Rating rating={tutor.rating} reviews={tutor.reviews} />
+        )}
         {/* Learners and Sessions */}
         <div className="text-sm text-gray-500">
           <span className="font-bold">{tutor.learners || 0}</span> Learners ·{" "}
@@ -55,7 +48,8 @@ const TutorDetails = ({ tutor }) => {
       <div className="mt-4">
         <h3 className="font-semibold text-gray-700">Teaches</h3>
         <div className="text-gray-600 text-sm">
-          {tutor.subjects?.join(", ") || "N/A"}
+          {tutor?.subjectsTaught?.map((subject) => subject.name).join(", ") ||
+            "N/A"}
         </div>
       </div>
 
@@ -63,7 +57,9 @@ const TutorDetails = ({ tutor }) => {
       <div className="mt-2">
         <h3 className="font-semibold text-gray-700">Speaks</h3>
         <div className="text-gray-600 text-sm">
-          {tutor.languages?.join(", ") || "N/A"}
+          {tutor?.languagesSpoken
+            ?.map((language) => language.name)
+            .join(", ") || "N/A"}
         </div>
       </div>
 

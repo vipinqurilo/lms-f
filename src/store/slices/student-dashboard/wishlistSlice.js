@@ -6,7 +6,7 @@ import { api } from "@/store/api/api";
 export const fetchWishlistAsync = CreateApiAsyncThunk(
   "wishlist/fetchWishlistAsync",
   async () => {
-    const response = await api.get(`/api/whishlist/student/get`);
+    const response = await api.get(`/whishlist/student/get`);
     return response.data;
   }
 );
@@ -15,7 +15,7 @@ export const fetchWishlistAsync = CreateApiAsyncThunk(
 export const removeFromWishlistAsync = CreateApiAsyncThunk(
   "wishlist/removeFromWishlistAsync",
   async (id) => {
-    await api.delete(`/api/whishlist/student/delete/${id}`);
+    await api.delete(`/whishlist/student/delete/${id}`);
     return id;
   }
 );

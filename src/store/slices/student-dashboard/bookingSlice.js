@@ -6,14 +6,14 @@ import { createSlice } from "@reduxjs/toolkit";
 export const fetchBookingsAsync = CreateApiAsyncThunk(
   "booking/fetchBookingsAsync",
   ({ status, startDate, endDate, search, page = 1, limit = 10 }) =>
-    api.get(`/api/bookings`, {
+    api.get(`/bookings`, {
       params: { status, startDate, endDate, search, page, limit },
     })
 );
 
 export const createBookingAsync = CreateApiAsyncThunk(
   "booking/createBookingAsync",
-  (bookingData) => api.post("/api/bookings", bookingData)
+  (bookingData) => api.post("/bookings", bookingData)
 );
 // Initial state for bookings
 const initialState = {

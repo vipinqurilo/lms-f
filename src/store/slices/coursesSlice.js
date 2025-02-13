@@ -9,17 +9,17 @@ export const fetchCategories = CreateApiAsyncThunk(
 
 export const fetchCoursesAsync = CreateApiAsyncThunk(
   "GET/courses/fetchCoursesAsync",
-  () => api.get(`/api/course/admin/get`)
+  () => api.get(`/course/admin/get`)
 );
 
 export const wishlistAsync = CreateApiAsyncThunk(
   "courses/wishlistAsync",
-  (data) => api2.post(`/api/whishlist`, data)
+  (data) => api2.post(`/whishlist`, data)
 );
 
 export const addOrderAsync = CreateApiAsyncThunk(
   "courses/addOrderAsync",
-  (data) => api2.post(`/api/order`, data)
+  (data) => api2.post(`/order`, data)
 );
 
 const coursesSlice = createSlice({

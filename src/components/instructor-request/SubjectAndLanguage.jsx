@@ -1,138 +1,63 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
+import { makeCategorySubCategoryArray } from "@/store/slices/categorySlice";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CommonButton from "../common/CommonButton";
 import {
   updateProcessData,
   updateProcessStep,
 } from "@/store/slices/tutorsSlice";
-import { usePathname } from "next/navigation";
-import CommonButton from "../common/CommonButton";
 import {
   updateLanguages,
   updateSubjects,
 } from "@/store/slices/instructor/settingsSlice";
-import Select from "react-select";
+import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
+import { usePathname } from "next/navigation";
 
-const SubjectAndLanguage = ({ isInstructorRequest = null }) => {
-  const path = usePathname();
+export default function SubjectAndLanguage() {
   const dispatch = useDispatch();
-
-  const { profile } = useSelector((state) => state.instructor.setting);
   const { languages } = useSelector((state) => state.languages);
-  const { subjects: category, subSubjects: subCategory } = useSelector(
-    (state) => state.category
-  );
-
+  const { categories } = useSelector((state) => state.category);
   const loading = useSelector(
     (state) => state.instructor.setting.isLoading.updateLanguages
   );
   const subjectsloading = useSelector(
     (state) => state.instructor.setting.isLoading.updateSubjects
   );
-
   const { processData } = useSelector((state) => state.tutors);
+  const { profile } = useSelector((state) => state.instructor.setting);
+  const path = usePathname();
 
-  const [subjects, setSubjects] = useState([]);
-  const [subSubjects, setSubSubjects] = useState({});
-  const [selectedLanguages, setSelectedLanguages] = useState([]);
-
-  const handleSubSubjectsChange = (subjectValue, selected) => {
-    setSubSubjects((prev) => ({
-      ...prev,
-      [subjectValue]: selected, // Store selected subSubjects per subject
-    }));
-  };
+  // States for holding selected data
+  const [selectedLanguages, setselectedLanguages] = useState([]);
+  const [selectedSubjects, setselectedSubjects] = useState([]);
+  const [activeCategories, setActiveCategories] = useState([]);
 
   useEffect(() => {
-    if (processData && Object.keys(processData).length > 0 && isInstructorRequest) {
-      console.log("🚀 processData Loaded:", processData);
-
-      // Extract selected subSubjects from processData
-      const selectedSubSubjects = subCategory.filter((sub) =>
-        processData?.subjectAndLanguage?.subjects?.includes(sub._id)
-      );
-
-      console.log("✅ selectedSubSubjects:", selectedSubSubjects);
-
-      // Extract unique subjects from the selected subSubjects
-      const selectedSubjects = [
-        ...new Map(
-          selectedSubSubjects.map((sub) => [
-            sub.courseCategory._id,
-            category.find((c) => c._id === sub.courseCategory._id),
-          ])
-        ).values(),
-      ].filter(Boolean); // Remove undefined values
-
-      console.log("✅ selectedSubjects:", selectedSubjects);
-
-      // Set subjects state
-      setSubjects(
-        selectedSubjects.map((sub) => ({
-          label: sub.name,
-          value: sub._id,
-          subSubjects: subCategory
-            ?.filter((s) => s?.courseCategory?._id === sub?._id)
-            ?.map((s) => ({ label: s?.name, value: s?._id })),
-        }))
-      );
-
-      // Store subSubjects as an object mapped to their parent subject
-      const subSubjectsMap = selectedSubjects.reduce((acc, subject) => {
-        acc[subject._id] = selectedSubSubjects
-          .filter((s) => s.courseCategory._id === subject._id)
-          .map((s) => ({ label: s.name, value: s._id }));
-        return acc;
-      }, {});
-
-      console.log("✅ subSubjectsMap:", subSubjectsMap);
-      setSubSubjects(subSubjectsMap);
-
-      // Set selected languages
-      const selectedLanguages =
-        processData?.subjectAndLanguage?.language
-          ?.map((lang) => languages?.find((l) => l?._id === lang))
-          ?.map((match) => ({ label: match?.name, value: match?._id })) || [];
-
-      console.log("✅ selectedLanguages:", selectedLanguages);
-      setSelectedLanguages(selectedLanguages);
-    }
-  }, [processData, subCategory, category, languages]);
+    dispatch(makeCategorySubCategoryArray());
+  }, []);
 
   useEffect(() => {
-    if (profile && path === "/instructor-dashboard/settings") {
-      setSelectedLanguages(
-        profile?.languagesSpoken
-          ?.map((lang) => languages?.find((l) => l?._id === lang))
-          ?.map((match) => ({ label: match?.name, value: match?._id })) || []
-      );
-      setSubjects(profile?.subjectsTaught || []);
+    if (processData) {
+      setselectedLanguages(processData?.subjectAndlanguage?.language);
+      setselectedSubjects(processData?.subjectAndlanguage?.subjects);
     }
-  }, [profile, languages]);
+  }, [processData]);
 
-  const submitForm = () => {
-    const formdata = {
-      language: selectedLanguages,
-      subjects: subSubjects,
-    };
+  useEffect(() => {
+    if (path === "/instructor-dashboard/settings" && profile) {
+      setselectedLanguages(profile?.languagesSpoken);
+      setselectedSubjects(profile?.subjectsTaught);
+    }
+  }, [profile]);
 
-    dispatch(
-      updateProcessData({ field: "subjectAndlanguage", data: formdata })
+  const toggleSection = (categoryId) => {
+    setActiveCategories(
+      (prev) =>
+        prev.includes(categoryId)
+          ? prev.filter((id) => id !== categoryId) // Collapse if already open
+          : [...prev, categoryId] // Expand otherwise
     );
-    dispatch(updateProcessStep(4));
-  };
-
-  const handleAddRemoveSubjects = (data) => {
-    setSubjects((prevSubjects) => {
-      const updatedSubjects = prevSubjects.some(
-        (sub) => sub.value === data.value
-      )
-        ? prevSubjects.filter((sub) => sub.value !== data.value)
-        : [...prevSubjects, data];
-
-      return updatedSubjects;
-    });
   };
 
   const handleUpdateLanguage = () => {
@@ -142,132 +67,152 @@ const SubjectAndLanguage = ({ isInstructorRequest = null }) => {
 
   const handleUpdateSubjects = () => {
     const data = {
-      subjectsTaught: Object.values(subSubjects)
-        .flat()
-        .map((s) => s.value),
+      subjectsTaught: selectedSubjects,
     };
     dispatch(updateSubjects(data));
   };
 
-  const languageOptions = languages?.map((language) => ({
-    label: language.name,
-    value: language._id,
-  }));
+  const submitForm = () => {
+    const formdata = {
+      language: selectedLanguages,
+      subjects: selectedSubjects,
+    };
 
-  const subjectsData = useMemo(
-    () =>
-      category?.map((subject) => ({
-        label: subject?.name,
-        value: subject?._id,
-        subSubjects: subCategory
-          ?.filter((sub) => sub?.courseCategory?._id === subject?._id)
-          ?.map((sub) => ({ label: sub?.name, value: sub?._id })),
-      })),
-    [category]
-  );
+    console.log("formdata", formdata);
 
-  useEffect(() => {
-    if (profile && path === "/instructor-dashboard/settings") {
-      // Extract selected subSubjects from profile
-      const selectedSubSubjects = subCategory.filter((sub) =>
-        profile?.subjectsTaught.includes(sub._id)
-      );
-
-      // Extract unique subjects from the subSubjects
-      const selectedSubjects = [
-        ...new Map(
-          selectedSubSubjects.map((sub) => [
-            sub.courseCategory._id,
-            category.find((c) => c._id === sub.courseCategory._id),
-          ])
-        ).values(),
-      ].filter(Boolean); // Remove undefined values
-
-      setSubjects(
-        selectedSubjects.map((sub) => ({
-          label: sub.name,
-          value: sub._id,
-          subSubjects: subCategory
-            ?.filter((s) => s?.courseCategory?._id === sub?._id)
-            ?.map((s) => ({ label: s?.name, value: s?._id })),
-        }))
-      );
-
-      // Store subSubjects as an object mapped to their parent subject
-      const subSubjectsMap = selectedSubjects.reduce((acc, subject) => {
-        acc[subject._id] = selectedSubSubjects
-          .filter((s) => s.courseCategory._id === subject._id)
-          .map((s) => ({ label: s.name, value: s._id }));
-        return acc;
-      }, {});
-
-      setSubSubjects(subSubjectsMap);
-    }
-  }, [profile, subCategory, category]);
+    dispatch(
+      updateProcessData({ field: "subjectAndlanguage", data: formdata })
+    );
+    dispatch(updateProcessStep(4));
+  };
 
   return (
-    <div className="w-full space-y-6">
-      {/* <div className="lg:hidden">
-        <SettingsInputField
-          label={"Subjects"}
-          isSelect={true}
-          name={"subjects"}
-          options={subjectsData}
-          isMulti={true}
-          value={subjects}
-          onChange={(selected) => setSubjects(selected)}
-        />
-      </div> */}
-
-      <div className="w-full flex flex-col gap-4">
-        <h2 className="text-light text-sm">Subjects</h2>
-        <div className="lg:grid grid-cols-5 gap-5">
-          {subjectsData?.map((subject, index) => (
-            <button
-              key={index}
-              onClick={() => handleAddRemoveSubjects(subject)}
-              className={`${
-                subjects.some((sub) => sub.label === subject.label)
-                  ? "bg-background text-white"
-                  : "bg-none hover:bg-background transition-custom hover:text-white"
-              } px-3 py-2 text-sm border border-black/10 w-full rounded-lg`}
-            >
-              {subject?.label}
-            </button>
-          ))}
+    <div className="w-full flex flex-col gap-8">
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          Subjects
+        </label>
+        <div className="w-full grid lg:grid-cols-3 lg:gap-8">
+          {categories?.length > 0 &&
+            categories.map((category) => (
+              <div key={category?.categoryId} className="w-full">
+                <button
+                  onClick={() => toggleSection(category?.categoryId)}
+                  className={`flex justify-between items-center w-full font-medium text-lg text-left bg-secondary/5 p-2 px-4 rounded border border-black/10 ${
+                    category?.subCategories?.some((sub) =>
+                      selectedSubjects.includes(sub.id)
+                    )
+                      ? "!bg-gray-100"
+                      : ""
+                  }`}
+                >
+                  <span className="font-[700] text-base">
+                    {category.categoryName}
+                  </span>
+                  <svg
+                    className={`transition-transform ${
+                      activeCategories.includes(category?.categoryId)
+                        ? "rotate-0"
+                        : "-rotate-90"
+                    }`}
+                    fill="none"
+                    height={24}
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                    width={24}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <div
+                  className={`transition-all ease-in-out duration-500 overflow-hidden flex flex-col gap-4 ${
+                    activeCategories.includes(category?.categoryId)
+                      ? "max-h-screen"
+                      : "max-h-0"
+                  }`}
+                >
+                  {category?.subCategories?.map((lecture, i) => (
+                    <button
+                      key={i}
+                      className={`w-full border border-black/10 rounded-lg md:flex md:items-center md:justify-between px-2 py-2 md:py-2 ${
+                        selectedSubjects.includes(lecture?.id)
+                          ? "bg-gray-100"
+                          : "bg-white"
+                      } ${i === 0 && "mt-4"}`}
+                      onClick={() => {
+                        setselectedSubjects((prev) =>
+                          prev.includes(lecture?.id)
+                            ? prev.filter((id) => id !== lecture?.id)
+                            : [...prev, lecture?.id]
+                        );
+                      }}
+                    >
+                      <h6 className="flex items-start gap-1 ">
+                        <span className="-mt-[2px] font-medium text-sm">
+                          {lecture?.name}
+                        </span>
+                      </h6>
+                      <div className="w-5 h-5 border border-black/10 rounded-full flex items-center justify-center">
+                        <div
+                          className={`w-3 h-3 bg-background rounded-full transition-custom ${
+                            selectedSubjects.includes(lecture?.id)
+                              ? "scale-100"
+                              : "scale-0"
+                          }`}
+                        ></div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
         </div>
       </div>
-
-      <div className="w-full grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-        {subjects?.map((subject) => {
-          return (
-            <div className="space-y-4" key={subject?.value}>
-              <Select
-                options={subject?.subSubjects} // Dropdown options
-                isMulti={true} // Allow multiple selections
-                value={subSubjects[subject.value] || []} // Get subSubjects for the specific subject
-                onChange={(selected) =>
-                  handleSubSubjectsChange(subject.value, selected)
-                } // Handle selection change
-                getOptionLabel={(e) => e.label} // Ensure correct label display
-                getOptionValue={(e) => e.value} // Ensure correct value selection
-                className="w-full" // Optional: Adjust width as needed
-              />
-            </div>
-          );
-        })}
-      </div>
-
-      {languages && languageOptions?.length > 0 && (
-        <Select
-          options={languageOptions} // Dropdown options for languages
-          isMulti={true} // Allow multiple selections
-          value={selectedLanguages} // Selected values
-          onChange={(selected) => setSelectedLanguages(selected)} // Handle selection change
-          getOptionLabel={(e) => e.label} // Display correct language label
-          getOptionValue={(e) => e.value} // Use correct value selection
-          className="w-full" // Optional styling for width
-        />
+      {languages && (
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Languages
+          </label>
+          <div
+            className={`transition-all ease-in-out duration-500 overflow-hidden flex flex-col gap-4`}
+          >
+            {languages?.map((lan, i) => (
+              <button
+                key={i}
+                className={`w-full border border-black/10 rounded-lg md:flex md:items-center md:justify-between px-2 py-2 md:py-2 ${
+                  selectedLanguages.includes(lan?._id)
+                    ? "bg-gray-100"
+                    : "bg-white"
+                }`}
+                onClick={() => {
+                  setselectedLanguages((prev) =>
+                    prev.includes(lan?._id)
+                      ? prev.filter((id) => id !== lan?._id)
+                      : [...prev, lan?._id]
+                  );
+                }}
+              >
+                <h6 className="flex items-start gap-1">
+                  <span className="-mt-[2px] font-medium text-sm">
+                    {lan?.name}
+                  </span>
+                </h6>
+                <div className="w-5 h-5 border border-black/10 rounded-full flex items-center justify-center">
+                  <div
+                    className={`w-3 h-3 bg-background rounded-full transition-custom ${
+                      selectedLanguages.includes(lan?._id)
+                        ? "scale-100"
+                        : "scale-0"
+                    }`}
+                  ></div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
       {path === "/instructor-dashboard/settings" ? (
@@ -295,6 +240,4 @@ const SubjectAndLanguage = ({ isInstructorRequest = null }) => {
       )}
     </div>
   );
-};
-
-export default SubjectAndLanguage;
+}

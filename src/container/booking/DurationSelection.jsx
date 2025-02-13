@@ -9,14 +9,19 @@ const durations = [
   { id: "60", minutes: 60, label: "60 minutes lesson" },
 ];
 
-export function DurationSelection({ selected, onSelect }) {
+export function DurationSelection({ slots, selected, onSelect }) {
+  // Filter durations based on available slots
+  const availableDurations = durations.filter((duration) =>
+    slots.includes(duration.minutes)
+  );
+
   return (
     <div className="p-8 lg:w-1/2 mx-auto">
       <h2 className="text-lg font-semibold text-center mb-4">
         Select timeslot
       </h2>
       <div className="space-y-2">
-        {durations.map((duration) => (
+        {availableDurations.map((duration) => (
           <button
             key={duration.id}
             onClick={() => onSelect(duration.id)}

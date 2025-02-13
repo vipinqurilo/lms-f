@@ -7,6 +7,7 @@ import PriceFilterDropdown from "./PriceFilterDropdown";
 import TimeFilterDropdown from "./TimeFilterDropdown";
 import SortBy from "./SortBy";
 import GenderSelector from "./GenderSelector";
+import { useSelector } from "react-redux";
 
 const data = [
   {
@@ -103,15 +104,30 @@ const data = [
   },
 ];
 
-const TutorFilter = () => {
-  const [isActive, setIsActive] = useState(false);
+const TutorFilter = ({ search, setSearch }) => {
   const [gender, setGender] = useState("Any");
   const [sortBy, setSortBy] = useState("By popularity");
   const [filterOpened, setfilterOpened] = useState("");
+  const { timeRanges } = useSelector((state) => state.ui);
+  // Add useEffect to handle body scroll
+  useEffect(() => {
+    if (filterOpened) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [filterOpened]);
+
   const hancleSubjectClick = () => {
     if (filterOpened === "subject") {
       setfilterOpened("");
     } else {
+      ``;
       setfilterOpened("subject");
     }
   };
@@ -155,7 +171,7 @@ const TutorFilter = () => {
   };
 
   return (
-    <div className="p-4 bg-[#F2F2F2] flex flex-col justify-center items-center">
+    <div className="p-4 bg-[#F2F2F2] flex flex-col px-20 justify-center items-center">
       {(filterOpened === "subject" ||
         filterOpened === "price" ||
         filterOpened === "availability" ||
@@ -169,7 +185,7 @@ const TutorFilter = () => {
       )}
       {/* Top Section */}
       <div
-        className={`hidden lg:flex items-center w-full px-20  divide-x-2 relative  ${
+        className={`hidden lg:flex items-center w-full   divide-x-2 relative  ${
           filterOpened === "subject" ||
           filterOpened === "price" ||
           filterOpened === "availability"
@@ -180,6 +196,8 @@ const TutorFilter = () => {
         <div className="flex flex-col cursor-pointer justify-center px-4 py-2 w-full md:w-1/4 h-[72px] rounded-l-lg bg-white   ">
           <div className="text-[13px] leading-3 text-[#a6a6a6]">Search</div>
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             type="text"
             placeholder="By tutor name"
             className="text-black placeholder:text-black text-[16px] outline-none"
@@ -217,28 +235,21 @@ const TutorFilter = () => {
             Availability
           </div>
           <div className="flex justify-between items-center">
-            Select timing
+            {timeRanges
+              ? timeRanges.length > 3
+                ? `${timeRanges[0]}, ${timeRanges[1]}, ${timeRanges[2]}...`
+                : timeRanges.join(", ")
+              : "Select timing"}
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "availability" && <TimeFilterDropdown />}
+          {filterOpened === "availability" && (
+            <TimeFilterDropdown onClose={() => setfilterOpened("")} />
+          )}
         </div>
       </div>
 
       {/* Bottom Section */}
-      <div className="flex text-nowrap flex-wrap items-center gap-4 mt-4">
-        {/* Active Tutors Toggle */}
-        <div className="flex items-center gap-2 bg-white rounded px-4 h-[40px]">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={isActive}
-              onChange={() => setIsActive(!isActive)}
-            />
-            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary   after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-          </label>
-          <span className="text-sm">Active Tutors</span>
-        </div>
+      <div className="flex text-nowrap flex-wrap items-center gap-4 mt-4 justify-end w-full">
         <div
           onClick={() => handleGenderSet()}
           className="flex relative flex-col cursor-pointer text-sm  min-w-[174px] text-[16px] justify-center px-4 py-2   h-[40px] rounded-lg bg-white   "

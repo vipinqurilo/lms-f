@@ -1,37 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk";
-import axios from "axios";
-
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWQiOiI2NzkyMjE1YWVjOTlhMTA4ZDQzMzYxOTEiLCJpYXQiOjE3Mzg2NDY4MDN9.8sgatuSVPhKF_vwLw9jYy1pFae5jsw8pgnVCJVWV_Uw";
-
-const api = axios.create({
-  baseURL: "https://56kjq9dz-8000.inc1.devtunnels.ms",
-  headers: {
-    Authorization: token && `Bearer ${token}`,
-  },
-});
+import { api } from "../api/api";
 
 const initialState = {
   subjects: [],
   subSubjects: [],
+  categories: [],
   isLoading: {},
   error: {},
 };
 
 export const getSubjects = CreateApiAsyncThunk("GET/category/getSubjects", () =>
-  api.get(`/api/category`)
+  api.get(`/category`)
 );
 
 export const getSubSubjects = CreateApiAsyncThunk(
   "GET/category/getSubSubjects",
-  () => api.get(`/api/subcategory/filter`)
+  () => api.get(`/subcategory/filter`)
 );
 
 const categorySlice = createSlice({
   name: "category",
   initialState,
-  reducers: {},
+  reducers: {
+    makeCategorySubCategoryArray: (state) => {
+      const formattedData =
+        state.subjects?.length > 0 &&
+        state.subjects.reduce((acc, category) => {
+          const matchedSubcategories =
+            state.subSubjects?.length > 0 &&
+            state.subSubjects
+              .filter((sub) => sub.courseCategory._id === category._id)
+              .map((sub) => ({
+                name: sub.name,
+                id: sub._id,
+              }));
+
+          acc.push({
+            categoryName: category.name,
+            categoryId: category._id,
+            subCategories: matchedSubcategories,
+          });
+
+          return acc;
+        }, []);
+      state.categories = formattedData;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSubjects.pending, (state) => {
@@ -58,5 +73,7 @@ const categorySlice = createSlice({
       });
   },
 });
+
+export const { makeCategorySubCategoryArray } = categorySlice?.actions;
 
 export default categorySlice.reducer;

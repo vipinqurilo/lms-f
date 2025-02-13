@@ -4,15 +4,11 @@ import React from "react";
 import { SlLocationPin } from "react-icons/sl";
 import { IoHeartOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import Rating from "@/container/tutorCard/Rating";
 
 const ProfileHeader = () => {
   // Get tutor profile from Redux store
   const { tutorProfile } = useSelector((state) => state.tutors);
-
-  // If tutorProfile is not loaded yet, return a loading message or placeholder
-  if (!tutorProfile) {
-    return <div>Loading profile...</div>;
-  }
 
   return (
     <div>
@@ -42,7 +38,7 @@ const ProfileHeader = () => {
               {/* Location */}
               <div className="flex items-center text-sm text-gray-500">
                 <SlLocationPin className="mr-1" />
-                {tutorProfile?.location || "United Kingdom"}{" "}
+                {tutorProfile?.userId?.country || "United Kingdom"}{" "}
                 {/* Dynamic location */}
               </div>
 
@@ -78,16 +74,17 @@ const ProfileHeader = () => {
           <div className="items-center gap-6 mb-4 hidden lg:flex">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              <span>{tutorProfile?.location || "Egypt"}</span>{" "}
+              <span>
+                {tutorProfile?.userId?.country || "Unknown Country"}
+              </span>{" "}
               {/* Dynamic location */}
             </div>
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-[#FF9800]" />
-              <span>{tutorProfile?.rating || 4.0}</span>
-              <span className="text-gray-500">
-                {tutorProfile?.reviewsCount || 1} Review(s)
-              </span>
-            </div>
+            {tutorProfile?.rating && (
+              <Rating
+                rating={tutorProfile?.rating}
+                reviews={tutorProfile?.reviewsCount}
+              />
+            )}
             <div className="flex items-center gap-6">
               <span>{tutorProfile?.learnersCount || 0} Learners</span>
               <span>{tutorProfile?.sessionsCount || 0} Sessions</span>
@@ -98,14 +95,18 @@ const ProfileHeader = () => {
               Pricing ${tutorProfile?.minPrice || 36.0} - $
               {tutorProfile?.maxPrice || 72.0}
             </div>
-            <div>Teaches: {tutorProfile?.teaches || "Genres"}</div>{" "}
-            {/* Dynamic subjects */}
+            <div>
+              Teaches: &nbsp;
+              {tutorProfile?.subjectsTaught
+                ?.map((subject) => subject.name)
+                .join(", ")}
+            </div>{" "}
           </div>
           <div className="flex gap-4">
-            <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
+            {/* <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
               <Heart className="w-4 h-4" />
               Favorite
-            </button>
+            </button> */}
             <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
               <Share2 className="w-4 h-4" />
               Share
