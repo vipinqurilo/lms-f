@@ -159,14 +159,6 @@ export function EditProfile({ isInstructorRequest = null }) {
     }
   };
 
-  if (!profileState) {
-    return <div>Loading...</div>;
-  }
-
-  if (isLoading?.fetchProfileAsync) {
-    return <div>Loading profile...</div>;
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
