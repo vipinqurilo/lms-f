@@ -36,7 +36,6 @@ export const instructorRegister = CreateApiAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-
   reducers: {
     logoutUser: (state) => {
       state.authUser = null;

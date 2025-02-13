@@ -19,21 +19,36 @@ import { fetchTutorProfileAsync } from "@/store/slices/tutorsSlice";
 import LoginModel from "@/container/login/LoginModel";
 import { BookingModal } from "@/container/booking/BookingModal";
 import { Loader } from "lucide-react";
+import { setIsContactModelOpen } from "@/store/slices/uiSlice";
+import ContactModal from "@/components/common/ContactModal";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+import { fetchBookingsByTutorIdAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
 export default function TeacherProfile() {
   const [activeTab, setActiveTab] = useState("newest");
   const [showBooking, setShowBooking] = useState(false);
-
+  const router = useRouter();
   const dispatch = useDispatch();
-  const { tutorId } = useSelector((state) => state.tutors);
+  const { tutorId, userID } = useSelector((state) => state.tutors);
   const { authUser } = useSelector((state) => state.user);
   // Get tutor profile from Redux store
   const { tutorProfile, isLoading, error } = useSelector(
     (state) => state.tutors
   );
+  const { bookingsByTutorId, isLoading: bookingsLoading } = useSelector(
+    (state) => state.student.booking
+  );
+  const { isContactModelOpen } = useSelector((state) => state.ui);
   useEffect(() => {
-    dispatch(fetchTutorProfileAsync(tutorId));
-  }, [dispatch, tutorId]);
+    if (tutorId && userID) {
+      dispatch(fetchBookingsByTutorIdAsync(userID));
+      dispatch(fetchTutorProfileAsync(tutorId));
+    } else {
+      router.push("/tutors");
+      toast.error("Tutor not found");
+    }
+  }, [dispatch, tutorId, userID]);
 
   if (isLoading["fetchTutorProfileAsync"]) {
     return (
@@ -63,11 +78,14 @@ export default function TeacherProfile() {
         <PricingSection />
         <h2 className="text-2xl font-semibold my-4">Schedule</h2>
         <h2 className="text-base font-bold my-4">
-          {tutorProfile?.userId?.firstName} {tutorProfile?.userId?.lastName}'s
+          {tutorProfile?.user?.firstName} {tutorProfile?.user?.lastName}'s
           Calendar
         </h2>
         <div className="h-[600px] border">
-          <AvailabilityCalendar calendar={tutorProfile?.calendar} />
+          <AvailabilityCalendar
+            rawBookings={bookingsByTutorId}
+            calendar={tutorProfile?.calendar}
+          />
         </div>
         {/* <TeachingExpertiseSection /> */}
         <TeachingQualificationsSection />
@@ -88,6 +106,12 @@ export default function TeacherProfile() {
             />
           ))}
       </div>
+      {isContactModelOpen && (
+        <ContactModal
+          tutor={tutorProfile}
+          onClose={() => dispatch(setIsContactModelOpen(false))}
+        />
+      )}
     </div>
   );
 }
