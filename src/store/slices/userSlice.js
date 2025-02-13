@@ -22,21 +22,8 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 );
 
 const initialState = {
-<<<<<<< HEAD
-  authUser: {
-    name: "khurshid",
-    id: "679dbe8bf168197df705a799",
-    // role: "instructor",
-    // role: "student",
-    role: "admin",
-  },
-  isLoading: {},
-=======
->>>>>>> main
-
   authUser: null,
   isAuthenticated: null,
-
   isLoading: {},
   error: {},
 };
@@ -49,8 +36,7 @@ export const instructorRegister = CreateApiAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
 
@@ -102,7 +88,6 @@ const userSlice = createSlice({
       })
       .addCase(logout.pending, (state) => {
         state.isLoading["logout"] = true;
-        
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.isLoading["logout"] = false;
