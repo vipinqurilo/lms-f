@@ -49,16 +49,16 @@ const TableComponent = ({
                   </td>
                   <td className="px-6 py-3">
                     <p className="font-medium text-sm">
-                      {item?.institution || ""} {item?.location}
+                      {item?.institute ? item?.institute : item?.company || ""} {item?.location}
                     </p>
                   </td>
                   <td className="px-6 py-3">
-                    {item?.startyear || (
+                    {item?.startDate || (
                       <span className="w-full block text-center">--</span>
                     )}
                   </td>
                   <td className="px-6 py-3">
-                    {item?.endyear || (
+                    {item?.endDate || (
                       <span className="w-full block text-center">--</span>
                     )}
                   </td>

@@ -7,19 +7,21 @@ import RaiseTicketModal from "@/components/instructor/RaiseTicketModal";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { StatsCard } from "@/components/student-dashboard/StatsCard";
 import { StatusBadge } from "@/components/student-dashboard/StatusBadge";
-import { getInstructorTickets } from "@/store/slices/supportSlice";
+import { getFilteredInstructorTickets, getInstructorTickets } from "@/store/slices/supportSlice";
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegHourglass, FaTicketAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import SupportTable from "./SupportTable";
 import MessageModal from "./MessageModal";
-import { getFilteredInstrcutorCourses } from "@/store/slices/instructor/courseSlice";
 import { getSubjects } from "@/store/slices/categorySlice";
 
 const SupportDashboard = () => {
   const dispatch = useDispatch();
   const getInstrcutorLoading = useSelector(
     (state) => state.support.isLoading.getInstructorTickets
+  );
+  const getInstrcutorFilterLoading = useSelector(
+    (state) => state.support.isLoading.getFilteredInstructorTickets
   );
   const { instructorTickets: tickets } = useSelector((state) => state.support);
   const { authUser } = useSelector((state) => state.user);
@@ -60,7 +62,7 @@ const SupportDashboard = () => {
 
   useEffect(() => {
     if (filter.toLowerCase() !== "all") {
-      dispatch(getFilteredInstrcutorCourses(filter?.toLowerCase()));
+      dispatch(getFilteredInstructorTickets(filter?.toLowerCase()));
     } else {
       dispatch(getInstructorTickets());
     }
@@ -72,7 +74,7 @@ const SupportDashboard = () => {
 
   return (
     <div className="w-full flex items-start justify-between gap-10">
-      <div className="w-full flex flex-col items-start gap-8 dashboard-container p-5">
+      <div className={`w-full flex flex-col items-start gap-8 dashboard-container p-5 ${messages ? "!w-[70%]" : "w-full"}`}>
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-start gap-1">
             <h2 className="text-2xl text-background font-bold">
@@ -126,7 +128,7 @@ const SupportDashboard = () => {
             </div>
           </div>
 
-          {getInstrcutorLoading ? (
+          {getInstrcutorLoading || getInstrcutorFilterLoading ? (
             <div className="w-full flex items-center justify-center py-16">
               <Loader color={"text-primary"} isBig={true} />
             </div>

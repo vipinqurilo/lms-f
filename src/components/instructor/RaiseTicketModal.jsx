@@ -39,13 +39,16 @@ const RaiseTicketModal = ({ toggleIsAdd }) => {
 
   const OnSubmit = (data) => {
     console.log(data);
-    const formData = attachment
+    const formData = attachment?.length > 0
       ? {
           ...data,
           attachment,
-          messages: {},
+          messages: [],
         }
-      : data;
+      : {
+        ...data,
+        messages: []
+      };
     dispatch(raiseTicket(formData))
       .unwrap()
       .then(() => {

@@ -25,6 +25,10 @@ export const getStudentTickets = CreateApiAsyncThunk(
 export const raiseTicket = CreateApiAsyncThunk("support/raiseTicket", (data) =>
   api.post(`/ticket`, data)
 );
+export const updateConversation = CreateApiAsyncThunk(
+  "support/updateConversation",
+  ({ id, data }) => api.post(`/ticket/addMessage/${id}`, data)
+);
 
 const supportSlice = createSlice({
   name: "support",
@@ -75,7 +79,18 @@ const supportSlice = createSlice({
       .addCase(raiseTicket.rejected, (state, action) => {
         state.isLoading["raiseTicket"] = false;
         state.isLoading["raiseTicket"] = action.payload;
-      });
+      })
+      // update conversations in the ticket
+      .addCase(updateConversation.pending, (state) => {
+        state.isLoading["updateConversation"] = true;
+      })
+      .addCase(updateConversation.fulfilled, (state) => {
+        state.isLoading["updateConversation"] = false;
+      })
+      .addCase(updateConversation.rejected, (state, action) => {
+        state.isLoading["updateConversation"] = false;
+        state.isLoading["updateConversation"] = action.payload;
+      })
   },
 });
 

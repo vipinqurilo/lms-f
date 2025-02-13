@@ -34,7 +34,7 @@ const LoginForm = ({ type }) => {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
           if (type !== "model") {
-            router.push("/instructor-dashboard");
+            router.push("/");
           }
         } else if (res?.data?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);

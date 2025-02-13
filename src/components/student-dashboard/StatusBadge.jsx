@@ -13,11 +13,11 @@ export function StatusBadge({ type, value }) {
       }
     } else {
       switch (value) {
-        case "Opened":
+        case "open":
           return "bg-green-100 text-green-700";
-        case "Inprogress":
+        case "processing":
           return "bg-yellow-100 text-yellow-700";
-        case "Closed":
+        case "completed":
           return "bg-red-100 text-red-700";
         default:
           return "bg-gray-100 text-gray-700";

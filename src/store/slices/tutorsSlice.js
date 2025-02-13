@@ -28,7 +28,7 @@ export const getTutorRequestData = CreateApiAsyncThunk(
 // from the admin side
 export const editTutorRequestData = CreateApiAsyncThunk(
   "tutors/editTutorRequestData",
-  (id) => api.get(`/requests/teacher/${id}`)
+  ({id, data}) => api.get(`/requests/teacher/${id}`, data)
 );
 
 // from me
