@@ -3,7 +3,15 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import TableHeader from "../instructor/TableHeader";
 
-const TableComponent = ({ title, data, setData, toggleIsAdd, setIsEdit }) => {
+const TableComponent = ({
+  title,
+  data,
+  setData,
+  toggleIsAdd,
+  setIsEdit,
+  isInstructorRequest,
+  authUser,
+}) => {
   return (
     <div className="space-y-2 w-full !rounded-lg">
       <div className="w-full !overflow-x-auto rounded-lg border border-black/10">
@@ -32,7 +40,9 @@ const TableComponent = ({ title, data, setData, toggleIsAdd, setIsEdit }) => {
               data?.map((item, index) => (
                 <tr
                   key={index}
-                  className={`text-left border-b border-black/10 ${index === data?.length-1 && "!border-b-0"}`}
+                  className={`text-left border-b border-black/10 ${
+                    index === data?.length - 1 && "!border-b-0"
+                  }`}
                 >
                   <td className="px-6 py-3 text-left lg:w-96 text-wrap">
                     <h2 className="font-bold">{item?.title}</h2>
@@ -74,6 +84,9 @@ const TableComponent = ({ title, data, setData, toggleIsAdd, setIsEdit }) => {
                           setIsEdit(item);
                         }}
                         className="w-6 h-6 border border-black/10 hover:text-green-600 hover:border-green-600 transition-custom flex items-center justify-center hover:bg-gray-100 rounded"
+                        disabled={
+                          isInstructorRequest && authUser?.role === "admin"
+                        }
                       >
                         <AiOutlineEdit size={16} />
                       </button>
@@ -86,6 +99,9 @@ const TableComponent = ({ title, data, setData, toggleIsAdd, setIsEdit }) => {
                           )
                         }
                         className="w-6 h-6 border border-black/10 hover:text-red-600 hover:border-red-600 flex items-center justify-center hover:bg-gray-100 rounded transition-custom"
+                        disabled={
+                          isInstructorRequest && authUser?.role === "admin"
+                        }
                       >
                         <MdOutlineDelete size={16} />
                       </button>

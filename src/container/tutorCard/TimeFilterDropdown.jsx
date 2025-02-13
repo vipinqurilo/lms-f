@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import { setTimeRanges } from "@/store/slices/uiSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const TimeFilterDropdown = () => {
+const TimeFilterDropdown = ({ onClose }) => {
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -19,10 +21,10 @@ const TimeFilterDropdown = () => {
     "16 - 20",
     "20 - 24",
   ];
-
+  const dispatch = useDispatch();
+  const { timeRanges: selectedTimeRanges } = useSelector((state) => state.ui);
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-
   const toggleTimeSelection = (time) => {
     setSelectedTimes(
       (prev) =>
@@ -44,14 +46,20 @@ const TimeFilterDropdown = () => {
   const clearSelections = () => {
     setSelectedTimes([]);
     setSelectedDays([]);
+    dispatch(setTimeRanges(""));
   };
 
   const applySelections = () => {
+    dispatch(setTimeRanges(selectedTimes));
     console.log("Selected Time Ranges:", selectedTimes);
     console.log("Selected Days of the Week:", selectedDays);
-    // Handle apply logic
+    onClose();
   };
-
+  useEffect(() => {
+    if (selectedTimeRanges) {
+      setSelectedTimes(selectedTimeRanges);
+    }
+  }, [selectedTimeRanges]);
   return (
     <div
       onClick={(e) => {

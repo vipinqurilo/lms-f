@@ -7,6 +7,7 @@ import EarningSummary from "@/components/admin-dashboard/dashboard/EarningSummar
 import BookingTable from "@/components/admin-dashboard/dashboard/SalesTable";
 import TotalEarning from "@/components/admin-dashboard/dashboard/TotalEarning";
 import { useEffect } from "react";
+import RecentTicket from "@/components/admin-dashboard/dashboard/RecentTicket";
 
 const index = () => {
 
@@ -20,6 +21,7 @@ const index = () => {
         </div>
         <div className="w-[30%]">
           <TotalEarning />
+          <RecentTicket />
         </div>
       </div>
     </StudentDashboardLayout>

@@ -4,7 +4,7 @@ import { api } from "@/store/api/api";
 
 export const getAllWithdraws = CreateApiAsyncThunk(
   "GET/teacher/getAllWithdraws",
-  () => api.get(`/api/course/admin/get`)
+  () => api.get(`/course/admin/get`)
 );
 
 export const withdrawSlice = createSlice({

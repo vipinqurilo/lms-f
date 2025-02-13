@@ -1,16 +1,6 @@
+import { api } from "@/store/api/api";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWQiOiI2NzkyMjE1YWVjOTlhMTA4ZDQzMzYxOTEiLCJpYXQiOjE3Mzg2NDY4MDN9.8sgatuSVPhKF_vwLw9jYy1pFae5jsw8pgnVCJVWV_Uw";
-
-const api = axios.create({
-  baseURL: "https://rvdr9qkh-8000.inc1.devtunnels.ms/api",
-  headers: {
-    Authorization: token && `Bearer ${token}`,
-  },
-});
 
 const initialState = {
   bookings: [],

@@ -11,7 +11,8 @@ import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
 import { uploadImage } from "@/store/slices/uploadSlice";
 import toast from "react-hot-toast";
 
-export default function IndentityForm() {
+export default function IndentityForm({ isInstructorRequest = null }) {
+  const { authUser } = useSelector((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -38,12 +39,12 @@ export default function IndentityForm() {
 
   const handleNext = (data) => {
     // if (profilePreview) {
-      const formData = {
-        ...data,
-        profile: profilePreview,
-      };
-      dispatch(updateProcessStep(3));
-      dispatch(updateProcessData({ field: "indentity", data: formData }));
+    const formData = {
+      ...data,
+      profile: profilePreview,
+    };
+    dispatch(updateProcessStep(3));
+    dispatch(updateProcessData({ field: "indentity", data: formData }));
     // } else {
     //   toast.error("Profile Photos is required");
     // }
@@ -112,7 +113,9 @@ export default function IndentityForm() {
                 type="file"
                 accept="image/png, image/jpeg, image/jpg, image/gif, image/bmp"
                 onChange={(e) => handleImageValidation(e)}
-                disabled={loading}
+                disabled={
+                  loading || (isInstructorRequest && authUser?.role === "admin")
+                }
                 className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:cursor-not-allowed disabled:opacity-60"
               />
               <p className="text-xs text-gray-500">
@@ -134,9 +137,12 @@ export default function IndentityForm() {
               required: "Introduction Video Link is required",
             })}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
+            disabled={isInstructorRequest && authUser?.role === "admin"}
           />
           {errors?.youtubeLink && (
-            <p className="text-xs text-red-500">*{errors.youtubeLink.message}</p>
+            <p className="text-xs text-red-500">
+              *{errors.youtubeLink.message}
+            </p>
           )}
         </div>
 
@@ -149,6 +155,7 @@ export default function IndentityForm() {
             placeholder="Write a short biography about yourself..."
             {...register("bio", { required: "Bio is required" })}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[100px]"
+            disabled={isInstructorRequest && authUser?.role === "admin"}
           />
           {errors?.bio && (
             <p className="text-xs text-red-500">*{errors.bio.message}</p>

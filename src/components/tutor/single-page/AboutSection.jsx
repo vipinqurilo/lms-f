@@ -8,11 +8,11 @@ const AboutSection = () => {
       {/* About Section */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">
-          About {tutorProfile?.userId?.firstName} {tutorProfile?.userId?.lastName}
+          About {tutorProfile?.userId?.firstName}{" "}
+          {tutorProfile?.userId?.lastName}
         </h2>
         <p className="text-gray-700">{tutorProfile?.userId?.bio}</p>
       </section>
-
     </div>
   );
 };
