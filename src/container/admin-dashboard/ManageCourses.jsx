@@ -23,7 +23,7 @@ const tabs = [
   },
   {
     icon: <BiCheckCircle size={20} />,
-    tab: "published",
+    tab: "publish",
   },
 ];
 
@@ -80,7 +80,7 @@ const ManageCourses = () => {
                   }
                 >
                   <option value="pending">Pending</option>
-                  <option className="text-green-600" value="published">
+                  <option className="text-green-600" value="publish">
                     Published
                   </option>
                 </select>
