@@ -5,9 +5,11 @@ import { api } from "@/store/api/api";
 // Fetch all users
 export const getAllUsers = CreateApiAsyncThunk(
   "GET/users/getAllUsers",
-  () => api.get("/users")
+  ({ search = "", userStatus = "", role = "" }) =>
+    api.get("/api/users", {
+      params: { search, userStatus, role },
+    })
 );
-
 // Update user status
 export const updateUserStatus = CreateApiAsyncThunk(
   "PATCH/users/updateUserStatus",

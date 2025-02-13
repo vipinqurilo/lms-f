@@ -47,7 +47,7 @@ const Navbar = () => {
       onClick: async (e) => {
         e.preventDefault();
         await dispatch(logoutUser());
-        router.push("/login");
+        router.push("/");
       },
     },
   ];
