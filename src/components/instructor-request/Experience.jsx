@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
 import {
+  editTutorRequestData,
   instructorRequest,
   updateProcessData,
   updateProcessStep,
+  updateRequestStatus,
 } from "@/store/slices/tutorsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -26,6 +28,9 @@ const Experience = ({ isInstructorRequest = null }) => {
   const { processData } = useSelector((state) => state.tutors);
   const loading = useSelector(
     (state) => state.tutors.isLoading.instructorRequest
+  );
+  const editloading = useSelector(
+    (state) => state.tutors.isLoading.editTutorRequestData
   );
   const { profile } = useSelector((state) => state.instructor.setting);
   const experienceloading = useSelector(
@@ -85,26 +90,44 @@ const Experience = ({ isInstructorRequest = null }) => {
     reset();
   };
 
-  const handleNext = () => {
-    if (experience.length > 0 || education?.length > 0) {
-      const formData = {
-        personalInfo: processData?.profile,
-        bio: processData?.indentity?.bio,
-        profilePhoto: processData?.indentity?.profile,
-        subjectsTaught: processData?.subjectAndlanguage?.language || [],
-        languagesSpoken: processData?.subjectAndlanguage?.subjects || [],
-        education: education,
-        experience,
-      };
+  console.log("processData", processData);
 
-      dispatch(instructorRequest(formData))
-        .unwrap()
-        .then(() => {
-          dispatch(updateProcessStep(5));
-          dispatch(updateProcessData({}));
-        });
+  const handleNext = () => {
+    if (authUser?.role === "admin") {
+      dispatch(updateProcessStep(5));
     } else {
-      toast.error("Add Experience and education");
+      if (experience.length > 0 || education?.length > 0) {
+        const formData = {
+          personalInfo: processData?.profile,
+          bio: processData?.indentity?.bio,
+          profilePhoto: processData?.indentity?.profile,
+          subjectsTaught: processData?.subjectAndlanguage?.subjects || [],
+          languagesSpoken: processData?.subjectAndlanguage?.language || [],
+          education: education,
+          experience,
+        };
+
+        if (processData && processData?.id) {
+          dispatch(
+            editTutorRequestData({ id: processData?.id, data: formData })
+          )
+            .unwrap()
+            .then(() => {
+              dispatch(updateRequestStatus("in review"));
+              dispatch(updateProcessStep(5));
+              dispatch(updateProcessData({}));
+            });
+        } else {
+          dispatch(instructorRequest(formData))
+            .unwrap()
+            .then(() => {
+              dispatch(updateProcessStep(5));
+              dispatch(updateProcessData({}));
+            });
+        }
+      } else {
+        toast.error("Add Experience and education");
+      }
     }
   };
 
@@ -194,7 +217,7 @@ const Experience = ({ isInstructorRequest = null }) => {
             onCancel={() => dispatch(updateProcessStep(3))}
             saveText={"Save and Continue"}
             handleClick={() => handleNext()}
-            loading={loading}
+            loading={loading || editloading}
           />
         </div>
       )}

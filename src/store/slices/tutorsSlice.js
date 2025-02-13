@@ -28,7 +28,7 @@ export const getTutorRequestData = CreateApiAsyncThunk(
 // from the admin side
 export const editTutorRequestData = CreateApiAsyncThunk(
   "tutors/editTutorRequestData",
-  ({id, data}) => api.get(`/requests/teacher/${id}`, data)
+  ({ id, data }) => api.put(`/requests/teacher/${id}`, data)
 );
 
 // from me
@@ -57,6 +57,9 @@ const tutorsSlice = createSlice({
     },
     updateProcessStep: (state, action) => {
       state.processStep = action.payload;
+    },
+    updateRequestStatus: (state, action) => {
+      state.requestStatus = action.payload;
     },
     updateProcessData: (state, action) => {
       const { field, data } = action.payload;
@@ -171,6 +174,7 @@ const tutorsSlice = createSlice({
             education,
             subjectsTaught,
             languagesSpoken,
+            _id,
           } = action.payload.data;
           state.processData = {
             profile: personalInfo,
@@ -184,6 +188,7 @@ const tutorsSlice = createSlice({
             },
             education,
             experience,
+            id: _id,
           };
         }
       })
@@ -207,6 +212,6 @@ const tutorsSlice = createSlice({
   },
 });
 
-export const { setTutorId, clearError, updateProcessData, updateProcessStep } =
+export const { setTutorId, clearError, updateProcessData, updateProcessStep, updateRequestStatus } =
   tutorsSlice.actions;
 export default tutorsSlice.reducer;

@@ -128,14 +128,12 @@ export default function IndentityForm({ isInstructorRequest = null }) {
         {/* YouTube Video Link */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Introduction Video (YouTube link)
+            Introduction Video (YouTube link) (optional)
           </label>
           <input
             type="url"
             placeholder="Enter a valid YouTube video link"
-            {...register("youtubeLink", {
-              required: "Introduction Video Link is required",
-            })}
+            {...register("youtubeLink")}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
             disabled={isInstructorRequest && authUser?.role === "admin"}
           />

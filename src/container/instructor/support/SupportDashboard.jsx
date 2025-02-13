@@ -7,7 +7,11 @@ import RaiseTicketModal from "@/components/instructor/RaiseTicketModal";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { StatsCard } from "@/components/student-dashboard/StatsCard";
 import { StatusBadge } from "@/components/student-dashboard/StatusBadge";
-import { getFilteredInstructorTickets, getInstructorTickets } from "@/store/slices/supportSlice";
+import {
+  getAdminTickets,
+  getFilteredInstructorTickets,
+  getInstructorTickets,
+} from "@/store/slices/supportSlice";
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegHourglass, FaTicketAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +27,7 @@ const SupportDashboard = () => {
   const getInstrcutorFilterLoading = useSelector(
     (state) => state.support.isLoading.getFilteredInstructorTickets
   );
-  const { instructorTickets: tickets } = useSelector((state) => state.support);
+  const { tickets } = useSelector((state) => state.support);
   const { authUser } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("All");
   const [isAdd, setisAdd] = useState(false);
@@ -61,20 +65,28 @@ const SupportDashboard = () => {
   ];
 
   useEffect(() => {
-    if (filter.toLowerCase() !== "all") {
-      dispatch(getFilteredInstructorTickets(filter?.toLowerCase()));
+    if (authUser?.role === "admin") {
+      if (filter.toLowerCase() !== "all") {
+        dispatch(getFilteredInstructorTickets(filter?.toLowerCase()));
+      } else {
+        dispatch(getAdminTickets());
+      }
     } else {
-      dispatch(getInstructorTickets());
+      if (filter.toLowerCase() !== "all") {
+        dispatch(getFilteredInstructorTickets(filter?.toLowerCase()));
+      } else {
+        dispatch(getInstructorTickets());
+      }
     }
   }, [filter]);
 
-  useEffect(() => {
-    dispatch(getSubjects());
-  }, []);
-
   return (
     <div className="w-full flex items-start justify-between gap-10">
-      <div className={`w-full flex flex-col items-start gap-8 dashboard-container p-5 ${messages ? "!w-[70%]" : "w-full"}`}>
+      <div
+        className={`w-full flex flex-col items-start gap-8 dashboard-container p-5 ${
+          messages ? "!w-[70%]" : "w-full"
+        }`}
+      >
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col items-start gap-1">
             <h2 className="text-2xl text-background font-bold">

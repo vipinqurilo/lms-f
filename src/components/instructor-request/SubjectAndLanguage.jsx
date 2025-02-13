@@ -15,6 +15,7 @@ import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
 import { usePathname } from "next/navigation";
 
 export default function SubjectAndLanguage() {
+  const { authUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { languages } = useSelector((state) => state.languages);
   const { categories } = useSelector((state) => state.category);
@@ -107,7 +108,20 @@ export default function SubjectAndLanguage() {
                   }`}
                 >
                   <span className="font-[700] text-base">
-                    {category?.categoryName}
+                    {category?.categoryName}{" "}
+                    {category?.subCategories?.filter((sub) =>
+                      selectedSubjects?.includes(sub?.id)
+                    ).length > 0 && (
+                      <span className="font-normal">
+                        (
+                        {
+                          category?.subCategories?.filter((sub) =>
+                            selectedSubjects?.includes(sub?.id)
+                          ).length
+                        }
+                        )
+                      </span>
+                    )}
                   </span>
                   <svg
                     className={`transition-transform ${
@@ -142,6 +156,7 @@ export default function SubjectAndLanguage() {
                           ? "bg-gray-100"
                           : "bg-white"
                       } ${i === 0 && "mt-4"}`}
+                      disabled={authUser?.role === "admin"}
                       onClick={() => {
                         setselectedSubjects((prev) => {
                           if (Array.isArray(prev) && prev.length > 0) {
@@ -181,7 +196,7 @@ export default function SubjectAndLanguage() {
             Languages
           </label>
           <div
-            className={`transition-all ease-in-out duration-500 overflow-hidden flex flex-col gap-4`}
+            className={`transition-all ease-in-out duration-500 overflow-hidden grid lg:grid-cols-3 gap-4`}
           >
             {languages?.map((lan, i) => (
               <button
@@ -191,6 +206,7 @@ export default function SubjectAndLanguage() {
                     ? "bg-gray-100"
                     : "bg-white"
                 }`}
+                disabled={authUser?.role === "admin"}
                 onClick={() => {
                   setselectedLanguages((prev) => {
                     if (Array.isArray(prev) && prev.length > 0) {

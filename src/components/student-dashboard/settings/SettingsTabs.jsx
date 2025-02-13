@@ -58,7 +58,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
       {tabs
         ?.slice(
           0,
-          authUser?.role === "student" || authUser.role === "admin"
+          authUser?.role === "student" || authUser?.role === "admin"
             ? 3
             : authUser?.role === "instructor"
             ? 7

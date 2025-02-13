@@ -13,11 +13,6 @@ const AddCourseProcessContainer = () => {
   const { step } = useSelector((state) => state.instructor.course);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getSubjects());
-    dispatch(getSubSubjects());
-  }, []);
-
   return (
     <div className="space-y-4">
       <AddCourseProcess />

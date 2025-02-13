@@ -3,8 +3,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "../api/api";
 
 const initialState = {
-  instructorTickets: [],
-  studentTickets: [],
+  tickets: [],
   isLoading: {},
   error: {},
 };
@@ -13,15 +12,16 @@ export const getInstructorTickets = CreateApiAsyncThunk(
   "GET/support/getInstructorTickets",
   () => api.get(`/ticket`)
 );
+export const getAdminTickets = CreateApiAsyncThunk(
+  "GET/support/getAdminTickets",
+  () => api.get(`/ticket/admin/get`)
+);
 
 export const getFilteredInstructorTickets = CreateApiAsyncThunk(
   "GET/support/getFilteredInstructorTickets",
   (status) => api.get(`/ticket/filter/${status}`)
 );
-export const getStudentTickets = CreateApiAsyncThunk(
-  "GET/support/getStudentTickets",
-  () => api.get(`/ticket`)
-);
+
 export const raiseTicket = CreateApiAsyncThunk("support/raiseTicket", (data) =>
   api.post(`/ticket`, data)
 );
@@ -41,12 +41,25 @@ const supportSlice = createSlice({
       })
       .addCase(getInstructorTickets.fulfilled, (state, action) => {
         state.isLoading["getInstructorTickets"] = false;
-        state.instructorTickets = action.payload.data;
+        state.tickets = action.payload.data;
       })
       .addCase(getInstructorTickets.rejected, (state, action) => {
         state.isLoading["getInstructorTickets"] = false;
         state.isLoading["getInstructorTickets"] = action.payload;
       })
+      // admin gets all tickets
+      .addCase(getAdminTickets.pending, (state) => {
+        state.isLoading["getAdminTickets"] = true;
+      })
+      .addCase(getAdminTickets.fulfilled, (state, action) => {
+        state.isLoading["getAdminTickets"] = false;
+        state.tickets = action.payload.data;
+      })
+      .addCase(getAdminTickets.rejected, (state, action) => {
+        state.isLoading["getAdminTickets"] = false;
+        state.isLoading["getAdminTickets"] = action.payload;
+      })
+      // get filtered tickets
       .addCase(getFilteredInstructorTickets.pending, (state) => {
         state.isLoading["getFilteredInstructorTickets"] = true;
       })
@@ -57,17 +70,6 @@ const supportSlice = createSlice({
       .addCase(getFilteredInstructorTickets.rejected, (state, action) => {
         state.isLoading["getFilteredInstructorTickets"] = false;
         state.isLoading["getFilteredInstructorTickets"] = action.payload;
-      })
-      .addCase(getStudentTickets.pending, (state) => {
-        state.isLoading["getStudentTickets"] = true;
-      })
-      .addCase(getStudentTickets.fulfilled, (state, action) => {
-        state.isLoading["getStudentTickets"] = false;
-        state.studentTickets = action.payload.data;
-      })
-      .addCase(getStudentTickets.rejected, (state, action) => {
-        state.isLoading["getStudentTickets"] = false;
-        state.isLoading["getStudentTickets"] = action.payload;
       })
       // raise ticket
       .addCase(raiseTicket.pending, (state) => {
@@ -90,7 +92,7 @@ const supportSlice = createSlice({
       .addCase(updateConversation.rejected, (state, action) => {
         state.isLoading["updateConversation"] = false;
         state.isLoading["updateConversation"] = action.payload;
-      })
+      });
   },
 });
 
