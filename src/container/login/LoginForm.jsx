@@ -25,19 +25,19 @@ const LoginForm = ({ type }) => {
       .then((res) => {
         console.log(res);
         if (res?.data?.role === "student") {
-          localStorage.setItem("token", res?.data?.token);
+          localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
           if (type !== "model") {
             router.push("/");
           }
         } else if (res?.data?.role === "teacher") {
-          localStorage.setItem("token", res?.data?.token);
+          localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
           if (type !== "model") {
             router.push("/instructor-dashboard");
           }
         } else if (res?.data?.role === "admin") {
-          localStorage.setItem("adminToken", res?.data?.token);
+          localStorage.setItem("adminToken", res?.token);
           localStorage.removeItem("token");
           if (type !== "model") {
             router.push("/admin-dashboard");
