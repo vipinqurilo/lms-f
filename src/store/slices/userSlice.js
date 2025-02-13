@@ -22,7 +22,6 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 );
 
 const initialState = {
-
   authUser: null,
   isAuthenticated: null,
 
@@ -39,6 +38,12 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    logoutUser: (state) => {
+      state.authUser = null;
+      localStorage.removeItem("token");
+      localStorage.removeItem("authToken");
+      window.location.reload();
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,7 +96,6 @@ const userSlice = createSlice({
       })
       .addCase(logout.pending, (state) => {
         state.isLoading["logout"] = true;
-        
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.isLoading["logout"] = false;
@@ -106,4 +110,6 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;
