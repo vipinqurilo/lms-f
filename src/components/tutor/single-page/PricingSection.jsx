@@ -7,7 +7,9 @@ const PricingSection = () => {
 
   // Handle the selected slot and its charge
   const [selectedSlot, setSelectedSlot] = useState(
-    tutorProfile?.tutionSlots[0]
+    tutorProfile?.tutionSlots && tutorProfile?.tutionSlots[0]
+      ? tutorProfile?.tutionSlots[0]
+      : 30
   );
 
   // If tutorProfile or tuitionSlots are not loaded yet, return a loading message or placeholder

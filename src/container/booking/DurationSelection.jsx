@@ -12,7 +12,7 @@ const durations = [
 export function DurationSelection({ slots, selected, onSelect }) {
   // Filter durations based on available slots
   const availableDurations = durations.filter((duration) =>
-    slots.includes(duration.minutes)
+    slots?.includes(duration.minutes)
   );
 
   return (
