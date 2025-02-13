@@ -1,72 +1,159 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { IoMdOptions } from "react-icons/io";
 
-const UserFilter = () => {
-  const [role, setRole] = useState("Admin");
-  const [status, setStatus] = useState("Active");
+const UserFilter = ({ onApplyFilters }) => {
+  const [searchTerm, setSearchTerm] = useState(""); // Added search state
+  const [role, setRole] = useState("Role");
+  const [status, setStatus] = useState("status");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+
+  // Check if any filter is applied
+  const isFilterApplied =
+    searchTerm || role !== "Role" || status !== "status" || startDate || endDate;
+
+  const handleApplyFilters = () => {
+    const filters = {};
+    if (searchTerm) filters.search = searchTerm;
+    if (role !== "Role") filters.role = role;
+    if (status !== "status") filters.status = status;
+    if (startDate) filters.startDate = startDate;
+    if (endDate) filters.endDate = endDate;
+
+    onApplyFilters(filters);
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm(""); // Clear search
+    setRole("Role");
+    setStatus("status");
+    setStartDate("");
+    setEndDate("");
+    onApplyFilters({});
+  };
 
   return (
-    <div className="flex  flex-wrap items-center gap-4 p-4 ">
-      <div className="   w-full" >
-         <div className="relative   ">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search"
-            className="pl-10 pr-4 py-2 border rounded-full w-6/12 focus:border-gray-500 focus:outline-none"
-          />
-        </div>
+    <div className="flex flex-wrap items-center gap-4 py-4">
+      <div className="w-full relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="pl-10 pr-4 py-1 h-10 border rounded-full w-6/12 focus:border-gray-500 focus:outline-none"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update state on input change
+        />
       </div>
 
-      <div className="flex">
-        {/* Date Filters */}
-        <div className="flex items-center gap-2">
-          <input
-            type="date"
-            className="border px-4 py-2 rounded-full text-gray-500 w-40"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-          <input
-            type="date"
-            className="border px-4 py-2 rounded-full text-gray-500 w-40"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+      <div className="flex justify-between w-full">
+        <div className="flex w-10/12 space-x-1 items-center flex-wrap">
+          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+            <span className="text-xs w-24">Start Date:</span>
+            <input
+              type="date"
+              className="bg-transparent outline-none w-full font-semibold"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+            <span className="text-xs w-24">End Date:</span>
+            <input
+              type="date"
+              className="bg-transparent outline-none w-full font-semibold"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+
+          <div
+            className="border text-sm flex bg-white items-center px-3 py-1 h-10 rounded-full text-gray-500 relative cursor-pointer w-32"
+            onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
+          >
+            <div className="flex justify-center items-center w-full">
+              <p className="text-xs">Role:</p>
+              <p className="text-sm font-semibold ml-1">{role}</p>
+            </div>
+            <div className="ml-1">
+              {roleDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
+            </div>
+            {roleDropdownOpen && (
+              <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
+                {["student", "teacher", "admin"].map((r) => (
+                  <p
+                    key={r}
+                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    onClick={() => {
+                      setRole(r);
+                      setRoleDropdownOpen(false);
+                    }}
+                  >
+                    {r}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div
+            className="border flex items-center px-3 py-1 h-10 rounded-full bg-white text-gray-500 relative cursor-pointer w-36"
+            onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
+          >
+            <div className="flex justify-center items-center w-full">
+              <p className="text-xs">Status:</p>
+              <p className="text-sm font-semibold ml-1">{status}</p>
+            </div>
+            <div className="ml-2">
+              {statusDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
+            </div>
+            {statusDropdownOpen && (
+              <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
+                {["inactive", "active"].map((s) => (
+                  <p
+                    key={s}
+                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                    onClick={() => {
+                      setStatus(s);
+                      setStatusDropdownOpen(false);
+                    }}
+                  >
+                    {s}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <button className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
+              More Filters <IoMdOptions />
+            </button>
+          </div>
         </div>
 
-        {/* Role Dropdown */}
-        <select
-          className="border px-4 py-2 rounded-full text-gray-500"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option>Admin</option>
-          <option>User</option>
-          <option>Manager</option>
-        </select>
+        <div className="flex gap-3 justify-center items-center">
+          {/* Show "Clear Filters" only if filters are applied */}
+          {isFilterApplied && (
+            <button
+              className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm "
+              onClick={handleClearFilters}
+            >
+              Clear Filters
+            </button>
+          )}
 
-        {/* Status Dropdown */}
-        <select
-          className="border px-4 py-2 rounded-full text-gray-500"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option>Active</option>
-          <option>Inactive</option>
-        </select>
-
-        {/* More Filters Button */}
-        <button className="border px-4 py-2 rounded-full text-gray-500">
-          More Filters ⚙️
-        </button>
-
-        {/* Apply Filters Button */}
-        <button className="border px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300">
-          Apply Filters
-        </button>
+          <button
+            className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm hover:text-white"
+            onClick={handleApplyFilters}
+          >
+            Apply Filters
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 );
 
 const initialState = {
+ 
 
   authUser: null,
   isAuthenticated: null,

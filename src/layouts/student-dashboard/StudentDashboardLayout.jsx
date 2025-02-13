@@ -8,7 +8,7 @@ export default protectedPages(function StudentDashboardLayout({ children }) {
       <TopBanner />
       <div className="w-full flex h-[calc(100%-80px)]">
         <Sidebar />
-        <main className="flex-1 p-8 w-full overflow-y-auto">{children}</main>
+        <main className="flex-1  w-full overflow-y-auto">{children}</main>
       </div>
     </div>
   );
