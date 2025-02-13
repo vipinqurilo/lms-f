@@ -24,20 +24,20 @@ const LoginForm = ({ type }) => {
       .unwrap()
       .then((res) => {
         console.log(res);
-        if (res?.role === "student") {
-          localStorage.setItem("token", res?.token);
+        if (res?.data?.role === "student") {
+          localStorage.setItem("token", res?.data?.token);
           localStorage.removeItem("adminToken");
           if (type !== "model") {
             router.push("/");
           }
-        } else if (res?.role === "teacher") {
-          localStorage.setItem("token", res?.token);
+        } else if (res?.data?.role === "teacher") {
+          localStorage.setItem("token", res?.data?.token);
           localStorage.removeItem("adminToken");
           if (type !== "model") {
             router.push("/instructor-dashboard");
           }
-        } else if (res?.role === "admin") {
-          localStorage.setItem("adminToken", res?.token);
+        } else if (res?.data?.role === "admin") {
+          localStorage.setItem("adminToken", res?.data?.token);
           localStorage.removeItem("token");
           if (type !== "model") {
             router.push("/admin-dashboard");
