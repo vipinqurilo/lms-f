@@ -9,7 +9,10 @@ export const fetchCategories = CreateApiAsyncThunk(
 
 export const fetchCoursesAsync = CreateApiAsyncThunk(
   "GET/courses/fetchCoursesAsync",
-  () => api.get(`/course/admin/get`)
+  (categoryId) => {
+    const query = categoryId ? `?categoryId=${categoryId}` : "";
+    return api.get(`/course/admin/get${query}`);
+  }
 );
 
 export const wishlistAsync = CreateApiAsyncThunk(

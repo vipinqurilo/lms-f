@@ -3,18 +3,19 @@ import { motion } from "framer-motion";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import FeaturedCard from "@/components/common/FeaturedCard";
-import { fetchCategories } from "@/store/slices/coursesSlice";
+import {
+  fetchCategories,
+  fetchCoursesAsync,
+} from "@/store/slices/coursesSlice";
 import { useDispatch } from "react-redux";
 
 const Courses = () => {
   const courses = useSelector((state) => state?.courses?.courses || []);
   const categories = useSelector((state) => state?.courses?.categories || []);
 
-  console.log(categories, "kd categories");
-
-  const [showFilters, setShowFilters] = useState(false);
-  const [clearTrigger, setClearTrigger] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+
+  console.log(selectedOption, "ye option");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -30,6 +31,14 @@ const Courses = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedOption !== "all") {
+      dispatch(fetchCoursesAsync(selectedOption));
+    } else {
+      dispatch(fetchCoursesAsync());
+    }
+  }, [dispatch, selectedOption]);
 
   return (
     <div className="lg:p-5 bg-gray-100 md:px-20 flex flex-wrap justify-center custom-margin-top">
@@ -61,8 +70,11 @@ const Courses = () => {
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
               >
+                <option value={"all"}>ALL</option>
                 {categories.map((category) => (
-                  <option className="text-black">{category?.name}</option>
+                  <option value={category._id} className="text-black">
+                    {category?.name}
+                  </option>
                 ))}
               </select>
             </div>
