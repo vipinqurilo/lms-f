@@ -19,9 +19,10 @@ const UserFilter = ({ onApplyFilters }) => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
     }, 500); // Delay of 500ms
-
+  
     return () => clearTimeout(timer); // Cleanup function
   }, [searchTerm]);
+  
 
   useEffect(() => {
     handleApplyFilters(); // Call API when debounced value updates
@@ -30,16 +31,16 @@ const UserFilter = ({ onApplyFilters }) => {
   const isFilterApplied =
     searchTerm || role !== "Role" || status !== "Status" || startDate || endDate;
 
-  const handleApplyFilters = () => {
-    const filters = {};
-    if (debouncedSearch) filters.search = debouncedSearch;
-    if (role !== "Role") filters.role = role;
-    if (status !== "Status") filters.status = status;
-    if (startDate) filters.startDate = startDate;
-    if (endDate) filters.endDate = endDate;
-
-    onApplyFilters(filters);
-  };
+    const handleApplyFilters = () => {
+      const filters = {};
+      if (debouncedSearch) filters.search = debouncedSearch;
+      if (role !== "Role") filters.role = role;
+      if (status !== "Status") filters.status = status;
+      if (startDate) filters.startDate = startDate;
+      if (endDate) filters.endDate = endDate;
+    
+      onApplyFilters(filters);
+    };
 
   const handleClearFilters = () => {
     setSearchTerm("");
@@ -101,7 +102,7 @@ const UserFilter = ({ onApplyFilters }) => {
             </div>
             {roleDropdownOpen && (
               <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {["Student", "Teacher", "Admin"].map((r) => (
+                {["student", "teacher", "admin"].map((r) => (
                   <p
                     key={r}
                     className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"

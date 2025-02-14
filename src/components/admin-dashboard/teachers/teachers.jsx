@@ -3,19 +3,15 @@ import { getAllTeachers } from "@/store/slices/admin-dashboard/teachersSlice";
 import React, { useState, useEffect } from "react";
 import { PiDotsThreeOutlineVerticalFill } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-
 const TeachersTable = () => {
   const [hoveredRow, setHoveredRow] = useState(null);
   const dispatch = useDispatch();
-
   // Access the teachers data from the Redux store
   const { teachers, isLoading, error } = useSelector((state) => state.admin.teachers);
-console.log(teachers,"poopoop")
   // Fetch teachers data on component mount
   useEffect(() => {
     dispatch(getAllTeachers());
   }, [dispatch]);
-
   const columns = [
     "Name",
     "Mobile no",
@@ -24,19 +20,15 @@ console.log(teachers,"poopoop")
     "Status",
     "Action",
   ];
-
   const handleStatusChange = (teacherId, status) => {
     dispatch(updateTeacherStatus({ teacherId, status }));
   };
-
   if (isLoading["getAllTeachers"]) {
     return <div>Loading...</div>;
   }
-
   if (error["getAllTeachers"]) {
     return <div>Error fetching teachers: {error["getAllTeachers"]}</div>;
   }
-
   return (
     <div className="p-4">
       <div className="overflow-x-auto">
@@ -74,7 +66,6 @@ console.log(teachers,"poopoop")
                     </button>
                   </td>
                 </tr>
-
                 {/* Show details inside the row when hovered */}
                 {hoveredRow === item._id && (
                   <tr className="transition-all duration-300 bg-gray-100">
@@ -116,5 +107,4 @@ console.log(teachers,"poopoop")
     </div>
   );
 };
-
-export default TeachersTable;
+export default TeachersTable
