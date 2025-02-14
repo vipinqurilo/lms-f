@@ -10,6 +10,7 @@ import BookingList from "./BookingList";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 import { fetchAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
+import { Pagination } from "@/components/student-dashboard/Pagination";
 
 const BookingsDashboard = () => {
   const dispatch = useDispatch();
@@ -82,38 +83,39 @@ const BookingsDashboard = () => {
     dispatch(fetchAvailabilityAsync());
   }, []);
   return (
-    <div className="px-5 py-0 flex flex-col gap-6">
-      {bookings.length > 0 && <BookingReminder bookings={bookings} />}
-      <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
+    <>
+      <div className="px-5  flex flex-col gap-6  p-10">
+        {bookings.length > 0 && <BookingReminder bookings={bookings} />}
+        <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
 
-      {/* Custom Tabs */}
-      <BookingTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        {/* Custom Tabs */}
+        <BookingTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Filters */}
-      <BookingsFilter
-        keyword={keyword}
-        setKeyword={setKeyword}
-        startDate={startDate}
-        endDate={endDate}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-        handleEndDateChange={handleEndDateChange}
-        handleStartDateChange={handleStartDateChange}
-      />
-
-      {/* Bookings Content */}
-      {activeTab2 === "listing" ? (
-        <BookingList
-          bookings={bookings}
-          currentPage={currentPage}
-          isLoading={isLoading}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
+        {/* Filters */}
+        <BookingsFilter
+          keyword={keyword}
+          setKeyword={setKeyword}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          handleEndDateChange={handleEndDateChange}
+          handleStartDateChange={handleStartDateChange}
         />
-      ) : (
-        <TutorAvailabilityCalendar calendar={availability.availability} />
-      )}
-    </div>
+
+        {/* Bookings Content */}
+        {activeTab2 === "listing" ? (
+          <BookingList bookings={bookings} isLoading={isLoading} />
+        ) : (
+          <TutorAvailabilityCalendar calendar={availability.availability} />
+        )}
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+    </>
   );
 };
 

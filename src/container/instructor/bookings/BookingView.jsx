@@ -4,7 +4,7 @@ const BookingView = ({ setActiveTab2, activeTab2 }) => {
   return (
     <div className="flex items-center justify-between mb-6">
       <h2 className="text-2xl font-semibold">My Bookings</h2>
-      <div className="flex w-fit bg-white p-1 rounded-lg">
+      {/* <div className="flex w-fit bg-white p-1 rounded-lg">
         <button
           className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${
             activeTab2 === "listing"
@@ -25,7 +25,7 @@ const BookingView = ({ setActiveTab2, activeTab2 }) => {
         >
           Calendar
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

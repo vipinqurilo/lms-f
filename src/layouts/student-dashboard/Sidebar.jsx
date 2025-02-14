@@ -214,7 +214,7 @@ export function Sidebar() {
     <div className={`h-full !transition-custom`}>
       <nav
         className={`flex-1 overflow-y-auto !overflow-visible h-full px-4 bg-background py-5 text-white ${
-          isCollapsed ? "w-20" : "w-60"
+          isCollapsed ? "w-[80px]" : "w-[240px]"
         } transition-custom`}
         style={{ scrollbarWidth: "thin", scrollbarColor: "#e8ebe9" }}
       >

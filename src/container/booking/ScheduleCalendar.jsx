@@ -37,7 +37,7 @@ const ScheduleCalendar = ({
   sessionEndTime,
   setSessionEndTime,
 }) => {
-  const data = calendar?.availability.reduce((acc, { day, slots }) => {
+  const data = calendar?.availability?.reduce((acc, { day, slots }) => {
     const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
     acc[dayName] = slots;
     return acc;
@@ -113,7 +113,7 @@ const ScheduleCalendar = ({
 
         // Calculate and format session end time
         const [endHours, endMinutes] =
-          times[spanStart + slotsPerDuration].split(":");
+          times[spanStart + slotsPerDuration]?.split(":");
         const endTime = new Date(selectedDate);
         endTime.setHours(
           Number.parseInt(endHours),
@@ -291,7 +291,7 @@ const ScheduleCalendar = ({
           scrollbarWidth: "thin" /* Firefox ke liye */,
           scrollbarColor: "#888 #f1f1f1" /* Firefox ke liye color */,
         }}
-        className="h-full overflow-y-scroll"
+        className="h-full overflow-y-scroll "
       >
         <div className="flex items-center justify-center lg:justify-normal mt-4 lg:mt-0 gap-4 text-sm px-4 py-2">
           <div className="flex items-center gap-2">
