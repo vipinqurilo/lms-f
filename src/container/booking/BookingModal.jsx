@@ -17,7 +17,10 @@ export function BookingModal({ onClose, tutor }) {
   const [step, setStep] = useState(1);
   const { profile } = useSelector((state) => state.student.profile);
   const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
-  const [duration, setDuration] = useState(tutor?.tutionSlots[0] || null);
+  const [duration, setDuration] = useState(
+    tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : 30
+  );
+  const { bookingsByTutorId } = useSelector((state) => state.student.booking);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
@@ -125,6 +128,7 @@ export function BookingModal({ onClose, tutor }) {
       {step === 3 && (
         <div className=" h-[calc(100%-154px)]">
           <ScheduleCalendar
+            rawBookings={bookingsByTutorId}
             scheduledDate={scheduledDate}
             setScheduledDate={setScheduledDate}
             sessionStartTime={sessionStartTime}

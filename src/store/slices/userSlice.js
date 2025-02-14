@@ -36,19 +36,16 @@ export const instructorRegister = CreateApiAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-
   reducers: {
     logoutUser: (state) => {
       state.authUser = null;
       localStorage.removeItem("token");
       localStorage.removeItem("authToken");
-      window.location.reload();
     },
   },
 
   extraReducers: (builder) => {
     builder
-
       .addCase(userRegisterAsync.pending, (state, action) => {
         state.isLoading["userRegisterAsync"] = true;
       })
@@ -89,7 +86,8 @@ const userSlice = createSlice({
       .addCase(verifyLoggedInUser.fulfilled, (state, action) => {
         state.isLoading["verifyLoggedInUser"] = false;
         state.authUser = action.payload.data;
-        state.isAuthenticated = true;
+        state.isAuthenticated =
+          action.payload?.status === "error" ? false : true;
       })
       .addCase(verifyLoggedInUser.rejected, (state) => {
         state.isLoading["verifyLoggedInUser"] = false;
@@ -112,7 +110,5 @@ const userSlice = createSlice({
   },
 });
 
-
 export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;
-

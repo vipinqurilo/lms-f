@@ -27,6 +27,7 @@ const bookings = [
 ];
 
 const ScheduleCalendar = ({
+  rawBookings,
   duration,
   calendar,
   scheduledDate,
@@ -46,7 +47,18 @@ const ScheduleCalendar = ({
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
   const [selectedSlots, setSelectedSlots] = useState([]);
+  const bookings = rawBookings?.map((session) => {
+    const startTime = new Date(session.sessionStartTime);
+    const endTime = new Date(session.sessionEndTime);
+    startTime.setMinutes(startTime.getMinutes() + 330); // Add 5:30
+    endTime.setMinutes(endTime.getMinutes() + 330); // Add 5:30
 
+    return {
+      date: startTime.toISOString().split("T")[0], // Extract YYYY-MM-DD
+      startTime: startTime.toISOString().split("T")[1].slice(0, 5),
+      endTime: endTime.toISOString().split("T")[1].slice(0, 5),
+    };
+  });
   const handleSlotSelect = (isBeforeCurrentTime, rowIndex, colIndex) => {
     if (isAvailable(colIndex, rowIndex) && !isBeforeCurrentTime) {
       const slotsPerDuration = duration / 15;

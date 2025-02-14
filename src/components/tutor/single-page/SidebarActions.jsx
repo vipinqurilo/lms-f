@@ -1,6 +1,9 @@
+import { setIsContactModelOpen } from "@/store/slices/uiSlice";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 const SidebarActions = ({ setShowBooking }) => {
+  const dispatch = useDispatch();
   return (
     <div>
       {/* right side */}
@@ -11,7 +14,10 @@ const SidebarActions = ({ setShowBooking }) => {
         >
           Book now
         </button>
-        <button className="w-full py-3 border border-[#FF9800] text-[#FF9800] rounded-lg hover:bg-orange-50 transition-colors">
+        <button
+          onClick={() => dispatch(setIsContactModelOpen(true))}
+          className="w-full py-3 border border-[#FF9800] text-[#FF9800] rounded-lg hover:bg-orange-50 transition-colors"
+        >
           Contact
         </button>
       </div>
