@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { VscTriangleUp } from "react-icons/vsc";
 import Link from "next/link";
+import { logoutUser } from "@/store/slices/userSlice";
 
 const profileData = [
   {
@@ -37,13 +38,55 @@ const profileData = [
   },
   {
     title: "Logout",
-    href: "/logout",
+    href: "#",
     description: "Sign out of your account securely",
+    onClick: async (e) => {
+      e.preventDefault();
+      await dispatch(logoutUser());
+      router.push("/");
+    },
   },
 ];
 
 const TopBanner = () => {
   const dispatch = useDispatch();
+  const profileData = [
+    {
+      title: "My Profile",
+      href: "/profile",
+      description: "View and edit your personal details",
+    },
+    {
+      title: "Account Settings",
+      href: "/profile/settings",
+      description: "Manage your account preferences and security",
+    },
+    {
+      title: "Notifications",
+      href: "/profile/notifications",
+      description: "Control your notification settings",
+    },
+    {
+      title: "Payment Methods",
+      href: "/profile/payments",
+      description: "Manage your saved payment options",
+    },
+    {
+      title: "Order History",
+      href: "/profile/orders",
+      description: "View your past purchases and transactions",
+    },
+    {
+      title: "Logout",
+      href: "#",
+      description: "Sign out of your account securely",
+      onClick: async (e) => {
+        e.preventDefault();
+        await dispatch(logoutUser());
+        router.push("/");
+      },
+    },
+  ];
   const { isCollapsed } = useSelector((state) => state.instructor.dashboard);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleIsModalOpen = () => setIsModalOpen(!isModalOpen);

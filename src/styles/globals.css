@@ -54,12 +54,12 @@
     transform: translateY(0);
   }
 }
+ 
+
 .animate-fadeDown {
   animation: fadeDown 0.3s ease-in-out forwards;
 }
-
-
-:root {
+ :root {
   --primary: #e36760;
   --secondary: #f79902;
   --dark: #392b3c;
