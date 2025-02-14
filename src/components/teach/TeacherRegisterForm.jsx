@@ -36,7 +36,7 @@ const TeacherRegisterForm = () => {
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className="mb-4">Teach what you are passionate about</p>
 
-        {authUser ? (
+        {authUser !== null ? (
           <>
             {authUser.role === "admin" ? (
               <RedirectButton

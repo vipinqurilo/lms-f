@@ -165,7 +165,7 @@ export default function IndentityForm({ isInstructorRequest = null }) {
             cancelText={"Cancel"}
             onCancel={() => dispatch(updateProcessStep(1))}
             handleClick={handleSubmit((data) => handleNext(data))}
-            saveText={"Save and Continue"}
+            saveText={authUser?.role === "admin" ? "Next" : "Save and Continue"}
           />
         </div>
       </form>

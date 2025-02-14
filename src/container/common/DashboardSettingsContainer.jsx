@@ -27,9 +27,6 @@ const DashboardSettingsContainer = () => {
   const { profile } = useSelector((state) => state.instructor.setting);
   const dispatch = useDispatch();
 
-  console.log("profile in DashboardSettingsContainer", profile);
-  
-
   const handleImageValidation = (imageFile) => {
     const formData = new FormData();
     formData.append("courseImage", imageFile);

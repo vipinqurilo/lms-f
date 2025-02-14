@@ -66,8 +66,6 @@ export function EditProfile({ isInstructorRequest = null }) {
   useEffect(() => {
     if (path === "/instructor-dashboard/settings") {
       if (instructorProfile) {
-        console.log("instructorProfile from line 67", instructorProfile);
-
         setLocalProfile({
           firstName: instructorProfile?.firstName || "",
           lastName: instructorProfile?.lastName || "",
@@ -75,7 +73,7 @@ export function EditProfile({ isInstructorRequest = null }) {
           email: instructorProfile?.email || "",
           phoneNumber: instructorProfile?.phone?.number || "",
           countryCode: instructorProfile?.phone?.countryCode || "",
-          gender: instructorProfile?.gender || "",
+          gender: instructorProfile?.gender?.toLowerCase() || "",
           country: instructorProfile?.country || "",
           bio: instructorProfile?.bio || "",
         });
@@ -381,7 +379,7 @@ export function EditProfile({ isInstructorRequest = null }) {
             cancelText={"Cancel"}
             onCancel={handleReset}
             handleClick={() => handleNext()}
-            saveText={"Save and Continue"}
+            saveText={authUser?.role === "admin" ? "Next" : "Save and Continue"}
           />
         </div>
       ) : (

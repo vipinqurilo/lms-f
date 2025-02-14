@@ -3,7 +3,7 @@
 import { logoutUser } from "@/store/slices/userSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { VscTriangleUp } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ProfileDropDown = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const path = usePathname();
   const { authUser } = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -110,7 +111,22 @@ const ProfileDropDown = () => {
             <VscTriangleUp size={40} />
           </div>
 
-          <ul className="min-w-full md:w-48 bg-white text-nowrap rounded border border-t-0">
+          <ul className="min-w-full md:w-48 bg-white text-nowrap rounded border border-t-0 shadow-sm">
+            {[
+              "/instructor-dashboard",
+              "/student-dashboard",
+              "/admin-dashboard",
+            ]?.some((p) => path.startsWith(p)) && (
+              <Link
+                href={"/"}
+                className={`text-black bg-gray-200 group !w-full`}
+              >
+                <li className=" text-light group-hover:!text-secondary transition-custom w-full h-auto text-base border-b border-black/10 px-6 py-3">
+                  Go To Website
+                </li>
+              </Link>
+            )}
+
             {(authUser?.role === "admin"
               ? adminProfileLinks
               : authUser?.role === "teacher"
@@ -156,16 +172,12 @@ const ProfileAvatar = ({ authUser }) => {
     <div className="flex items-center gap-2">
       {/* Profile Image or Initial */}
       <div className="w-10 h-10 rounded-full border border-black/10 relative overflow-hidden cursor-pointer flex items-center justify-center bg-gray-200 text-gray-700 font-semibold">
-        {userImage ? (
-          <Image
-            src={userImage}
-            alt="profile image"
-            fill
-            className="object-cover object-center"
-          />
-        ) : (
-          <span>{firstInitial}</span>
-        )}
+        <Image
+          src={userImage || "/assets/common/profile.png"}
+          alt="profile image"
+          fill
+          className="object-cover object-center"
+        />
       </div>
 
       {/* Greeting Message */}
