@@ -6,7 +6,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
   };
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between sticky bottom-8">
       <p className="text-sm text-gray-500">
         Page {currentPage} of {totalPages}
       </p>

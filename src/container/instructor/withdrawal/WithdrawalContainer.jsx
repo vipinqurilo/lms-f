@@ -18,7 +18,7 @@ const headingsData = [
 ];
 
 const WithdrawalContainer = () => {
-  const { withdrawals } = useSelector((state) => state.instructor.withdrawal);
+  const { withdrawals, balance } = useSelector((state) => state.instructor.withdrawal);
   const [isWithdrawal, setisWithdrawal] = useState(false);
 
   const getStatusCss = (status) => {
@@ -53,7 +53,7 @@ const WithdrawalContainer = () => {
             <p>Current Balance</p>
             <p className=" font-medium">
               You have{" "}
-              <span className="font-semibold text-background">₹5255</span> ready
+              <span className="font-semibold text-background">₹{balance}</span> ready
               to withdraw now
             </p>
           </div>
@@ -119,7 +119,7 @@ const WithdrawalContainer = () => {
       {isWithdrawal && (
         <RequestWithdrawal
           handleClose={() => setisWithdrawal(false)}
-          balance={"5255"}
+          balance={balance}
         />
       )}
     </div>
