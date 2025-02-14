@@ -99,6 +99,7 @@ const Experience = ({ isInstructorRequest = null }) => {
           personalInfo: processData?.profile,
           bio: processData?.indentity?.bio,
           profilePhoto: processData?.indentity?.profile,
+          introVideo: processData?.indentity?.introVideo,
           subjectsTaught: processData?.subjectAndlanguage?.subjects || [],
           languagesSpoken: processData?.subjectAndlanguage?.language || [],
           education: education,

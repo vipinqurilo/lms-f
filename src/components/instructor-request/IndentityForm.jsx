@@ -29,7 +29,7 @@ export default function IndentityForm({ isInstructorRequest = null }) {
     if (processData) {
       if (Object.keys(processData).length > 0) {
         reset({
-          youtubeLink: processData?.indentity?.youtubeLink,
+          introVideo: processData?.indentity?.introVideo,
           bio: processData?.indentity?.bio,
         });
         setProfilePreview(processData?.indentity?.profile);
@@ -133,13 +133,13 @@ export default function IndentityForm({ isInstructorRequest = null }) {
           <input
             type="url"
             placeholder="Enter a valid YouTube video link"
-            {...register("youtubeLink")}
+            {...register("introVideo")}
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
             disabled={isInstructorRequest && authUser?.role === "admin"}
           />
-          {errors?.youtubeLink && (
+          {errors?.introVideo && (
             <p className="text-xs text-red-500">
-              *{errors.youtubeLink.message}
+              *{errors.introVideo.message}
             </p>
           )}
         </div>

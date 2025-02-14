@@ -55,7 +55,9 @@ const userSlice = createSlice({
       })
       .addCase(userRegisterAsync.rejected, (state, action) => {
         state.isLoading["userRegisterAsync"] = false;
-        state.error["userRegisterAsync"] = action.payload;
+        state.authUser = action.payload?.data;
+        state.isAuthenticated =
+          action.payload?.status === "error" ? false : true;
       })
       .addCase(userLoginAsync.pending, (state, action) => {
         state.isLoading["userLoginAsync"] = true;
@@ -75,8 +77,11 @@ const userSlice = createSlice({
       .addCase(instructorRegister.pending, (state) => {
         state.isLoading["instructorRegister"] = true;
       })
-      .addCase(instructorRegister.fulfilled, (state) => {
+      .addCase(instructorRegister.fulfilled, (state, action) => {
         state.isLoading["instructorRegister"] = false;
+        state.authUser = action.payload?.data;
+        state.isAuthenticated =
+          action.payload?.status === "error" ? false : true;
       })
       .addCase(instructorRegister.rejected, (state) => {
         state.isLoading["instructorRegister"] = false;
