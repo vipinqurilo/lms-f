@@ -3,90 +3,141 @@
 import { logoutUser } from "@/store/slices/userSlice";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { VscTriangleUp } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProfileDropDown = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { authUser } = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleIsModalOpen = () => setIsModalOpen(!isModalOpen);
-  const profileData = [
+
+  const studentProfileLinks = [
+    {
+      title: "Dashboard",
+      href: "/student-dashboard",
+    },
     {
       title: "My Profile",
-      href: "/profile",
-      description: "View and edit your personal details",
+      href: "/student-dashboard/profile",
     },
     {
-      title: "Account Settings",
-      href: "/profile/settings",
-      description: "Manage your account preferences and security",
+      title: "Enrolled Courses",
+      href: "/student-dashboard/enrolled-courses",
     },
     {
-      title: "Notifications",
-      href: "/profile/notifications",
-      description: "Control your notification settings",
+      title: "Wishlist",
+      href: "/student-dashboard/wishlist",
     },
     {
-      title: "Payment Methods",
-      href: "/profile/payments",
-      description: "Manage your saved payment options",
+      title: "My Booking",
+      href: "/student-dashboard/booking",
     },
     {
       title: "Order History",
-      href: "/profile/orders",
-      description: "View your past purchases and transactions",
+      href: "/student-dashboard/orders",
     },
     {
-      title: "Logout",
-      href: "#",
-      description: "Sign out of your account securely",
-      onClick: async (e) => {
-        e.preventDefault();
-        await dispatch(logoutUser());
-        router.push("/");
-      },
+      title: "Settings",
+      href: "/student-dashboard/settings",
     },
   ];
+
+  const adminProfileLinks = [
+    {
+      title: "Dashboard",
+      href: "/admin-dashboard",
+    },
+    {
+      title: "Courses",
+      href: "/admin-dashboard/approvals/courses",
+    },
+    {
+      title: "Teachers",
+      href: "/admin-dashboard/approvals/teachers",
+    },
+    {
+      title: "Withdrawals",
+      href: "/admin-dashboard/approvals/withdrawals",
+    },
+    {
+      title: "Manage Courses",
+      href: "/admin-dashboard/manage-courses",
+    },
+    {
+      title: "Settings",
+      href: "/admin-dashboard/settings",
+    },
+  ];
+
+  const instructorProfileLinks = [
+    {
+      title: "Dashboard",
+      href: "/instructor-dashboard",
+    },
+    {
+      title: "My Courses",
+      href: "/instructor-dashboard/my-courses",
+    },
+    {
+      title: "Bookings",
+      href: "/instructor-dashboard/bookings",
+    },
+    {
+      title: "Settings",
+      href: "/instructor-dashboard/settings",
+    },
+  ];
+
+  const handleLogOut = () => {
+    dispatch(logoutUser());
+    router.push("/");
+  };
+
   return (
     <div
-      className="relative"
+      className="relative font-nunito"
       onMouseEnter={() => setIsModalOpen(true)}
       onMouseLeave={() => setIsModalOpen(false)}
     >
       <ProfileAvatar authUser={authUser} />
 
       {isModalOpen && (
-        <div className="absolute top-full right-0 pt-2">
+        <div className="absolute top-full right-0 pt-2 !z-[15]">
           <div className="-mb-3.5 w-full flex items-center justify-end text-white ">
             <VscTriangleUp size={40} />
           </div>
 
-          <ul className="min-w-full bg-white text-nowrap rounded border border-t-0">
-            {profileData?.map((subLink, i) => (
-              <li
-                className=" text-light group w-full text-base border-b border-black/10 px-6 py-3"
-                key={i}
+          <ul className="min-w-full md:w-48 bg-white text-nowrap rounded border border-t-0">
+            {(authUser?.role === "admin"
+              ? adminProfileLinks
+              : authUser?.role === "teacher"
+              ? instructorProfileLinks
+              : studentProfileLinks
+            )?.map((subLink, i) => (
+              <Link
+                href={subLink?.href}
+                onClick={(e) =>
+                  authUser?.userStatus !== "active" && e.preventDefault()
+                }
+                className={`text-black bg-gray-200 group !w-full`}
               >
-                {subLink?.onClick ? (
-                  <button
-                    onClick={subLink?.onClick}
-                    className={`text-black group-hover:!text-secondary transition-custom w-full md:w-fit`}
-                  >
-                    {subLink?.title}
-                  </button>
-                ) : (
-                  <Link
-                    href={subLink?.href}
-                    onClick={subLink?.onClick}
-                    className={`text-black group-hover:!text-secondary transition-custom w-full md:w-fit`}
-                  >
-                    {subLink?.title}
-                  </Link>
-                )}
-              </li>
+                <li
+                  className=" text-light group-hover:!text-secondary transition-custom w-full h-auto text-base border-b border-black/10 px-6 py-3"
+                  key={i}
+                >
+                  {subLink?.title}
+                </li>
+              </Link>
             ))}
+            <button
+              onClick={handleLogOut}
+              className={`text-black hover:!text-secondary transition-custom w-full text-start px-6 py-3`}
+            >
+              Logout
+            </button>
           </ul>
         </div>
       )}

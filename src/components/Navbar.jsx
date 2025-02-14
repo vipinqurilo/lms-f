@@ -6,22 +6,16 @@ import { useEffect, useRef, useState } from "react";
 import MobileMenu from "./navbar/MobileMenu";
 import DeskTopMenu from "./navbar/DeskTopMenu";
 import NavbarTopContactBanner from "./navbar/NavbarTopContactBanner";
-import { useDispatch, useSelector } from "react-redux";
-import { VscTriangleUp } from "react-icons/vsc";
-import { logoutUser } from "@/store/slices/userSlice";
-import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import ProfileDropDown from "./common/ProfileDropDown";
 
 const Navbar = () => {
-  const router = useRouter();
-  const dispatch = useDispatch();
   const { authUser } = useSelector((state) => state.user);
   const [isScrolled, setisScrolled] = useState(false);
   const [isMenuOpen, setisMenuOpen] = useState(false);
   const toggleMenu = () => setisMenuOpen(!isMenuOpen);
   const menuRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleIsModalOpen = () => setIsModalOpen(!isModalOpen);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
