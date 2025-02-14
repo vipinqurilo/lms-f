@@ -24,6 +24,8 @@ const Categories = () => {
   const { subjects, isLoading, error } = useSelector(
     (state) => state.admin.managesubjects
   );
+
+  console.log(subjects,"pppppp")
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Track delete modal state
@@ -92,7 +94,7 @@ const Categories = () => {
                 <td className="py-3 px-4 text-sm">{index + 1}</td>
                 <td className="py-3 px-4 text-sm">{cat.name}</td>
                 <td className="py-3 px-4 text-blue-600 cursor-pointer text-sm">
-                  {cat.courseSubCategory.length}
+                  {cat.courseSubCategory?.length}
                 </td>
 
                 <td className="py-3 px-4 text-sm">

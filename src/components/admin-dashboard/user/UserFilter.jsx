@@ -1,26 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
 
 const UserFilter = ({ onApplyFilters }) => {
-  const [searchTerm, setSearchTerm] = useState(""); // Added search state
+  const [searchTerm, setSearchTerm] = useState("");
   const [role, setRole] = useState("Role");
-  const [status, setStatus] = useState("status");
+  const [status, setStatus] = useState("Status");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  
+  // Debounced Search Term
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  // Check if any filter is applied
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500); // Delay of 500ms
+
+    return () => clearTimeout(timer); // Cleanup function
+  }, [searchTerm]);
+
+  useEffect(() => {
+    handleApplyFilters(); // Call API when debounced value updates
+  }, [debouncedSearch, role, status, startDate, endDate]);
+
   const isFilterApplied =
-    searchTerm || role !== "Role" || status !== "status" || startDate || endDate;
+    searchTerm || role !== "Role" || status !== "Status" || startDate || endDate;
 
   const handleApplyFilters = () => {
     const filters = {};
-    if (searchTerm) filters.search = searchTerm;
+    if (debouncedSearch) filters.search = debouncedSearch;
     if (role !== "Role") filters.role = role;
-    if (status !== "status") filters.status = status;
+    if (status !== "Status") filters.status = status;
     if (startDate) filters.startDate = startDate;
     if (endDate) filters.endDate = endDate;
 
@@ -28,9 +42,9 @@ const UserFilter = ({ onApplyFilters }) => {
   };
 
   const handleClearFilters = () => {
-    setSearchTerm(""); // Clear search
+    setSearchTerm("");
     setRole("Role");
-    setStatus("status");
+    setStatus("Status");
     setStartDate("");
     setEndDate("");
     onApplyFilters({});
@@ -38,15 +52,18 @@ const UserFilter = ({ onApplyFilters }) => {
 
   return (
     <div className="flex flex-wrap items-center gap-4 py-4">
-      <div className="w-full relative">
+      <div className="w-full relative flex">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4" />
         <input
           type="text"
           placeholder="Search"
           className="pl-10 pr-4 py-1 h-10 border rounded-full w-6/12 focus:border-gray-500 focus:outline-none"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update state on input change
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <button className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
+          More Filters <IoMdOptions />
+        </button>
       </div>
 
       <div className="flex justify-between w-full">
@@ -84,7 +101,7 @@ const UserFilter = ({ onApplyFilters }) => {
             </div>
             {roleDropdownOpen && (
               <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {["student", "teacher", "admin"].map((r) => (
+                {["Student", "Teacher", "Admin"].map((r) => (
                   <p
                     key={r}
                     className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -113,7 +130,7 @@ const UserFilter = ({ onApplyFilters }) => {
             </div>
             {statusDropdownOpen && (
               <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {["inactive", "active"].map((s) => (
+                {["Inactive", "Active"].map((s) => (
                   <p
                     key={s}
                     className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -128,19 +145,12 @@ const UserFilter = ({ onApplyFilters }) => {
               </div>
             )}
           </div>
-
-          <div>
-            <button className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
-              More Filters <IoMdOptions />
-            </button>
-          </div>
         </div>
 
         <div className="flex gap-3 justify-center items-center">
-          {/* Show "Clear Filters" only if filters are applied */}
           {isFilterApplied && (
             <button
-              className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm "
+              className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm"
               onClick={handleClearFilters}
             >
               Clear Filters

@@ -79,20 +79,20 @@ import { api } from "@/store/api/api";
 // Fetch all subcategories
 export const getAllSubCategories = CreateApiAsyncThunk(
   "GET/subcategory/getAllSubCategories",
-  () => api.get("/api/subcategory")
+  () => api.get("/subcategory")
 );
 
 // Delete a subcategory by ID
 export const deleteSubCategoryById = CreateApiAsyncThunk(
   "DELETE/subcategory/deleteSubCategoryById",
-  (id) => api.delete(`/api/subcategory/${id}`)
+  (id) => api.delete(`/subcategory/${id}`)
 );
 
 // Update a subcategory by ID
 export const editSubCategoryById = CreateApiAsyncThunk(
   "PUT/subcategory/editSubCategoryById",
   async ({ id, updatedData }) => {
-    return await api.put(`/api/subcategory/${id}`, updatedData);
+    return await api.put(`/subcategory/${id}`, updatedData);
   }
 );
 
@@ -100,7 +100,7 @@ export const editSubCategoryById = CreateApiAsyncThunk(
 export const addSubCategory = CreateApiAsyncThunk(
   "POST/subcategory/addSubCategory",
   async (subCategoryData) => {
-    return await api.post("/api/subcategory", subCategoryData);
+    return await api.post("/subcategory", subCategoryData);
   }
 );
 
