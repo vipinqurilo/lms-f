@@ -204,7 +204,7 @@ const TeacherRequests = () => {
                     >
                       <FaRegCalendarCheck size={18} />
                     </button>
-                    <Link href={`/instructor-request/${teacher?.userId}`}>
+                    <Link href={`/instructor-request/${teacher?._id}`}>
                       <button className="text-gray-600 hover:text-yellow-500">
                         <FiEye />
                       </button>

@@ -27,8 +27,8 @@ function protectedPages(Component) {
           }
 
           // Only proceed with route checking if we have a user
-          if (authUser) {
-            const allowedRoutes = roleBasedRoutes[authUser?.role] || [];
+          if (authUser && authUser?.userStatus === "active") {
+            const allowedRoutes = roleBasedRoutes[authUser.role] || [];
             const isAuthorized = allowedRoutes.some((route) =>
               router.pathname.startsWith(route)
             );

@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Async thunks for profile actions
 export const fetchProfileAsync = CreateApiAsyncThunk(
-  "profile/fetchProfileAsync",
+  "GET/profile/fetchProfileAsync",
   () => api.get(`/profile`)
 );
 

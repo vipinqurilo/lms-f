@@ -26,7 +26,7 @@ const AddExperience = ({
         <SettingsInputField
           errors={errors}
           label={"Institution"}
-          name={"institution"}
+          name={type === "education" ? "institute" : "company"}
           register={register}
         />
       </div>
@@ -48,14 +48,14 @@ const AddExperience = ({
         <SettingsInputField
           errors={errors}
           label={"Start year"}
-          name={"startyear"}
+          name={"startDate"}
           register={register}
         />
 
         <SettingsInputField
           errors={errors}
           label={"End year"}
-          name={"endyear"}
+          name={"endDate"}
           register={register}
         />
       </div>

@@ -27,6 +27,9 @@ const DashboardSettingsContainer = () => {
   const { profile } = useSelector((state) => state.instructor.setting);
   const dispatch = useDispatch();
 
+  console.log("profile in DashboardSettingsContainer", profile);
+  
+
   const handleImageValidation = (imageFile) => {
     const formData = new FormData();
     formData.append("courseImage", imageFile);
@@ -66,12 +69,6 @@ const DashboardSettingsContainer = () => {
   useEffect(() => {
     dispatch(getProfile());
   }, []);
-
-  useEffect(() => {
-    dispatch(getLanguages());
-    dispatch(getSubSubjects());
-    dispatch(getSubjects());
-  }, [dispatch]);
 
   return (
     <div className="bg-white rounded-lg border">

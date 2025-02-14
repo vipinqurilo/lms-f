@@ -10,12 +10,12 @@ const initialState = {
 
 export const fetchData = CreateApiAsyncThunk(
   "upload/fetchTeachers",  // Adjusted action name
-  () => api.get('/api/requests/teachers') // Call the teachers API endpoint
+  () => api.get('/requests/teachers') // Call the teachers API endpoint
 );
 
 export const approveTeacher = CreateApiAsyncThunk(
   "upload/approveTeacher",
-  (teacherId) => api.put(`/api/requests/teacher/approve/${teacherId}`)
+  (teacherId) => api.put(`/requests/teacher/approve/${teacherId}`)
 
 );
 
@@ -23,7 +23,7 @@ export const approveTeacher = CreateApiAsyncThunk(
 export const rejectTeacher = CreateApiAsyncThunk(
   "upload/rejectTeacher",
   ({ teacherId, reason }) =>
-    api.put(`/api/requests/teacher/reject/${teacherId}`, { reason })
+    api.put(`/requests/teacher/reject/${teacherId}`, { reason })
 );
 
   

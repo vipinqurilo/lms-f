@@ -8,10 +8,10 @@ const initialState = {
   error: {},
 };
 
-export const getProfile = CreateApiAsyncThunk("setting/getProfile", () =>
+export const getProfile = CreateApiAsyncThunk("GET/setting/getProfile", () =>
   api.get(`/profile`)
 );
-5;
+
 export const updatePaymentInfo = CreateApiAsyncThunk(
   "setting/updatePaymentInfo",
   (data) => api.put(`/profile/payment-info`, data)

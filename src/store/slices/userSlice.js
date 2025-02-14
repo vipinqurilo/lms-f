@@ -86,7 +86,8 @@ const userSlice = createSlice({
       .addCase(verifyLoggedInUser.fulfilled, (state, action) => {
         state.isLoading["verifyLoggedInUser"] = false;
         state.authUser = action.payload.data;
-        state.isAuthenticated = true;
+        state.isAuthenticated =
+          action.payload?.status === "error" ? false : true;
       })
       .addCase(verifyLoggedInUser.rejected, (state) => {
         state.isLoading["verifyLoggedInUser"] = false;

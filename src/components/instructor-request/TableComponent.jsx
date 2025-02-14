@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import TableHeader from "../instructor/TableHeader";
+import dateFormat from "dateformat";
 
 const TableComponent = ({
   title,
@@ -14,7 +15,12 @@ const TableComponent = ({
 }) => {
   return (
     <div className="space-y-2 w-full !rounded-lg">
-      <div className="w-full !overflow-x-auto rounded-lg border border-black/10">
+      <div
+        className="w-full !overflow-x-auto rounded-lg border border-black/10"
+        style={{
+          scrollbarWidth: "thin",
+        }}
+      >
         <table className="w-full text-nowrap rounded-lg">
           <TableHeader
             headingsData={[
@@ -45,20 +51,21 @@ const TableComponent = ({
                   }`}
                 >
                   <td className="px-6 py-3 text-left lg:w-96 text-wrap">
-                    <h2 className="font-bold">{item?.title}</h2>
+                    <h2 className="font-bold text-nowrap">{item?.title}</h2>
                   </td>
                   <td className="px-6 py-3">
                     <p className="font-medium text-sm">
-                      {item?.institution || ""} {item?.location}
+                      {item?.institute ? item?.institute : item?.company || ""}{" - "}
+                      {item?.location}
                     </p>
                   </td>
                   <td className="px-6 py-3">
-                    {item?.startyear || (
+                    {dateFormat(item?.startDate, "yyyy") || (
                       <span className="w-full block text-center">--</span>
                     )}
                   </td>
                   <td className="px-6 py-3">
-                    {item?.endyear || (
+                    {dateFormat(item?.endDate, "yyyy") || (
                       <span className="w-full block text-center">--</span>
                     )}
                   </td>
