@@ -26,9 +26,9 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
   const [endCell, setEndCell] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStartCell, setResizeStartCell] = useState(null);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const [resizeDirection, setResizeDirection] = useState(null);
-  const times = Array.from({ length: 48 }, (_, index) => {
+  const times = Array.from({ length: 48 }, (_, index) => { 
     const hours = Math.floor(index / 2)
       .toString()
       .padStart(2, "0");

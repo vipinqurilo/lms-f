@@ -37,19 +37,23 @@ const UsersHistory = () => {
   }, [dispatch]);
  
 
-  const toggleStatus = (user) => {
-    const newStatus = user.userStatus === "active" ? "inactive" : "active";
-    
-    // Optimistically update the UI
-    dispatch(updateUserStatus({ userId: user._id, status: newStatus }))
-      .then(() => {
-        // If successful, update the Redux state manually (if needed)
-        dispatch(getAllUsers());  // Fetch updated users list
-      })
-      .catch((error) => {
-        console.error("Error updating user status:", error);
-      });
-  };
+
+const toggleStatus = (user) => {
+  const newStatus = user.userStatus === "active" ? "inactive" : "active";
+
+  // 1. Optimistically update Redux store immediately
+  dispatch(updateUserStatus({ userId: user._id, status: newStatus }));
+
+  // 2. Send API request
+  dispatch(updateUserStatus({ userId: user._id, status: newStatus }))
+    .unwrap()
+    .catch(() => {
+      // 3. Revert back if API call fails
+      dispatch(updateUserStatus({ userId: user._id, status: user.userStatus }));
+    });
+};
+
+  
   
 
     const handleApplyFilters = (filters) => {

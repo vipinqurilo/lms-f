@@ -36,8 +36,7 @@ import { LuTickets } from "react-icons/lu";
 import { FaBook } from "react-icons/fa";
 import { logout } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
-
-const studentSidebarLinks = [
+ const studentSidebarLinks = [
   {
     title: "Dashboard",
     icon: LayoutDashboard,
@@ -138,8 +137,15 @@ const adminSidebarLinks = [
     icon: GraduationCap,
     href: "/admin-dashboard/approvals/courses",
   },
+
   {
     title: "Teachers",
+    icon: Users,
+    href: "/admin-dashboard/teachers",
+  },
+
+  {
+    title: "Teachers Request",
     icon: Users,
     href: "/admin-dashboard/approvals/teachers",
   },
@@ -157,6 +163,25 @@ const adminSidebarLinks = [
     title: "Manage Bookings",
     icon: BookCheck,
     href: "/admin-dashboard/manage-booking",
+  },
+
+  {
+    title: "Manage Users",
+    icon: Users,
+    href: "/admin-dashboard/user",
+  },
+
+  {
+    title: "Category",
+    icon: Users,
+    href: "/admin-dashboard/managesubjects/categories",
+  },
+
+
+  {
+    title: "Sub-Category",
+    icon: Users,
+    href: "/admin-dashboard/managesubjects/subCategories",
   },
 ];
 
@@ -189,7 +214,7 @@ export function Sidebar() {
     <div className={`h-full !transition-custom`}>
       <nav
         className={`flex-1 overflow-y-auto !overflow-visible h-full px-4 bg-background py-5 text-white ${
-          isCollapsed ? "w-20" : "w-60"
+          isCollapsed ? "w-[80px]" : "w-[240px]"
         } transition-custom`}
         style={{ scrollbarWidth: "thin", scrollbarColor: "#e8ebe9" }}
       >

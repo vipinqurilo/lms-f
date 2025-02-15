@@ -19,7 +19,7 @@ const TutorDetails = ({ tutor }) => {
             dispatch(setTutorId(tutor._id));
             dispatch(setUserID(tutor.user._id));
             router.push(
-              `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
+              `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
             );
           }}
           data-tip={"Tip Here"}
@@ -75,7 +75,7 @@ const TutorDetails = ({ tutor }) => {
             dispatch(setTutorId(tutor._id));
             dispatch(setUserID(tutor.user._id));
             router.push(
-              `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
+              `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
             );
           }}
           className="text-orange-500 text-sm underline mt-1 inline-block"

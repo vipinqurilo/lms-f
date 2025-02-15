@@ -20,6 +20,11 @@ export const createBookingAsync = CreateApiAsyncThunk(
   "booking/createBookingAsync",
   (bookingData) => api.post("/bookings", bookingData)
 );
+export const rescheduleResponseAsync = CreateApiAsyncThunk(
+  "booking/rescheduleResponseAsync",
+  ({ bookingId, action }) =>
+    api.put(`/bookings/${bookingId}/reschedule-response`, { action })
+);
 // Initial state for bookings
 const initialState = {
   bookings: [],
@@ -77,6 +82,21 @@ const bookingSlice = createSlice({
       .addCase(fetchBookingsByTutorIdAsync.rejected, (state, action) => {
         state.isLoading["fetchBookingsByTutorIdAsync"] = false;
         state.error["fetchBookingsByTutorIdAsync"] = action.payload;
+      })
+      .addCase(rescheduleResponseAsync.pending, (state) => {
+        state.isLoading["rescheduleResponseAsync"] = true;
+      })
+      .addCase(rescheduleResponseAsync.fulfilled, (state, action) => {
+        state.isLoading["rescheduleResponseAsync"] = false;
+        state.bookings = state.bookings.map((booking) =>
+          booking._id === action.payload.data._id
+            ? action.payload.data
+            : booking
+        );
+      })
+      .addCase(rescheduleResponseAsync.rejected, (state, action) => {
+        state.isLoading["rescheduleResponseAsync"] = false;
+        state.error["rescheduleResponseAsync"] = action.payload;
       });
   },
 });

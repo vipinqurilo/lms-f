@@ -42,7 +42,7 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                       dispatch(setTutorId(tutor._id));
                       dispatch(setUserID(tutor.user._id));
                       router.push(
-                        `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
+                        `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
                       );
                     }}
                     className="text-base font-bold cursor-pointer"

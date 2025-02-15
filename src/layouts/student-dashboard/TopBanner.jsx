@@ -1,13 +1,11 @@
 "use client";
 import { toggleIsCollapsed } from "@/store/slices/instructor/dashboardSlice";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { IoSearch } from "react-icons/io5";
 import { RiNotification3Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
-import { VscTriangleUp } from "react-icons/vsc";
-import Link from "next/link";
 import ProfileDropDown from "@/components/common/ProfileDropDown";
 
 const TopBanner = () => {

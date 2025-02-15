@@ -6,7 +6,7 @@ import { api } from "@/store/api/api";
 export const getAllUsers = CreateApiAsyncThunk(
   "GET/users/getAllUsers",
   ({ search = "", userStatus = "", role = "" }) =>
-    api.get("/api/users", {
+    api.get("/users", {
       params: { search, userStatus, role },
     })
 );
@@ -14,7 +14,7 @@ export const getAllUsers = CreateApiAsyncThunk(
 export const updateUserStatus = CreateApiAsyncThunk(
   "PATCH/users/updateUserStatus",
   async ({ userId, status }) => {
-    const response = await api.patch(`/api/users/${userId}/user-status`, {
+    const response = await api.patch(`/users/${userId}/user-status`, {
       userStatus: status,
     });
     return { userId, status, data: response.data };
@@ -43,13 +43,16 @@ export const usersSlice = createSlice({
       })
       .addCase(updateUserStatus.fulfilled, (state, action) => {
         if (!action.payload) return;
-      
+
         const { userId, status } = action.payload;
-      
-        state.users = state.users.map((user) =>
-          user._id === userId ? { ...user, userStatus: status } : user
-        );
+        const userIndex = state.users.findIndex((user) => user._id === userId);
+
+        if (userIndex !== -1) {
+          state.users[userIndex].userStatus = status; // Update user status
+        }
       });
+      
+      
       
   },
 });
