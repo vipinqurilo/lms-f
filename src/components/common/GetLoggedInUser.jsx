@@ -1,6 +1,6 @@
 "use client";
 import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
-import { getWallet } from "@/store/slices/instructor/withdrawalSlice";
+import { getWallet } from "@/store/slices/withdrawalSlice";
 import { getLanguages } from "@/store/slices/languageSlice";
 import { verifyLoggedInUser } from "@/store/slices/userSlice";
 import { useEffect } from "react";

@@ -159,7 +159,25 @@ const BasicDetails = () => {
         </div>
       </div>
 
-      <SettingsInputField
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          Course Level
+        </label>
+        <div className="">
+          <select
+            {...register("level", { required: "Course Level Is required" })}
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none text-black"
+          >
+            {courseLevels?.map((sub, index) => (
+              <option key={index} value={sub?.value}>
+                {sub?.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* <SettingsInputField
         errors={errors}
         label={"Course Level"}
         options={courseLevels}
@@ -167,7 +185,7 @@ const BasicDetails = () => {
         register={register}
         isSelect={true}
         control={control}
-      />
+      /> */}
 
       {/* Features */}
       <AddRemoveInput
