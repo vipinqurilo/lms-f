@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { MdOutlineCategory } from "react-icons/md";
 import {
   LayoutDashboard,
   User,
@@ -14,10 +15,11 @@ import {
   Grid2x2Check,
   Users,
   BookCheck,
-  LibraryBig ,
+  LibraryBig,
   LifeBuoy,
   LogOut,
   Settings,
+  SquareLibrary,
 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
@@ -36,7 +38,7 @@ import { LuTickets } from "react-icons/lu";
 import { FaBook } from "react-icons/fa";
 import { logout } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
- const studentSidebarLinks = [
+const studentSidebarLinks = [
   {
     title: "Dashboard",
     icon: LayoutDashboard,
@@ -173,11 +175,9 @@ const adminSidebarLinks = [
 
   {
     title: "Category",
-    icon: Users,
+    icon: SquareLibrary,
     href: "/admin-dashboard/managesubjects/categories",
   },
-
-
   {
     title: "Sub-Category",
     icon: Users,
