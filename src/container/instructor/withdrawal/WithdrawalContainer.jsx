@@ -8,6 +8,7 @@ import InstructorButton from "@/components/instructor/InstructorButton";
 import { PiHandWithdraw } from "react-icons/pi";
 import RequestWithdrawal from "./RequestWithdrawal";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { useRouter } from "next/router";
 
 const headingsData = [
   "Withdrawal Method",
@@ -18,8 +19,14 @@ const headingsData = [
 ];
 
 const WithdrawalContainer = () => {
-  const { withdrawals, balance } = useSelector((state) => state.instructor.withdrawal);
+  const { withdrawals, balance } = useSelector(
+    (state) => state.instructor.withdrawal
+  );
   const [isWithdrawal, setisWithdrawal] = useState(false);
+
+  const router = useRouter();
+  const admin_path = router.pathname.split("/")[1];
+  const isAdmin = admin_path === "admin-dashboard";
 
   const getStatusCss = (status) => {
     let css = "";
@@ -40,8 +47,18 @@ const WithdrawalContainer = () => {
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
-      <h3 className="text-lg px-5 font-semibold">Withdrawal History</h3>
-      <div className="w-full px-5 flex items-center justify-between">
+      <h3
+        className={`${
+          isAdmin ? "hidden" : "w-full "
+        } text-lg px-5 font-semibold`}
+      >
+        Withdrawal History
+      </h3>
+      <div
+        className={`${
+          isAdmin ? "hidden" : "w-full "
+        } px-5  items-center justify-between`}
+      >
         <div className="w-full flex items-center gap-2">
           {/* <div className="w-10 h-10 rounded border border-black/10 flex items-center justify-center text-blue-500">
             <IoLogoPaypal size={25} />
@@ -53,8 +70,8 @@ const WithdrawalContainer = () => {
             <p>Current Balance</p>
             <p className=" font-medium">
               You have{" "}
-              <span className="font-semibold text-background">₹{balance}</span> ready
-              to withdraw now
+              <span className="font-semibold text-background">₹{balance}</span>{" "}
+              ready to withdraw now
             </p>
           </div>
         </div>
@@ -66,6 +83,7 @@ const WithdrawalContainer = () => {
           handleClick={() => setisWithdrawal(true)}
         />
       </div>
+
       <table className="w-full border-l border-r border-black/10 !rounded-lg">
         <TableHeader headingsData={headingsData} />
         <tbody>

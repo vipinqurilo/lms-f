@@ -1,11 +1,22 @@
-import WithdrawRequests from '@/components/admin-dashboard/withdrawrequests'
-import StudentDashboardLayout from '@/layouts/student-dashboard/StudentDashboardLayout'
-import React from 'react'
+import React from "react";
+import TitleComp from "@/components/instructor/TitleComp";
+import WithdrawalContainer from "@/container/instructor/withdrawal/WithdrawalContainer";
+import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 
 const index = () => {
   return (
-    <StudentDashboardLayout> <WithdrawRequests/></StudentDashboardLayout>
-  )
-}
+    <StudentDashboardLayout>
+    <main className="dashboard-container">
+      <TitleComp
+        heading={"Withdrawals"}
+        des={
+          "Manage your withdrawal requests and track transaction status effortlessly."
+        }
+      />
+      <WithdrawalContainer/>
+    </main>
+  </StudentDashboardLayout>
+  );
+};
 
-export default index
+export default index;
