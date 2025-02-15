@@ -5,6 +5,7 @@ import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboard
 
 const index = () => {
   return (
+    // update this code
     <StudentDashboardLayout>
     <main className="dashboard-container">
       <TitleComp
