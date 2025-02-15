@@ -179,7 +179,7 @@ const MessageModal = ({ ticket, setMessages }) => {
           <CommonButton
             label={<SendHorizontal size={20} />}
             onClick={handleSubmit}
-            loading={loading}
+            // loading={loading}
           />
         </div>
       )}

@@ -90,8 +90,6 @@ const Experience = ({ isInstructorRequest = null }) => {
     reset();
   };
 
-  console.log("processData", processData);
-
   const handleNext = () => {
     if (authUser?.role === "admin") {
       dispatch(updateProcessStep(5));
@@ -101,6 +99,7 @@ const Experience = ({ isInstructorRequest = null }) => {
           personalInfo: processData?.profile,
           bio: processData?.indentity?.bio,
           profilePhoto: processData?.indentity?.profile,
+          introVideo: processData?.indentity?.introVideo,
           subjectsTaught: processData?.subjectAndlanguage?.subjects || [],
           languagesSpoken: processData?.subjectAndlanguage?.language || [],
           education: education,
@@ -215,7 +214,7 @@ const Experience = ({ isInstructorRequest = null }) => {
           <SubmitButtonsComp
             cancelText={"Go Back"}
             onCancel={() => dispatch(updateProcessStep(3))}
-            saveText={"Save and Continue"}
+            saveText={authUser?.role === "admin" ? "Next" : "Save and Continue"}
             handleClick={() => handleNext()}
             loading={loading || editloading}
           />

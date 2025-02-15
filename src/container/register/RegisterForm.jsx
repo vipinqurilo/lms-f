@@ -1,3 +1,4 @@
+import Loader from "@/components/common/Loader";
 import InputField from "@/components/login/InputField";
 import LoginOptions from "@/components/login/LoginOptions";
 import LogoHeader from "@/components/login/LogoHeader";
@@ -24,12 +25,17 @@ const RegisterForm = () => {
   } = useForm();
 
   const submitHandler = (data) => {
-    // console.log(data);
-    dispatch(userRegisterAsync(data))
+    const formData = {
+      name: data?.name,
+      email: data?.email,
+      password: data?.password,
+      role: "student",
+    };
+    dispatch(userRegisterAsync(formData))
       .unwrap()
       .then((res) => {
-        console.log(res);
-        router.push("/login");
+        localStorage.setItem("token", res?.token);
+        router.push("/student-dashboard");
       });
   };
   return (

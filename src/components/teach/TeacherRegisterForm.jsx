@@ -7,7 +7,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../common/Loader";
 import { useRouter } from "next/navigation";
-import CommonButton from "../common/CommonButton";
 
 const TeacherRegisterForm = () => {
   const router = useRouter();
@@ -27,7 +26,10 @@ const TeacherRegisterForm = () => {
     const formData = { ...data, role: "teacher" };
     dispatch(instructorRegister(formData))
       .unwrap()
-      .then(() => router.push("/login"));
+      .then((res) => {
+        localStorage.setItem("token", res?.token);
+        router.push("/instructor-request");
+      });
   };
 
   return (
@@ -36,7 +38,7 @@ const TeacherRegisterForm = () => {
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className="mb-4">Teach what you are passionate about</p>
 
-        {authUser ? (
+        {authUser !== null ? (
           <>
             {authUser.role === "admin" ? (
               <RedirectButton

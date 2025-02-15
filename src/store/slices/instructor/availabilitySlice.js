@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Async thunks for booking actions
 export const fetchAvailabilityAsync = CreateApiAsyncThunk(
-  "availability/fetchAvailabilityAsync",
+  "GET/availability/fetchAvailabilityAsync",
   () => api.get(`/profile/availability-calendar`)
 );
 

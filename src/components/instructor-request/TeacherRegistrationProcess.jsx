@@ -1,8 +1,9 @@
 "use client";
 
+import { updateProcessStep } from "@/store/slices/tutorsSlice";
 import React from "react";
 import { FaCheck } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const steps = [
   {
@@ -38,12 +39,23 @@ const steps = [
 ];
 
 const TeacherRegistrationProcess = () => {
-  const { processStep: step } = useSelector((state) => state.tutors);
+  const dispatch = useDispatch();
+  const { processStep: step, requestStatus } = useSelector(
+    (state) => state.tutors
+  );
+  const { authUser } = useSelector((state) => state.user);
+
+  const handleClick = (value) => {
+    dispatch(updateProcessStep(value));
+  };
 
   return (
     <div className="flex items-center lg:grid lg:grid-cols-1 lg:w-[20%] gap-0 lg:gap-0 h-fit w-fit mx-auto">
       {steps?.map((item, index) => (
-        <div key={index} className="flex lg:flex-col lg:items-start items-center gap-0 lg:gap-0 text-nowrap">
+        <div
+          key={index}
+          className="flex lg:flex-col lg:items-start items-center gap-0 lg:gap-0 text-nowrap"
+        >
           <p
             className={`${step > item?.id && "text-green-500 font-bold"} ${
               step >= item?.id
@@ -78,7 +90,18 @@ const TeacherRegistrationProcess = () => {
                 )}
               </span>
             </span>
-            <span className="lg:block hidden">{item?.title}</span>
+            <span
+              className={`lg:block hidden ${
+                (authUser?.role === "admin" || requestStatus === "rejected") &&
+                "cursor-pointer"
+              }`}
+              onClick={() =>
+                (authUser?.role === "admin" || requestStatus === "rejected") &&
+                handleClick(index + 1)
+              }
+            >
+              {item?.title}
+            </span>
           </p>
           {index !== steps?.length - 1 && (
             <>

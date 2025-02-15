@@ -73,7 +73,7 @@ const PricingAccess = () => {
       "courseContent",
       JSON.stringify(courseAddData?.curriculum || [])
     );
-    formData.append("courseInstructor", authUser?.id || "");
+    formData.append("courseInstructor", authUser?._id || "");
     formData.append("courseImage", courseAddData?.media?.image);
     formData.append("courseVideo", courseAddData?.media?.video);
 
