@@ -27,9 +27,9 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
     return () => clearTimeout(timer); // Cleanup function
   }, [searchTerm]);
 
-  useEffect(() => {
-    handleApplyFilters(); // Call API when debounced value updates
-  }, [debouncedSearch, role, status, startDate, endDate]);
+  // useEffect(() => {
+  //   handleApplyFilters(); // Call API when debounced value updates
+  // }, [debouncedSearch, role, status, startDate, endDate]);
 
   const isFilterApplied =
     searchTerm ||

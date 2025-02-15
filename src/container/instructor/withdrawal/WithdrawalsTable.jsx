@@ -86,7 +86,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                         className="cursor-pointer text-gray-500 group-hover:text-gray-700"
                       />
                       {/* Tooltip */}
-                      <div className="absolute -left-1/2 -translate-x-1/2 mt-4 top-full w-40 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                      <div className="absolute -left-1/2 -translate-x-1/2 mt-4 top-full w-40 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 ">
                         {row?.rejectionReason || "No reason provided"}
                       </div>
                     </div>

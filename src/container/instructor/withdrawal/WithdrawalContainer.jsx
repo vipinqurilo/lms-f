@@ -85,7 +85,7 @@ const WithdrawalContainer = () => {
         />
       )}
 
-      <div className="w-full px-5">
+      <div className="w-full ">
         <Pagination
           currentPage={1}
           totalPages={totalPages}
