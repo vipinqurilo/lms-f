@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import TopBanner from "./TopBanner";
 import { useRouter } from "next/router";
 
+
 export default protectedPages(function StudentDashboardLayout({ children }) {
   const router = useRouter();
   const pathname = router.pathname;

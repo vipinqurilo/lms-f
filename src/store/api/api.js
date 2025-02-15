@@ -5,7 +5,7 @@ const baseUrlAbhiSir = "https://56kjq9dz-8000.inc1.devtunnels.ms/api";
 const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
 
 export const api = axios.create({
-  baseURL: baseUrlAbhiSir, // Change this as needed
+  baseURL: baseUrlAshokSir, // Change this as needed
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
@@ -23,7 +23,6 @@ api.interceptors.request.use((config) => {
   } else if (userToken) {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
-  
 
   // Ensure every request includes no-cache headers
   config.headers["Cache-Control"] =
@@ -31,15 +30,5 @@ api.interceptors.request.use((config) => {
   config.headers["Pragma"] = "no-cache";
   config.headers["Expires"] = "0";
 
-   return config;
+  return config;
 });
- 
-
-
-
-
-
-
-
-
-
