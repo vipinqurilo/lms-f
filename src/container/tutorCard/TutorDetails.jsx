@@ -4,7 +4,7 @@ import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { useRouter } from "next/router";
 import Rating from "./Rating";
-import { setTutorId } from "@/store/slices/tutorsSlice";
+import { setTutorId, setUserID } from "@/store/slices/tutorsSlice";
 import { useDispatch } from "react-redux";
 
 const TutorDetails = ({ tutor }) => {
@@ -17,8 +17,9 @@ const TutorDetails = ({ tutor }) => {
         <h2
           onClick={() => {
             dispatch(setTutorId(tutor._id));
+            dispatch(setUserID(tutor.user._id));
             router.push(
-              `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
+              `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
             );
           }}
           data-tip={"Tip Here"}
@@ -70,11 +71,13 @@ const TutorDetails = ({ tutor }) => {
           {tutor.user.bio || "No information available."}
         </div>
         <button
-          onClick={() =>
+          onClick={() => {
+            dispatch(setTutorId(tutor._id));
+            dispatch(setUserID(tutor.user._id));
             router.push(
-              `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
-            )
-          }
+              `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
+            );
+          }}
           className="text-orange-500 text-sm underline mt-1 inline-block"
         >
           View profile

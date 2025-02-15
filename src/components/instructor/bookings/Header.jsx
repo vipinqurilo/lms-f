@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 export const Header = () => (
-  <header className="border-b">
+  <header className="border-b h-[80px]">
     <div className="max-w-7xl mx-auto px-4 py-4">
       <div className="flex items-center space-x-8">
         <div className="flex items-center space-x-2">

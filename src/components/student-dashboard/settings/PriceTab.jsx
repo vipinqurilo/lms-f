@@ -53,8 +53,7 @@ const PriceTab = () => {
     const data = {
       tutionSlots: selectedSlots?.map((slot) => slot?.split(" ")[0]),
     };
-    console.log(data);
-    dispatch(updateTutionSlots());
+    dispatch(updateTutionSlots(data));
   };
 
   return (

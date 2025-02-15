@@ -32,7 +32,7 @@ const AboutInstructor = ({ data }) => {
   ];
 
   return (
-    <div data-aos="fade-right" className="course-sub-container">
+    <div data-aos="fade-up" className="course-sub-container">
       <Heading data="About Instructor" />
       <div className="space-y-2">
         <div className="flex items-center gap-4">
@@ -50,7 +50,11 @@ const AboutInstructor = ({ data }) => {
           </div>
         </div>
         <div className="flex items-center font-semibold gap-1">
-          <RatingStars rating={data?.rating} /> Instructor Rating
+          {data?.ratings && (
+            <>
+              <RatingStars rating={data?.rating} /> Instructor Rating
+            </>
+          )}
         </div>
       </div>
 

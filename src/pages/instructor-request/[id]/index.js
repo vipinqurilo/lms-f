@@ -30,9 +30,6 @@ const TeacherRequestPageViewByAdmin = () => {
   useEffect(() => {
     if (params?.id) {
       dispatch(getTutorRequestData(params.id));
-      dispatch(getSubjects());
-      dispatch(getSubSubjects());
-      dispatch(getLanguages())
     }
   }, [dispatch, params?.id]);
 

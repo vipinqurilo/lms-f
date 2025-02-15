@@ -23,6 +23,7 @@ api.interceptors.request.use((config) => {
   } else if (userToken) {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
+  
 
   // Ensure every request includes no-cache headers
   config.headers["Cache-Control"] =
@@ -30,5 +31,15 @@ api.interceptors.request.use((config) => {
   config.headers["Pragma"] = "no-cache";
   config.headers["Expires"] = "0";
 
-  return config;
+   return config;
 });
+ 
+
+
+
+
+
+
+
+
+

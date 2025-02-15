@@ -15,6 +15,11 @@ export const fetchCoursesAsync = CreateApiAsyncThunk(
   }
 );
 
+export const fetchSingleCourse = CreateApiAsyncThunk(
+  "GET/courses/fetchSingleCourse",
+  (id) => api.get(`/course/front/${id}`)
+)
+
 export const wishlistAsync = CreateApiAsyncThunk(
   "courses/wishlistAsync",
   (data) => api.post(`/whishlist`, data)
@@ -30,6 +35,7 @@ const coursesSlice = createSlice({
   initialState: {
     categories: [],
     courses: [],
+    courseData: {},
     wishlist: [],
     orders: [],
     isLoading: {},
@@ -84,7 +90,19 @@ const coursesSlice = createSlice({
       .addCase(addOrderAsync.rejected, (state, action) => {
         state.isLoading["addOrderAsync"] = false;
         state.error["addOrderAsync"] = action.payload;
-      });
+      })
+      // fetch Single Course
+      .addCase(fetchSingleCourse.pending, (state, action) => {
+        state.isLoading["fetchSingleCourse"] = true;
+      })
+      .addCase(fetchSingleCourse.fulfilled, (state, action) => {
+        state.isLoading["fetchSingleCourse"] = false;
+        state.courseData = action.payload?.data;
+      })
+      .addCase(fetchSingleCourse.rejected, (state, action) => {
+        state.isLoading["fetchSingleCourse"] = false;
+        state.error["fetchSingleCourse"] = action.payload;
+      })
   },
 });
 

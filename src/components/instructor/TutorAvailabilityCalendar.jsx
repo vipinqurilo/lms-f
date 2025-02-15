@@ -2,7 +2,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { X } from "lucide-react";
 import { updateAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import CommonButton from "../common/CommonButton";
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const TutorAvailabilityCalendar = ({ calendar }) => {
   const [selections, setSelections] = useState([
@@ -15,14 +16,19 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     { day: "sat", slots: Array(48).fill(false) },
   ]);
   console.log(calendar, "calendar");
+
+  const updateLoading = useSelector(
+    (state) => state.instructor.availability.isLoading.updateAvailabilityAsync
+  );
+
   const [isSelecting, setIsSelecting] = useState(false);
   const [startCell, setStartCell] = useState(null);
   const [endCell, setEndCell] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStartCell, setResizeStartCell] = useState(null);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const [resizeDirection, setResizeDirection] = useState(null);
-  const times = Array.from({ length: 48 }, (_, index) => {
+  const times = Array.from({ length: 48 }, (_, index) => { 
     const hours = Math.floor(index / 2)
       .toString()
       .padStart(2, "0");
@@ -210,7 +216,13 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
   };
   return (
     <div className="w-full overflow-x-auto select-none bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-      <button onClick={handleSave}>Save</button>
+      <div className="w-full flex items-center justify-end pb-4">
+        <CommonButton
+          label={"Update Availability"}
+          onClick={handleSave}
+          loading={updateLoading}
+        />
+      </div>
       <div className="min-w-[800px]">
         <div className="grid grid-cols-[40px_repeat(7,_1fr)] gap-0">
           <div className="border-l border-y py-2 border-gray-200"></div>

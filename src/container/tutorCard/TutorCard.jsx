@@ -12,7 +12,7 @@ import {
 } from "../../store/slices/uiSlice";
 import { useRouter } from "next/router";
 import Rating from "./Rating";
-import { setTutorId } from "@/store/slices/tutorsSlice";
+import { setTutorId, setUserID } from "@/store/slices/tutorsSlice";
 
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
   const router = useRouter();
@@ -40,8 +40,9 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                   <h2
                     onClick={() => {
                       dispatch(setTutorId(tutor._id));
+                      dispatch(setUserID(tutor.user._id));
                       router.push(
-                        `/tutors/${tutor.user.firstName.toLowerCase()}-${tutor.user.lastName.toLowerCase()}`
+                        `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
                       );
                     }}
                     className="text-base font-bold cursor-pointer"

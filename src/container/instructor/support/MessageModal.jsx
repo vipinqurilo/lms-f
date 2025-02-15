@@ -1,26 +1,54 @@
 "use client";
 import CommonButton from "@/components/common/CommonButton";
+import { updateConversation } from "@/store/slices/supportSlice";
 import { EllipsisVertical, SendHorizontal } from "lucide-react";
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { VscTriangleUp } from "react-icons/vsc";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const MessageModal = ({ ticket, setMessages }) => {
   const { authUser } = useSelector((state) => state.user);
   const [newMessage, setNewMessage] = useState("");
   const [isDropDown, setisDropDown] = useState(false);
   const toggleIsDropDown = () => setisDropDown(!isDropDown);
+  const dispatch = useDispatch();
+  const loading = useSelector(
+    (state) => state.support.isLoading.updateConversation
+  );
 
   const handleSubmit = () => {
-    setMessages((prev) => ({
-      ...prev,
-      messages: [
-        ...prev?.messages,
-        { sender: ticket?.sender, message: newMessage },
-      ],
-    }));
-    setNewMessage("");
+    const data = { receiver: "67a08f0f2c405d8e4eac0dcc", message: newMessage };
+    dispatch(updateConversation({ id: ticket?._id, data }))
+      .unwrap()
+      .then(() => {
+        setMessages((prev) => ({
+          ...prev,
+          messages: [
+            ...prev?.messages,
+            { sender: ticket?.sender, message: newMessage, createdAt: new Date() },
+          ],
+        }));
+        setNewMessage("");
+      });
+  };
+
+  const getRelativeTime = (dateString) => {
+    const now = new Date();
+    const past = new Date(dateString);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    if (diffInSeconds < 60) return "Just now";
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays === 1) return "Yesterday";
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+
+    // If more than 7 days, show formatted date
+    return dateFormat(past, "dS mmm yyyy");
   };
 
   return (
@@ -85,7 +113,7 @@ const MessageModal = ({ ticket, setMessages }) => {
         }}
       >
         {ticket?.messages?.map((msg, index) => {
-          const isSender = msg.sender;
+          const isSender = msg?.sender === authUser?._id;
           return (
             <div
               key={index}
@@ -102,8 +130,13 @@ const MessageModal = ({ ticket, setMessages }) => {
               >
                 {msg.message}
               </div>
-              <span className="font-medium block text-xs text-gray-400 capitalize">
+              {/* <span className="font-medium block text-xs text-gray-400 capitalize">
                 {isSender ? msg.sender : msg.receiver}
+              </span> */}
+              <span className="font-medium block text-xs text-gray-400">
+                {ticket?.createdAt
+                  ? getRelativeTime(ticket.createdAt)
+                  : "Just now"}
               </span>
             </div>
           );
@@ -146,6 +179,7 @@ const MessageModal = ({ ticket, setMessages }) => {
           <CommonButton
             label={<SendHorizontal size={20} />}
             onClick={handleSubmit}
+            // loading={loading}
           />
         </div>
       )}

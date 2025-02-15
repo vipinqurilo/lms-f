@@ -53,7 +53,7 @@ const WithdrawalTabProfile = () => {
           <span className="text-sm text-light">(Minimum withdraw ₹80)</span>
         </h3>
 
-        <div className="w-full grid grid-cols-3 gap-5">
+        {/* <div className="w-full grid grid-cols-3 gap-5">
           {methods.map((method, index) => (
             <div
               key={index}
@@ -70,13 +70,13 @@ const WithdrawalTabProfile = () => {
               <p className="font-medium capitalize">{method}</p>
             </div>
           ))}
-        </div>
+        </div> */}
 
         <form
           onSubmit={handleSubmit(submitHandler)}
           className="w-full p-5 py-6 border border-black/10 space-y-8 !mt-10 rounded-lg"
         >
-          {selectedMethod === methods[0] ? (
+          {/* {selectedMethod === methods[0] ? ( */}
             <div className="w-full grid grid-cols-2 gap-8">
               <SettingsInputField
                 label={"Account Name"}
@@ -114,7 +114,7 @@ const WithdrawalTabProfile = () => {
                 errors={errors}
               /> */}
             </div>
-          ) : selectedMethod === methods[1] ? (
+          {/* ) : selectedMethod === methods[1] ? ( */}
             <div>
               <SettingsInputField
                 label={"PayPal Email Address"}
@@ -128,7 +128,7 @@ const WithdrawalTabProfile = () => {
                 account
               </p>
             </div>
-          ) : undefined}
+          {/* ) : undefined} */}
 
           <button
             type="submit"

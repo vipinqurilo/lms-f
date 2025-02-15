@@ -67,12 +67,6 @@ const DashboardSettingsContainer = () => {
     dispatch(getProfile());
   }, []);
 
-  useEffect(() => {
-    dispatch(getLanguages());
-    dispatch(getSubSubjects());
-    dispatch(getSubjects());
-  }, [dispatch]);
-
   return (
     <div className="bg-white rounded-lg border">
       <TitleComp

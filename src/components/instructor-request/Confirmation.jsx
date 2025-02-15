@@ -65,7 +65,7 @@ const Confirmation = () => {
     return {
       title: "Your application is in review, please wait for admin approval.",
       description: "",
-      imageSrc: "/assets/common/confirmation.jpg",
+      imageSrc: "/assets/common/confirmation.png",
       imageAlt: "Pending",
       buttonLabel: "Back to Home",
       buttonAction: handlePendingAction,

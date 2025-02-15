@@ -27,6 +27,7 @@ const bookings = [
 ];
 
 const ScheduleCalendar = ({
+  rawBookings,
   duration,
   calendar,
   scheduledDate,
@@ -36,7 +37,7 @@ const ScheduleCalendar = ({
   sessionEndTime,
   setSessionEndTime,
 }) => {
-  const data = calendar?.availability.reduce((acc, { day, slots }) => {
+  const data = calendar?.availability?.reduce((acc, { day, slots }) => {
     const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
     acc[dayName] = slots;
     return acc;
@@ -46,7 +47,18 @@ const ScheduleCalendar = ({
   const [days, setDays] = useState([]);
   const [formattedDateRange, setFormattedDateRange] = useState("");
   const [selectedSlots, setSelectedSlots] = useState([]);
+  const bookings = rawBookings?.map((session) => {
+    const startTime = new Date(session.sessionStartTime);
+    const endTime = new Date(session.sessionEndTime);
+    startTime.setMinutes(startTime.getMinutes() + 330); // Add 5:30
+    endTime.setMinutes(endTime.getMinutes() + 330); // Add 5:30
 
+    return {
+      date: startTime.toISOString().split("T")[0], // Extract YYYY-MM-DD
+      startTime: startTime.toISOString().split("T")[1].slice(0, 5),
+      endTime: endTime.toISOString().split("T")[1].slice(0, 5),
+    };
+  });
   const handleSlotSelect = (isBeforeCurrentTime, rowIndex, colIndex) => {
     if (isAvailable(colIndex, rowIndex) && !isBeforeCurrentTime) {
       const slotsPerDuration = duration / 15;
@@ -101,7 +113,7 @@ const ScheduleCalendar = ({
 
         // Calculate and format session end time
         const [endHours, endMinutes] =
-          times[spanStart + slotsPerDuration].split(":");
+          times[spanStart + slotsPerDuration]?.split(":");
         const endTime = new Date(selectedDate);
         endTime.setHours(
           Number.parseInt(endHours),
@@ -279,7 +291,7 @@ const ScheduleCalendar = ({
           scrollbarWidth: "thin" /* Firefox ke liye */,
           scrollbarColor: "#888 #f1f1f1" /* Firefox ke liye color */,
         }}
-        className="h-full overflow-y-scroll"
+        className="h-full overflow-y-scroll "
       >
         <div className="flex items-center justify-center lg:justify-normal mt-4 lg:mt-0 gap-4 text-sm px-4 py-2">
           <div className="flex items-center gap-2">

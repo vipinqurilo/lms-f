@@ -178,7 +178,10 @@ const TeacherRequests = () => {
           <TableHeader headingsData={columns} />
           <tbody>
             {teachers?.map((teacher, index) => (
-              <tr key={teacher.userId} className="border-t border-gray-200">
+              <tr
+                key={teacher.userId}
+                className="border-t border-gray-200 text-sm text-nowrap"
+              >
                 <td className="py-4 px-4 text-gray-700">{index + 1}</td>
                 <td className="py-4 px-4 text-gray-700">{teacher?.userId}</td>
                 <td className="py-4 px-4 text-gray-700">
@@ -197,18 +200,18 @@ const TeacherRequests = () => {
                   {teacher?.approvalStatus}
                 </td>
                 <td className="py-4 px-4 text-center">
-                  <div className="flex items-center justify-center space-x-3">
+                  <div className="flex items-center justify-center gap-4">
                     <button
                       className="text-gray-600 hover:text-blue-500"
                       onClick={() => handleOpenApproveModal(teacher._id)}
                     >
-                      <FaRegCalendarCheck size={18} />
+                      <FaRegCalendarCheck size={16} />
                     </button>
-                    <Link href={`/instructor-request/${teacher?.userId}`}>
-                      <button className="text-gray-600 hover:text-yellow-500">
-                        <FiEye />
-                      </button>
-                    </Link>
+                    <button className="text-gray-600 hover:text-yellow-500">
+                      <Link href={`/instructor-request/${teacher?._id}`}>
+                        <FiEye size={18} />
+                      </Link>
+                    </button>
                     <button
                       className="text-gray-600 hover:text-red-500"
                       onClick={() => handleOpenRejectModal(teacher._id)}

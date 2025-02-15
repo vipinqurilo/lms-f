@@ -21,7 +21,10 @@ const CourseReview = ({ data }) => {
   };
 
   return (
-    <div data-aos="zoom-in-up" className="course-sub-container !border-none !shadow-none">
+    <div
+      data-aos="fade-up"
+      className="course-sub-container !border-none !shadow-none"
+    >
       <Heading data={"Students Reviews"} />
       <div className="space-y-6">
         {data?.map((review, index) => (
@@ -31,7 +34,7 @@ const CourseReview = ({ data }) => {
                 <h6 className="text-dark font-semibold">
                   {review?.reviewerName}
                 </h6>
-                <RatingStars rating={review?.rating} />
+                {data?.ratings && <RatingStars rating={review?.rating} />}
               </div>
             </div>
             <p className="text-light">{review?.review}</p>

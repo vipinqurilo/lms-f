@@ -11,14 +11,24 @@ export const fetchBookingsAsync = CreateApiAsyncThunk(
     })
 );
 
+export const fetchBookingsByTutorIdAsync = CreateApiAsyncThunk(
+  "booking/fetchBookingsByTutorIdAsync",
+  (teacherId) => api.get(`/bookings/`, { params: { teacherId } })
+);
+
 export const createBookingAsync = CreateApiAsyncThunk(
   "booking/createBookingAsync",
   (bookingData) => api.post("/bookings", bookingData)
 );
+export const rescheduleResponseAsync = CreateApiAsyncThunk(
+  "booking/rescheduleResponseAsync",
+  ({ bookingId, action }) =>
+    api.put(`/bookings/${bookingId}/reschedule-response`, { action })
+);
 // Initial state for bookings
 const initialState = {
   bookings: [],
-
+  bookingsByTutorId: [],
   isLoading: {},
   error: {},
   totalPages: 1,
@@ -61,6 +71,32 @@ const bookingSlice = createSlice({
       .addCase(createBookingAsync.rejected, (state, action) => {
         state.isLoading["createBookingAsync"] = false;
         state.error["createBookingAsync"] = action.payload;
+      })
+      .addCase(fetchBookingsByTutorIdAsync.pending, (state) => {
+        state.isLoading["fetchBookingsByTutorIdAsync"] = true;
+      })
+      .addCase(fetchBookingsByTutorIdAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchBookingsByTutorIdAsync"] = false;
+        state.bookingsByTutorId = action.payload?.data || [];
+      })
+      .addCase(fetchBookingsByTutorIdAsync.rejected, (state, action) => {
+        state.isLoading["fetchBookingsByTutorIdAsync"] = false;
+        state.error["fetchBookingsByTutorIdAsync"] = action.payload;
+      })
+      .addCase(rescheduleResponseAsync.pending, (state) => {
+        state.isLoading["rescheduleResponseAsync"] = true;
+      })
+      .addCase(rescheduleResponseAsync.fulfilled, (state, action) => {
+        state.isLoading["rescheduleResponseAsync"] = false;
+        state.bookings = state.bookings.map((booking) =>
+          booking._id === action.payload.data._id
+            ? action.payload.data
+            : booking
+        );
+      })
+      .addCase(rescheduleResponseAsync.rejected, (state, action) => {
+        state.isLoading["rescheduleResponseAsync"] = false;
+        state.error["rescheduleResponseAsync"] = action.payload;
       });
   },
 });
