@@ -99,7 +99,7 @@ const RegisterForm = () => {
             )}
           </div>
 
-          <SubmitButton text={loading ? <Loader /> : "Register"} />
+          <SubmitButton text={loading ? <Loader /> : "Register"} loading={loading} />
         </form>
       </div>
       <LoginOptions type={"register"} />

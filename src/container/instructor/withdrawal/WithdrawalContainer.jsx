@@ -18,7 +18,7 @@ const headingsData = [
 ];
 
 const WithdrawalContainer = () => {
-  const { withdrawals, balance } = useSelector((state) => state.instructor.withdrawal);
+  const { withdrawals, balance } = useSelector((state) => state.withdrawal);
   const [isWithdrawal, setisWithdrawal] = useState(false);
 
   const getStatusCss = (status) => {
