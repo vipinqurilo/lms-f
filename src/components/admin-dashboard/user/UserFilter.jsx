@@ -61,7 +61,7 @@ const UserFilter = ({ onApplyFilters }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
+        <button className="border ml-5 px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
           More Filters <IoMdOptions />
         </button>
       </div>
