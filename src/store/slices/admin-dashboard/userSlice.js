@@ -2,14 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "@/store/api/api";
 
-// Fetch all users
+// Fetch all users with pagination
 export const getAllUsers = CreateApiAsyncThunk(
   "GET/users/getAllUsers",
-  ({ search = "", userStatus = "", role = "" }) =>
+  ({ search = "", userStatus = "", role = "", page = 1, limit = 5 }) =>
     api.get("/users", {
-      params: { search, userStatus, role },
+      params: { search, userStatus, role, page, limit },
     })
 );
+
 // Update user status
 export const updateUserStatus = CreateApiAsyncThunk(
   "PATCH/users/updateUserStatus",
@@ -25,6 +26,9 @@ export const usersSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
+    total: 0,
+    currentPage: 1,
+    totalPages: 1,
     isLoading: {},
     error: {},
   },
@@ -36,6 +40,9 @@ export const usersSlice = createSlice({
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.isLoading["getAllUsers"] = false;
         state.users = action.payload.data;
+        state.total = action.payload.total; // Set total count
+        state.currentPage = action.payload.currentPage; // Set current page
+        state.totalPages = action.payload.totalPages; // Set total pages
       })
       .addCase(getAllUsers.rejected, (state, action) => {
         state.isLoading["getAllUsers"] = false;
@@ -51,9 +58,6 @@ export const usersSlice = createSlice({
           state.users[userIndex].userStatus = status; // Update user status
         }
       });
-      
-      
-      
   },
 });
 
