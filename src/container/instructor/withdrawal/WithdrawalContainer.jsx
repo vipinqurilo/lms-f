@@ -11,7 +11,7 @@ import { getWithDrawals } from "@/store/slices/withdrawalSlice";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
-
+import RejectModal from "@/components/admin-dashboard/withdrawrequests/rejectModal";
 
 const headingsData = [
   "Withdrawal Method",
@@ -28,6 +28,11 @@ const WithdrawalContainer = () => {
   );
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(true);
+  const [selectedTeacherId, setSelectedTeacherId] = useState(null);
+  const [rejectionReason, setRejectionReason] = useState("");
+
   const router = useRouter();
   const admin_path = router.pathname.split("/")[1];
   const isAdmin = admin_path === "admin-dashboard";
@@ -54,7 +59,6 @@ const WithdrawalContainer = () => {
     (state) => state.withdrawal.isLoading.getWithDrawals
   );
 
-
   useEffect(() => {
     const data = {};
     if (filtersData?.startDate) data.startDate = filtersData.startDate;
@@ -65,6 +69,11 @@ const WithdrawalContainer = () => {
 
     dispatch(getWithDrawals(data));
   }, [filtersData, currentPage]);
+
+  const handleOpenRejectModal = (teacherId) => {
+    setSelectedTeacherId(teacherId);
+    setIsRejectModalOpen(true);
+  };
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
@@ -101,8 +110,6 @@ const WithdrawalContainer = () => {
         />
       </div>
 
-
-
       <div className="w-full px-5 !sticky !-top-12 bg-white">
         <UserFilter
           onApplyFilters={(data) => setfiltersData(data)}
@@ -136,6 +143,13 @@ const WithdrawalContainer = () => {
           balance={balance}
         />
       )}
+      <RejectModal
+        isOpen={isRejectModalOpen}
+        onClose={() => setIsRejectModalOpen(false)}
+        // onReject={handleReject}
+        rejectionReason={rejectionReason} // Pass rejectionReason to modal
+        setRejectionReason={setRejectionReason} // Function to update rejectionReason in the modal
+      />
     </div>
   );
 };
