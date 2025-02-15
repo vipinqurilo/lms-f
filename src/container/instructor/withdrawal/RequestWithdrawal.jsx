@@ -6,8 +6,15 @@ import BackgroundModal from "@/components/instructor/BackgroundModal";
 import { CgCopyright } from "react-icons/cg";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { requestWithdrawal } from "@/store/slices/withdrawalSlice";
 
 const RequestWithdrawal = ({ handleClose, balance }) => {
+  const dispatch = useDispatch();
+  const loading = useSelector(
+    (state) => state.withdrawal.isLoading.requestWithdrawal
+  );
+
   const {
     register,
     formState: { errors },
@@ -15,7 +22,11 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
   } = useForm();
 
   const submitHandler = (data) => {
-    console.log(data);
+    dispatch(requestWithdrawal(data))
+      .unwrap()
+      .then(() => {
+        handleClose();
+      });
   };
   return (
     <BackgroundModal
@@ -38,12 +49,21 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
               </div>
               <div>
                 <p className="text-light text-sm">Selected</p>
-                <select {...register("method", { required: "method req" })} className="w-full focus:outline-none cursor-pointer border border-black/10 text-sm p-2 py-1 rounded-lg">
+                <select
+                  {...register("paymentMethod", {
+                    required: "paymentMethod is required",
+                  })}
+                  className="w-full focus:outline-none cursor-pointer border border-black/10 text-sm p-2 py-1 rounded-lg"
+                >
                   <option value="paypal">Paypal</option>
                   <option value="account">Bank Account</option>
                 </select>
-                <p className=" font-semibold"></p>
               </div>
+              {errors?.paymentMethod && (
+                <p className="text-xs text-red-500">
+                  *{errors.paymentMethod.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -54,9 +74,20 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                   type="number"
                   className="w-full focus:outline-none"
                   placeholder="Enter amount"
-                  {...register("amount", { required: "amount required" })}
+                  {...register("amount", {
+                    required: "Amount is required",
+                    validate: (value) => {
+                      if (parseFloat(value) > balance) {
+                        return `Amount cannot be greater than ₹${balance}`;
+                      }
+                      return true;
+                    },
+                  })}
                 />
               </div>
+              {errors?.amount && (
+                <p className="text-xs text-red-500">*{errors.amount.message}</p>
+              )}
               <p className="text-gray-500 text-sm flex items-center">
                 <span className="mr-1">
                   {" "}
@@ -71,7 +102,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                 label="Submit Request"
                 onClick={handleSubmit((data) => submitHandler(data))}
                 variant="primary"
-                // loading={loading}
+                loading={loading}
               />
               <CommonButton
                 label="Cancel"

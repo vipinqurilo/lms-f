@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   withdrawals: [],
-  withdrawalMethds: {},
+  totalPages: null,
   balance: null,
   isLoading: {},
   error: {},
@@ -58,6 +58,7 @@ const withdrawalSlice = createSlice({
       .addCase(getWithDrawals.fulfilled, (state, action) => {
         state.isLoading["getWithDrawals"] = false;
         state.withdrawals = action.payload?.data;
+        state.totalPages = action.payload?.totalPages;
       })
       .addCase(getWithDrawals.rejected, (state, action) => {
         state.isLoading["getWithDrawals"] = false;
@@ -90,5 +91,4 @@ const withdrawalSlice = createSlice({
   },
 });
 
-// export const { handleSelectedwithdrawal } = withdrawalSlice.actions;
 export default withdrawalSlice.reducer;

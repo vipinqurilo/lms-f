@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TableHeader from "@/components/instructor/TableHeader";
 import { useDispatch, useSelector } from "react-redux";
-import { IoLogoPaypal } from "react-icons/io5";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import InstructorButton from "@/components/instructor/InstructorButton";
 import { PiHandWithdraw } from "react-icons/pi";
@@ -10,7 +8,8 @@ import RequestWithdrawal from "./RequestWithdrawal";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { getWithDrawals } from "@/store/slices/withdrawalSlice";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
-import dateFormat from "dateformat";
+import Loader from "@/components/common/Loader";
+import WithdrawalsTable from "./WithdrawalsTable";
 
 const headingsData = [
   "Withdrawal Method",
@@ -22,43 +21,32 @@ const headingsData = [
 
 const WithdrawalContainer = () => {
   const dispatch = useDispatch();
-  const { withdrawals, balance } = useSelector((state) => state.withdrawal);
+  const { withdrawals, balance, totalPages } = useSelector(
+    (state) => state.withdrawal
+  );
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
-
-  const getStatusCss = (status) => {
-    let css = "";
-
-    switch (status) {
-      case "pending":
-        css = "text-yellow-500 bg-yellow-100";
-        break;
-      case "approved":
-        css = "text-green-500 bg-green-100";
-        break;
-      default:
-        css = "text-red-500 bg-red-100";
-    }
-
-    return css;
-  };
+  const [currentPage, setcurrentPage] = useState(1);
+  const loading = useSelector(
+    (state) => state.withdrawal.isLoading.getWithDrawals
+  );
 
   useEffect(() => {
     const data = {};
-    dispatch(getWithDrawals(data));
-  }, []);
+    if (filtersData?.startDate) data.startDate = filtersData.startDate;
+    if (filtersData?.endDate) data.endDate = filtersData.endDate;
+    if (filtersData?.search) data.search = filtersData.search;
+    if (filtersData?.status) data.approvalStatus = filtersData.status;
+    if (currentPage) data.page = currentPage;
 
-  console.log("filtersData", filtersData);
+    dispatch(getWithDrawals(data));
+  }, [filtersData, currentPage]);
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
       <h3 className="text-lg px-5 font-semibold">Withdrawal History</h3>
       <div className="w-full px-5 flex items-center justify-between">
         <div className="w-full flex items-center gap-2">
-          {/* <div className="w-10 h-10 rounded border border-black/10 flex items-center justify-center text-blue-500">
-            <IoLogoPaypal size={25} />
-          </div> */}
-
           <MdOutlineAccountBalanceWallet size={40} className="text-primary" />
 
           <div className="">
@@ -79,56 +67,29 @@ const WithdrawalContainer = () => {
         />
       </div>
       <div className="w-full px-5 !sticky !-top-12 bg-white">
-        <UserFilter onApplyFilters={(data) => setfiltersData(data)} />
+        <UserFilter
+          onApplyFilters={(data) => setfiltersData(data)}
+          isRole={false}
+          statusData={["pending", "approved", "rejected"]}
+        />
       </div>
-      <table className="w-full border-l border-r border-black/10 !rounded-lg">
-        <TableHeader headingsData={headingsData} />
-        <tbody>
-          {withdrawals?.map((row, index) => (
-            <tr
-              key={index}
-              className={`border-b border-black/10 ${
-                index === withdrawals?.length - 1 && "!rounded-lg"
-              }`}
-            >
-              <td className="px-6 py-4">
-                <div className="w-full flex items-center gap-2">
-                  <div className="w-10 h-10 rounded border border-black/10 flex items-center justify-center text-blue-500">
-                    <IoLogoPaypal size={25} />
-                  </div>
-                  <div className="">
-                    <h6 className="font-semibold">{row?.paymentMethod}</h6>
-                    <p className="text-light text-sm">{row?.paypalEmail}</p>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4">
-                <div className="">
-                  <h6 className="font-semibold">{dateFormat(row?.createdAt, "dd mmm yyyy")}</h6>
-                  <p className="text-light text-sm">{dateFormat(row?.createdAt, "hh:MM TT")}</p>
-                </div>
-              </td>
-              <td className="px-6 py-4 font-medium">{row?.user?.firstName}</td>
-              <td className="px-6 py-4 font-medium">₹{row?.amount}</td>
-              <td className={`px-6 py-4 font-medium`}>
-                <span
-                  className={`${getStatusCss(
-                    row?.approvalStatus
-                  )} px-3 py-2 rounded-lg text-sm font-medium capitalize`}
-                >
-                  {row?.approvalStatus}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      {loading ? (
+        <div className="w-full flex items-center justify-center py-10">
+          <Loader color={"text-primary"} isBig={true} />
+        </div>
+      ) : (
+        <WithdrawalsTable
+          headingsData={headingsData}
+          withdrawals={withdrawals}
+        />
+      )}
 
       <div className="w-full px-5">
         <Pagination
           currentPage={1}
-          totalPages={2}
-          onPageChange={() => console.log(2)}
+          totalPages={totalPages}
+          onPageChange={(value) => setcurrentPage(value)}
         />
       </div>
 
