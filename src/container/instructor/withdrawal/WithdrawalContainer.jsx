@@ -67,7 +67,11 @@ const WithdrawalContainer = () => {
         />
       </div>
       <div className="w-full px-5 !sticky !-top-12 bg-white">
-        <UserFilter onApplyFilters={(data) => setfiltersData(data)} />
+        <UserFilter
+          onApplyFilters={(data) => setfiltersData(data)}
+          isRole={false}
+          statusData={["pending", "approved", "rejected"]}
+        />
       </div>
 
       {loading ? (

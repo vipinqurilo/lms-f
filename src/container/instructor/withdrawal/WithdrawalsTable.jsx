@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { IoLogoPaypal } from "react-icons/io5";
 import dateFormat from "dateformat";
 import TableHeader from "@/components/instructor/TableHeader";
+import { FaCircleInfo } from "react-icons/fa6";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const getStatusCss = (status) => {
@@ -75,9 +76,21 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                 <span
                   className={`${getStatusCss(
                     row?.approvalStatus
-                  )} px-3 py-2 rounded-lg text-sm font-medium capitalize`}
+                  )} px-3 py-2 rounded-lg text-sm font-medium capitalize flex items-center gap-2 w-fit relative`}
                 >
                   {row?.approvalStatus}
+                  {row?.approvalStatus === "rejected" && (
+                    <div className="group relative">
+                      <FaCircleInfo
+                        size={16}
+                        className="cursor-pointer text-gray-500 group-hover:text-gray-700"
+                      />
+                      {/* Tooltip */}
+                      <div className="absolute -left-1/2 -translate-x-1/2 mt-4 top-full w-40 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                        {row?.rejectionReason || "No reason provided"}
+                      </div>
+                    </div>
+                  )}
                 </span>
               </td>
             </tr>

@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
 
-const UserFilter = ({ onApplyFilters }) => {
+const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [role, setRole] = useState("Role");
   const [status, setStatus] = useState("Status");
@@ -11,7 +11,11 @@ const UserFilter = ({ onApplyFilters }) => {
   const [endDate, setEndDate] = useState("");
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
-  
+
+  const [statusArray, setstatusArray] = useState(
+    statusData || ["Inactive", "Active"]
+  );
+
   // Debounced Search Term
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -28,7 +32,11 @@ const UserFilter = ({ onApplyFilters }) => {
   }, [debouncedSearch, role, status, startDate, endDate]);
 
   const isFilterApplied =
-    searchTerm || role !== "Role" || status !== "Status" || startDate || endDate;
+    searchTerm ||
+    role !== "Role" ||
+    status !== "Status" ||
+    startDate ||
+    endDate;
 
   const handleApplyFilters = () => {
     const filters = {};
@@ -88,34 +96,36 @@ const UserFilter = ({ onApplyFilters }) => {
             />
           </div>
 
-          <div
-            className="border text-sm flex bg-white items-center px-3 py-1 h-10 rounded-full text-gray-500 relative cursor-pointer w-32"
-            onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-          >
-            <div className="flex justify-center items-center w-full">
-              <p className="text-xs">Role:</p>
-              <p className="text-sm font-semibold ml-1">{role}</p>
-            </div>
-            <div className="ml-1">
-              {roleDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
-            </div>
-            {roleDropdownOpen && (
-              <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {["Student", "Teacher", "Admin"].map((r) => (
-                  <p
-                    key={r}
-                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                    onClick={() => {
-                      setRole(r);
-                      setRoleDropdownOpen(false);
-                    }}
-                  >
-                    {r}
-                  </p>
-                ))}
+          {isRole && (
+            <div
+              className="border text-sm flex bg-white items-center px-3 py-1 h-10 rounded-full text-gray-500 relative cursor-pointer w-32"
+              onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
+            >
+              <div className="flex justify-center items-center w-full">
+                <p className="text-xs">Role:</p>
+                <p className="text-sm font-semibold ml-1">{role}</p>
               </div>
-            )}
-          </div>
+              <div className="ml-1">
+                {roleDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
+              </div>
+              {roleDropdownOpen && (
+                <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
+                  {["Student", "Teacher", "Admin"].map((r) => (
+                    <p
+                      key={r}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                      onClick={() => {
+                        setRole(r);
+                        setRoleDropdownOpen(false);
+                      }}
+                    >
+                      {r}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <div
             className="border flex items-center px-3 py-1 h-10 rounded-full bg-white text-gray-500 relative cursor-pointer w-36"
@@ -130,7 +140,7 @@ const UserFilter = ({ onApplyFilters }) => {
             </div>
             {statusDropdownOpen && (
               <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {["Inactive", "Active"].map((s) => (
+                {statusArray?.map((s) => (
                   <p
                     key={s}
                     className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
