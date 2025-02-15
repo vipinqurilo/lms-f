@@ -11,6 +11,7 @@ import userSlice from "./slices/userSlice";
 import languagesSlice from "./slices/languageSlice";
 import supportSlice from "./slices/supportSlice";
 import categorySlice from "./slices/categorySlice";
+import withdrawalSlice from "./slices/withdrawalSlice";
 
 const rootReducer = combineReducers({
   courses: coursesReducer,
@@ -21,11 +22,10 @@ const rootReducer = combineReducers({
   admin: adminRootReducer,
   upload: uploadSlice,
   student: studentRootReducer,
-  
- 
-   languages: languagesSlice,
+  languages: languagesSlice,
   support: supportSlice,
   category: categorySlice,
- });
+  withdrawal: withdrawalSlice,
+});
 
 export default rootReducer;

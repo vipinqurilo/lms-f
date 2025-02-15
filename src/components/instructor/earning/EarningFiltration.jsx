@@ -11,9 +11,10 @@ const EarningFiltration = ({
   handleEndDateChange,
   tabs,
   isFilter = false,
+  activeTab, setActiveTab
 }) => {
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-4">
       <div className="flex items-center gap-4 w-full justify-between">
         <div className="relative h-fit">
           <input
@@ -27,10 +28,8 @@ const EarningFiltration = ({
         </div>
 
         <div className="flex items-center gap-6">
-          <div className=" flex justify-center items-center gap-4 ">
-            <label className="block text-sm text-gray-600">
-              Lesson start date
-            </label>
+          <div className=" flex justify-center items-center gap-2 ">
+            <label className="block text-sm text-gray-600">Start-Date</label>
             <StartEndDateSelector
               selectedDate={startDate}
               onDateSelect={handleStartDateChange}
@@ -38,8 +37,8 @@ const EarningFiltration = ({
             />
           </div>
 
-          <div className=" flex justify-center items-center gap-4 ">
-            <label className="block text-sm text-gray-600"></label>
+          <div className=" flex justify-center items-center gap-2 ">
+            <label className="block text-sm text-gray-600">End-Date</label>
             <StartEndDateSelector
               selectedDate={endDate}
               onDateSelect={handleEndDateChange}

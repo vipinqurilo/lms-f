@@ -11,9 +11,13 @@ export const api = axios.create({
     Pragma: "no-cache",
     Expires: "0",
   },
+  // Disable ETag validation (Prevents cached responses)
+  validateStatus: function (status) {
+    return status >= 200 && status < 300; // Allow only successful responses
+  },
 });
 
-// Request interceptor to add Authorization token and disable caching
+// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers
 api.interceptors.request.use((config) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");
@@ -24,7 +28,7 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
 
-  // Ensure every request includes no-cache headers
+  // Ensure all requests disable caching
   config.headers["Cache-Control"] =
     "no-store, no-cache, must-revalidate, proxy-revalidate";
   config.headers["Pragma"] = "no-cache";
@@ -32,3 +36,17 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+// Response Interceptor: Ensure no caching from API side
+api.interceptors.response.use(
+  (response) => {
+    // Override cache headers from API response
+    response.headers["Cache-Control"] =
+      "no-store, no-cache, must-revalidate, proxy-revalidate";
+    response.headers["Pragma"] = "no-cache";
+    response.headers["Expires"] = "0";
+
+    return response;
+  },
+  (error) => Promise.reject(error)
+);

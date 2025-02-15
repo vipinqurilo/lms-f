@@ -7,6 +7,7 @@ import { RiNotification3Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import ProfileDropDown from "@/components/common/ProfileDropDown";
+import WalletBalanceBadge from "./WalletBalanceBadge";
 
 const TopBanner = () => {
   const dispatch = useDispatch();
@@ -59,7 +60,8 @@ const TopBanner = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 relative">
+      <div className="flex items-center gap-4 relative">
+        <WalletBalanceBadge />
         <button className="w-10 h-10 bg-white flex items-center justify-center rounded-full border border-black/10">
           <RiNotification3Line size={20} />
         </button>

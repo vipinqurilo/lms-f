@@ -34,7 +34,7 @@ const EarningsChart = () => {
             label: "Earnings",
             data: [20, 40, 30, 55, 25, 30, 20, 50, 20, 40, 20, 50],
             borderColor: "#F79902",
-            backgroundColor: "rgba(247, 153, 2, 0.3)",
+            backgroundColor: "rgba(247, 153, 2, 0.1)",
             borderWidth: 2,
             fill: true,
             pointBackgroundColor: "#F79902",

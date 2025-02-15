@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableHeader from "@/components/instructor/TableHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { IoLogoPaypal } from "react-icons/io5";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import InstructorButton from "@/components/instructor/InstructorButton";
@@ -9,6 +9,10 @@ import { PiHandWithdraw } from "react-icons/pi";
 import RequestWithdrawal from "./RequestWithdrawal";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { useRouter } from "next/router";
+import { getWithDrawals } from "@/store/slices/withdrawalSlice";
+import UserFilter from "@/components/admin-dashboard/user/UserFilter";
+import dateFormat from "dateformat";
+
 
 const headingsData = [
   "Withdrawal Method",
@@ -19,10 +23,10 @@ const headingsData = [
 ];
 
 const WithdrawalContainer = () => {
-  const { withdrawals, balance } = useSelector(
-    (state) => state.instructor.withdrawal
-  );
+  const dispatch = useDispatch();
+  const { withdrawals, balance } = useSelector((state) => state.withdrawal);
   const [isWithdrawal, setisWithdrawal] = useState(false);
+  const [filtersData, setfiltersData] = useState({});
 
   const router = useRouter();
   const admin_path = router.pathname.split("/")[1];
@@ -32,10 +36,10 @@ const WithdrawalContainer = () => {
     let css = "";
 
     switch (status) {
-      case "Pending":
+      case "pending":
         css = "text-yellow-500 bg-yellow-100";
         break;
-      case "Success":
+      case "approved":
         css = "text-green-500 bg-green-100";
         break;
       default:
@@ -44,6 +48,13 @@ const WithdrawalContainer = () => {
 
     return css;
   };
+
+  useEffect(() => {
+    const data = {};
+    dispatch(getWithDrawals(data));
+  }, []);
+
+  console.log("filtersData", filtersData);
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
@@ -84,6 +95,12 @@ const WithdrawalContainer = () => {
         />
       </div>
 
+
+
+      <div className="w-full px-5 !sticky !-top-12 bg-white">
+        <UserFilter onApplyFilters={(data) => setfiltersData(data)} />
+      </div>
+
       <table className="w-full border-l border-r border-black/10 !rounded-lg">
         <TableHeader headingsData={headingsData} />
         <tbody>
@@ -100,32 +117,33 @@ const WithdrawalContainer = () => {
                     <IoLogoPaypal size={25} />
                   </div>
                   <div className="">
-                    <h6 className="font-semibold">{row?.method}</h6>
-                    <p className="text-light text-sm">{row?.email}</p>
+                    <h6 className="font-semibold">{row?.paymentMethod}</h6>
+                    <p className="text-light text-sm">{row?.paypalEmail}</p>
                   </div>
                 </div>
               </td>
               <td className="px-6 py-4">
                 <div className="">
-                  <h6 className="font-semibold">{row?.requestedOn}</h6>
-                  <p className="text-light text-sm">{row?.time}</p>
+                  <h6 className="font-semibold">{dateFormat(row?.createdAt, "dd mmm yyyy")}</h6>
+                  <p className="text-light text-sm">{dateFormat(row?.createdAt, "hh:MM TT")}</p>
                 </div>
               </td>
-              <td className="px-6 py-4 font-medium">{row?.reason}</td>
+              <td className="px-6 py-4 font-medium">{row?.user?.firstName}</td>
               <td className="px-6 py-4 font-medium">₹{row?.amount}</td>
               <td className={`px-6 py-4 font-medium`}>
                 <span
                   className={`${getStatusCss(
-                    row?.status
-                  )} px-3 py-2 rounded-lg text-sm font-medium`}
+                    row?.approvalStatus
+                  )} px-3 py-2 rounded-lg text-sm font-medium capitalize`}
                 >
-                  {row?.status}
+                  {row?.approvalStatus}
                 </span>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
       <div className="w-full px-5">
         <Pagination
           currentPage={1}
