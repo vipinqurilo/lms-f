@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  addOrderAsync,
-  wishlistAsync,
-} from "@/store/slices/coursesSlice";
+import { addOrderAsync, wishlistAsync } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
@@ -19,7 +16,7 @@ export default function FeaturedCard({ data }) {
   };
 
   const handleAddOrder = (id) => {
-    dispatch(addOrderAsync(id));
+    dispatch(addOrderAsync({ course: id }));
   };
 
   return (
