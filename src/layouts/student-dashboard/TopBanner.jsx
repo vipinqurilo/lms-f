@@ -12,6 +12,7 @@ import WalletBalanceBadge from "./WalletBalanceBadge";
 const TopBanner = () => {
   const dispatch = useDispatch();
   const { isCollapsed } = useSelector((state) => state.instructor.dashboard);
+  const { authUser } = useSelector((state) => state.user);
 
   const handleToggle = () => dispatch(toggleIsCollapsed());
   return (
@@ -61,7 +62,7 @@ const TopBanner = () => {
       </div>
 
       <div className="flex items-center gap-4 relative">
-        <WalletBalanceBadge />
+        {authUser?.role === "teacher" && <WalletBalanceBadge />}
         <button className="w-10 h-10 bg-white flex items-center justify-center rounded-full border border-black/10">
           <RiNotification3Line size={20} />
         </button>

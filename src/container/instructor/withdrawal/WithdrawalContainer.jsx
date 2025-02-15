@@ -12,48 +12,22 @@ import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
 
-
-const headingsData = [
-  "Withdrawal Method",
-  "Requested On",
-  "Reason",
-  "Amount",
-  "Status",
-];
-
 const WithdrawalContainer = () => {
   const dispatch = useDispatch();
   const { withdrawals, balance, totalPages } = useSelector(
     (state) => state.withdrawal
   );
+  const { authUser } = useSelector((state) => state.user);
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
   const router = useRouter();
   const admin_path = router.pathname.split("/")[1];
   const isAdmin = admin_path === "admin-dashboard";
 
-  const getStatusCss = (status) => {
-    let css = "";
-
-    switch (status) {
-      case "pending":
-        css = "text-yellow-500 bg-yellow-100";
-        break;
-      case "approved":
-        css = "text-green-500 bg-green-100";
-        break;
-      default:
-        css = "text-red-500 bg-red-100";
-    }
-
-    return css;
-  };
-
   const [currentPage, setcurrentPage] = useState(1);
   const loading = useSelector(
     (state) => state.withdrawal.isLoading.getWithDrawals
   );
-
 
   useEffect(() => {
     const data = {};
@@ -66,6 +40,14 @@ const WithdrawalContainer = () => {
     dispatch(getWithDrawals(data));
   }, [filtersData, currentPage]);
 
+  const headingsData = [
+    "Withdrawal Method",
+    ...(authUser?.role === "admin" ? ["Teacher Info"] : []),
+    "Requested On",
+    "Amount",
+    "Status",
+  ];
+
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
       <h3
@@ -77,7 +59,7 @@ const WithdrawalContainer = () => {
       </h3>
       <div
         className={`${
-          isAdmin ? "hidden" : "w-full "
+          isAdmin ? "hidden" : "!w-full flex"
         } px-5  items-center justify-between`}
       >
         <div className="w-full flex items-center gap-2">
@@ -100,8 +82,6 @@ const WithdrawalContainer = () => {
           handleClick={() => setisWithdrawal(true)}
         />
       </div>
-
-
 
       <div className="w-full px-5 !sticky !-top-12 bg-white">
         <UserFilter

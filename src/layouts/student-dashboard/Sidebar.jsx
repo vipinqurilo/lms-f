@@ -80,11 +80,6 @@ const studentSidebarLinks = [
   //   icon: MessageSquare,
   //   href: "/student-dashboard/qa",
   // },
-  {
-    title: "Support Tickets",
-    icon: LifeBuoy,
-    href: "/student-dashboard/support",
-  },
 ];
 
 const instructorSidebarLinks = [
@@ -213,10 +208,10 @@ export function Sidebar() {
   return (
     <div className={`h-full !transition-custom`}>
       <nav
-        className={`flex-1 overflow-y-auto !overflow-visible h-full px-4 bg-background py-5 text-white ${
+        className={`flex-1 !overflow-y-auto overflow-x-hidden h-full px-4 bg-background py-5 text-white ${
           isCollapsed ? "w-[80px]" : "w-[240px]"
         } transition-custom`}
-        style={{ scrollbarWidth: "thin", scrollbarColor: "#e8ebe9" }}
+        style={{ scrollbarWidth: "none", scrollbarColor: "#e8ebe9" }}
       >
         <div className="space-y-2">
           {sidebarLinks.map((link, index) => {
