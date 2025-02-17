@@ -18,7 +18,7 @@ const TeachersTable = () => {
     dispatch(getAllTeachers())
   }, [dispatch])
 
-  const columns = ["Name", "Email ID", "Mobile no", "Requested on", "Action"]
+  const columns = ["Name", "Email ID", "Mobile no", "Requested on",   "Action"]
 
   const handleStatusChange = (teacherId, status) => {
     dispatch(updateTeacherStatus({ teacherId, status }))
@@ -44,7 +44,7 @@ const TeachersTable = () => {
           {teachers.map((item) => (
             <tr
               key={item._id}
-              className="bg-white rounded-lg transition-all duration-300 relative border-t border-gray-200"
+              className="bg-[#F9FAFB] rounded-lg transition-all duration-300 relative border-t border-gray-200"
               onMouseEnter={() => setHoveredRow(item._id)}
               onMouseLeave={() => setHoveredRow(null)}
             >
@@ -60,10 +60,9 @@ const TeachersTable = () => {
               </td>
               <td className="p-4 text-sm">{item?.user?.email}</td>
               <td className="p-4 text-sm">{item?.user?.phone?.number}</td>
-              <td className="p-4 text-sm">{item.requestedOn} 17/02/2025</td>
+              <td className="p-4 text-sm">{item.requestedOn}17/02/2024</td>
 
-           
-
+              
               
               <td className="p-4 relative">
                 <button className="text-gray-600">

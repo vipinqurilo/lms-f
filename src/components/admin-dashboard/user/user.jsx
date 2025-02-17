@@ -122,19 +122,21 @@ const UsersHistory = () => {
                   <td className="py-4 px-4 text-gray-700 text-sm align-middle">
                     {user.userStatus === "active" ? "Verified" : "Not Verified"}
                   </td>
-                  <td className="py-4 px-3 text-center text-sm align-middle">
-                    <button className="flex items-center text-gray-600 hover:text-yellow-500">
-                      <label className="inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="sr-only peer"
-                          checked={user.userStatus === "active"}
-                          onChange={() => toggleStatus(user)}
-                        />
-                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[#12a449] dark:peer-checked:bg-blue-600"></div>
-                      </label>
-                    </button>
-                  </td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+  <div className="flex items-center justify-center">
+    <label className="inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        className="sr-only peer"
+        checked={user.userStatus === "active"}
+        onChange={() => toggleStatus(user)}
+      />
+      <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-checked:bg-[#12a449] peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600"></div>
+    </label>
+  </div>
+</td>
+
+
 
                   <td className="py-4 px-4 text-center text-sm align-middle">
                     <div className="flex items-center justify-center space-x-3">
