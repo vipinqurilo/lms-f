@@ -3,15 +3,12 @@ import {
   Clock,
   Calendar,
   Video,
-  Cross,
-  Ban,
   CircleX,
   CircleCheckBig,
   ListRestart,
   FilePenLine,
 } from "lucide-react";
 import Image from "next/image";
-import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
 
 import { useRouter } from "next/router";
@@ -21,8 +18,7 @@ import BookingConfirmationModel from "@/components/common/BookingConfirmationMod
 import BackgroundModal from "@/components/instructor/BackgroundModal";
 import CancelBookingModel from "@/components/common/CancelBookingModel";
 import RescheduleBookingModel from "@/components/common/RescheduleBookingModel";
-import EditMeetingLink from "@/components/common/EditMeetingLink";
-import Link from "next/link";
+import EditMeetingLink from "@/components/common/EditMeetingLink"; 
 import { useDispatch, useSelector } from "react-redux";
 import { rescheduleResponseAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
@@ -314,7 +310,7 @@ const BookingList = ({ bookings, isLoading }) => {
                             minute: "2-digit",
                             hour12: true,
                           })}
-                        </div>
+                        </div> 
                         <div className="flex items-center gap-2">
                           <button className="px-3 py-1 text-sm rounded-full text-red-50 bg-red-600">
                             Deny
@@ -343,6 +339,7 @@ const BookingList = ({ bookings, isLoading }) => {
           <div className="text-center py-12 text-gray-500">
             No booking found
           </div>
+        
         )}
       </div>
       {isOpen === "confiramation" && (
