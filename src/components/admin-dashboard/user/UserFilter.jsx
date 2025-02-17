@@ -2,77 +2,112 @@ import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
+import { usePathname } from "next/navigation";
 
-const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [role, setRole] = useState("Role");
-  const [status, setStatus] = useState("Status");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
-  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+const Dropdown = ({ label, value, options, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [statusArray, setstatusArray] = useState(
-    statusData || ["Inactive", "Active"]
+  return (
+    <div
+      className="border flex items-center px-3 py-1 h-10 rounded-full bg-white text-gray-500 relative cursor-pointer"
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      <div className="flex justify-center items-center w-full">
+        <p className="text-xs">{label}:</p>
+        <p className="text-sm font-semibold ml-1">{value}</p>
+      </div>
+      <div className="ml-2">{isOpen ? <FaAngleUp /> : <FaAngleDown />}</div>
+      {isOpen && (
+        <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
+          {options.map((option) => (
+            <p
+              key={option}
+              className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+              onClick={() => {
+                onChange(option);
+                setIsOpen(false);
+              }}
+            >
+              {option}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
   );
+};
 
-  // Debounced Search Term
+const UserFilter = ({
+  onApplyFilters,
+  isRole = true,
+  isSearch = true,
+  isStatus = true,
+  statusData,
+}) => {
+  const [filters, setFilters] = useState({
+    search: "",
+    role: "Role",
+    status: "Status",
+    startDate: "",
+    endDate: "",
+    payoutStatus: "Status",
+  });
+
+  const pathname = usePathname();
+  const [isMoreFilters, setIsMoreFilters] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const statusArray = statusData[0] || ["Inactive", "Active"];
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchTerm);
-    }, 500); // Delay of 500ms
-
-    return () => clearTimeout(timer); // Cleanup function
-  }, [searchTerm]);
-
-  // useEffect(() => {
-  //   handleApplyFilters(); // Call API when debounced value updates
-  // }, [debouncedSearch, role, status, startDate, endDate]);
-
-  const isFilterApplied =
-    searchTerm ||
-    role !== "Role" ||
-    status !== "Status" ||
-    startDate ||
-    endDate;
+    const timer = setTimeout(() => setDebouncedSearch(filters.search), 500);
+    return () => clearTimeout(timer);
+  }, [filters.search]);
 
   const handleApplyFilters = () => {
-    const filters = {};
-    if (debouncedSearch) filters.search = debouncedSearch;
-    if (role !== "Role") filters.role = role;
-    if (status !== "Status") filters.status = status;
-    if (startDate) filters.startDate = startDate;
-    if (endDate) filters.endDate = endDate;
-
-    onApplyFilters(filters);
+    const appliedFilters = Object.fromEntries(
+      Object.entries(filters).filter(
+        ([_, value]) => value && value !== "Role" && value !== "Status"
+      )
+    );
+    onApplyFilters(appliedFilters);
   };
 
   const handleClearFilters = () => {
-    setSearchTerm("");
-    setRole("Role");
-    setStatus("Status");
-    setStartDate("");
-    setEndDate("");
+    setFilters({
+      search: "",
+      role: "Role",
+      status: "Status",
+      startDate: "",
+      endDate: "",
+      payoutStatus: "Status",
+    });
     onApplyFilters({});
   };
 
+  const isFilterApplied = Object.values(filters).some(
+    (value) => value && value !== "Role" && value !== "Status"
+  );
+
   return (
     <div className="flex flex-wrap items-center gap-4 py-4">
-      <div className="w-full relative flex">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4" />
-        <input
-          type="text"
-          placeholder="Search"
-          className="pl-10 pr-4 py-1 h-10 border rounded-full w-6/12 focus:border-gray-500 focus:outline-none"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button className="border ml-5 px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
-          More Filters <IoMdOptions />
-        </button>
-      </div>
+      {isSearch && (
+        <div className="w-full relative flex">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="pl-10 pr-4 py-1 h-10 border rounded-full w-6/12 focus:border-gray-500 focus:outline-none"
+            value={filters.search}
+            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+          />
+          <button
+            onClick={() => setIsMoreFilters(!isMoreFilters)}
+            className="border ml-5 px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500 hover:bg-gray-100"
+          >
+            More Filters <IoMdOptions />
+          </button>
+        </div>
+      )}
 
       <div className="flex justify-between w-full">
         <div className="flex w-10/12 space-x-1 items-center flex-wrap">
@@ -81,8 +116,10 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
             <input
               type="date"
               className="bg-transparent outline-none w-full font-semibold"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={filters.startDate}
+              onChange={(e) =>
+                setFilters({ ...filters, startDate: e.target.value })
+              }
             />
           </div>
 
@@ -91,70 +128,42 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
             <input
               type="date"
               className="bg-transparent outline-none w-full font-semibold"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={filters.endDate}
+              onChange={(e) =>
+                setFilters({ ...filters, endDate: e.target.value })
+              }
             />
           </div>
 
           {isRole && (
-            <div
-              className="border text-sm flex bg-white items-center px-3 py-1 h-10 rounded-full text-gray-500 relative cursor-pointer w-32"
-              onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-            >
-              <div className="flex justify-center items-center w-full">
-                <p className="text-xs">Role:</p>
-                <p className="text-sm font-semibold ml-1">{role}</p>
-              </div>
-              <div className="ml-1">
-                {roleDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
-              </div>
-              {roleDropdownOpen && (
-                <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                  {["Student", "Teacher", "Admin"].map((r) => (
-                    <p
-                      key={r}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                      onClick={() => {
-                        setRole(r);
-                        setRoleDropdownOpen(false);
-                      }}
-                    >
-                      {r}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
+            <Dropdown
+              label="Role"
+              value={filters.role}
+              options={["Student", "Teacher", "Admin"]}
+              onChange={(role) => setFilters({ ...filters, role })}
+            />
           )}
 
-          <div
-            className="border flex items-center px-3 py-1 h-10 rounded-full bg-white text-gray-500 relative cursor-pointer w-36"
-            onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-          >
-            <div className="flex justify-center items-center w-full">
-              <p className="text-xs">Status:</p>
-              <p className="text-sm font-semibold ml-1">{status}</p>
-            </div>
-            <div className="ml-2">
-              {statusDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
-            </div>
-            {statusDropdownOpen && (
-              <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {statusArray?.map((s) => (
-                  <p
-                    key={s}
-                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                    onClick={() => {
-                      setStatus(s);
-                      setStatusDropdownOpen(false);
-                    }}
-                  >
-                    {s}
-                  </p>
-                ))}
-              </div>
+          {isStatus && (
+            <Dropdown
+              label="Status"
+              value={filters.status}
+              options={statusArray}
+              onChange={(status) => setFilters({ ...filters, status })}
+            />
+          )}
+
+          {isMoreFilters &&
+            pathname === "/instructor-dashboard/withdrawals" && (
+              <Dropdown
+                label="Payout Status"
+                value={filters.payoutStatus}
+                options={statusData[1] || []}
+                onChange={(payoutStatus) =>
+                  setFilters({ ...filters, payoutStatus })
+                }
+              />
             )}
-          </div>
         </div>
 
         <div className="flex gap-3 justify-center items-center">
@@ -166,9 +175,8 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
               Clear Filters
             </button>
           )}
-
           <button
-            className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm hover:text-white"
+            className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm"
             onClick={handleApplyFilters}
           >
             Apply Filters

@@ -7,6 +7,7 @@ import TableHeader from "@/components/instructor/TableHeader";
 import { FaCircleInfo } from "react-icons/fa6";
 import Image from "next/image";
 import { useSelector } from "react-redux";
+import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const { authUser } = useSelector((state) => state.user);
@@ -19,6 +20,24 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
         break;
       case "approved":
         css = "text-green-500 bg-green-100";
+        break;
+      default:
+        css = "text-red-500 bg-red-100";
+    }
+
+    return css;
+  };
+  const getPayoutStatusCss = (status) => {
+    let css = "";
+    switch (status) {
+      case "not_initiated":
+        css = "text-orange-500 bg-orange-100";
+        break;
+      case "success":
+        css = "text-green-600 bg-green-100";
+        break;
+      case "processing":
+        css = "text-blue-500 bg-blue-100";
         break;
       default:
         css = "text-red-500 bg-red-100";
@@ -105,17 +124,17 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                 >
                   {row?.approvalStatus}
                   {row?.approvalStatus === "rejected" && (
-                    <div className="group relative">
-                      <FaCircleInfo
-                        size={16}
-                        className="cursor-pointer text-gray-500 group-hover:text-gray-700"
-                      />
-                      {/* Tooltip */}
-                      <div className="absolute -left-1/2 -translate-x-1/2 mt-4 top-full w-40 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 scale-0 group-hover:scale-100">
-                        {row?.rejectionReason || "No reason provided"}
-                      </div>
-                    </div>
+                    <RejectReasonPopup data={row?.rejectionReason} />
                   )}
+                </span>
+              </td>
+              <td className={`px-6 py-4 font-medium`}>
+                <span
+                  className={`${
+                    row?.payoutStatus && getPayoutStatusCss(row?.payoutStatus)
+                  } px-3 py-2 rounded-lg text-sm font-medium capitalize flex items-center gap-2 w-fit relative`}
+                >
+                  {row?.payoutStatus || "--"}
                 </span>
               </td>
             </tr>

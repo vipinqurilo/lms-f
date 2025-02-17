@@ -56,7 +56,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                   className="w-full focus:outline-none cursor-pointer border border-black/10 text-sm p-2 py-1 rounded-lg"
                 >
                   <option value="paypal">Paypal</option>
-                  <option value="account">Bank Account</option>
+                  <option value="bank_transfer">Bank Account</option>
                 </select>
               </div>
               {errors?.paymentMethod && (

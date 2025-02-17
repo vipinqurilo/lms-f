@@ -35,6 +35,7 @@ const WithdrawalContainer = () => {
     if (filtersData?.endDate) data.endDate = filtersData.endDate;
     if (filtersData?.search) data.search = filtersData.search;
     if (filtersData?.status) data.approvalStatus = filtersData.status;
+    if (filtersData?.payoutStatus) data.payoutStatus = filtersData.payoutStatus;
     if (currentPage) data.page = currentPage;
 
     dispatch(getWithDrawals(data));
@@ -46,6 +47,7 @@ const WithdrawalContainer = () => {
     "Requested On",
     "Amount",
     "Status",
+    "Payout Status",
   ];
 
   return (
@@ -87,7 +89,10 @@ const WithdrawalContainer = () => {
         <UserFilter
           onApplyFilters={(data) => setfiltersData(data)}
           isRole={false}
-          statusData={["pending", "approved", "rejected"]}
+          statusData={[
+            ["pending", "approved", "rejected"],
+            ["not_initiated", "processing", "success", "failure"],
+          ]}
         />
       </div>
 

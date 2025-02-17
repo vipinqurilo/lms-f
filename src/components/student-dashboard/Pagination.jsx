@@ -10,7 +10,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
 
   return (
     <div
-      className={`sticky bottom-0   px-10 bg-white py-2 flex items-center justify-between`}
+      className={`sticky bottom-0  px-10 bg-white py-5 flex items-center justify-between`}
     >
       <p className="text-sm text-gray-500">
         Page {currentPage} of {totalPages}
