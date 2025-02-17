@@ -19,6 +19,7 @@ const headingsData = [
   "Reason",
   "Amount",
   "Status",
+  "Action",
 ];
 
 const WithdrawalContainer = () => {
@@ -28,10 +29,6 @@ const WithdrawalContainer = () => {
   );
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isRejectModalOpen, setIsRejectModalOpen] = useState(true);
-  const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-  const [rejectionReason, setRejectionReason] = useState("");
 
   const router = useRouter();
   const admin_path = router.pathname.split("/")[1];
@@ -60,7 +57,7 @@ const WithdrawalContainer = () => {
   );
 
   useEffect(() => {
-    const data = {};
+    const data = { approvalStatus: "pending" };
     if (filtersData?.startDate) data.startDate = filtersData.startDate;
     if (filtersData?.endDate) data.endDate = filtersData.endDate;
     if (filtersData?.search) data.search = filtersData.search;
@@ -69,11 +66,6 @@ const WithdrawalContainer = () => {
 
     dispatch(getWithDrawals(data));
   }, [filtersData, currentPage]);
-
-  const handleOpenRejectModal = (teacherId) => {
-    setSelectedTeacherId(teacherId);
-    setIsRejectModalOpen(true);
-  };
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
@@ -143,13 +135,6 @@ const WithdrawalContainer = () => {
           balance={balance}
         />
       )}
-      <RejectModal
-        isOpen={isRejectModalOpen}
-        onClose={() => setIsRejectModalOpen(false)}
-        // onReject={handleReject}
-        rejectionReason={rejectionReason} // Pass rejectionReason to modal
-        setRejectionReason={setRejectionReason} // Function to update rejectionReason in the modal
-      />
     </div>
   );
 };

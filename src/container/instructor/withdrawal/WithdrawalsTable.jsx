@@ -8,10 +8,21 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { updateWithdrawalStatus } from "@/store/slices/withdrawalSlice";
 import { useDispatch } from "react-redux";
 import RejectModal from "@/components/admin-dashboard/teacherrequests/rejectModel";
+import { FaRegCalendarCheck } from "react-icons/fa";
+import Link from "next/link";
+import { FiEye } from "react-icons/fi";
+import { RxCross2 } from "react-icons/rx";
+import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/ApprovalModal";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [isEdit, setIsEdited] = useState(null);
   const dispatch = useDispatch();
+
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [approvingId, setApprovingId] = useState(null);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
+  const [rejectingId, setRejectingId] = useState(null);
 
   const getStatusCss = (status) => {
     let css = "";
@@ -33,7 +44,27 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   };
 
   const handleApproval = (id, status) => {
-    dispatch(updateWithdrawalStatus({ id, data: status }));
+    if (status === "rejected") {
+      setRejectingId(id);
+      setIsRejectModalOpen(true);
+    } else {
+      setApprovingId(id);
+      setIsApproveModalOpen(true);
+    }
+  };
+
+  const handleReject = () => {
+    if (rejectingId) {
+      dispatch(
+        updateWithdrawalStatus({
+          id: rejectingId,
+          data: { action: "reject", rejectionReason },
+        })
+      );
+    }
+    setIsRejectModalOpen(false);
+    setRejectingId(null);
+    setRejectionReason("");
   };
 
   return (
@@ -86,51 +117,82 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
               </td>
               <td className="px-6 py-4 font-medium">{row?.user?.firstName}</td>
               <td className="px-6 py-4 font-medium">₹{row?.amount}</td>
-              {isEdit === row?._id ? (
-                <td className="px-6 py-4 font-medium">
-                  <div className="flex gap-2">
-                    <button
-                      className="text-green-500 bg-green-100 hover:bg-green-200 px-3 py-2 rounded-lg text-sm font-medium"
-                      onClick={() => handleApproval(row?.id, "approve")}
-                    >
-                      Approve
-                    </button>
-                    <button
-                      className="text-red-500 bg-red-100 hover:bg-red-200 px-3 py-2 rounded-lg text-sm font-medium"
-                      onClick={() => handleApproval(row?.id, "rejected")}
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </td>
-              ) : (
-                <td className={`px-6 py-4 font-medium`}>
-                  <button
-                    onClick={() => handleEdit(row?._id)}
-                    className={`${getStatusCss(
-                      row?.approvalStatus
-                    )} px-3 py-2 rounded-lg text-sm font-medium capitalize flex items-center gap-2 w-fit relative`}
-                  >
-                    {row?.approvalStatus}
-                    {row?.approvalStatus === "rejected" && (
-                      <div className="group relative">
-                        <FaCircleInfo
-                          size={16}
-                          className="cursor-pointer text-gray-500 group-hover:text-gray-700"
-                        />
-                        {/* Tooltip */}
-                        <div className="absolute -left-1/2 -translate-x-1/2 mt-4 top-full w-40 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                          {row?.rejectionReason || "No reason provided"}
-                        </div>
+              <td className={`px-6 py-4 font-medium`}>
+                <button
+                  onClick={() => handleEdit(row?._id)}
+                  className={`${getStatusCss(
+                    row?.approvalStatus
+                  )} px-3 py-2 rounded-lg text-sm font-medium capitalize flex items-center gap-2 w-fit relative`}
+                >
+                  {row?.approvalStatus}
+                  {row?.approvalStatus === "rejected" && (
+                    <div className="group relative">
+                      <FaCircleInfo
+                        size={16}
+                        className="cursor-pointer text-gray-500 group-hover:text-gray-700"
+                      />
+                      {/* Tooltip */}
+                      <div className="absolute -left-1/2 -translate-x-1/2 mt-4 top-full w-40 p-2 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                        {row?.rejectionReason || "No reason provided"}
                       </div>
-                    )}
+                    </div>
+                  )}
+                </button>
+              </td>
+              <td className="py-4 px-4 text-center">
+                <div className="flex items-center justify-center gap-4">
+                  <button
+                    className="text-gray-600 hover:text-blue-500"
+                    onClick={() => handleApproval(row?._id, "approved")}
+                  >
+                    <FaRegCalendarCheck size={16} />
                   </button>
-                </td>
-              )}
+                  <button className="text-gray-600 hover:text-yellow-500">
+                    <Link
+                      href={""}
+                      // href={`/instructor-request/${teacher?._id}`}
+                    >
+                      <FiEye size={18} />
+                    </Link>
+                  </button>
+                  <button
+                    className="text-gray-600 hover:text-red-500"
+                    onClick={() => handleApproval(row?._id, "rejected")}
+                  >
+                    <RxCross2 size={18} />
+                  </button>
+                </div>
+              </td>
             </tr>
           ))
         )}
       </tbody>
+      <ApprovelModal
+        isOpen={isApproveModalOpen}
+        onClose={() => setIsApproveModalOpen(false)}
+        onConfirm={() => {
+          if (approvingId) {
+            dispatch(
+              updateWithdrawalStatus({
+                id: approvingId,
+                data: { action: "approve" },
+              })
+            );
+          }
+          setIsApproveModalOpen(false);
+          setApprovingId(null);
+        }}
+      />
+      <RejectModal
+        isOpen={isRejectModalOpen}
+        onClose={() => {
+          setIsRejectModalOpen(false);
+          setRejectingId(null);
+        }}
+        onReject={handleReject}
+        rejectionReason={rejectionReason}
+        setRejectionReason={setRejectionReason}
+      />
     </table>
   );
 };
