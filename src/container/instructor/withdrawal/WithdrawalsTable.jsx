@@ -25,6 +25,8 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [rejectionReason, setRejectionReason] = useState("");
   const [rejectingId, setRejectingId] = useState(null);
 
+  console.log(headingsData, "hd data");
+
   const getStatusCss = (status) => {
     let css = "";
     switch (status) {
@@ -140,7 +142,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   )}
                 </button>
               </td>
-              {user === "admin"   ? (
+              {user === "admin" && headingsData[5] !== null ? (
                 <td className="py-4 px-4 text-center">
                   <div className="flex items-center justify-center gap-4">
                     <button

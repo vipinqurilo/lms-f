@@ -62,7 +62,7 @@ const WithdrawalContainer = () => {
     "Reason",
     "Amount",
     "Status",
-    user === "admin" ? "Action" : null,
+    user === "admin" && filtersData.status === "pending" ? "Action" : null,
   ];
 
   return (
