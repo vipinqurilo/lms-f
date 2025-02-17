@@ -140,7 +140,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   )}
                 </button>
               </td>
-              {user === "admin" ? (
+              {user === "admin"   ? (
                 <td className="py-4 px-4 text-center">
                   <div className="flex items-center justify-center gap-4">
                     <button

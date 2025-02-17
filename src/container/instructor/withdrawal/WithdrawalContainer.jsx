@@ -23,10 +23,6 @@ const WithdrawalContainer = () => {
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
 
-  const router = useRouter();
-  const admin_path = router.pathname.split("/")[1];
-  const isAdmin = admin_path === "admin-dashboard";
-
   const getStatusCss = (status) => {
     let css = "";
 
@@ -73,14 +69,14 @@ const WithdrawalContainer = () => {
     <div className="w-full flex flex-col items-start gap-6 py-5">
       <h3
         className={`${
-          isAdmin ? "hidden" : "w-full "
+          user === "admin" ? "hidden" : "w-full "
         } text-lg px-5 font-semibold`}
       >
         Withdrawal History
       </h3>
       <div
         className={`${
-          isAdmin ? "hidden" : "w-full "
+          user === "admin" ? "hidden" : "w-full "
         } px-5  items-center justify-between`}
       >
         <div className="w-full flex items-center gap-2">
