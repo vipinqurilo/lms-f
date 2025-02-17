@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Search } from "lucide-react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
@@ -14,56 +13,12 @@ const UserFilter = ({ onApplyFilters, onSearch }) => {
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
   const [filtersVisible, setFiltersVisible] = useState(false); // New state for toggling visibility
 
-   const [debouncedSearch, setDebouncedSearch] = useState("");
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setDebouncedSearch(searchTerm);
-  //   }, 500); // Delay of 500ms
-
-  //   return () => clearTimeout(timer); // Cleanup function
-  // }, [searchTerm]);
-
-  // useEffect(() => {
-  //   if (debouncedSearch) onSearch(debouncedSearch); // Trigger search filter
-  // }, [debouncedSearch, onSearch]);
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchTerm);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    if (typeof onSearch === "function") {
-      onSearch(debouncedSearch);
-    } else {
-      console.error("onSearch is not a function");
-    }
-  }, [debouncedSearch, onSearch]);
-
-
-
-  
   const isFilterApplied =
     searchTerm ||
     role !== "Role" ||
     status !== "Status" ||
     startDate ||
     endDate;
-
-  // const handleApplyFilters = () => {
-  //   const filters = {};
-  //   if (role !== "Role") filters.role = role;
-  //   if (status !== "Status") filters.status = status;
-  //   if (startDate) filters.startDate = startDate;
-  //   if (endDate) filters.endDate = endDate;
-
-  //   onApplyFilters(filters); // Trigger the filter application
-  // };
 
   const handleApplyFilters = () => {
     const filters = {};
@@ -72,12 +27,23 @@ const UserFilter = ({ onApplyFilters, onSearch }) => {
     if (startDate) filters.startDate = startDate;
     if (endDate) filters.endDate = endDate;
 
+    // Apply search term filter
+    if (searchTerm) filters.search = searchTerm;
+
     if (typeof onApplyFilters === "function") {
       onApplyFilters(filters);
     } else {
       console.error("onApplyFilters is not a function");
     }
+
+    // If onSearch is provided, apply the search term directly
+    if (typeof onSearch === "function") {
+      onSearch(searchTerm);
+    } else {
+      console.error("onSearch is not a function");
+    }
   };
+
   const handleClearFilters = () => {
     setSearchTerm("");
     setRole("Role");
@@ -86,7 +52,8 @@ const UserFilter = ({ onApplyFilters, onSearch }) => {
     setEndDate("");
     if (typeof onApplyFilters === "function") {
       onApplyFilters({});
-    }  };
+    }
+  };
 
   return (
     <div className="flex flex-wrap items-center gap-4 py-4">
@@ -100,12 +67,12 @@ const UserFilter = ({ onApplyFilters, onSearch }) => {
           onChange={(e) => setSearchTerm(e.target.value)} // Directly update search term
         />
         <div className="ml-3">
-        <button
-          className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500"
-          onClick={() => setFiltersVisible(!filtersVisible)} // Toggle the visibility of filters
-        >
-          More Filters <IoMdOptions />
-        </button>
+          <button
+            className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500"
+            onClick={() => setFiltersVisible(!filtersVisible)} // Toggle the visibility of filters
+          >
+            More Filters <IoMdOptions />
+          </button>
         </div>
       </div>
 
@@ -216,5 +183,3 @@ const UserFilter = ({ onApplyFilters, onSearch }) => {
 };
 
 export default UserFilter;
-
- 

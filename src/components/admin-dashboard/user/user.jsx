@@ -31,31 +31,22 @@ const UsersHistory = () => {
   );
 
   const [filters, setFilters] = useState({});
-
-
   const [filteredUsers, setFilteredUsers] = useState(users); // State to store filtered users
-
-
-
   const [page, setPage] = useState(1); // Ensure page is initialized
 
+  // Fetch users when page or filters change
+  useEffect(() => {
+    const { role, status, search } = filters;
+    dispatch(
+      getAllUsers({ role, userStatus: status, search, page, limit: 5 })
+    );
+  }, [page, filters, dispatch]); // Dependency on page and filters
+
+  // Handle page change
   const handlePageChange = (newPage) => {
-    setPage(newPage);
-    dispatch(getAllUsers({ page: newPage, limit: 5 })); // Fetch new page data
+    setPage(newPage); // Update page number
   };
 
-  useEffect(() => {
-    dispatch(
-      getAllUsers({
-        search: "",
-        userStatus: "",
-        role: "",
-        page,
-        limit: 5,
-      })
-    );
-  }, [dispatch, page]);  
-  
   useEffect(() => {
     setFilteredUsers(users); // Reset filtered users when the users from Redux store change
   }, [users]);
@@ -66,10 +57,7 @@ const UsersHistory = () => {
   };
 
   const handleApplyFilters = (filters) => {
-    const { role, status, search } = filters;
-    dispatch(
-      getAllUsers({ role, userStatus: status, search, page: 1, limit: 5 })
-    ); // Apply filters and reset to page 1
+    setFilters(filters); // Set filters and trigger re-fetch
   };
 
   const filterUsers = (searchTerm) => {
@@ -85,11 +73,9 @@ const UsersHistory = () => {
     setFilteredUsers(filtered); // Update filteredUsers when search term changes
   };
 
- 
-
   return (
     <div className="rounded-lg p-1 w-11/12 mx-auto">
-      <UserFilter onApplyFilters={handleApplyFilters} onSearch={filterUsers}    />
+      <UserFilter onApplyFilters={handleApplyFilters} onSearch={filterUsers} />
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
