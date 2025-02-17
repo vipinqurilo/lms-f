@@ -9,6 +9,7 @@ const AddSubCategories = ({ isOpen, onClose }) => {
 
   const [name, setName] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [pricePerHour, setPricePerHour] = useState(""); // Added state for pricePerHour
 
   useEffect(() => {
     if (isOpen) {
@@ -27,10 +28,15 @@ const AddSubCategories = ({ isOpen, onClose }) => {
       alert("Please select a category.");
       return;
     }
+    if (!pricePerHour) {
+      alert("Please enter the price per hour.");
+      return;
+    }
 
     const subCategoryData = {
       name,
       courseCategory: selectedCategoryId,
+      pricePerHour, // Add pricePerHour to the data
     };
 
     dispatch(addSubCategory(subCategoryData))
@@ -39,6 +45,7 @@ const AddSubCategories = ({ isOpen, onClose }) => {
         console.log("Subcategory added successfully");
         setName(""); // Reset input
         setSelectedCategoryId(""); // Reset selection
+        setPricePerHour(""); // Reset pricePerHour input
         onClose(); // Close modal
       })
       .catch((error) => {
@@ -87,6 +94,18 @@ const AddSubCategories = ({ isOpen, onClose }) => {
             ))
           )}
         </select>
+
+        <label className="block mb-2 text-sm font-medium">
+          Price per Hour<span className="text-red-500">*</span>
+        </label>
+        <input
+          type="number"
+          step="0.01"
+          className="w-full border p-2 rounded mb-4"
+          placeholder="Enter price per hour"
+          value={pricePerHour}
+          onChange={(e) => setPricePerHour(e.target.value)}
+        />
 
         <div className="flex justify-end space-x-2 mt-7">
           <button
