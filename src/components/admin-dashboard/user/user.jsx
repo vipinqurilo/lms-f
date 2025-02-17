@@ -29,26 +29,43 @@ const UsersHistory = () => {
   const { users, total, currentPage, totalPages, isLoading } = useSelector(
     (state) => state.admin.user
   );
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({});
-  const [filteredUsers, setFilteredUsers] = useState(users); // State to store filtered users
-  const [page, setPage] = useState(1); // Ensure page is initialized
+  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [page, setPage] = useState(1);
 
-  // Fetch users when page or filters change
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  // Debounce search input
   useEffect(() => {
-    const { role, status, search } = filters;
-    dispatch(
-      getAllUsers({ role, userStatus: status, search, page, limit: 5 })
-    );
-  }, [page, filters, dispatch]); // Dependency on page and filters
+    const timeoutId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm); // Update debounced search term after delay
+    }, 1000); // 1000ms debounce delay
+
+    return () => clearTimeout(timeoutId); // Clear timeout on cleanup or when searchTerm changes
+  }, [searchTerm]);
+
+  // Fetch users when page or filters or debouncedSearchTerm change
+  useEffect(() => {
+    const { role, status } = filters;
+    if (debouncedSearchTerm) {
+      dispatch(
+        getAllUsers({ role, userStatus: status, search: debouncedSearchTerm, page: 1, limit: 5 })
+      );
+    } else {
+      dispatch(
+        getAllUsers({ role, userStatus: status, page, limit: 5 })
+      );
+    }
+  }, [page, filters, debouncedSearchTerm, dispatch]);
 
   // Handle page change
   const handlePageChange = (newPage) => {
-    setPage(newPage); // Update page number
+    setPage(newPage);
   };
 
   useEffect(() => {
-    setFilteredUsers(users); // Reset filtered users when the users from Redux store change
+    setFilteredUsers(users); // Reset filtered users when users from Redux store change
   }, [users]);
 
   const toggleStatus = (user) => {
@@ -60,22 +77,13 @@ const UsersHistory = () => {
     setFilters(filters); // Set filters and trigger re-fetch
   };
 
-  const filterUsers = (searchTerm) => {
-    // Filtering users locally based on the search term
-    const filtered = users.filter((user) => {
-      return (
-        user.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user._id?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
-    setFilteredUsers(filtered); // Update filteredUsers when search term changes
-  };
-
   return (
     <div className="rounded-lg p-1 w-11/12 mx-auto">
-      <UserFilter onApplyFilters={handleApplyFilters} onSearch={filterUsers} />
+      <UserFilter
+        onApplyFilters={handleApplyFilters}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
@@ -107,7 +115,6 @@ const UsersHistory = () => {
                 <td className="py-4 px-4 text-gray-700 text-sm">
                   {user.userStatus === "active" ? "Verified" : "Not Verified"}
                 </td>
-
                 <td className="py-4 px-3 text-center text-sm">
                   <button className="flex items-center text-gray-600 hover:text-yellow-500">
                     <label className="inline-flex items-center cursor-pointer">

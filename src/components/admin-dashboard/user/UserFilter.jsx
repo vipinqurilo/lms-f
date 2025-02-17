@@ -3,8 +3,7 @@ import { Search } from "lucide-react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
 
-const UserFilter = ({ onApplyFilters, onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const UserFilter = ({ onApplyFilters ,searchTerm,setSearchTerm}) => {
   const [role, setRole] = useState("Role");
   const [status, setStatus] = useState("Status");
   const [startDate, setStartDate] = useState("");
@@ -14,7 +13,6 @@ const UserFilter = ({ onApplyFilters, onSearch }) => {
   const [filtersVisible, setFiltersVisible] = useState(false); // New state for toggling visibility
 
   const isFilterApplied =
-    searchTerm ||
     role !== "Role" ||
     status !== "Status" ||
     startDate ||
