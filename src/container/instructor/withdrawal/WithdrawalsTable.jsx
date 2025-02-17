@@ -6,7 +6,7 @@ import dateFormat from "dateformat";
 import TableHeader from "@/components/instructor/TableHeader";
 import { FaCircleInfo } from "react-icons/fa6";
 import { updateWithdrawalStatus } from "@/store/slices/withdrawalSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import RejectModal from "@/components/admin-dashboard/teacherrequests/rejectModel";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import Link from "next/link";
@@ -17,6 +17,7 @@ import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/Approva
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [isEdit, setIsEdited] = useState(null);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user?.authUser?.role);
 
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [approvingId, setApprovingId] = useState(null);
@@ -139,30 +140,32 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   )}
                 </button>
               </td>
-              <td className="py-4 px-4 text-center">
-                <div className="flex items-center justify-center gap-4">
-                  <button
-                    className="text-gray-600 hover:text-blue-500"
-                    onClick={() => handleApproval(row?._id, "approved")}
-                  >
-                    <FaRegCalendarCheck size={16} />
-                  </button>
-                  <button className="text-gray-600 hover:text-yellow-500">
-                    <Link
-                      href={""}
-                      // href={`/instructor-request/${teacher?._id}`}
+              {user === "admin" ? (
+                <td className="py-4 px-4 text-center">
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      className="text-gray-600 hover:text-blue-500"
+                      onClick={() => handleApproval(row?._id, "approved")}
                     >
-                      <FiEye size={18} />
-                    </Link>
-                  </button>
-                  <button
-                    className="text-gray-600 hover:text-red-500"
-                    onClick={() => handleApproval(row?._id, "rejected")}
-                  >
-                    <RxCross2 size={18} />
-                  </button>
-                </div>
-              </td>
+                      <FaRegCalendarCheck size={16} />
+                    </button>
+                    <button className="text-gray-600 hover:text-yellow-500">
+                      <Link
+                        href={""}
+                        // href={`/instructor-request/${teacher?._id}`}
+                      >
+                        <FiEye size={18} />
+                      </Link>
+                    </button>
+                    <button
+                      className="text-gray-600 hover:text-red-500"
+                      onClick={() => handleApproval(row?._id, "rejected")}
+                    >
+                      <RxCross2 size={18} />
+                    </button>
+                  </div>
+                </td>
+              ) : null}
             </tr>
           ))
         )}

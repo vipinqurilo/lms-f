@@ -13,20 +13,13 @@ import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
 import RejectModal from "@/components/admin-dashboard/withdrawrequests/rejectModal";
 
-const headingsData = [
-  "Withdrawal Method",
-  "Requested On",
-  "Reason",
-  "Amount",
-  "Status",
-  "Action",
-];
-
 const WithdrawalContainer = () => {
   const dispatch = useDispatch();
   const { withdrawals, balance, totalPages } = useSelector(
     (state) => state.withdrawal
   );
+  const user = useSelector((state) => state.user?.authUser?.role);
+
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
 
@@ -66,6 +59,15 @@ const WithdrawalContainer = () => {
 
     dispatch(getWithDrawals(data));
   }, [filtersData, currentPage]);
+
+  const headingsData = [
+    "Withdrawal Method",
+    "Requested On",
+    "Reason",
+    "Amount",
+    "Status",
+    user === "admin" ? "Action" : null,
+  ];
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
