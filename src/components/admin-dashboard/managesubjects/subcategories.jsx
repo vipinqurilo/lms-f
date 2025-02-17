@@ -11,7 +11,7 @@ import {
 } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
 import DeleteSubCategoriesModal from "./deletesSubCategoriesModels";
  
-const columns = ["S.No", "Name", "Categories", "Updated", "Action"];
+const columns = ["S.No", "Name", "Categories", "Updated" ,"Price Per Hour", "Action"];
 
 const SubCategories = () => {
   const dispatch = useDispatch();
@@ -89,7 +89,7 @@ const SubCategories = () => {
                       hour12: false,
                     })}
                   </td>
-
+                  <td className="py-3 px-4 text-sm">  {cat?.pricePerHour}</td>
                   <td className="py-3 px-4 text-center flex items-center justify-center space-x-4">
                     <button
                       className="text-gray-600 hover:text-yellow-500"

@@ -1,38 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Search } from "lucide-react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { IoMdOptions } from "react-icons/io";
 
-const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const UserFilter = ({ onApplyFilters ,searchTerm,setSearchTerm}) => {
   const [role, setRole] = useState("Role");
   const [status, setStatus] = useState("Status");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
-
-  const [statusArray, setstatusArray] = useState(
-    statusData || ["Inactive", "Active"]
-  );
-
-  // Debounced Search Term
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchTerm);
-    }, 500); // Delay of 500ms
-
-    return () => clearTimeout(timer); // Cleanup function
-  }, [searchTerm]);
-
-  useEffect(() => {
-    handleApplyFilters(); // Call API when debounced value updates
-  }, [debouncedSearch, role, status, startDate, endDate]);
+  const [filtersVisible, setFiltersVisible] = useState(false); // New state for toggling visibility
 
   const isFilterApplied =
-    searchTerm ||
     role !== "Role" ||
     status !== "Status" ||
     startDate ||
@@ -40,13 +20,26 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
 
   const handleApplyFilters = () => {
     const filters = {};
-    if (debouncedSearch) filters.search = debouncedSearch;
     if (role !== "Role") filters.role = role;
     if (status !== "Status") filters.status = status;
     if (startDate) filters.startDate = startDate;
     if (endDate) filters.endDate = endDate;
 
-    onApplyFilters(filters);
+    // Apply search term filter
+    if (searchTerm) filters.search = searchTerm;
+
+    if (typeof onApplyFilters === "function") {
+      onApplyFilters(filters);
+    } else {
+      console.error("onApplyFilters is not a function");
+    }
+
+    // If onSearch is provided, apply the search term directly
+    if (typeof onSearch === "function") {
+      onSearch(searchTerm);
+    } else {
+      console.error("onSearch is not a function");
+    }
   };
 
   const handleClearFilters = () => {
@@ -55,7 +48,9 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
     setStatus("Status");
     setStartDate("");
     setEndDate("");
-    onApplyFilters({});
+    if (typeof onApplyFilters === "function") {
+      onApplyFilters({});
+    }
   };
 
   return (
@@ -67,36 +62,42 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
           placeholder="Search"
           className="pl-10 pr-4 py-1 h-10 border rounded-full w-6/12 focus:border-gray-500 focus:outline-none"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)} // Directly update search term
         />
-        <button className="border ml-5 px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500">
-          More Filters <IoMdOptions />
-        </button>
+        <div className="ml-3">
+          <button
+            className="border px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500"
+            onClick={() => setFiltersVisible(!filtersVisible)} // Toggle the visibility of filters
+          >
+            More Filters <IoMdOptions />
+          </button>
+        </div>
       </div>
 
-      <div className="flex justify-between w-full">
-        <div className="flex w-10/12 space-x-1 items-center flex-wrap">
-          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
-            <span className="text-xs w-24">Start Date:</span>
-            <input
-              type="date"
-              className="bg-transparent outline-none w-full font-semibold"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
+      {/* Conditionally render the filter section based on filtersVisible */}
+      {filtersVisible && (
+        <div className="flex justify-between w-full">
+          <div className="flex w-10/12 space-x-1 items-center flex-wrap">
+            <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+              <span className="text-xs w-24">Start Date:</span>
+              <input
+                type="date"
+                className="bg-transparent outline-none w-full font-semibold"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
 
-          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
-            <span className="text-xs w-24">End Date:</span>
-            <input
-              type="date"
-              className="bg-transparent outline-none w-full font-semibold"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
+            <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+              <span className="text-xs w-24">End Date:</span>
+              <input
+                type="date"
+                className="bg-transparent outline-none w-full font-semibold"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
 
-          {isRole && (
             <div
               className="border text-sm flex bg-white items-center px-3 py-1 h-10 rounded-full text-gray-500 relative cursor-pointer w-32"
               onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
@@ -110,7 +111,7 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
               </div>
               {roleDropdownOpen && (
                 <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                  {["Student", "Teacher", "Admin"].map((r) => (
+                  {["student", "teacher", "admin"].map((r) => (
                     <p
                       key={r}
                       className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -125,56 +126,56 @@ const UserFilter = ({ onApplyFilters, isRole = true, statusData }) => {
                 </div>
               )}
             </div>
-          )}
 
-          <div
-            className="border flex items-center px-3 py-1 h-10 rounded-full bg-white text-gray-500 relative cursor-pointer w-36"
-            onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-          >
-            <div className="flex justify-center items-center w-full">
-              <p className="text-xs">Status:</p>
-              <p className="text-sm font-semibold ml-1">{status}</p>
-            </div>
-            <div className="ml-2">
-              {statusDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
-            </div>
-            {statusDropdownOpen && (
-              <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
-                {statusArray?.map((s) => (
-                  <p
-                    key={s}
-                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                    onClick={() => {
-                      setStatus(s);
-                      setStatusDropdownOpen(false);
-                    }}
-                  >
-                    {s}
-                  </p>
-                ))}
+            <div
+              className="border flex items-center px-3 py-1 h-10 rounded-full bg-white text-gray-500 relative cursor-pointer w-36"
+              onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
+            >
+              <div className="flex justify-center items-center w-full">
+                <p className="text-xs">Status:</p>
+                <p className="text-sm font-semibold ml-1">{status}</p>
               </div>
+              <div className="ml-2">
+                {statusDropdownOpen ? <FaAngleUp /> : <FaAngleDown />}
+              </div>
+              {statusDropdownOpen && (
+                <div className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-md z-10">
+                  {["inactive", "active"].map((s) => (
+                    <p
+                      key={s}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                      onClick={() => {
+                        setStatus(s);
+                        setStatusDropdownOpen(false);
+                      }}
+                    >
+                      {s}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-3 justify-center items-center">
+            {isFilterApplied && (
+              <button
+                className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm"
+                onClick={handleClearFilters}
+              >
+                Clear Filters
+              </button>
             )}
+
+            <button
+              className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm hover:text-white"
+              onClick={handleApplyFilters} // Trigger the filter logic
+            >
+              Apply Filters
+            </button>
           </div>
         </div>
-
-        <div className="flex gap-3 justify-center items-center">
-          {isFilterApplied && (
-            <button
-              className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm"
-              onClick={handleClearFilters}
-            >
-              Clear Filters
-            </button>
-          )}
-
-          <button
-            className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm hover:text-white"
-            onClick={handleApplyFilters}
-          >
-            Apply Filters
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

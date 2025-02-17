@@ -108,6 +108,11 @@ const Teacher = () => {
           </tbody>
         </table>
       </div>
+       <Pagination
+              currentPage={currentPage}
+              totalPages={5}
+              onPageChange={(val) => setCurrentPage(val)}
+            />
     </div>
   );
 };
