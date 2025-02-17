@@ -88,7 +88,7 @@ const LoginForm = ({ type }) => {
               Forgot Password?
             </button>
           </div>
-          {<SubmitButton text={loading ? <Loader /> : "Login"} />}
+          {<SubmitButton text={loading ? <Loader /> : "Login"} loading={loading} />}
         </form>
       </div>
       <LoginOptions type={"login"} />

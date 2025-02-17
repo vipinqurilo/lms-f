@@ -83,7 +83,13 @@ export function BookingModal({ onClose, tutor }) {
         sessionDuration: duration,
         paymentId: "67a1acec55d46979078eddd8",
       })
-    );
+    )
+      .unwrap()
+      .then((res) => {
+        if (res.success) {
+          onClose();
+        }
+      });
   };
 
   // Add useEffect to handle scroll locking

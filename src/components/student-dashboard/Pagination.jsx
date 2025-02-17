@@ -1,12 +1,17 @@
+import { useSelector } from "react-redux";
+
 export function Pagination({ currentPage, totalPages, onPageChange }) {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
     }
   };
+  const { isCollapsed } = useSelector((state) => state.instructor.dashboard);
 
   return (
-    <div className="flex items-center justify-between">
+    <div
+      className={`sticky bottom-0   px-10 bg-white py-2 flex items-center justify-between`}
+    >
       <p className="text-sm text-gray-500">
         Page {currentPage} of {totalPages}
       </p>

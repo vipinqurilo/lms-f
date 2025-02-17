@@ -257,7 +257,7 @@ export default function SubjectAndLanguage() {
           <SubmitButtonsComp
             cancelText={"Go Back"}
             onCancel={() => dispatch(updateProcessStep(2))}
-            saveText={"Save and Continue"}
+            saveText={authUser?.role === "admin" ? "Next" : "Save and Continue"}
             handleClick={submitForm}
           />
         </div>

@@ -65,7 +65,7 @@ const supportSlice = createSlice({
       })
       .addCase(getFilteredInstructorTickets.fulfilled, (state, action) => {
         state.isLoading["getFilteredInstructorTickets"] = false;
-        state.instructorTickets = action.payload.data;
+        state.tickets = action.payload.data;
       })
       .addCase(getFilteredInstructorTickets.rejected, (state, action) => {
         state.isLoading["getFilteredInstructorTickets"] = false;

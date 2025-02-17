@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import TopBanner from "./TopBanner";
 import { useRouter } from "next/router";
 
+
 export default protectedPages(function StudentDashboardLayout({ children }) {
   const router = useRouter();
   const pathname = router.pathname;
@@ -17,7 +18,7 @@ export default protectedPages(function StudentDashboardLayout({ children }) {
       <div className="w-full flex h-[calc(100%-80px)]">
         <Sidebar />
         <main
-          className={`flex-1 w-full overflow-y-auto p-10 ${
+          className={`flex-1 w-full overflow-y-auto p-10  ${
             pathname.startsWith("/student-dashboard") && "p-10 "
           }`}
         >

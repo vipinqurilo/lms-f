@@ -1,13 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import TableHeader from "@/components/instructor/TableHeader";
-import { useSelector } from "react-redux";
-import { IoLogoPaypal } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import InstructorButton from "@/components/instructor/InstructorButton";
 import { PiHandWithdraw } from "react-icons/pi";
 import RequestWithdrawal from "./RequestWithdrawal";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { useRouter } from "next/router";
+import { getWithDrawals } from "@/store/slices/withdrawalSlice";
+import UserFilter from "@/components/admin-dashboard/user/UserFilter";
+import Loader from "@/components/common/Loader";
+import WithdrawalsTable from "./WithdrawalsTable";
+
 
 const headingsData = [
   "Withdrawal Method",
@@ -18,17 +22,24 @@ const headingsData = [
 ];
 
 const WithdrawalContainer = () => {
-  const { withdrawals } = useSelector((state) => state.instructor.withdrawal);
+  const dispatch = useDispatch();
+  const { withdrawals, balance, totalPages } = useSelector(
+    (state) => state.withdrawal
+  );
   const [isWithdrawal, setisWithdrawal] = useState(false);
+  const [filtersData, setfiltersData] = useState({});
+  const router = useRouter();
+  const admin_path = router.pathname.split("/")[1];
+  const isAdmin = admin_path === "admin-dashboard";
 
   const getStatusCss = (status) => {
     let css = "";
 
     switch (status) {
-      case "Pending":
+      case "pending":
         css = "text-yellow-500 bg-yellow-100";
         break;
-      case "Success":
+      case "approved":
         css = "text-green-500 bg-green-100";
         break;
       default:
@@ -38,23 +49,46 @@ const WithdrawalContainer = () => {
     return css;
   };
 
+  const [currentPage, setcurrentPage] = useState(1);
+  const loading = useSelector(
+    (state) => state.withdrawal.isLoading.getWithDrawals
+  );
+
+
+  useEffect(() => {
+    const data = {};
+    if (filtersData?.startDate) data.startDate = filtersData.startDate;
+    if (filtersData?.endDate) data.endDate = filtersData.endDate;
+    if (filtersData?.search) data.search = filtersData.search;
+    if (filtersData?.status) data.approvalStatus = filtersData.status;
+    if (currentPage) data.page = currentPage;
+
+    dispatch(getWithDrawals(data));
+  }, [filtersData, currentPage]);
+
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
-      <h3 className="text-lg px-5 font-semibold">Withdrawal History</h3>
-      <div className="w-full px-5 flex items-center justify-between">
+      <h3
+        className={`${
+          isAdmin ? "hidden" : "w-full "
+        } text-lg px-5 font-semibold`}
+      >
+        Withdrawal History
+      </h3>
+      <div
+        className={`${
+          isAdmin ? "hidden" : "w-full "
+        } px-5  items-center justify-between`}
+      >
         <div className="w-full flex items-center gap-2">
-          {/* <div className="w-10 h-10 rounded border border-black/10 flex items-center justify-center text-blue-500">
-            <IoLogoPaypal size={25} />
-          </div> */}
-
           <MdOutlineAccountBalanceWallet size={40} className="text-primary" />
 
           <div className="">
             <p>Current Balance</p>
             <p className=" font-medium">
               You have{" "}
-              <span className="font-semibold text-background">₹5255</span> ready
-              to withdraw now
+              <span className="font-semibold text-background">₹{balance}</span>{" "}
+              ready to withdraw now
             </p>
           </div>
         </div>
@@ -66,60 +100,40 @@ const WithdrawalContainer = () => {
           handleClick={() => setisWithdrawal(true)}
         />
       </div>
-      <table className="w-full border-l border-r border-black/10 !rounded-lg">
-        <TableHeader headingsData={headingsData} />
-        <tbody>
-          {withdrawals?.map((row, index) => (
-            <tr
-              key={index}
-              className={`border-b border-black/10 ${
-                index === withdrawals?.length - 1 && "!rounded-lg"
-              }`}
-            >
-              <td className="px-6 py-4">
-                <div className="w-full flex items-center gap-2">
-                  <div className="w-10 h-10 rounded border border-black/10 flex items-center justify-center text-blue-500">
-                    <IoLogoPaypal size={25} />
-                  </div>
-                  <div className="">
-                    <h6 className="font-semibold">{row?.method}</h6>
-                    <p className="text-light text-sm">{row?.email}</p>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4">
-                <div className="">
-                  <h6 className="font-semibold">{row?.requestedOn}</h6>
-                  <p className="text-light text-sm">{row?.time}</p>
-                </div>
-              </td>
-              <td className="px-6 py-4 font-medium">{row?.reason}</td>
-              <td className="px-6 py-4 font-medium">₹{row?.amount}</td>
-              <td className={`px-6 py-4 font-medium`}>
-                <span
-                  className={`${getStatusCss(
-                    row?.status
-                  )} px-3 py-2 rounded-lg text-sm font-medium`}
-                >
-                  {row?.status}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+
+
+      <div className="w-full px-5 !sticky !-top-12 bg-white">
+        <UserFilter
+          onApplyFilters={(data) => setfiltersData(data)}
+          isRole={false}
+          statusData={["pending", "approved", "rejected"]}
+        />
+      </div>
+
+      {loading ? (
+        <div className="w-full flex items-center justify-center py-10">
+          <Loader color={"text-primary"} isBig={true} />
+        </div>
+      ) : (
+        <WithdrawalsTable
+          headingsData={headingsData}
+          withdrawals={withdrawals}
+        />
+      )}
+
       <div className="w-full px-5">
         <Pagination
           currentPage={1}
-          totalPages={2}
-          onPageChange={() => console.log(2)}
+          totalPages={totalPages}
+          onPageChange={(value) => setcurrentPage(value)}
         />
       </div>
 
       {isWithdrawal && (
         <RequestWithdrawal
           handleClose={() => setisWithdrawal(false)}
-          balance={"5255"}
+          balance={balance}
         />
       )}
     </div>

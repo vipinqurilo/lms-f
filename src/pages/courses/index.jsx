@@ -1,35 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AiOutlineAppstore } from "react-icons/ai";
-import Pagination from "../../components/courses/Pagination";
-import CourseCards from "../../components/courses/CourseCards";
-import CoursesFilter from "../../components/courses/CoursesFilter";
-import CoursesFilterCards from "../../components/courses/CoursesFilterCards";
-import CoursesFilterPrices from "../../components/courses/CoursesFilterPrices";
 import { useSelector } from "react-redux";
 import FeaturedCard from "@/components/common/FeaturedCard";
+import {
+  fetchCategories,
+  fetchCoursesAsync,
+} from "@/store/slices/coursesSlice";
+import { useDispatch } from "react-redux";
 
 const Courses = () => {
   const courses = useSelector((state) => state?.courses?.courses || []);
+  const categories = useSelector((state) => state?.courses?.categories || []);
 
-  // console.log(courses, "newttt course");
-  const [showFilters, setShowFilters] = useState(false);
-  const [clearTrigger, setClearTrigger] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(""); // State for select option
+  const [selectedOption, setSelectedOption] = useState("");
 
-  const clearFilters = () => {
-    setClearTrigger((prev) => !prev);
-    setSelectedOption("");
-  };
+  console.log(selectedOption, "ye option");
 
-    
-  console.log("courses in main page", courses);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const totalPages = Math.ceil(courses.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCourses = courses.slice(indexOfFirstItem, indexOfLastItem);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedOption !== "all") {
+      dispatch(fetchCoursesAsync(selectedOption));
+    } else {
+      dispatch(fetchCoursesAsync());
+    }
+  }, [dispatch, selectedOption]);
 
   return (
     <div className="lg:p-5 bg-gray-100 md:px-20 flex flex-wrap justify-center custom-margin-top">
-      <div className="  gap-6 flex mt-9">
+      <div className="gap-6 flex mt-9 w-full">
         {/* Course Cards Section */}
-        <div className=" w-full  p-4">
+        <div className="w-full p-4 md:px-20">
           <div className="flex flex-wrap justify-between items-center mb-6">
             {/* Icon and Results Text */}
             <div className="flex items-center space-x-3">
@@ -37,92 +52,80 @@ const Courses = () => {
                 <AiOutlineAppstore className="text-2xl text-white font-bold" />
               </div>
               <h2 className="text-lg font-semibold">
-                Showing 1-9 of 50 results
+                Showing {indexOfFirstItem + 1}-
+                {Math.min(indexOfLastItem, courses.length)} of {courses.length}{" "}
+                results
               </h2>
             </div>
 
             {/* Search and Dropdown */}
             <div className="flex items-center lg:space-x-4 lg:w-auto w-full flex-wrap lg:mt-5 mt-3">
-              <input
+              {/* <input
                 type="text"
                 placeholder="Search our courses"
                 className="border rounded-lg px-4 py-2 w-full sm:w-48"
-              />
+              /> */}
               <select
-                className="border bg-white rounded-lg lg:px-4 lg:py-2  px-3  py-2 w-full sm:w-52 lg:mt-auto mt-3"
+                className="border bg-white rounded-lg lg:px-4 lg:py-2 px-3 py-2 w-full sm:w-52 lg:mt-auto mt-3"
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
               >
-                <option>Newly published</option>
-                <option>Most popular</option>
+                <option value={"all"}>ALL</option>
+                {categories.map((category) => (
+                  <option value={category._id} className="text-black">
+                    {category?.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
 
-          {/* Mobile Filter Section (Dropdown on Mobile) */}
-          <div className="block lg:hidden w-full lg:mt-6  -mt-2   relative">
-            <div className="flex justify-between items-center bg-white shadow lg:p-3 px-3  py-2 rounded-lg">
-              <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 5.25h16.5M6.75 10.5h10.5M10.5 15.75h3"
-                  />
-                </svg>
-                <span className="text-sm font-medium text-gray-700">
-                  Filters
-                </span>
-              </div>
-              <button
-                className="text-sm font-medium text-gray-500 hover:text-gray-700"
-                onClick={() => setShowFilters(!showFilters)}
-              >
-                {showFilters ? "CLOSE" : "SHOW"}
-              </button>
-            </div>
-
-            {/* Animated Dropdown Filter Panel */}
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={
-                showFilters
-                  ? { height: "auto", opacity: 1 }
-                  : { height: 0, opacity: 0 }
-              }
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="absolute left-0 w-full bg-white shadow-lg rounded-lg overflow-hidden z-50"
-            >
-              {/* {showFilters && <CoursesFilter />} */}
-            </motion.div>
-          </div>
-
           {/* Course Cards Section */}
-          <div className="mt-7 grid grid-cols-3 gap-6">
-            {Array.isArray(courses) && courses.length > 0 ? (
-              courses.map((course, index) => {
-                console.log("Course data:", course);
-                return <FeaturedCard data={course} key={index} />;
-              })
+          <div className="mt-7 grid grid-cols-3 gap-6 ">
+            {currentCourses.length > 0 ? (
+              currentCourses.map((course, index) => (
+                <FeaturedCard data={course} key={index} />
+              ))
             ) : (
               <p>No courses found</p>
             )}
           </div>
+
+          {/* Pagination */}
+          <div className="mt-8 flex justify-center items-center space-x-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-2 bg-gray-300 rounded disabled:opacity-50"
+            >
+              Prev
+            </button>
+
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => paginate(index + 1)}
+                className={`px-3 py-2 rounded ${
+                  currentPage === index + 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 bg-gray-300 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
         </div>
-
-        {/* Desktop Filter Section */}
-      
-      </div>
-
-      <div className="w-11/12 lg:px-10">
-        <Pagination />
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export const updateLanguages = CreateApiAsyncThunk(
 
 export const updateTutionSlots = CreateApiAsyncThunk(
   "setting/updateTutionSlots",
-  (data) => api.put(`/profile/`, data)
+  (data) => api.put(`/profile/tution-slots`, data)
 );
 
 const settingsSlice = createSlice({

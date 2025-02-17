@@ -4,12 +4,15 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 
 export const fetchCategories = CreateApiAsyncThunk(
   "GET/courses/fetchCategories",
-  () => api.get(`api/category/filter`, data)
+  () => api.get(`/category`)
 );
 
 export const fetchCoursesAsync = CreateApiAsyncThunk(
   "GET/courses/fetchCoursesAsync",
-  () => api.get(`/course/admin/get`)
+  (categoryId) => {
+    const query = categoryId ? `?categoryId=${categoryId}` : "";
+    return api.get(`/course/admin/get${query}`);
+  }
 );
 
 export const fetchSingleCourse = CreateApiAsyncThunk(
@@ -19,12 +22,12 @@ export const fetchSingleCourse = CreateApiAsyncThunk(
 
 export const wishlistAsync = CreateApiAsyncThunk(
   "courses/wishlistAsync",
-  (data) => api2.post(`/whishlist`, data)
+  (data) => api.post(`/whishlist`, data)
 );
 
 export const addOrderAsync = CreateApiAsyncThunk(
   "courses/addOrderAsync",
-  (data) => api2.post(`/order`, data)
+  (data) => api.post(`/order`, data)
 );
 
 const coursesSlice = createSlice({
@@ -48,7 +51,8 @@ const coursesSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.isLoading["fetchCategories"] = false;
-        state.categories = Array.isArray(action.payload) ? action.payload : [];
+        state.categories = action.payload?.data;
+        // state.categories = Array.isArray(action.payload) ? action.payload : [];
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.isLoading["fetchCategories"] = false;
