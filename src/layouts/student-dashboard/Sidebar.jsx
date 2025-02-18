@@ -151,6 +151,13 @@ const adminSidebarLinks = [
     icon: Users,
     href: "/admin-dashboard/approvals/teachers",
   },
+
+  {
+    title: "Student",
+    icon: Users,
+    href: "/admin-dashboard/manage-students",
+  },
+
   {
     title: "Withdrawals",
     icon: Wallet,
