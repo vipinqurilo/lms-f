@@ -6,12 +6,15 @@ import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
 import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
+import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
 export default function DashboardPage() {
   const dispatch = useDispatch();
   const { data: enrolledCourses, isLoading } = useSelector(
     (state) => state.student.enrolledCourses
   );
+  const [startDate, setStartDate] = useState(new Date());
+
   const { bookings, isLoading: bookingLoading } = useSelector(
     (state) => state.student.booking
   );
@@ -43,9 +46,17 @@ export default function DashboardPage() {
       bgColor: "bg-[#E9F6FA]",
     },
   ];
+
   useEffect(() => {
     dispatch(fetchEnrolledCoursesAsync());
-  }, [dispatch]);
+    dispatch(
+      fetchBookingsAsync({
+        startDate: startDate.toISOString(),
+        page: 1,
+        limit: 3,
+      })
+    );
+  }, [dispatch, startDate]);
 
   return (
     <StudentDashboardLayout className="space-y-8">
@@ -65,7 +76,12 @@ export default function DashboardPage() {
           <ContinueWatching />
         </div>
         <div className="w-2/3">
-          <ScheduleView />
+          <ScheduleView
+            bookingLoading={bookingLoading}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            bookings={bookings}
+          />
         </div>
       </div>
 
