@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import { IoSearchSharp } from "react-icons/io5";
 
 export default function HeroSection() {
+  const [searchText, setSearchText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("programming");
+
+  const handleSearch = () => {
+    console.log("Search Text:", searchText);
+    console.log("Selected Category:", selectedCategory);
+  };
+
   const data = {
     box: [
       {
@@ -65,16 +73,25 @@ export default function HeroSection() {
             <IoSearchSharp className="text-2xl" />
             <input
               type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
               placeholder="Trusted by over 15K Users worldwide since 2024"
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
-            <select className="bg-orange-100 rounded-full md:px-4 md:py-2.5 py-1 text-xs text-center text-black outline-none mx-2">
-              <option>Category</option>
-              <option>Programming</option>
-              <option>Design</option>
-              <option>Marketing</option>
+            <select
+              value={selectedCategory}
+              onClick={(e) => setSelectedCategory(e.target.value)}
+              className="bg-orange-100 rounded-full md:px-4 md:py-2.5 py-1 text-xs text-center text-black outline-none mx-2"
+            >
+              <option disabled>Category</option>
+              <option value={"programming"}>Programming</option>
+              <option value={"design"}>Design</option>
+              <option value={"marketing"}>Marketing</option>
             </select>
-            <button className="bg-orange-500 hover:bg-orange-600 text-white  md:p-3 p-1 rounded-full shadow-md">
+            <button
+              onClick={handleSearch}
+              className="bg-orange-500 hover:bg-orange-600 text-white  md:p-3 p-1 rounded-full shadow-md"
+            >
               <span className=" sm:inline">
                 <FaArrowRight className="" />
               </span>
@@ -82,7 +99,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="absolute -bottom-40 mt-12 hidden md:grid grid-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
+        <div className="absolute -bottom-40 mt-12 hidden md:grid gr id-cols-2 sm:grid-cols-4 md:gap-20 gap-4">
           {data.box.map((item) => (
             <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
               <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
