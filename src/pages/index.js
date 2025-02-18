@@ -19,7 +19,10 @@ import LogoSlider from "@/components/common/LogoSlider";
 import axios from "axios";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
+import {
+  fetchCategories,
+  fetchCoursesAsync,
+} from "@/store/slices/coursesSlice";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -33,6 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchCoursesAsync());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   return (

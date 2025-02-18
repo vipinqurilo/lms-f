@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import { IoSearchSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function HeroSection() {
   const categories = useSelector((state) => state.courses?.categories);
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(categories[0]?._id);
+  const router = useRouter();
 
   const handleSearch = () => {
-    console.log("Search Text:", searchText);
-    console.log("Selected Category:", selectedCategory);
+    const query = new URLSearchParams({
+      // search: searchText,
+      category: selectedCategory,
+    }).toString();
+
+    router.push(`/courses?${query}`);
   };
 
   const data = {
