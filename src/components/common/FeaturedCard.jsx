@@ -15,8 +15,8 @@ export default function FeaturedCard({ data }) {
     dispatch(wishlistAsync({ course: id }));
   };
 
-  const handleAddOrder = (id) => {
-    dispatch(addOrderAsync({ course: id }));
+  const handleAddOrder = (id, price) => {
+    dispatch(addOrderAsync({ course: id, amountTotal: price }));
   };
 
   return (
@@ -56,7 +56,10 @@ export default function FeaturedCard({ data }) {
               </button>
             </div>
           </div>
-          <Link href={`/courses/${data?._id}`} className="mt-2 text-xl group-hover:text-white text-gray-700">
+          <Link
+            href={`/courses/${data?._id}`}
+            className="mt-2 text-xl group-hover:text-white text-gray-700"
+          >
             {data?.courseTitle}
           </Link>
           <div className="flex items-center justify-between gap-4 mt-4">
@@ -78,7 +81,7 @@ export default function FeaturedCard({ data }) {
               </span>
             </div>
             <button
-              onClick={() => handleAddOrder(data?._id)}
+              onClick={() => handleAddOrder(data?._id, data?.coursePrice)}
               className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] "
             >
               BUY NOW

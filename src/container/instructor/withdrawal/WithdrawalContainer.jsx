@@ -11,18 +11,17 @@ import { getWithDrawals } from "@/store/slices/withdrawalSlice";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
+import RejectModal from "@/components/admin-dashboard/withdrawrequests/rejectModal";
 
 const WithdrawalContainer = () => {
   const dispatch = useDispatch();
   const { withdrawals, balance, totalPages } = useSelector(
     (state) => state.withdrawal
   );
-  const { authUser } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user?.authUser?.role);
+
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
-  const router = useRouter();
-  const admin_path = router.pathname.split("/")[1];
-  const isAdmin = admin_path === "admin-dashboard";
 
   const [currentPage, setcurrentPage] = useState(1);
   const loading = useSelector(
@@ -30,7 +29,7 @@ const WithdrawalContainer = () => {
   );
 
   useEffect(() => {
-    const data = {};
+    const data = { approvalStatus: "pending" };
     if (filtersData?.startDate) data.startDate = filtersData.startDate;
     if (filtersData?.endDate) data.endDate = filtersData.endDate;
     if (filtersData?.search) data.search = filtersData.search;
@@ -43,25 +42,26 @@ const WithdrawalContainer = () => {
 
   const headingsData = [
     "Withdrawal Method",
-    ...(authUser?.role === "admin" ? ["Teacher Info"] : []),
+    ...(user === "admin" ? ["Teacher Info"] : []),
     "Requested On",
     "Amount",
     "Status",
     "Payout Status",
+    user === "admin" && filtersData.status === "pending" ? "Action" : null,
   ];
 
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
       <h3
         className={`${
-          isAdmin ? "hidden" : "w-full "
+          user === "admin" ? "hidden" : "w-full "
         } text-lg px-5 font-semibold`}
       >
         Withdrawal History
       </h3>
       <div
         className={`${
-          isAdmin ? "hidden" : "!w-full flex"
+          user === "admin" ? "hidden" : "w-full "
         } px-5  items-center justify-between`}
       >
         <div className="w-full flex items-center gap-2">

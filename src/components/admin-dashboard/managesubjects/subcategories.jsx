@@ -11,7 +11,7 @@ import {
 } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
 import DeleteSubCategoriesModal from "./deletesSubCategoriesModels";
  
-const columns = ["S.No", "Name", "Categories", "Updated", "Action"];
+const columns = ["S.No", "Name", "Categories", "Updated", "Price Per Hour", "Action"];
 
 const SubCategories = () => {
   const dispatch = useDispatch();
@@ -64,10 +64,10 @@ const SubCategories = () => {
       <div className="overflow-x-auto">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
-          <tbody>
+          <tbody className="text-center">
             {isLoading?.["getAllSubCategories"] ? (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4">
+                <td colSpan={columns.length} className="py-4">
                   Loading...
                 </td>
               </tr>
@@ -76,9 +76,7 @@ const SubCategories = () => {
                 <tr key={cat?._id} className="border-t border-gray-200">
                   <td className="py-3 px-4 text-sm">{index + 1}</td>
                   <td className="py-3 px-4 text-sm">{cat?.name}</td>
-                  <td className="py-3 px-4 text-sm">
-                    {cat?.courseCategory?.name}
-                  </td>
+                  <td className="py-3 px-4 text-sm">{cat?.courseCategory?.name}</td>
                   <td className="py-3 px-4 text-sm">
                     {new Date(cat?.updatedAt).toLocaleString("en-US", {
                       month: "short",
@@ -89,7 +87,7 @@ const SubCategories = () => {
                       hour12: false,
                     })}
                   </td>
-
+                  <td className="py-3 px-4 text-sm">{cat?.pricePerHour}</td>
                   <td className="py-3 px-4 text-center flex items-center justify-center space-x-4">
                     <button
                       className="text-gray-600 hover:text-yellow-500"
@@ -114,7 +112,7 @@ const SubCategories = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4">
+                <td colSpan={columns.length} className="py-4">
                   No subcategories found.
                 </td>
               </tr>

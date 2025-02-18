@@ -13,6 +13,7 @@ import {
   rejectTeacher,
 } from "@/store/slices/admin-dashboard/teacherSlice";
 import Link from "next/link";
+import UserFilter from "../user/UserFilter";
 
 const columns = [
   "Sr. No.",
@@ -108,70 +109,8 @@ const TeacherRequests = () => {
 
   return (
     <div className="bg-white rounded-lg p-6 w-full max-w-6xl mx-auto">
-      <div className="border rounded-lg bg-gray-50">
-        <div
-          className="p-4 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-lg"
-          onClick={() => setIsSearchOpen(!isSearchOpen)}
-        >
-          <h2 className="text-lg font-semibold text-gray-700">Search</h2>
-          <span
-            className="text-gray-600 transition-transform duration-500"
-            style={{
-              transform: isSearchOpen ? "rotate(180deg)" : "rotate(0deg)",
-            }}
-          >
-            ▼
-          </span>
-        </div>
-        <div
-          className={`transition-all duration-700 ease-in-out ${
-            isSearchOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-          } overflow-hidden`}
-        >
-          <div className="p-4 border-t">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              <div className="leading-9">
-                <span className="text-sm font-medium text-gray-700">
-                  Keyword
-                </span>
-                <input type="text" className="border h-9 rounded w-full" />
-              </div>
-              <div className="leading-9">
-                <span className="text-sm font-medium text-gray-700">
-                  Status
-                </span>
-                <select className="border h-9 rounded w-full">
-                  <option>Select</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-              <div className="leading-9">
-                <span className="text-sm font-medium text-gray-700">
-                  Start from
-                </span>
-                <input type="date" className="border h-9 rounded w-full" />
-              </div>
+             <UserFilter  />
 
-              <div className="leading-9">
-                <span className="text-sm font-medium text-gray-700">
-                  End to
-                </span>
-                <input type="date" className="border h-9 rounded w-full" />
-              </div>
-
-              <div className="flex gap-3 mt-9">
-                <button className="bg-blue-600 text-white px-4 py-1 rounded">
-                  Search
-                </button>
-                <button className="bg-gray-500 text-white px-4 py-1 rounded">
-                  Clear
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">

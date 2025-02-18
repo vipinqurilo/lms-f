@@ -21,10 +21,17 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
+  const stripePromise = loadStripe(
+  );
+
+
+
 
   useEffect(() => {
     dispatch(fetchCoursesAsync());
@@ -32,21 +39,22 @@ const Home = () => {
 
   return (
     <>
+        <Elements stripe={stripePromise} options={stripePromise}>
       <main className=" font-nunito custom-margin-top !overflow-visible">
         <HeroSection />
         <div className="md:mt-0 mt-8">
-          <FeaturedCourses cardData={courses} />
         </div>
-
-        <FeaturedInstructor />
-        <LogoSlider />
-        <Mentor />
-        <MasterSkill />
-        <UserLove />
-        <Become />
-        <BlogSection />
-        <UnlimitedAccess />
+          <FeaturedCourses cardData={courses} />
+          <FeaturedInstructor />
+          <LogoSlider />
+          <Mentor />
+          <MasterSkill />
+          <UserLove />
+          <Become />
+          <BlogSection />
+          <UnlimitedAccess />
       </main>
+        </Elements>
     </>
   );
 };

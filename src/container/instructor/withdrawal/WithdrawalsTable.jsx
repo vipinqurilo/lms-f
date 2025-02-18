@@ -2,15 +2,33 @@
 
 import React, { useState } from "react";
 import { IoLogoPaypal } from "react-icons/io5";
-import dateFormat from "dateformat";
+// import dateFormat from "dateformat";
 import TableHeader from "@/components/instructor/TableHeader";
 import { FaCircleInfo } from "react-icons/fa6";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";
+import { updateWithdrawalStatus } from "@/store/slices/withdrawalSlice";
+import { useDispatch, useSelector } from "react-redux";
+import RejectModal from "@/components/admin-dashboard/teacherrequests/rejectModel";
+import { FaRegCalendarCheck } from "react-icons/fa";
+import Link from "next/link";
+import { FiEye } from "react-icons/fi";
+import { RxCross2 } from "react-icons/rx";
+import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/ApprovalModal";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
-  const { authUser } = useSelector((state) => state.user);
+  const [isEdit, setIsEdited] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user?.authUser?.role);
+
+  const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [approvingId, setApprovingId] = useState(null);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
+  const [rejectingId, setRejectingId] = useState(null);
+
+  console.log(headingsData, "hd data");
 
   const getStatusCss = (status) => {
     let css = "";
@@ -24,9 +42,9 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
       default:
         css = "text-red-500 bg-red-100";
     }
-
     return css;
   };
+
   const getPayoutStatusCss = (status) => {
     let css = "";
     switch (status) {
@@ -45,6 +63,36 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
 
     return css;
   };
+
+  const handleEdit = (id) => {
+    setIsEdited(id);
+  };
+
+  const handleApproval = (id, status) => {
+    if (status === "rejected") {
+      setRejectingId(id);
+      setIsRejectModalOpen(true);
+    } else {
+      setApprovingId(id);
+      setIsApproveModalOpen(true);
+    }
+  };
+
+  const handleReject = () => {
+    if (rejectingId) {
+      dispatch(
+        updateWithdrawalStatus({
+          id: rejectingId,
+          data: { action: "reject", rejectionReason },
+        })
+      );
+    }
+    setIsRejectModalOpen(false);
+    setRejectingId(null);
+    setRejectionReason("");
+  };
+
+
   return (
     <table className="w-full border-l border-r border-black/10 !rounded-lg">
       <TableHeader headingsData={headingsData} />
@@ -84,7 +132,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                 </div>
               </td>
 
-              {authUser?.role === "admin" && (
+              {user === "admin" && (
                 <td className="px-6 py-4">
                   <div className="w-full flex items-center gap-2">
                     <div className="w-10 h-10 relative rounded-full border border-black/10 flex items-center justify-center text-blue-500">
@@ -117,7 +165,8 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
               </td>
               <td className="px-6 py-4 font-medium">₹{row?.amount}</td>
               <td className={`px-6 py-4 font-medium`}>
-                <span
+                <button
+                  onClick={() => handleEdit(row?._id)}
                   className={`${getStatusCss(
                     row?.approvalStatus
                   )} px-3 py-2 rounded-lg text-sm font-medium capitalize flex items-center gap-2 w-fit relative`}
@@ -126,7 +175,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   {row?.approvalStatus === "rejected" && (
                     <RejectReasonPopup data={row?.rejectionReason} />
                   )}
-                </span>
+                </button>
               </td>
               <td className={`px-6 py-4 font-medium`}>
                 <span
@@ -137,10 +186,62 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   {row?.payoutStatus || "--"}
                 </span>
               </td>
+              {user === "admin" && headingsData[5] !== null ? (
+                <td className="py-4 px-4 text-center">
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      className="text-gray-600 hover:text-blue-500"
+                      onClick={() => handleApproval(row?._id, "approved")}
+                    >
+                      <FaRegCalendarCheck size={16} />
+                    </button>
+                    <button className="text-gray-600 hover:text-yellow-500">
+                      <Link
+                        href={""}
+                        // href={`/instructor-request/${teacher?._id}`}
+                      >
+                        <FiEye size={18} />
+                      </Link>
+                    </button>
+                    <button
+                      className="text-gray-600 hover:text-red-500"
+                      onClick={() => handleApproval(row?._id, "rejected")}
+                    >
+                      <RxCross2 size={18} />
+                    </button>
+                  </div>
+                </td>
+              ) : null}
             </tr>
           ))
         )}
       </tbody>
+      <ApprovelModal
+        isOpen={isApproveModalOpen}
+        onClose={() => setIsApproveModalOpen(false)}
+        onConfirm={() => {
+          if (approvingId) {
+            dispatch(
+              updateWithdrawalStatus({
+                id: approvingId,
+                data: { action: "approve" },
+              })
+            );
+          }
+          setIsApproveModalOpen(false);
+          setApprovingId(null);
+        }}
+      />
+      <RejectModal
+        isOpen={isRejectModalOpen}
+        onClose={() => {
+          setIsRejectModalOpen(false);
+          setRejectingId(null);
+        }}
+        onReject={handleReject}
+        rejectionReason={rejectionReason}
+        setRejectionReason={setRejectionReason}
+      />
     </table>
   );
 };

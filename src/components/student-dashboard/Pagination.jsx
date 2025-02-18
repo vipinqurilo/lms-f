@@ -1,4 +1,6 @@
-import { useSelector } from "react-redux";
+import { setPagination } from "@/store/slices/uiSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export function Pagination({ currentPage, totalPages, onPageChange }) {
   const handlePageChange = (page) => {
@@ -7,10 +9,18 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
     }
   };
   const { isCollapsed } = useSelector((state) => state.instructor.dashboard);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setPagination(true));
+    return () => {
+      dispatch(setPagination(false));
+    };
+  }, []);
   return (
     <div
-      className={`sticky bottom-0  px-10 bg-white py-5 flex items-center justify-between`}
+      className={`fixed bottom-0  ${
+        isCollapsed ? "w-[calc(100vw-80px)]" : "w-[calc(100vw-240px)]"
+      } z-[1000] px-10 bg-white py-2 flex items-center justify-between`}
     >
       <p className="text-sm text-gray-500">
         Page {currentPage} of {totalPages}

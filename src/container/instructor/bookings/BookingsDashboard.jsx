@@ -28,7 +28,7 @@ const BookingsDashboard = () => {
   const { bookings, isLoading, totalPages } = useSelector((state) => ({
     bookings: state.instructor.booking.bookings || [],
     isLoading: state.instructor.booking.isLoading?.getBookings || false,
-    totalPages: state.instructor.booking.totalPages || 1,
+    totalPages: state.instructor.booking.totalPages || 1,   
   }));
 
   // Fetch bookings on mount & when fi  lters change
@@ -84,7 +84,7 @@ const BookingsDashboard = () => {
   }, []);
   return (
     <>
-      <div className="px-5  flex flex-col gap-6  p-10">
+      <div className="px-5  flex flex-col   p-10">
         {bookings.length > 0 && <BookingReminder bookings={bookings} />}
         <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
 
@@ -109,12 +109,12 @@ const BookingsDashboard = () => {
         ) : (
           <TutorAvailabilityCalendar calendar={availability.availability} />
         )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
     </>
   );
 };

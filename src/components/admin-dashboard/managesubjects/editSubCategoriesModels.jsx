@@ -1,5 +1,4 @@
 import { getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
-import { getAllSubCategories } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,6 +8,7 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
 
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [pricePerHour, setPricePerHour] = useState(""); // Added state for pricePerHour
 
   // Load categories when the modal opens
   useEffect(() => {
@@ -20,6 +20,7 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
     if (category) {
       setName(category.name || "");
       setSelectedCategory(category.courseCategory?._id || "");
+      setPricePerHour(category.pricePerHour || ""); // Set pricePerHour when category changes
     }
   }, [category]);
 
@@ -63,13 +64,26 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
           ))}
         </select>
 
+        {/* Price per Hour Input */}
+        <label className="block text-gray-700 font-medium mb-1 mt-4">
+          Price per Hour
+        </label>
+        <input
+          type="number"
+          step="0.01"
+          className="w-full border p-2 rounded-lg"
+          placeholder="Enter price per hour"
+          value={pricePerHour}
+          onChange={(e) => setPricePerHour(e.target.value)}
+        />
+
         <div className="flex justify-end mt-4 space-x-2">
           <button className="px-4 py-2 bg-gray-500 text-white rounded" onClick={onClose}>
             Cancel
           </button>
           <button
             className="px-4 py-2 bg-orange-500 text-white rounded"
-            onClick={() => onSave({ name, courseCategory: selectedCategory })}
+            onClick={() => onSave({ name, courseCategory: selectedCategory, pricePerHour })}
           >
             Save Changes
           </button>
