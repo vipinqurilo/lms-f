@@ -6,7 +6,6 @@ import InstructorButton from "@/components/instructor/InstructorButton";
 import { PiHandWithdraw } from "react-icons/pi";
 import RequestWithdrawal from "./RequestWithdrawal";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-import { useRouter } from "next/router";
 import { getWithDrawals } from "@/store/slices/withdrawalSlice";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
@@ -29,7 +28,7 @@ const WithdrawalContainer = () => {
   );
 
   useEffect(() => {
-    const data = { approvalStatus: "pending" };
+    const data = user === "admin" ? { approvalStatus: "pending" } : {};
     if (filtersData?.startDate) data.startDate = filtersData.startDate;
     if (filtersData?.endDate) data.endDate = filtersData.endDate;
     if (filtersData?.search) data.search = filtersData.search;
@@ -61,7 +60,7 @@ const WithdrawalContainer = () => {
       </h3>
       <div
         className={`${
-          user === "admin" ? "hidden" : "w-full "
+          user === "admin" ? "hidden" : "w-full flex"
         } px-5  items-center justify-between`}
       >
         <div className="w-full flex items-center gap-2">
