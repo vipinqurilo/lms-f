@@ -11,26 +11,17 @@ import { getWithDrawals } from "@/store/slices/withdrawalSlice";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
-
-
-const headingsData = [
-  "Withdrawal Method",
-  "Requested On",
-  "Reason",
-  "Amount",
-  "Status",
-];
+import RejectModal from "@/components/admin-dashboard/withdrawrequests/rejectModal";
 
 const WithdrawalContainer = () => {
   const dispatch = useDispatch();
   const { withdrawals, balance, totalPages } = useSelector(
     (state) => state.withdrawal
   );
+  const user = useSelector((state) => state.user?.authUser?.role);
+
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
-  const router = useRouter();
-  const admin_path = router.pathname.split("/")[1];
-  const isAdmin = admin_path === "admin-dashboard";
 
   const getStatusCss = (status) => {
     let css = "";
@@ -54,9 +45,8 @@ const WithdrawalContainer = () => {
     (state) => state.withdrawal.isLoading.getWithDrawals
   );
 
-
   useEffect(() => {
-    const data = {};
+    const data = { approvalStatus: "pending" };
     if (filtersData?.startDate) data.startDate = filtersData.startDate;
     if (filtersData?.endDate) data.endDate = filtersData.endDate;
     if (filtersData?.search) data.search = filtersData.search;
@@ -66,18 +56,27 @@ const WithdrawalContainer = () => {
     dispatch(getWithDrawals(data));
   }, [filtersData, currentPage]);
 
+  const headingsData = [
+    "Withdrawal Method",
+    "Requested On",
+    "Reason",
+    "Amount",
+    "Status",
+    user === "admin" && filtersData.status === "pending" ? "Action" : null,
+  ];
+
   return (
     <div className="w-full flex flex-col items-start gap-6 py-5">
       <h3
         className={`${
-          isAdmin ? "hidden" : "w-full "
+          user === "admin" ? "hidden" : "w-full "
         } text-lg px-5 font-semibold`}
       >
         Withdrawal History
       </h3>
       <div
         className={`${
-          isAdmin ? "hidden" : "w-full "
+          user === "admin" ? "hidden" : "w-full "
         } px-5  items-center justify-between`}
       >
         <div className="w-full flex items-center gap-2">
@@ -100,8 +99,6 @@ const WithdrawalContainer = () => {
           handleClick={() => setisWithdrawal(true)}
         />
       </div>
-
-
 
       <div className="w-full px-5 !sticky !-top-12 bg-white">
         <UserFilter

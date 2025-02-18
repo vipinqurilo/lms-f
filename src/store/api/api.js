@@ -33,7 +33,6 @@ api.interceptors.request.use((config) => {
     "no-store, no-cache, must-revalidate, proxy-revalidate";
   config.headers["Pragma"] = "no-cache";
   config.headers["Expires"] = "0";
-
   return config;
 });
 
