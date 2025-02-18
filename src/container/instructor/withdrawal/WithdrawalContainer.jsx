@@ -23,23 +23,6 @@ const WithdrawalContainer = () => {
   const [isWithdrawal, setisWithdrawal] = useState(false);
   const [filtersData, setfiltersData] = useState({});
 
-  const getStatusCss = (status) => {
-    let css = "";
-
-    switch (status) {
-      case "pending":
-        css = "text-yellow-500 bg-yellow-100";
-        break;
-      case "approved":
-        css = "text-green-500 bg-green-100";
-        break;
-      default:
-        css = "text-red-500 bg-red-100";
-    }
-
-    return css;
-  };
-
   const [currentPage, setcurrentPage] = useState(1);
   const loading = useSelector(
     (state) => state.withdrawal.isLoading.getWithDrawals
@@ -51,6 +34,7 @@ const WithdrawalContainer = () => {
     if (filtersData?.endDate) data.endDate = filtersData.endDate;
     if (filtersData?.search) data.search = filtersData.search;
     if (filtersData?.status) data.approvalStatus = filtersData.status;
+    if (filtersData?.payoutStatus) data.payoutStatus = filtersData.payoutStatus;
     if (currentPage) data.page = currentPage;
 
     dispatch(getWithDrawals(data));
@@ -58,10 +42,11 @@ const WithdrawalContainer = () => {
 
   const headingsData = [
     "Withdrawal Method",
+    ...(user === "admin" ? ["Teacher Info"] : []),
     "Requested On",
-    "Reason",
     "Amount",
     "Status",
+    "Payout Status",
     user === "admin" && filtersData.status === "pending" ? "Action" : null,
   ];
 
@@ -104,7 +89,10 @@ const WithdrawalContainer = () => {
         <UserFilter
           onApplyFilters={(data) => setfiltersData(data)}
           isRole={false}
-          statusData={["pending", "approved", "rejected"]}
+          statusData={[
+            ["pending", "approved", "rejected"],
+            ["not_initiated", "processing", "success", "failure"],
+          ]}
         />
       </div>
 
@@ -119,7 +107,7 @@ const WithdrawalContainer = () => {
         />
       )}
 
-      <div className="w-full px-5">
+      <div className="w-full ">
         <Pagination
           currentPage={1}
           totalPages={totalPages}
