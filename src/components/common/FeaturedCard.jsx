@@ -3,6 +3,7 @@ import { addOrderAsync, wishlistAsync } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import { IoMdHeart } from "react-icons/io";
 
 export default function FeaturedCard({ data }) {
   if (!data || typeof data !== "object") {
@@ -50,9 +51,9 @@ export default function FeaturedCard({ data }) {
             <div>
               <button
                 onClick={() => handleAddWishlist(data?._id)}
-                className="  text-red-500 group-hover:text-white"
+                className="  text-red-500  group-hover:text-white"
               >
-                <FaRegHeart className="text-xl" />
+                <FaRegHeart className="text-xl hover:text-red-500" />
               </button>
             </div>
           </div>

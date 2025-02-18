@@ -1,5 +1,4 @@
 "use client";
-
 import FeaturedCard from "@/components/common/FeaturedCard";
 import Footer from "@/components/Footer";
 // import FeaturedInstructor from "@/components/home/FeaturedInstructor";
@@ -20,30 +19,32 @@ import LogoSlider from "@/components/common/LogoSlider";
 import axios from "axios";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
+import {
+  fetchCategories,
+  fetchCoursesAsync,
+} from "@/store/slices/coursesSlice";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51QsH7dPMQ11XQz7tkOHxAl2VA2ibYG6Pj9dhXcdPcxAibBbhVNDqgegQs8WBpBVuFiHt1QJBg4FdAc8Fma8d5qk500tbhaBU61"
+);
 
 const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
-  const stripePromise = loadStripe(
-  );
-
-
-
 
   useEffect(() => {
     dispatch(fetchCoursesAsync());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   return (
     <>
-        <Elements stripe={stripePromise} options={stripePromise}>
-      <main className=" font-nunito custom-margin-top !overflow-visible">
-        <HeroSection />
-        <div className="md:mt-0 mt-8">
-        </div>
+      <Elements stripe={stripePromise}>
+        <main className=" font-nunito custom-margin-top !overflow-visible">
+          <HeroSection />
+          <div className="md:mt-0 mt-8"></div>
           <FeaturedCourses cardData={courses} />
           <FeaturedInstructor />
           <LogoSlider />
@@ -53,8 +54,8 @@ const Home = () => {
           <Become />
           <BlogSection />
           <UnlimitedAccess />
-      </main>
-        </Elements>
+        </main>
+      </Elements>
     </>
   );
 };

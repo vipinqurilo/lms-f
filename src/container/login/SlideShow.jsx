@@ -55,7 +55,7 @@ const SlideShow = () => {
         //   nextEl: nextRef.current,
         // }}
         autoplay={{ delay: 1500 }}
-        loop={true}
+        loop={true} 
         pagination={{
           clickable: true,
           enabled: true,
