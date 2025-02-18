@@ -13,7 +13,7 @@ import { MdLogin } from "react-icons/md";
 import UserFilter from "./UserFilter";
 
 const columns = [
-  "ID",
+  "S.No",
   "Image",
   "Name/ID",
   "Email/Phone",
@@ -87,65 +87,78 @@ const UsersHistory = () => {
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
-          <tbody>
-            {filteredUsers?.map((user, index) => (
-              <tr key={user._id} className="border-t border-gray-200">
-                <td className="py-4 px-4 text-gray-700 text-sm">{index + 1}</td>
-                <td className="py-4 px-4">
-                  <img
-                    src={user.profilePhoto || "https://via.placeholder.com/40"}
-                    alt="User"
-                    className="w-10 h-10 rounded-full"
-                  />
-                </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p className="font-medium text-sm">
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <p className="text-sm text-gray-500">User ID: {user._id}</p>
-                </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  <p>{user.email}</p>
-                  <p className="text-sm text-gray-500">{user.phone?.number}</p>
-                </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">{user.role}</td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {user.registered || "N/A"}
-                </td>
-                <td className="py-4 px-4 text-gray-700 text-sm">
-                  {user.userStatus === "active" ? "Verified" : "Not Verified"}
-                </td>
-                <td className="py-4 px-3 text-center text-sm">
-                  <button className="flex items-center text-gray-600 hover:text-yellow-500">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={user.userStatus === "active"}
-                        onChange={() => toggleStatus(user)}
-                      />
-                      <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.6 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[#12a449] dark:peer-checked:bg-blue-600"></div>
-                    </label>
-                  </button>
-                </td>
-
-                <td className="py-4 px-4 text-center text-sm">
-                  <div className="flex items-center justify-center space-x-3">
-                    <button className="text-gray-700 hover:text-blue-500">
-                      <MdLogin size={23} />
-                    </button>
-                  </div>
+          <tbody className="text-center">
+            {filteredUsers?.length === 0 ? (
+              <tr>
+                <td colSpan="9" className="py-4 text-center text-gray-500">
+                  Data not found
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredUsers?.map((user, index) => (
+                <tr key={user._id} className="border-t border-gray-200">
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">{index + 1}</td>
+                  <td className="py-4 px-4 align-middle">
+                    <img
+                      src={user.profilePhoto || "https://via.placeholder.com/40"}
+                      alt="User"
+                      className="w-10 h-10 rounded-full"
+                    />
+                  </td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+                    <p className="font-medium text-sm">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <p className="text-sm text-gray-500">User ID: {user._id}</p>
+                  </td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+                    <p>{user.email}</p>
+                    <p className="text-sm text-gray-500">{user.phone?.number}</p>
+                  </td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">{user.role}</td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+                    {user.registered || "N/A"}
+                  </td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+                    {user.userStatus === "active" ? "Verified" : "Not Verified"}
+                  </td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+  <div className="flex items-center justify-center">
+    <label className="inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        className="sr-only peer"
+        checked={user.userStatus === "active"}
+        onChange={() => toggleStatus(user)}
+      />
+      <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-checked:bg-[#12a449] peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600"></div>
+    </label>
+  </div>
+</td>
+
+
+
+                  <td className="py-4 px-4 text-center text-sm align-middle">
+                    <div className="flex items-center justify-center space-x-3">
+                      <button className="text-gray-700 hover:text-blue-500">
+                        <MdLogin size={23} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+
+      {filteredUsers?.length > 0 && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };
