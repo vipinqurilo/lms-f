@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import { IoSearchSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 export default function HeroSection() {
+  const categories = useSelector((state) => state.courses?.categories);
   const [searchText, setSearchText] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("programming");
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]?._id);
 
   const handleSearch = () => {
     console.log("Search Text:", searchText);
@@ -84,9 +86,9 @@ export default function HeroSection() {
               className="bg-orange-100 rounded-full md:px-4 md:py-2.5 py-1 text-xs text-center text-black outline-none mx-2"
             >
               <option disabled>Category</option>
-              <option value={"programming"}>Programming</option>
-              <option value={"design"}>Design</option>
-              <option value={"marketing"}>Marketing</option>
+              {categories?.map((category) => (
+                <option value={category?._id}>{category?.name}</option>
+              ))}
             </select>
             <button
               onClick={handleSearch}
