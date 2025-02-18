@@ -29,13 +29,16 @@ const CreatedCourses = ({
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 w-[60%]">
                     <div className="w-full grid grid-cols-4 gap-5">
-                      <Image
-                        src={course?.image}
-                        alt={course?.title}
-                        width={1000}
-                        height={1000}
-                        className="w-full h-full rounded-lg object-cover"
-                      />
+                      <div className="w-full h-full relative">
+                        <Image
+                          src={course?.image}
+                          alt={course?.title}
+                          // width={1000}
+                          // height={1000}
+                          fill={true}
+                          className="rounded-lg object-cover"
+                        />
+                      </div>
                       <div className=" hover:text-primary col-span-2">
                         {course?.title}
                         <p className="line-clamp-3 text-light/60 text-sm">

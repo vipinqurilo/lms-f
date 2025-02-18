@@ -29,6 +29,10 @@ export const updateConversation = CreateApiAsyncThunk(
   "support/updateConversation",
   ({ id, data }) => api.post(`/ticket/addMessage/${id}`, data)
 );
+export const updateAdminConversation = CreateApiAsyncThunk(
+  "support/updateAdminConversation",
+  (data) => api.post(`/ticket/admin`, data)
+);
 
 const supportSlice = createSlice({
   name: "support",
@@ -92,7 +96,18 @@ const supportSlice = createSlice({
       .addCase(updateConversation.rejected, (state, action) => {
         state.isLoading["updateConversation"] = false;
         state.isLoading["updateConversation"] = action.payload;
-      });
+      })
+      // update admin conversations in the ticket
+      .addCase(updateAdminConversation.pending, (state) => {
+        state.isLoading["updateAdminConversation"] = true;
+      })
+      .addCase(updateAdminConversation.fulfilled, (state) => {
+        state.isLoading["updateAdminConversation"] = false;
+      })
+      .addCase(updateAdminConversation.rejected, (state, action) => {
+        state.isLoading["updateAdminConversation"] = false;
+        state.isLoading["updateAdminConversation"] = action.payload;
+      })
   },
 });
 

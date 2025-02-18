@@ -56,7 +56,7 @@ const UserFilter = ({
   const pathname = usePathname();
   const [isMoreFilters, setIsMoreFilters] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const statusArray = statusData[0] || ["Inactive", "Active"];
+  const statusArray = statusData ? statusData[0] : ["Inactive", "Active"];
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(filters.search), 500);

@@ -77,7 +77,9 @@ const InstructorMyCourses = () => {
       id: course?._id,
       basic: {
         title: course?.courseTitle,
-        category: course?.courseCategory,
+        courseCategory: course?.courseCategory,
+        courseSubCategory: course?.courseSubCategory?._id,
+        features: course?.courseFeatures,
         requirements: course?.courseRequirements,
         whatYouWillLearn: course?.courseLearning,
         description: course?.courseDescription,
