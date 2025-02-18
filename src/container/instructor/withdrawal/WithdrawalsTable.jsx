@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { IoLogoPaypal } from "react-icons/io5";
-// import dateFormat from "dateformat";
+import dateFormat from "dateformat";
 import TableHeader from "@/components/instructor/TableHeader";
 import { FaCircleInfo } from "react-icons/fa6";
 import { updateWithdrawalStatus } from "@/store/slices/withdrawalSlice";
