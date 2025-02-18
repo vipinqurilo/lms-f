@@ -107,9 +107,11 @@ export function BookingModal({ onClose, tutor }) {
     dispatch(createPaymentIntent())
       .unwrap()
       .then((res) => {
-        router.push(res.url);
-        // setCheckoutUrl(res.url);
-        // setPaymentModal(true);
+        setCheckoutUrl(res.url);
+        setPaymentModal(true);
+      })
+      .catch((error) => {
+        toast.error("Failed to initialize payment. Please try again.");
       });
   };
 

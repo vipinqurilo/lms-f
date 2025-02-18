@@ -16,7 +16,7 @@ export const createPaymentIntent = CreateApiAsyncThunk(
 const paymentSlice = createSlice({
   name: "payment",
   initialState,
-  reducers: {
+  reducers: {   
     clearPaymentError: (state, action) => {
       const errorKey = action.payload;
       if (errorKey) {

@@ -22,10 +22,7 @@ export function PaymentSelection({
   handlePayment,
   price,
 }) {
-  const { isLoading, error } = useSelector((state) => ({
-    isLoading: state.payment.isLoading.createPaymentIntent,
-    error: state.payment.error.createPaymentIntent
-  }));
+  const { isLoading, error } = useSelector((state) => state.payment);
   return (
     <div className="lg:grid grid-cols-2 gap-8 p-8">
       <div>
