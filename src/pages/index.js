@@ -28,8 +28,10 @@ const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
   const stripePromise = loadStripe(
-    "pk_test_51QsH7dPMQ11XQz7tkOHxAl2VA2ibYG6Pj9dhXcdPcxAibBbhVNDqgegQs8WBpBVuFiHt1QJBg4FdAc8Fma8d5qk500tbhaBU61"
   );
+
+
+
 
   useEffect(() => {
     dispatch(fetchCoursesAsync());
@@ -37,7 +39,7 @@ const Home = () => {
 
   return (
     <>
-        <Elements stripe={stripePromise}>
+        <Elements stripe={stripePromise} options={stripePromise}>
       <main className=" font-nunito custom-margin-top !overflow-visible">
         <HeroSection />
         <div className="md:mt-0 mt-8">
