@@ -3,6 +3,7 @@ import FeaturedCard from "@/components/common/FeaturedCard";
 import Heading from "@/components/common/Heading";
 import { useSelector } from "react-redux";
 import Loader from "@/components/common/Loader";
+import Link from "next/link";
 
 export default function FeaturedCourses({ cardData = [] }) {
   const isLoading = useSelector(
@@ -42,9 +43,11 @@ export default function FeaturedCourses({ cardData = [] }) {
                 descWidth={"md:!w-2/3"}
               />
               <div className="md:block hidden">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md shadow-md">
-                  All Courses
-                </button>
+                <Link href={`/courses`}>
+                  <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md shadow-md">
+                    All Courses
+                  </button>
+                </Link>
               </div>
             </div>
 
@@ -54,52 +57,15 @@ export default function FeaturedCourses({ cardData = [] }) {
               className="grid md:grid-cols-3 grid-cols-1 gap-2 lg:gap-10 md:mt-8"
             >
               {currentCourses.length > 0 ? (
-                currentCourses.map((card, index) => (
-                  <FeaturedCard data={card} key={index} />
-                ))
+                currentCourses
+                  .slice(0, 6)
+                  .map((card, index) => (
+                    <FeaturedCard data={card} key={index} />
+                  ))
               ) : (
                 <p className="text-center col-span-3">No courses available</p>
               )}
             </div>
-
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="mt-8 flex justify-center items-center space-x-2">
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                  disabled={currentPage === 1}
-                  className="px-3 py-2 bg-gray-300 rounded disabled:opacity-50"
-                >
-                  Prev
-                </button>
-
-                {[...Array(totalPages)].map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentPage(index + 1)}
-                    className={`px-3 py-2 rounded ${
-                      currentPage === index + 1
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300"
-                    }`}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-2 bg-gray-300 rounded disabled:opacity-50"
-                >
-                  Next
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}
