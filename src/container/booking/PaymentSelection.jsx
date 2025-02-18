@@ -2,12 +2,11 @@
 
 import { Check } from "lucide-react";
 import { FaTag } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const paymentMethods = [
-  { id: "wallet", name: "Wallet balance ($390.23)" },
   { id: "bank", name: "Bank transfer" },
   { id: "stripe", name: "Stripe" },
-  { id: "authorize", name: "Authorize.net" },
   { id: "paypal", name: "Paypal standard" },
   { id: "paygate", name: "PayGate" },
   { id: "paystack", name: "Paystack" },
@@ -20,8 +19,13 @@ export function PaymentSelection({
   scheduledDate,
   selected,
   onSelect,
-  createBooking,
+  handlePayment,
+  price,
 }) {
+  const { isLoading, error } = useSelector((state) => ({
+    isLoading: state.payment.isLoading.createPaymentIntent,
+    error: state.payment.error.createPaymentIntent
+  }));
   return (
     <div className="lg:grid grid-cols-2 gap-8 p-8">
       <div>
@@ -81,24 +85,24 @@ export function PaymentSelection({
           <div className="space-y-2 leading-3 text-xs border p-3 px-6">
             <div className="flex justify-between text-xs">
               <span>Lesson Count: 1</span>
-              <span>$38.75</span>
+              <span>${(price * duration / 60).toFixed(2)}</span>
             </div>
             <div>Lesson(s) Duration: {duration} Minutes</div>
-            <div>Item price: $38.75/lesson</div>
+            <div>Item price: ${(price * duration / 60).toFixed(2)}</div>
             <div>Teach subject: {subject?.name}</div>
             <div className="pt-4 border-t mt-4">
               <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>
-                <span className="">$38.75</span>
+                <span className="">${(price * duration / 60).toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           <button
-            onClick={createBooking}
+            onClick={handlePayment}
             className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black"
           >
-            Confirm payment
+            {isLoading["createPaymentIntent"] ? "Processing..." : "Confirm payment"}
           </button>
 
           <p className="text-sm text-gray-500 mt-4 text-center">
