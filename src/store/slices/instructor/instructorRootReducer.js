@@ -4,12 +4,15 @@ import instructorCourseSlice from "./courseSlice";
 import settingsSlice from "./settingsSlice";
 import bookingSlice from "./bookingsSlice";
 import availabilitySlice from "./availabilitySlice";
+import walletSlice from "./walletSlice";
+
 const instructorRootReducer = combineReducers({
   dashboard: instructorDashboardSlice,
   course: instructorCourseSlice,
   setting: settingsSlice,
   booking: bookingSlice,
   availability: availabilitySlice,
+  wallet: walletSlice,
 });
 
 export default instructorRootReducer;

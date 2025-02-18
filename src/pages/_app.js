@@ -9,8 +9,8 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 import GetLoggedInUser from "@/components/common/GetLoggedInUser";
 
-export default function App({ Component, pageProps }) {
 
+export default function App({ Component, pageProps }) {
   const pathname = usePathname();
   const noFooterRoutes = [
     "/login",
@@ -25,7 +25,6 @@ export default function App({ Component, pageProps }) {
     Aos.refresh();
   }, []);
 
- 
 
   const hideNavFooter = noFooterRoutes.some((route) =>
     pathname?.startsWith(route)

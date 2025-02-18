@@ -89,42 +89,41 @@ const Categories = () => {
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
           <tbody>
-            {subjects?.map((cat, index) => (
-              <tr key={cat.id} className="border-t border-gray-200">
-                <td className="py-3 px-4 text-sm">{index + 1}</td>
-                <td className="py-3 px-4 text-sm">{cat.name}</td>
-                <td className="py-3 px-4 text-blue-600 cursor-pointer text-sm">
-                  {cat.courseSubCategory?.length}
-                </td>
+  {subjects?.map((cat, index) => (
+    <tr key={cat.id} className="border-t border-gray-200">
+      <td className="py-3 px-4 text-sm text-center">{index + 1}</td>
+      <td className="py-3 px-4 text-sm text-center">{cat.name}</td>
+      <td className="py-3 px-4 text-blue-600 cursor-pointer text-sm text-center">
+        {cat.courseSubCategory?.length}
+      </td>
+      <td className="py-3 px-4 text-sm text-center">
+        {new Date(cat?.updatedAt).toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
+      <td className="py-3 px-4 text-center flex items-center justify-center space-x-4">
+        <button
+          className="text-gray-600 hover:text-yellow-500"
+          onClick={() => openEditModal(cat)}
+        >
+          <FiEdit2 size={18} />
+        </button>
+        <button
+          className="text-gray-600 hover:text-red-500"
+          onClick={() => openDeleteModal(cat)} // Open delete confirmation modal
+        >
+          <FiTrash2 size={18} />
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
 
-                <td className="py-3 px-4 text-sm">
-                  {new Date(cat?.updatedAt).toLocaleString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                  })}
-                </td>
-
-                <td className="py-3 px-4 text-center flex items-center justify-center space-x-4">
-                  <button
-                    className="text-gray-600 hover:text-yellow-500"
-                    onClick={() => openEditModal(cat)}
-                  >
-                    <FiEdit2 size={18} />
-                  </button>
-                  <button
-                    className="text-gray-600 hover:text-red-500"
-                    onClick={() => openDeleteModal(cat)} // Open delete confirmation modal
-                  >
-                    <FiTrash2 size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
         </table>
       </div>
 

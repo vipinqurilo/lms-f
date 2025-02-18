@@ -11,6 +11,7 @@ export function LinkComponent({
     <Link
       key={link.href}
       href={link.href}
+      prefetch={false}
       onMouseEnter={() => handleIsHovered(link?.href)}
       onMouseLeave={() => handleIsHovered(null)}
       className={`flex items-center gap-3 rounded-lg transition-colors relative
