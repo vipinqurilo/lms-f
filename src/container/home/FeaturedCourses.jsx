@@ -21,7 +21,9 @@ export default function FeaturedCourses({ cardData = [] }) {
   return (
     <>
       {isLoading ? (
-        <Loader />
+       <div className="h-screen w-full flex justify-center items-center">
+         <Loader />
+       </div>
       ) : (
         <div
           className="bg-no-repeat h-full md:px-20 px-4 "

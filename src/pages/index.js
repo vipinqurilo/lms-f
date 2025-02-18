@@ -26,10 +26,6 @@ import {
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe(
-  "pk_test_51QsH7dPMQ11XQz7tkOHxAl2VA2ibYG6Pj9dhXcdPcxAibBbhVNDqgegQs8WBpBVuFiHt1QJBg4FdAc8Fma8d5qk500tbhaBU61"
-);
-
 const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
@@ -41,21 +37,19 @@ const Home = () => {
 
   return (
     <>
-      <Elements stripe={stripePromise}>
-        <main className=" font-nunito custom-margin-top !overflow-visible">
-          <HeroSection />
-          <div className="md:mt-0 mt-8"></div>
-          <FeaturedCourses cardData={courses} />
-          <FeaturedInstructor />
-          <LogoSlider />
-          <Mentor />
-          <MasterSkill />
-          <UserLove />
-          <Become />
-          <BlogSection />
-          <UnlimitedAccess />
-        </main>
-      </Elements>
+      <main className=" font-nunito custom-margin-top !overflow-visible">
+        <HeroSection />
+        <div className="md:mt-0 mt-8"></div>
+        <FeaturedCourses cardData={courses} />
+        <FeaturedInstructor />
+        <LogoSlider />
+        <Mentor />
+        <MasterSkill />
+        <UserLove />
+        <Become />
+        <BlogSection />
+        <UnlimitedAccess />
+      </main>
     </>
   );
 };
