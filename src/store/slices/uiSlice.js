@@ -6,6 +6,7 @@ const uiSlice = createSlice({
     isAvailableModelOpen: false,
     isContactModelOpen: false,
     timeRanges: null,
+    pagination:false,
   },
   reducers: {
     setTimeRanges(state, action) {
@@ -17,9 +18,13 @@ const uiSlice = createSlice({
     setIsContactModelOpen(state, action) {
       state.isContactModelOpen = action.payload;
     },
+    setPagination(state, action) {
+      state.pagination = action.payload;
+    },
+
   },
 });
 
-export const { setIsAvailableModelOpen, setIsContactModelOpen, setTimeRanges } =
+export const { setIsAvailableModelOpen, setIsContactModelOpen, setTimeRanges, setPagination } =
   uiSlice.actions;
 export default uiSlice.reducer;

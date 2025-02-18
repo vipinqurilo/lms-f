@@ -11,13 +11,14 @@ import BookingTabs from "@/container/instructor/bookings/BookingTabs";
 import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
 import BookingList from "@/container/instructor/bookings/BookingList";
 import BookingReminder from "@/container/instructor/bookings/BookingReminder";
+import { Pagination } from "@/components/student-dashboard/Pagination";
 
 export default function BookingsPage() {
   const dispatch = useDispatch();
   const { bookings, isLoading, totalPages } = useSelector(
     (state) => state.student.booking
   );
-  
+
   const [activeTab, setActiveTab] = useState("All lessons");
   const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");
@@ -79,37 +80,44 @@ export default function BookingsPage() {
 
   return (
     <StudentDashboardLayout className="container mx-auto p-6 max-w-5xl">
-      {/* Reminder Banner */}
-      {bookings.length > 0 && <BookingReminder bookings={bookings} />}
+      <div className="flex flex-col p-10">
+        {/* Reminder Banner */}
+        {bookings.length > 0 && <BookingReminder bookings={bookings} />}
 
-      {/* Main Content */}
-      <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
+        {/* Main Content */}
+        <BookingView activeTab2={activeTab2} setActiveTab2={setActiveTab2} />
 
-      {/* Custom Tabs */}
-      <BookingTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        {/* Custom Tabs */}
+        <BookingTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <BookingsFilter
-        keyword={keyword}
-        setKeyword={setKeyword}
-        endDateError={endDateError}
-        endDate={endDate}
-        startDate={startDate}
-        handleEndDateChange={handleEndDateChange}
-        handleStartDateChange={handleStartDateChange}
-      />
-
-      {/* Bookings Content */}
-      {activeTab2 === "listing" ? (
-        <BookingList
-          bookings={bookings}
-          currentPage={currentPage}
-          isLoading={isLoading?.fetchBookingsAsync}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
+        <BookingsFilter
+          keyword={keyword}
+          setKeyword={setKeyword}
+          endDateError={endDateError}
+          endDate={endDate}
+          startDate={startDate}
+          handleEndDateChange={handleEndDateChange}
+          handleStartDateChange={handleStartDateChange}
         />
-      ) : (
-        <AvailabilityCalendar />
-      )}
+
+        {/* Bookings Content */}
+        {activeTab2 === "listing" ? (
+          <BookingList
+            bookings={bookings}
+            currentPage={currentPage}
+            isLoading={isLoading?.fetchBookingsAsync}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+          />
+        ) : (
+          <AvailabilityCalendar />
+        )}
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </StudentDashboardLayout>
   );
 }

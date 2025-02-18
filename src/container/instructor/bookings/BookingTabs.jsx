@@ -12,8 +12,8 @@ const BookingTabs = ({ activeTab, setActiveTab }) => {
   };
 
   return (
-    <div className="border-b mb-6">
-      <div className="flex gap-6">
+    <div className="sticky top-0 bg-gray-50 z-20 pt-5">
+      <div className="flex gap-6  border-b ">
         {[
           "All lessons",
           "scheduled",
