@@ -1,23 +1,21 @@
 "use client";
 import InstructorButton from "@/components/instructor/InstructorButton";
-import { CourseCard } from "@/components/student-dashboard/CourseCard";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import React, { useEffect, useMemo, useState } from "react";
-import { FiEdit, FiEdit3 } from "react-icons/fi";
+import { FiEdit3 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { BiBook, BiCheckCircle, BiTime, BiEdit } from "react-icons/bi";
 import DeleteModal from "@/components/instructor/DeleteModal";
-import CommonButton from "@/components/common/CommonButton";
 import { useRouter } from "next/navigation";
 import CreatedCourses from "./CreatedCourses";
 import {
   deleteCourse,
   editCourseData,
   getAllIntructorCourses,
-  getFilteredInstrcutorCourses,
 } from "@/store/slices/instructor/courseSlice";
 import Loader from "@/components/common/Loader";
+import TitleComp from "@/components/instructor/TitleComp";
 
 const tabs = [
   {
@@ -26,31 +24,23 @@ const tabs = [
   },
   {
     icon: <BiCheckCircle size={20} />,
-    tab: "Publish",
+    tab: "Published",
   },
   {
     icon: <BiTime size={20} />,
     tab: "Pending",
-  },
-  {
-    icon: <BiEdit size={20} />,
-    tab: "Draft",
   },
 ];
 
 const InstructorMyCourses = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { courses } = useSelector((state) => state.instructor.course);
+  const { courses, totalPages } = useSelector((state) => state.instructor.course);
   const getloading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
-  const filyterLoading = useSelector(
-    (state) => state.instructor.course.isLoading.getFilteredInstrcutorCourses
-  );
   const [isDelete, setisDelete] = useState(null);
   const [selecteStatus, setselecteStatus] = useState("All");
-  const [filteredCourses, setfilteredCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const deleteLoading = useSelector(
     (state) => state.instructor.course.isLoading.deleteCourse
@@ -65,12 +55,19 @@ const InstructorMyCourses = () => {
   };
 
   useEffect(() => {
-    if (selecteStatus.toLowerCase() === "all") {
-      dispatch(getAllIntructorCourses());
-    } else {
-      dispatch(getFilteredInstrcutorCourses(selecteStatus.toLowerCase()));
+    const status =
+      selecteStatus?.toLowerCase() === "all"
+        ? undefined
+        : selecteStatus?.toLowerCase();
+    const requestData = {
+      page: currentPage,
+      limit: 10,
+    };
+    if (status) {
+      requestData.status = status.toLowerCase();
     }
-  }, [selecteStatus]);
+    dispatch(getAllIntructorCourses(requestData));
+  }, [selecteStatus, dispatch, currentPage]);
 
   const handleEditCourse = (course) => {
     const data = {
@@ -118,52 +115,66 @@ const InstructorMyCourses = () => {
         </div>
       ),
     }));
-  }, [filteredCourses, courses]);
+  }, [courses]);
 
   return (
-    <section className="dashboard-sub-container flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        {tabs.map((tab, index) => (
-          <InstructorButton
-            key={index}
-            tab={tab?.tab}
-            icon={tab?.icon}
-            condition={`${
-              selecteStatus === tab?.tab && "!bg-secondary text-white"
-            }`}
-            handleClick={() => handleStatusChange(tab?.tab)}
+    <>
+      <main className="p-10 ">
+        <div className="dashboard-container pb-10">
+          <TitleComp
+            heading={"My Courses"}
+            des={"Manage your courses and its updates"}
+            iscourse={true}
           />
-        ))}
-      </div>
+          <div className=" flex flex-col px-5">
+            <div className="flex items-center gap-4 sticky top-0 bg-white z-10 py-4">
+              {tabs.map((tab, index) => (
+                <InstructorButton
+                  key={index}
+                  tab={tab?.tab}
+                  icon={tab?.icon}
+                  condition={`${
+                    selecteStatus === tab?.tab && "!bg-secondary text-white"
+                  }`}
+                  handleClick={() => handleStatusChange(tab?.tab)}
+                />
+              ))}
+            </div>
 
-      {getloading || filyterLoading ? (
-        <Loader color={"text-primary"} isBig={true} />
-      ) : courses?.length === 0 ? (
-        <div className="w-full py-12 flex items-center justify-center text-light">
-          No Courses Created
+            {getloading ? (
+              <div className="w-full flex items-center justify-center py-8">
+                <Loader color={"text-primary"} isBig={true} />
+              </div>
+            ) : courses?.length === 0 ? (
+              <div className="w-full py-12 flex items-center justify-center text-light">
+                No Courses Created
+              </div>
+            ) : (
+              <>
+                <CreatedCourses
+                  headingsData={["Courses", "Enrolled", "Action"]}
+                  data={filteredData}
+                />
+              </>
+            )}
+
+            {isDelete !== null && (
+              <DeleteModal
+                handleDelete={handleDelete}
+                text={"Course"}
+                loading={deleteLoading}
+                onClose={() => setisDelete(null)}
+              />
+            )}
+          </div>
         </div>
-      ) : (
-        <CreatedCourses
-          headingsData={["Courses", "Enrolled", "Action"]}
-          data={filteredData}
-        />
-      )}
-
+      </main>
       <Pagination
         currentPage={currentPage}
-        totalPages={5}
+        totalPages={totalPages}
         onPageChange={(val) => setCurrentPage(val)}
       />
-
-      {isDelete !== null && (
-        <DeleteModal
-          handleDelete={handleDelete}
-          text={"Course"}
-          loading={deleteLoading}
-          onClose={() => setisDelete(null)}
-        />
-      )}
-    </section>
+    </>
   );
 };
 

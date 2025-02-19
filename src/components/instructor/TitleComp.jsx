@@ -1,6 +1,7 @@
 import React from "react";
-import CommonButton from "../common/CommonButton";
 import { useRouter } from "next/navigation";
+import InstructorButton from "./InstructorButton";
+import { RiPresentationLine } from "react-icons/ri";
 
 const TitleComp = ({ heading, des, iscourse = false }) => {
   const router = useRouter();
@@ -12,11 +13,11 @@ const TitleComp = ({ heading, des, iscourse = false }) => {
       </div>
 
       {iscourse && (
-        <CommonButton
-          label={"Add Course"}
-          onClick={() =>
-            router.push("/instructor-dashboard/my-courses/add-course")
-          }
+        <InstructorButton
+        icon={<RiPresentationLine size={20} />}
+          tab={"Add Course"}
+          handleClick={() =>
+            router.push("/instructor-dashboard/my-courses/add-course")}
           variant="secondary"
         />
       )}

@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import TableHeader from "../instructor/TableHeader";
-// import dateFormat from "dateformat";
+import dateFormat from "dateformat";
 
 const TableComponent = ({
   title,

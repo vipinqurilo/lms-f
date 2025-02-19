@@ -5,6 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   courses: [],
   courseAddData: {},
+  totalPages: null,
   step: 1,
   isLoading: {},
   error: {},
@@ -12,11 +13,12 @@ const initialState = {
 
 export const getAllIntructorCourses = CreateApiAsyncThunk(
   "GET/course/getAllIntructorCourses",
-  () => api.get(`/course/instructor/get`)
-);
-export const getFilteredInstrcutorCourses = CreateApiAsyncThunk(
-  "GET/course/getFilteredInstrcutorCourses",
-  (status) => api.get(`/course/instructor/filter/${status}`)
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/course/instructor/get?${query}`);
+  }
 );
 
 export const createCourse = CreateApiAsyncThunk("course/createCourse", (data) =>
@@ -62,21 +64,10 @@ const courseSlice = createSlice({
       .addCase(getAllIntructorCourses.fulfilled, (state, action) => {
         state.isLoading["getAllIntructorCourses"] = false;
         state.courses = action.payload.data;
+        state.totalPages = action.payload?.pagination?.totalPages;
       })
       .addCase(getAllIntructorCourses.rejected, (state, action) => {
         state.isLoading["getAllIntructorCourses"] = false;
-        state.error = action.payload;
-      })
-      // filtered courses
-      .addCase(getFilteredInstrcutorCourses.pending, (state) => {
-        state.isLoading["getFilteredInstrcutorCourses"] = true;
-      })
-      .addCase(getFilteredInstrcutorCourses.fulfilled, (state, action) => {
-        state.isLoading["getFilteredInstrcutorCourses"] = false;
-        state.courses = action.payload.data;
-      })
-      .addCase(getFilteredInstrcutorCourses.rejected, (state, action) => {
-        state.isLoading["getFilteredInstrcutorCourses"] = false;
         state.error = action.payload;
       })
       // create course

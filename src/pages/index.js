@@ -27,23 +27,22 @@ import { loadStripe } from "@stripe/stripe-js";
 const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
-  const stripePromise = loadStripe(
-  );
-
-
-
+  const stripePromise = loadStripe();
 
   useEffect(() => {
-    dispatch(fetchCoursesAsync());
+    const requestData = {
+      page: 1,
+      limit: 6,
+    };
+    dispatch(fetchCoursesAsync(requestData));
   }, [dispatch]);
 
   return (
     <>
-        <Elements stripe={stripePromise} options={stripePromise}>
-      <main className=" font-nunito custom-margin-top !overflow-visible">
-        <HeroSection />
-        <div className="md:mt-0 mt-8">
-        </div>
+      <Elements stripe={stripePromise} options={stripePromise}>
+        <main className=" font-nunito custom-margin-top !overflow-visible">
+          <HeroSection />
+          <div className="md:mt-0 mt-8"></div>
           <FeaturedCourses cardData={courses} />
           <FeaturedInstructor />
           <LogoSlider />
@@ -53,8 +52,8 @@ const Home = () => {
           <Become />
           <BlogSection />
           <UnlimitedAccess />
-      </main>
-        </Elements>
+        </main>
+      </Elements>
     </>
   );
 };
