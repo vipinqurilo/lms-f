@@ -1,50 +1,28 @@
-"use client"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import TableHeader from "@/components/instructor/TableHeader";
+import TeacherFilter from "../teachers/teacherFilter";
+import { Pagination } from "@/components/student-dashboard/Pagination";
+import { GrView } from "react-icons/gr";
+import { getStudent } from "@/store/slices/admin-dashboard/studentSlice";
 
-import TableHeader from "@/components/instructor/TableHeader"
-import { useState } from "react"
-import { GrView } from "react-icons/gr"
-import TeacherFilter from "../teachers/teacherFilter"
- 
 const StudentsTable = () => {
-  const [hoveredRow, setHoveredRow] = useState(null)
+  const dispatch = useDispatch();
+  const { students, totalPages, currentPage } = useSelector(
+    (state) => state.admin.student
+  ); // Adjust the path to your state
+  const [hoveredRow, setHoveredRow] = useState(null);
+  const [page, setPage] = useState(1); // Current page state
+  const columns = ["S.No.", "Name", "Email ID", "Mobile no", "Registered No", "Action"];
 
-  const columns = ["Name", "Email ID", "Mobile no", "Requested on", "Action"]
+  // Fetch student data on component mount or page change
+  useEffect(() => {
+    dispatch(getStudent({ search: "", limit: 10, page }));
+  }, [dispatch, page]); // Fetch students when page changes
 
-  const students = [
-    {
-      _id: "1",
-      user: {
-        firstName: "John Doe",
-        email: "johndoe@example.com",
-        phone: { number: "123-456-7890" },
-        profilePhoto: "/placeholder.svg"
-      },
-      requestedOn: "17/02/2024"
-    },
-    {
-      _id: "2",
-      user: {
-        firstName: "Jane Smith",
-        email: "janesmith@example.com",
-        phone: { number: "987-654-3210" },
-        profilePhoto: "/placeholder.svg"
-      },
-      requestedOn: "18/02/2024"
-    }
-,
-    {
-        _id: "3",
-        user: {
-          firstName: "Jane Smith",
-          email: "janesmith@example.com",
-          phone: { number: "987-654-3210" },
-          profilePhoto: "/placeholder.svg"
-        },
-        requestedOn: "18/02/2024"
-      }
-
-
-  ]
+  const handlePageChange = (newPage) => {
+    setPage(newPage); // Update the page number
+  };
 
   return (
     <div className="rounded-lg p-1 w-11/12 mx-auto">
@@ -53,13 +31,14 @@ const StudentsTable = () => {
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
           <tbody className="text-center">
-            {students.map((item) => (
+            {students?.map((item, index) => (
               <tr
                 key={item._id}
                 className="bg-[#F9FAFB] rounded-lg transition-all duration-300 relative border-t border-gray-200"
                 onMouseEnter={() => setHoveredRow(item._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
+                <td className="p-4 text-sm">{(page - 1) * 2 + index + 1}</td> {/* Serial Number */}
                 <td className="p-4 flex items-center gap-5 justify-center">
                   <img
                     src={item?.user?.profilePhoto || "/placeholder.svg"}
@@ -116,8 +95,13 @@ const StudentsTable = () => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages} // Pass totalPages from the API response
+        onPageChange={handlePageChange} // Pass page change handler
+      />
     </div>
-  )
-}
+  );
+};
 
-export default StudentsTable
+export default StudentsTable;
