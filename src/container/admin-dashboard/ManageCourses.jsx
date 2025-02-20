@@ -25,7 +25,8 @@ const tabs = [
 
 const ManageCourses = () => {
   const dispatch = useDispatch();
-  const courses = useSelector((state) => state.admin?.course?.courses) || [];
+  const rawCourses = useSelector((state) => state.admin?.course?.courses);
+  const courses = Array.isArray(rawCourses) ? rawCourses : [];
   const isLoading = useSelector(
     (state) => state.admin.course.isLoading.getAllAdminCourses
   );
@@ -58,7 +59,10 @@ const ManageCourses = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedCourses = courses.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedCourses = courses?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const filteredData = paginatedCourses.map((course) => ({
     image: course?.courseImage,

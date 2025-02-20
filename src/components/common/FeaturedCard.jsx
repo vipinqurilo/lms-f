@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { addOrderAsync, wishlistAsync } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import { IoMdHeart } from "react-icons/io";
+import { createPaymentIntent } from "@/store/slices/paymentSlice";
 
-export default function FeaturedCard({ data }) {
+export default function FeaturedCard({ data, isFull = false }) {
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
   }
@@ -15,13 +17,23 @@ export default function FeaturedCard({ data }) {
     dispatch(wishlistAsync({ course: id }));
   };
 
-  const handleAddOrder = (id) => {
-    dispatch(addOrderAsync({ course: id }));
+  const handleAddOrder = async (id, price) => {
+    const response = await dispatch(
+      addOrderAsync({ course: id, amountTotal: price })
+    );
+
+    if (response?.payload?.status === "success") {
+      window.open(response?.payload.checkoutUrl, "_blank");
+    }
   };
 
   return (
     <div className="flex gap-2 md:p-0  p-2">
-      <div className="w-96   group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
+      <div
+        className={`${
+          isFull ? "w-full" : "w-96"
+        } group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative`}
+      >
         <div className="relative overflow-hidden rounded-md">
           <img
             src={data?.courseImage}
@@ -50,13 +62,16 @@ export default function FeaturedCard({ data }) {
             <div>
               <button
                 onClick={() => handleAddWishlist(data?._id)}
-                className="  text-red-500 group-hover:text-white"
+                className="  text-red-500  group-hover:text-white"
               >
-                <FaRegHeart className="text-xl" />
+                <FaRegHeart className="text-xl hover:text-red-500" />
               </button>
             </div>
           </div>
-          <Link href={`/courses/${data?._id}`} className="mt-2 text-xl group-hover:text-white text-gray-700">
+          <Link
+            href={`/courses/${data?._id}`}
+            className="mt-2 text-xl group-hover:text-white text-gray-700"
+          >
             {data?.courseTitle}
           </Link>
           <div className="flex items-center justify-between gap-4 mt-4">
@@ -78,7 +93,7 @@ export default function FeaturedCard({ data }) {
               </span>
             </div>
             <button
-              onClick={() => handleAddOrder(data?._id)}
+              onClick={() => handleAddOrder(data?._id, data?.coursePrice)}
               className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] "
             >
               BUY NOW

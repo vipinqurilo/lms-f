@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSelector } from "react-redux";
 
 const WalletBalanceBadge = () => {
@@ -12,14 +13,18 @@ const WalletBalanceBadge = () => {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <Link
+      prefetch={false}
+      href={"/instructor-dashboard/wallet"}
+      className="flex items-center space-x-2"
+    >
       <span className="text-gray-600 text-sm font-medium">Wallet Balance:</span>
       <span
         className={`px-4 py-2 rounded-full text-sm font-semibold border ${getBalanceColor()}`}
       >
         ₹{balance}
       </span>
-    </div>
+    </Link>
   );
 };
 

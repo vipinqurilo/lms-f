@@ -1,6 +1,9 @@
 "use client";
 import CommonButton from "@/components/common/CommonButton";
-import { updateConversation } from "@/store/slices/supportSlice";
+import {
+  updateAdminConversation,
+  updateConversation,
+} from "@/store/slices/supportSlice";
 import { EllipsisVertical, SendHorizontal } from "lucide-react";
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
@@ -16,21 +19,48 @@ const MessageModal = ({ ticket, setMessages }) => {
   const loading = useSelector(
     (state) => state.support.isLoading.updateConversation
   );
+  const adminLoading = useSelector(
+    (state) => state.support.isLoading.updateAdminConversation
+  );
 
   const handleSubmit = () => {
-    const data = { receiver: "67a08f0f2c405d8e4eac0dcc", message: newMessage };
-    dispatch(updateConversation({ id: ticket?._id, data }))
-      .unwrap()
-      .then(() => {
-        setMessages((prev) => ({
-          ...prev,
-          messages: [
-            ...prev?.messages,
-            { sender: ticket?.sender, message: newMessage, createdAt: new Date() },
-          ],
-        }));
-        setNewMessage("");
-      });
+    const data = { receiver: ticket?._id, message: newMessage };
+
+    if (authUser?.role === "admin") {
+      dispatch(updateAdminConversation(data))
+        .unwrap()
+        .then(
+          setMessages((prev) => ({
+            ...prev,
+            messages: [
+              ...prev?.messages,
+              {
+                sender: authUser?._id,
+                message: newMessage,
+                createdAt: new Date(),
+              },
+            ],
+          })),
+          setNewMessage("")
+        );
+    } else {
+      dispatch(updateConversation({ id: ticket?._id, data }))
+        .unwrap()
+        .then(() => {
+          setMessages((prev) => ({
+            ...prev,
+            messages: [
+              ...prev?.messages,
+              {
+                sender: authUser?._id,
+                message: newMessage,
+                createdAt: new Date(),
+              },
+            ],
+          }));
+          setNewMessage("");
+        });
+    }
   };
 
   const getRelativeTime = (dateString) => {
@@ -179,7 +209,7 @@ const MessageModal = ({ ticket, setMessages }) => {
           <CommonButton
             label={<SendHorizontal size={20} />}
             onClick={handleSubmit}
-            // loading={loading}
+            loading={loading || adminLoading}
           />
         </div>
       )}

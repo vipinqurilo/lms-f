@@ -12,12 +12,12 @@ const EarningTable = ({
 }) => {
 
   return (
-    <div className="pt-8">
+    <div className=" px-5">
       <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
 
       {activeTab === "Courses" ? (
         <>
-          <CreatedCourses headingsData={["Courses", "Earning", ]} />
+          {/* <CreatedCourses headingsData={["Courses", "Earning", ]} data={coursesData} /> */}
           {/* Best-Selling Courses Section */}
           <div className="bg-green-100 rounded-lg shadow-md p-4 mb-6">
             <h3 className="text-xl font-semibold text-green-800 mb-4">

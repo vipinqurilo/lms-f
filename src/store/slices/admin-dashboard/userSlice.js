@@ -18,7 +18,7 @@ export const updateUserStatus = CreateApiAsyncThunk(
     const response = await api.patch(`/users/${userId}/user-status`, {
       userStatus: status,
     });
-    return { userId, status, data: response.data };
+    return { data: response.data };
   }
 );
 
@@ -48,15 +48,20 @@ export const usersSlice = createSlice({
         state.isLoading["getAllUsers"] = false;
         state.error["getAllUsers"] = action.payload;
       })
+      .addCase(updateUserStatus.pending, (state) => {
+        state.isLoading["updateUserStatus"] = true;
+      })
       .addCase(updateUserStatus.fulfilled, (state, action) => {
         if (!action.payload) return;
 
-        const { userId, status } = action.payload;
-        const userIndex = state.users.findIndex((user) => user._id === userId);
-
-        if (userIndex !== -1) {
-          state.users[userIndex].userStatus = status; // Update user status
-        }
+        const { _id, userStatus } = action.payload?.data;
+        state.users = state.users.map((user) =>
+          user._id === _id ? { ...user, userStatus } : user
+        );
+      })
+      .addCase(updateUserStatus.rejected, (state, action) => {
+        state.isLoading["updateUserStatus"] = false;
+        state.error["updateUserStatus"] = action.payload;
       });
   },
 });

@@ -9,16 +9,18 @@ export const fetchCategories = CreateApiAsyncThunk(
 
 export const fetchCoursesAsync = CreateApiAsyncThunk(
   "GET/courses/fetchCoursesAsync",
-  (categoryId) => {
-    const query = categoryId ? `?categoryId=${categoryId}` : "";
-    return api.get(`/course/admin/get${query}`);
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/course/admin/get?${query}`);
   }
 );
 
 export const fetchSingleCourse = CreateApiAsyncThunk(
   "GET/courses/fetchSingleCourse",
   (id) => api.get(`/course/front/${id}`)
-)
+);
 
 export const wishlistAsync = CreateApiAsyncThunk(
   "courses/wishlistAsync",
@@ -27,7 +29,7 @@ export const wishlistAsync = CreateApiAsyncThunk(
 
 export const addOrderAsync = CreateApiAsyncThunk(
   "courses/addOrderAsync",
-  (data) => api.post(`/order`, data)
+  (data) => api.post(`/order/create-payment-intent`, data)
 );
 
 const coursesSlice = createSlice({
@@ -35,6 +37,7 @@ const coursesSlice = createSlice({
   initialState: {
     categories: [],
     courses: [],
+    totalPages: null,
     courseData: {},
     wishlist: [],
     orders: [],
@@ -75,6 +78,7 @@ const coursesSlice = createSlice({
       .addCase(fetchCoursesAsync.fulfilled, (state, action) => {
         state.isLoading["fetchCoursesAsync"] = false;
         state.courses = action.payload?.data;
+        state.totalPages = action.payload?.pagination?.totalPages;
       })
       .addCase(fetchCoursesAsync.rejected, (state, action) => {
         state.isLoading["fetchCoursesAsync"] = false;
@@ -102,7 +106,7 @@ const coursesSlice = createSlice({
       .addCase(fetchSingleCourse.rejected, (state, action) => {
         state.isLoading["fetchSingleCourse"] = false;
         state.error["fetchSingleCourse"] = action.payload;
-      })
+      });
   },
 });
 

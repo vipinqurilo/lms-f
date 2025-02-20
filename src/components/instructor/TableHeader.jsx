@@ -7,7 +7,7 @@ const TableHeader = ({ headingsData }) => {
         {headingsData?.map((heading, index) => (
           <th
             key={index}
-            className="px-6 py-4 text-[15px] text-center font-semibold text-black"
+            className="px-6 py-4 text-[15px] text-start font-semibold text-black"
           >
             {heading}
           </th>
