@@ -26,7 +26,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
  
-
   useEffect(() => {
     const requestData = {
       page: 1,
@@ -37,7 +36,6 @@ const Home = () => {
 
   return (
     <>
-    
         <main className=" font-nunito custom-margin-top !overflow-visible">
           <HeroSection />
           <div className="md:mt-0 mt-8"></div>
@@ -56,4 +54,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Home;  
