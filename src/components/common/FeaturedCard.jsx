@@ -6,7 +6,7 @@ import Link from "next/link";
 import { IoMdHeart } from "react-icons/io";
 import { createPaymentIntent } from "@/store/slices/paymentSlice";
 
-export default function FeaturedCard({ data }) {
+export default function FeaturedCard({ data, isFull = false }) {
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
   }
@@ -29,7 +29,11 @@ export default function FeaturedCard({ data }) {
 
   return (
     <div className="flex gap-2 md:p-0  p-2">
-      <div className="w-96   group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative">
+      <div
+        className={`${
+          isFull ? "w-full" : "w-96"
+        } group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4 overflow-hidden relative`}
+      >
         <div className="relative overflow-hidden rounded-md">
           <img
             src={data?.courseImage}

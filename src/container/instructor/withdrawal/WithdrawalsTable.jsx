@@ -14,6 +14,7 @@ import Link from "next/link";
 import { FiEye } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/ApprovalModal";
+import dateFormat from "dateformat";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [isEdit, setIsEdited] = useState(null);

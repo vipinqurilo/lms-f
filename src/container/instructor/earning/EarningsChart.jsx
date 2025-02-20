@@ -1,10 +1,15 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 
 const EarningsChart = () => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const [date, setdate] = useState(new Date());
+
+  useEffect(() => {
+    setdate(date?.getFullYear());
+  }, []);
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -81,9 +86,27 @@ const EarningsChart = () => {
     });
   }, []);
 
+  // const getYearsOptions = (date) => {
+  //   const options = [];
+  //   for (let i = 0; i < 5; i++) {
+  //     options.push(date.getFullYear() - i);
+  //   }
+  //   return options;
+  // };
+
   return (
-    <div className="w-full mx-auto  bg-white rounded-lg">
-      <h2 className="text-lg font-semibold mb-4">Earnings by Year</h2>
+    <div className="w-full mx-auto  bg-white rounded-lg px-5">
+      <div className="w-full flex items-center justify-between">
+        <h2 className="text-lg font-semibold mb-4">Earnings by Year</h2>
+
+        <select value={date} onChange={(e) => setdate(e.target.value)}>
+          {/* {getYearsOptions(date)?.map((year, index) => (
+            <option value={year} key={index}>
+              {year}
+            </option>
+          ))} */}
+        </select>
+      </div>
       <div className="relative h-64">
         <canvas ref={chartRef}></canvas>
       </div>

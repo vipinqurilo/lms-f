@@ -5,8 +5,7 @@ import BasicDetails from "@/components/instructor/addcourse/BasicDetails";
 import CourseMedia from "@/components/instructor/addcourse/CourseMedia";
 import Curriculum from "@/components/instructor/addcourse/Curriculum";
 import PricingAccess from "@/components/instructor/addcourse/Pricing&Access";
-import { getSubjects, getSubSubjects } from "@/store/slices/categorySlice";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const AddCourseProcessContainer = () => {

@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import CreatedCourses from "../dashboard/CreatedCourses";
 import { useSelector } from "react-redux";
 import EarningsChart from "./EarningsChart";
-import EarningFiltration from "@/components/instructor/earning/EarningFiltration";
-import dateFormat from "dateformat";
 import EarningTable from "./EarningTable";
 import { Pagination } from "@/components/student-dashboard/Pagination";
+import UserFilter from "@/components/admin-dashboard/user/UserFilter";
+import TitleComp from "@/components/instructor/TitleComp";
 
 export const earningsData = {
   title: "Earnings Report",
@@ -75,42 +74,68 @@ export const earningsData = {
 };
 
 const EarningContainer = () => {
-  const { courses } = useSelector((state) => state.instructor.course);
-  const [keyword, setKeyword] = useState("");
+  // const { courses } = useSelector((state) => state.instructor.course);;
+  const [filters, setfilters] = useState({});
   const [activeTab, setactiveTab] = useState("Courses");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const filteredData = courses?.map((course) => ({
-    image: course?.thumbnail,
-    title: course?.title,
-    des: course?.description,
-    value1: course?.originalPrice,
-    value2: 50,
-  }));
+  // const filteredData = courses?.map((course) => ({
+  //   image: course?.thumbnail,
+  //   title: course?.title,
+  //   des: course?.description,
+  //   value1: course?.originalPrice,
+  //   value2: 50,
+  // }));
   return (
-    <div className="w-full flex flex-col gap-6 py-5 px-5">
-      <EarningsChart />
-      <EarningFiltration
-        endDate={endDate}
-        keyword={keyword}
-        setKeyword={setKeyword}
-        startDate={startDate}
-        handleStartDateChange={(date) => setStartDate(date)}
-        handleEndDateChange={(date) => setEndDate(date)}
-        tabs={["Courses", "Bookings"]}
-        isFilter={true}
-        activeTab={activeTab}
-        setActiveTab={setactiveTab}
-      />
-      <EarningTable
-        title={earningsData.title}
-        headingsData={earningsData.headingsData}
-        bookingsData={earningsData.bookingsData}
-        coursesData={earningsData.coursesData}
-        activeTab={activeTab}
-      />
+    <>
+      <main className=" p-10">
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Earnings"}
+            des={
+              "Track your income, view breakdowns, and monitor financial progress."
+            }
+          />
+          <div className="w-full flex flex-col gap-6 py-5">
+            <EarningsChart />
+            <div className="w-full !sticky !-top-0 bg-white px-5">
+              <UserFilter
+                isRole={false}
+                isStatus={false}
+                statusData={[]}
+                onApplyFilters={setfilters}
+              />
+              <div className="border-b">
+                <div className="flex gap-6">
+                  {["Courses", "Bookings"].map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setactiveTab(item)}
+                      className={`pb-4 relative ${
+                        activeTab === item
+                          ? "text-emerald-600"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      {item}
+                      {activeTab === item && (
+                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <EarningTable
+              title={earningsData.title}
+              headingsData={earningsData.headingsData}
+              bookingsData={earningsData.bookingsData}
+              coursesData={earningsData.coursesData}
+              activeTab={activeTab}
+            />
+          </div>
+        </div>
+      </main>
       <Pagination totalPages={5} currentPage={1} />
-    </div>
+    </>
   );
 };
 
