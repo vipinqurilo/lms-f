@@ -109,7 +109,7 @@ export default function DashboardPage() {
                   ),
                   duration: "N/A", // Replace if duration data is available
                   price: enrollment.course.coursePrice,
-                  originalPrice: "N/A", // Replace if original price is available
+                  
                 }}
                 onWishlist={false}
                 onWishlistClick={() => {}}

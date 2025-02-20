@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { IoLogoPaypal } from "react-icons/io5";
-// import dateFormat from "dateformat";
+import dateFormat from "dateformat";
 import TableHeader from "@/components/instructor/TableHeader";
 import Image from "next/image";
 import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";

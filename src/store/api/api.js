@@ -16,7 +16,7 @@ export const api = axios.create({
   validateStatus: function (status) {
     return status >= 200 && status < 300; // Allow only successful responses
   },
-});
+}); 
 
 // Request Interceptor: Add Authorization Token & Enforce No-Cache Headers
 api.interceptors.request.use((config) => {

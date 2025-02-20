@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { addOrderAsync, wishlistAsync } from "@/store/slices/coursesSlice";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
+import { IoMdHeart } from "react-icons/io";
+import { createPaymentIntent } from "@/store/slices/paymentSlice";
 
 export default function FeaturedCard({ data, isFull = false }) {
   if (!data || typeof data !== "object") {
@@ -15,8 +17,14 @@ export default function FeaturedCard({ data, isFull = false }) {
     dispatch(wishlistAsync({ course: id }));
   };
 
-  const handleAddOrder = (id, price) => {
-    dispatch(addOrderAsync({ course: id, amountTotal: price }));
+  const handleAddOrder = async (id, price) => {
+    const response = await dispatch(
+      addOrderAsync({ course: id, amountTotal: price })
+    );
+
+    if (response?.payload?.status === "success") {
+      window.open(response?.payload.checkoutUrl, "_blank");
+    }
   };
 
   return (
@@ -54,9 +62,9 @@ export default function FeaturedCard({ data, isFull = false }) {
             <div>
               <button
                 onClick={() => handleAddWishlist(data?._id)}
-                className="  text-red-500 group-hover:text-white"
+                className="  text-red-500  group-hover:text-white"
               >
-                <FaRegHeart className="text-xl" />
+                <FaRegHeart className="text-xl hover:text-red-500" />
               </button>
             </div>
           </div>

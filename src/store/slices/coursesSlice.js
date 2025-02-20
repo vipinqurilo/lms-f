@@ -29,7 +29,7 @@ export const wishlistAsync = CreateApiAsyncThunk(
 
 export const addOrderAsync = CreateApiAsyncThunk(
   "courses/addOrderAsync",
-  (data) => api.post(`/order`, data)
+  (data) => api.post(`/order/create-payment-intent`, data)
 );
 
 const coursesSlice = createSlice({
