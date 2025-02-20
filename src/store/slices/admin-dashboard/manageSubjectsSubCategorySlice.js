@@ -1,13 +1,18 @@
-
-// export default manageSubjectsSubCategorySlice.reducer;
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "@/store/api/api";
 
-// Fetch all subcategories
+// Fetch all subcategories (modified to check if categoryId exists and handle accordingly)
 export const getAllSubCategories = CreateApiAsyncThunk(
   "GET/subcategory/getAllSubCategories",
-  () => api.get("/subcategory")
+  (categoryId) => {
+    // If categoryId is provided, fetch subcategories for that category
+    if (categoryId) {
+      return api.get(`/subcategory?courseCategory=${categoryId}`);
+    }
+    // Otherwise, fetch all subcategories
+    return api.get("/subcategory");
+  }
 );
 
 // Delete a subcategory by ID
@@ -46,11 +51,13 @@ export const manageSubjectsSubCategorySlice = createSlice({
       })
       .addCase(getAllSubCategories.fulfilled, (state, action) => {
         state.isLoading["getAllSubCategories"] = false;
-        state.subcategories = action.payload.data;
+        state.subcategories = action.payload.data; // Updates subcategories based on categoryId
       })
       .addCase(getAllSubCategories.rejected, (state, action) => {
         state.isLoading["getAllSubCategories"] = false;
         state.error["getAllSubCategories"] = action.payload;
+        state.subcategories = []; 
+
       })
       .addCase(deleteSubCategoryById.fulfilled, (state, action) => {
         state.subcategories = state.subcategories.filter(
@@ -62,7 +69,10 @@ export const manageSubjectsSubCategorySlice = createSlice({
           (subcategory) => subcategory._id === action.meta.arg.id
         );
         if (index !== -1) {
-          state.subcategories[index] = { ...state.subcategories[index], ...action.payload.data };
+          state.subcategories[index] = {
+            ...state.subcategories[index],
+            ...action.payload.data,
+          };
         }
       })
       .addCase(addSubCategory.pending, (state) => {

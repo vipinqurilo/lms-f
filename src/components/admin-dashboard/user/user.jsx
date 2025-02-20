@@ -50,12 +50,16 @@ const UsersHistory = () => {
     const { role, status } = filters;
     if (debouncedSearchTerm) {
       dispatch(
-        getAllUsers({ role, userStatus: status, search: debouncedSearchTerm, page: 1, limit: 5 })
+        getAllUsers({
+          role,
+          userStatus: status,
+          search: debouncedSearchTerm,
+          page: 1,
+          limit: 5,
+        })
       );
     } else {
-      dispatch(
-        getAllUsers({ role, userStatus: status, page, limit: 5 })
-      );
+      dispatch(getAllUsers({ role, userStatus: status, page, limit: 5 }));
     }
   }, [page, filters, debouncedSearchTerm, dispatch]);
 
@@ -97,10 +101,14 @@ const UsersHistory = () => {
             ) : (
               filteredUsers?.map((user, index) => (
                 <tr key={user._id} className="border-t border-gray-200">
-                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">{index + 1}</td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+                    {index + 1}
+                  </td>
                   <td className="py-4 px-4 align-middle">
                     <img
-                      src={user.profilePhoto || "https://via.placeholder.com/40"}
+                      src={
+                        user.profilePhoto || "https://via.placeholder.com/40"
+                      }
                       alt="User"
                       className="w-10 h-10 rounded-full"
                     />
@@ -113,9 +121,13 @@ const UsersHistory = () => {
                   </td>
                   <td className="py-4 px-4 text-gray-700 text-sm align-middle">
                     <p>{user.email}</p>
-                    <p className="text-sm text-gray-500">{user.phone?.number}</p>
+                    <p className="text-sm text-gray-500">
+                      {user.phone?.number}
+                    </p>
                   </td>
-                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">{user.role}</td>
+                  <td className="py-4 px-4 text-gray-700 text-sm align-middle">
+                    {user.role}
+                  </td>
                   <td className="py-4 px-4 text-gray-700 text-sm align-middle">
                     {user.registered || "N/A"}
                   </td>
@@ -123,20 +135,18 @@ const UsersHistory = () => {
                     {user.userStatus === "active" ? "Verified" : "Not Verified"}
                   </td>
                   <td className="py-4 px-4 text-gray-700 text-sm align-middle">
-  <div className="flex items-center justify-center">
-    <label className="inline-flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        className="sr-only peer"
-        checked={user.userStatus === "active"}
-        onChange={() => toggleStatus(user)}
-      />
-      <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-checked:bg-[#12a449] peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600"></div>
-    </label>
-  </div>
-</td>
-
-
+                    <div className="flex items-center justify-center">
+                      <label className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={user.userStatus === "active"}
+                          onChange={() => toggleStatus(user)}
+                        />
+                        <div className="relative w-9 h-4 bg-gray-200 rounded-full peer peer-checked:bg-[#12a449] peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600"></div>
+                      </label>
+                    </div>
+                  </td>
 
                   <td className="py-4 px-4 text-center text-sm align-middle">
                     <div className="flex items-center justify-center space-x-3">
