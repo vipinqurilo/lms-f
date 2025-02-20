@@ -37,7 +37,7 @@ const TeachersTable = () => {
   }
 
   return (
-    <div className="rounded-lg p-1 w-11/12 mx-auto">
+    <div className="rounded-lg p-1 w- mx-auto">
       <TeacherFilter />
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg ">
@@ -58,12 +58,12 @@ const TeachersTable = () => {
                   {/* Main Row */}
                   <tr
                     key={item._id}
-                    className="transition-all duration-300 border-t border-gray-200 bg-white hover:bg-white hover:shadow-lg cursor-pointer"
+                    className="transition-all duration-300 border-t border-gray-200 bg-white hover:bg-white hover:shadow-lg hover:rounded-md cursor-pointer"
                     onMouseEnter={() => setHoveredRow(item._id)}
                     onMouseLeave={() => setHoveredRow(null)}
                   >
                     <td className="text-sm py-4">{index + 1}</td>
-                    <td className="p-4 flex items-center gap-5 justify-center">
+                    <td className="p-4 flex items-center gap-5 justify-center ">
                       <img
                         src={user?.profilePhoto || "/placeholder.svg"}
                         alt="profile"
@@ -92,107 +92,115 @@ const TeachersTable = () => {
                     <tr className="h-2"></tr>
                   )}
 
-                 
                   {hoveredRow === item._id && (
                     <>
-                      <tr className="transition-all duration-300 ease-in-out border-b-2 ">
+                      <tr className="transition-all duration-300 ease-in-out border-b-2">
                         <td
                           colSpan={6}
-                          className="p-4 bg-white shadow-lg animate-fadeDown"
+                          className="p-4 bg-white   animate-fadeDow border-t border-gray-200 py-7"
                         >
-                          <div className="flex justify-start items-start mb-4">
-                            <h3 className="text-base font-semibold">
-                              Instructor Details
+                          <div className="flex items-center space-x-9 ml-11">
+                            <h3 className="text-sm font-semibold">
+                              Session Details :
                             </h3>
-                          </div>
-                          <div className="grid grid-cols-6 gap-2 text-center">
-                            <div>
-                              <p className="text-base font-bold">
-                                {totalEnrolledStudents || 0}
-                              </p>
-                              <p className="text-sm">Total Students</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {confirmedSessions || 0}
-                              </p>
-                              <p className="text-sm">Active Enrollment</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {completedSessions || 0}
-                              </p>
-                              <p className="text-sm">Completed Enrollment</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {totalSessions || 0}
-                              </p>
-                              <p className="text-sm">No. of Booking Sessions</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {totalEnrolledStudents || 0}
-                              </p>
-                              <p className="text-sm">No. of Learners</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {cancelledSessions || 0}
-                              </p>
-                              <p className="text-sm">Bookings Cancelled</p>
+                            <div className="flex space-x-8">
+                              {/* Pending Courses */}
+                              <div className="border rounded-lg px-4 h-9 flex w-32 items-center justify-center space-x-1 shadow-sm">
+                                <p className="text-sm text-gray-600">Pending</p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Published Courses */}
+                              <div className="border rounded-lg px-4 h-9 flex w-32 items-center justify-center space-x-1 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Published
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Unpublished Courses */}
+                              <div className="border rounded-lg px-4 h-9 flex w-36 items-center justify-center space-x-1 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Unpublished
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Total Enrolled Students */}
+                              <div className="border rounded-lg px-4 h-9 flex w-40 items-center justify-center space-x-1 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Total Enrolled
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
                             </div>
                           </div>
                         </td>
                       </tr>
- 
-                       <tr className="transition-all duration-300 ease-in-out border-b-2">
+
+                      {/* Horizontal Line */}
+   
+
+
+
+                      {/* Course Details */}
+                      <tr className="transition-all duration-300 ease-in-out border-b-2">
                         <td
                           colSpan={6}
                           className="p-4 bg-white shadow-lg animate-fadeDown"
                         >
-                          <div className="flex justify-start items-start mb-4">
-                            <h3 className="text-base font-semibold">
-                              Course Details
-                            </h3>
-                          </div>
+                          <div className="flex items-center gap-4 p-4 ml-2 rounded-lg">
+                            <div>
+                              <h3 className="text-sm font-semibold w-36">
+                                Courses Details :
+                              </h3>
+                            </div>
+                            <div className="flex grid-cols-6 gap-4">
+                              {/* Cancelled */}
+                              <div className="border rounded-lg px-6 h-9 flex items-center justify-center space-x-2 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Cancelled
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
 
-                          <div className="grid grid-cols-6 gap-2 text-center">
-                            <div>
-                              <p className="text-base font-bold">
-                                {item.pendingCourses || 0}
-                              </p>
-                              <p className="text-sm">Pending Courses</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {item.publishedCourses || 0}
-                              </p>
-                              <p className="text-sm">Published Courses</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {item.unpublishedCourses || 0}
-                              </p>
-                              <p className="text-sm">Unpublished Courses</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {item.scheduledSessions || 0}
-                              </p>
-                              <p className="text-sm">Scheduled Sessions</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {item.rescheduledSessions || 0}
-                              </p>
-                              <p className="text-sm">Rescheduled Sessions</p>
-                            </div>
-                            <div>
-                              <p className="text-base font-bold">
-                                {item.confirmedSessions || 0}
-                              </p>
-                              <p className="text-sm">Confirmed Sessions</p>
+                              {/* Complete */}
+                              <div className="border rounded-lg px-6 h-9 flex items-center justify-center space-x-2 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Complete
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Total */}
+                              <div className="border rounded-lg px-6 h-9 flex w-fit items-center justify-center space-x-2 shadow-sm">
+                                <p className="text-sm text-gray-600">Total</p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Scheduled */}
+                              <div className="border rounded-lg px-6 h-9 flex items-center justify-center space-x-2 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Scheduled
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Confirmed */}
+                              <div className="border rounded-lg px-6 h-9 flex items-center justify-center space-x-2 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Confirmed
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
+
+                              {/* Rescheduled */}
+                              <div className="border rounded-lg px-6 h-9 flex items-center justify-center space-x-2 shadow-sm">
+                                <p className="text-sm text-gray-600">
+                                  Rescheduled
+                                </p>
+                                <p className="text-base font-bold">02</p>
+                              </div>
                             </div>
                           </div>
                         </td>
