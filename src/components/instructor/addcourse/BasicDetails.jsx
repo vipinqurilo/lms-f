@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import SubmitButtonsComp from "./SubmitButtonsComp";
 import AddRemoveInput from "./AddRemoveInput";
+import toast from "react-hot-toast";
 
 const BasicDetails = () => {
   const dispatch = useDispatch();
@@ -36,13 +37,17 @@ const BasicDetails = () => {
   // const [description, setDescription] = useState([]);
 
   const submitHandler = (data) => {
-    const formData = {
-      ...data,
-      courseCategory: selectedSubject,
-      courseSubCategory: selectedSubSubject,
-    };
-    dispatch(updateCourseAddDataState({ field: "basic", data: formData }));
-    dispatch(updateStep(2));
+    if (selectedSubSubject === "" || selectedSubject === "") {
+      return toast.error("Select Category and SubCategory first");
+    } else {
+      const formData = {
+        ...data,
+        courseCategory: selectedSubject,
+        courseSubCategory: selectedSubSubject,
+      };
+      dispatch(updateCourseAddDataState({ field: "basic", data: formData }));
+      dispatch(updateStep(2));
+    }
   };
 
   const courseLevels = [

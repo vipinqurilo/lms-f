@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createCourse,
   editCourse,
-  updateCourseAddDataState,
+  editCourseData,
   updateStep,
 } from "@/store/slices/instructor/courseSlice";
 import { useRouter } from "next/navigation";
@@ -82,7 +82,7 @@ const PricingAccess = () => {
         .unwrap()
         .then(() => {
           dispatch(updateStep(1));
-          dispatch(updateCourseAddDataState({}));
+          dispatch(editCourseData({}));
           router.push("/instructor-dashboard");
         });
     } else {
@@ -90,7 +90,7 @@ const PricingAccess = () => {
         .unwrap()
         .then(() => {
           dispatch(updateStep(1));
-          dispatch(updateCourseAddDataState({}));
+          dispatch(editCourseData({}));
           router.push("/instructor-dashboard");
         });
     }
