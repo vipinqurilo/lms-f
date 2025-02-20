@@ -18,7 +18,11 @@ export const fetchBookingsByTutorIdAsync = CreateApiAsyncThunk(
 
 export const createBookingAsync = CreateApiAsyncThunk(
   "booking/createBookingAsync",
-  (bookingData) => api.post("/bookings", bookingData)
+  (sessionId) => api.post("/bookings", sessionId)
+);
+export const createBookingPayment = CreateApiAsyncThunk(
+  "booking/createBookingPayment",
+  (bookingData) => api.post("/payment/stripe/booking", bookingData)
 );
 export const rescheduleResponseAsync = CreateApiAsyncThunk(
   "booking/rescheduleResponseAsync",
@@ -71,6 +75,16 @@ const bookingSlice = createSlice({
       .addCase(createBookingAsync.rejected, (state, action) => {
         state.isLoading["createBookingAsync"] = false;
         state.error["createBookingAsync"] = action.payload;
+      })
+      .addCase(createBookingPayment.pending, (state) => {
+        state.isLoading["createBookingPayment"] = true;
+      })
+      .addCase(createBookingPayment.fulfilled, (state, action) => {
+        state.isLoading["createBookingPayment"] = false;
+      })
+      .addCase(createBookingPayment.rejected, (state, action) => {
+        state.isLoading["createBookingPayment"] = false;
+        state.error["createBookingPayment"] = action.payload;
       })
       .addCase(fetchBookingsByTutorIdAsync.pending, (state) => {
         state.isLoading["fetchBookingsByTutorIdAsync"] = true;
