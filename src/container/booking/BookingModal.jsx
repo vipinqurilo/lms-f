@@ -8,11 +8,12 @@ import { DurationSelection } from "./DurationSelection";
 import ScheduleCalendar from "./ScheduleCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
-import { createBookingAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { createBookingAsync, createBookingPayment } from "@/store/slices/student-dashboard/bookingSlice";
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
 import { createPaymentIntent } from "@/store/slices/paymentSlice";
 import { Router, useRouter } from "next/router";
+import stripePromise from "@/utils/stripe";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();
@@ -84,23 +85,26 @@ export function BookingModal({ onClose, tutor }) {
 
     // If all validations pass, proceed with booking
     dispatch(
-      createBookingAsync({
+      createBookingPayment({
+        sessionTitle:`${duration} Minute Session on ${subject?.name}`,
         subjectId: subject?._id,
         teacherId: tutor?.user?._id,
         studentId: profile?._id,
-        scheduledDate,
+        sessionDate: scheduledDate,
         sessionStartTime,
         sessionEndTime,
         sessionDuration: duration,
-        paymentId: "67a1acec55d46979078eddd8",
+        amount: price,
       })
     )
-      .unwrap()
-      .then((res) => {
-        if (res.success) {
-          onClose();
-        }
-      });
+    .unwrap()
+    .then(async (res) => {
+      setCheckoutUrl(res.url);
+        setPaymentModal(true);
+    })
+    .catch((error) => {
+      toast.error("Failed to initialize payment. Please try again.");
+    });
   };
 
   const handlePayment = () => {
@@ -181,7 +185,7 @@ export function BookingModal({ onClose, tutor }) {
               duration={duration}
               subject={subject}
               scheduledDate={scheduledDate}
-              handlePayment={handlePayment}
+              createBooking={createBooking}
               selected={paymentMethod}
               onSelect={setPaymentMethod}
             />

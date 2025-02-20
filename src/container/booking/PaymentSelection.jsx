@@ -13,13 +13,11 @@ const paymentMethods = [
 ];
 
 export function PaymentSelection({
-  tutor,
   duration,
   subject,
-  scheduledDate,
   selected,
   onSelect,
-  handlePayment,
+  createBooking,
   price,
 }) {
   const { isLoading, error } = useSelector((state) => state.payment);
@@ -96,7 +94,7 @@ export function PaymentSelection({
           </div>
 
           <button
-            onClick={handlePayment}
+            onClick={createBooking}
             className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black"
           >
             {isLoading["createPaymentIntent"] ? "Processing..." : "Confirm payment"}
