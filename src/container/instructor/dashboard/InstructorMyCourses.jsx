@@ -143,7 +143,7 @@ const InstructorMyCourses = () => {
 
             {getloading ? (
               <div className="w-full flex items-center justify-center py-8">
-                <Loader color={"text-primary"} isBig={true} />
+                <Loader color={"text-secondary"} isBig={true} />
               </div>
             ) : courses?.length === 0 ? (
               <div className="w-full py-12 flex items-center justify-center text-light">

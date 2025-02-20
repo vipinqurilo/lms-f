@@ -5,6 +5,7 @@ import FeaturedCard from "@/components/common/FeaturedCard";
 import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
 import { useDispatch } from "react-redux";
 import Loader from "@/components/common/Loader";
+import PaginationComponent from "@/container/common/PaginationComponent";
 
 const Courses = () => {
   const { courses, totalPages } = useSelector((state) => state?.courses);
@@ -31,8 +32,8 @@ const Courses = () => {
   }, [dispatch, currentPage, selectedOption]);
 
   return (
-    <div className="custom-container custom-margin-top">
-      <div className=" flex flex-wrap justify-center  font-nunito">
+    <div className="custom-container !py-5 bg-white custom-margin-top">
+      <div className=" flex flex-wrap justify-center font-nunito">
         <div className="gap-6 flex w-full">
           {/* Course Cards Section */}
           <div className="w-full">
@@ -77,10 +78,10 @@ const Courses = () => {
                 <Loader color={"text-secondary"} isBig={true} />
               </div>
             ) : (
-              <div className="mt-7 grid grid-cols-3 gap-6 ">
+              <div className="mt-7 grid grid-cols-3 lg:gap-16">
                 {courses?.length > 0 ? (
                   courses?.map((course, index) => (
-                    <FeaturedCard data={course} key={index} />
+                    <FeaturedCard data={course} isFull={true} key={index} />
                   ))
                 ) : (
                   <p className="text-center w-full lg:col-span-3">
@@ -91,38 +92,12 @@ const Courses = () => {
             )}
 
             {/* Pagination */}
-            <div className="mt-8 flex justify-center items-center space-x-2">
-              <button
-                onClick={() => setcurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1 || totalPages === 0}
-                className="px-3 py-2 bg-gray-300 rounded disabled:opacity-50"
-              >
-                Prev
-              </button>
-
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setcurrentPage(index + 1)}
-                  className={`px-3 py-2 rounded ${
-                    currentPage === index + 1
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-
-              <button
-                onClick={() =>
-                  setcurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                disabled={currentPage === totalPages || totalPages === 0}
-                className="px-3 py-2 bg-gray-300 rounded disabled:opacity-50"
-              >
-                Next
-              </button>
+            <div className="pt-4">
+              <PaginationComponent
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setcurrentPage={setcurrentPage}
+              />
             </div>
           </div>
         </div>
