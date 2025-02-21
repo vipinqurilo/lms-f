@@ -7,16 +7,10 @@ const index = () => {
   return (
     // update this code
     <StudentDashboardLayout>
-    <main className="dashboard-container">
-      <TitleComp
-        heading={"Withdrawals"}
-        des={
-          "Manage your withdrawal requests and track transaction status effortlessly."
-        }
-      />
-      <WithdrawalContainer/>
-    </main>
-  </StudentDashboardLayout>
+      <main className="">
+        <WithdrawalContainer />
+      </main>
+    </StudentDashboardLayout>
   );
 };
 
