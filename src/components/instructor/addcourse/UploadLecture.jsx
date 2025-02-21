@@ -7,8 +7,8 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadVideo } from "@/store/slices/uploadSlice";
 
-const UploadLecture = ({ handleCancel, moduleInfo, setLecture }) => {
-  const [video, setvideo] = useState("");
+const UploadLecture = ({ handleCancel, setLecture }) => {
+  const [videoDuration, setVideoDuration] = useState("");
   const videoRef = useRef(null);
   const dispatch = useDispatch();
   const videoLoading = useSelector(
@@ -18,6 +18,15 @@ const UploadLecture = ({ handleCancel, moduleInfo, setLecture }) => {
   const handleUpload = (e) => {
     const reply = confirm("Are you sure? you want to upload this file");
     if (reply) {
+      const videoElement = document.createElement("video");
+      videoElement.preload = "metadata";
+      videoElement.src = URL.createObjectURL(file);
+
+      videoElement.onloadedmetadata = () => {
+        URL.revokeObjectURL(videoElement.src);
+        const duration = formatDuration(videoElement.duration);
+        setVideoDuration(duration);
+      };
       const file = e.target.files?.[0];
       const formData = new FormData();
       formData.append("video", file);
@@ -27,15 +36,21 @@ const UploadLecture = ({ handleCancel, moduleInfo, setLecture }) => {
           if (res) {
             setLecture((prev) => ({
               ...prev,
-              video: res?.data || "https://res.cloudinary.com/dxyt4v9lc/video/upload/v1738647019/video_ttw14a.mp4",
-              duration: res?.duration || "10:00"
-            }))
+              video: res?.data,
+              duration: videoDuration,
+            }));
           }
           handleCancel();
         });
     } else {
       toast.error("Denied");
     }
+  };
+
+  const formatDuration = (seconds) => {
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? "0" : ""}${sec}`;
   };
   return (
     <BackgroundModal

@@ -13,7 +13,7 @@ const index = () => {
 
   return (
     <StudentDashboardLayout>
-      <div className="flex gap-4">
+      <div className="flex gap-4 p-10">
         <div className="w-[80%]">
           <StatesCard />
           <EarningSummary />

@@ -14,6 +14,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import CommonButton from "@/components/common/CommonButton";
 import { RiUploadCloud2Line } from "react-icons/ri";
 import UploadLecture from "./UploadLecture";
+import { FiEdit, FiCheck, FiTrash } from "react-icons/fi";
 
 const Curriculum = () => {
   const { courseAddData } = useSelector((state) => state.instructor.course);
@@ -50,10 +51,9 @@ const Curriculum = () => {
 
   const handleAddLecture = (moduleIndex) => {
     if (
-      // lecture?.lessonTitle !== ""
-      (lecture?.lessonTitle !== "",
-      lecture?.video !== "",
-      lecture?.duration !== "")
+      lecture?.lessonTitle.trim() !== "" &&
+      lecture?.video.trim() !== "" &&
+      lecture?.duration.trim() !== ""
     ) {
       setModules((prevModules) => {
         const updatedModules = prevModules.map((module, index) => {
@@ -61,7 +61,7 @@ const Curriculum = () => {
             return {
               ...module,
               lessons: [
-                ...module.lessons, // Create a new array instead of mutating
+                ...module.lessons,
                 {
                   lessonTitle: lecture.lessonTitle,
                   video: lecture.video,
@@ -84,19 +84,21 @@ const Curriculum = () => {
 
   // ✅ Remove Lecture
   const handleRemoveLecture = (moduleIndex, lectureIndex) => {
-    if (modules?.length > 0 && modules[moduleIndex]?.lessons?.length > 0) {
-      setModules((prevModules) => {
-        const updatedModules = [...prevModules];
-        if (
-          updatedModules[moduleIndex] &&
-          updatedModules[moduleIndex].lessons
-        ) {
-          updatedModules[moduleIndex].lessons = updatedModules[
-            moduleIndex
-          ].lessons.filter((_, i) => i !== lectureIndex);
-        }
-        return updatedModules;
-      });
+    if (window.confirm(`Are you sure you want to delete this Lecture?`)) {
+      if (modules?.length > 0 && modules[moduleIndex]?.lessons?.length > 0) {
+        setModules((prevModules) => {
+          const updatedModules = [...prevModules];
+          if (
+            updatedModules[moduleIndex] &&
+            updatedModules[moduleIndex].lessons
+          ) {
+            updatedModules[moduleIndex].lessons = updatedModules[
+              moduleIndex
+            ].lessons.filter((_, i) => i !== lectureIndex);
+          }
+          return updatedModules;
+        });
+      }
     }
   };
 
@@ -157,8 +159,22 @@ const Curriculum = () => {
   };
 
   const handleNext = () => {
-    dispatch(updateCourseAddDataState({ field: "curriculum", data: modules }));
-    dispatch(updateStep(4));
+    if (!modules || modules.length === 0) {
+      toast.error("Please add at least one module before proceeding.");
+    } else if (modules.some((module) => !module?.moduleTitle.trim())) {
+      toast.error(
+        "Module title cannot be empty. Please fill in all module titles."
+      );
+    } else if (
+      modules.some((module) => !module?.lessons || module.lessons.length === 0)
+    ) {
+      toast.error("Each module must have at least one lesson.");
+    } else {
+      dispatch(
+        updateCourseAddDataState({ field: "curriculum", data: modules })
+      );
+      dispatch(updateStep(4));
+    }
   };
 
   return (
@@ -196,25 +212,40 @@ const Curriculum = () => {
                   }}
                   className="px-2 py-0.5 focus:outline-none border border-black/10 rounded"
                 />
-              ) : (
+              ) : item?.moduleTitle ? (
                 item?.moduleTitle
+              ) : (
+                "Untitled Module"
               )}
             </h2>
             <div className="flex items-center gap-2">
-              <CommonButton
-                label={isEditModule === index ? "Submit" : "Edit"}
-                variant="secondary"
+              <button
+                className="p-2 rounded-md bg-gray-200 hover:bg-gray-500 hover:text-white transition"
                 onClick={() =>
                   setisEditModule(isEditModule === index ? null : index)
                 }
-              />
-              <CommonButton
-                label={"Delete"}
-                variant="secondary"
-                onClick={() =>
-                  setModules((prev) => prev.filter((_, j) => j !== index))
-                }
-              />
+              >
+                {isEditModule === index ? (
+                  <FiCheck size={18} />
+                ) : (
+                  <FiEdit size={18} />
+                )}
+              </button>
+
+              <button
+                className="p-2 rounded-md bg-red-100 hover:bg-red-500 hover:text-white transition"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete this Module: ${item?.moduleTitle}?`
+                    )
+                  ) {
+                    setModules((prev) => prev.filter((_, j) => j !== index));
+                  }
+                }}
+              >
+                <FiTrash size={18} />
+              </button>
             </div>
           </div>
 
