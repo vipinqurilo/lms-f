@@ -14,13 +14,11 @@ import Link from "next/link";
 import { FiEye } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/ApprovalModal";
-import dateFormat from "dateformat";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [isEdit, setIsEdited] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user?.authUser?.role);
-
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [approvingId, setApprovingId] = useState(null);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
