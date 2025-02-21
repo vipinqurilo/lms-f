@@ -78,7 +78,7 @@ const Courses = () => {
                 <Loader color={"text-secondary"} isBig={true} />
               </div>
             ) : (
-              <div className="mt-7 grid grid-cols-3 lg:gap-16">
+              <div className="mt-7 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-16">
                 {courses?.length > 0 ? (
                   courses?.map((course, index) => (
                     <FeaturedCard data={course} isFull={true} key={index} />
