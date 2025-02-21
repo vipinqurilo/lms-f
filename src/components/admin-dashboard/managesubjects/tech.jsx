@@ -4,29 +4,71 @@ import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import AddSubCategories from "./addSubCategoriesModels";
 import EditSubCategories from "./editSubCategoriesModels";
 import TableHeader from "@/components/instructor/TableHeader";
-import { deleteSubCategoryById, editSubCategoryById, getAllSubCategories } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
+import {
+  deleteSubCategoryById,
+  editSubCategoryById,
+  getAllSubCategories,
+} from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
+import DeleteSubCategoriesModal from "./deletesSubCategoriesModels";
+import { useRouter } from "next/router"; // Import useRouter from next/router
 
-const columns = ["S.No", "Name", "Categories", "Updated", "Status", "Action"];
+const columns = [
+  "S.No",
+  "Name",
+  "Categories",
+  "Updated",
+  "Price Per Hour",
+  "Action",
+];
 
 const SubCategories = () => {
   const dispatch = useDispatch();
-  const { subcategories, isLoading } = useSelector((state) => state.admin.managesubjectssubctegory);
+  const { subcategories, isLoading } = useSelector(
+    (state) => state.admin.managesubjectssubctegory
+  );
+  const router = useRouter(); // Use Next.js router for query parameters
+  const { categoryId, categoryName } = router.query; // Extract categoryId and categoryName from the URL query
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // Fetch subcategories on categoryId change or if categoryId is not provided
   useEffect(() => {
-    dispatch(getAllSubCategories());
-  }, [dispatch]);
+    if (categoryId) {
+      dispatch(getAllSubCategories(categoryId)); // Fetch subcategories based on categoryId from the URL
+    } else {
+      dispatch(getAllSubCategories()); // Fetch all subcategories if no categoryId is provided
+    }
+  }, [dispatch, categoryId]);
 
+  // Handle the deletion of a subcategory
   const handleDelete = (id) => {
     dispatch(deleteSubCategoryById(id));
+    setIsDeleteModalOpen(false); // Close the delete modal after deletion
+  };
+
+  // Handle the save for editing a subcategory
+  const handleSave = (updatedCategory) => {
+    if (selectedCategory) {
+      dispatch(
+        editSubCategoryById({
+          id: selectedCategory._id,
+          updatedData: updatedCategory,
+        })
+      );
+      setIsEditModalOpen(false);
+    }
   };
 
   return (
     <div className="p-6 rounded-lg">
+      {/* Header with dynamic category name */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Subcategories</h2>
+        <h2 className="text-xl font-semibold">
+          {categoryName ? `Subcategories of ${categoryName}` : "Subcategories"}
+        </h2>
         <button
           className="bg-orange-500 text-white px-4 py-2 rounded-lg"
           onClick={() => setIsModalOpen(true)}
@@ -35,31 +77,43 @@ const SubCategories = () => {
         </button>
       </div>
 
+      {/* Subcategories Table */}
       <div className="overflow-x-auto">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
-          <tbody>
+          <tbody className="">
             {isLoading?.["getAllSubCategories"] ? (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4">
+                <td colSpan={columns.length} className="py-4">
                   Loading...
                 </td>
               </tr>
-            ) : subcategories.length > 0 ? (
+            ) : subcategories.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="py-4">
+                  No data found.
+                </td>
+              </tr>
+            ) : (
               subcategories.map((cat, index) => (
                 <tr key={cat?._id} className="border-t border-gray-200">
-                  <td className="py-3 px-4">{index + 1}</td>
-                  <td className="py-3 px-4">{cat?.name}</td>
-                  <td className="py-3 px-4">{cat?.courseCategory?.name || "N/A"}</td>
-                  <td className="py-3 px-4">{new Date(cat?.updatedAt).toLocaleDateString()}</td>
-                  <td className="py-3 px-4 text-center">
-                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                      cat?.status ? "bg-green-500 text-white" : "bg-gray-400 text-white"
-                    }`}>
-                      {cat?.status ? "Active" : "Inactive"}
-                    </span>
+                  <td className="py-3  px-8  text-sm">{index + 1}</td>
+                  <td className="py-3 px-4 text-sm">{cat?.name}</td>
+                  <td className="py-3 px-4 text-sm">
+                    {cat?.courseCategory?.name}
                   </td>
-                  <td className="py-3 px-4 text-center flex items-center justify-center space-x-4">
+                  <td className="py-3 px-4 text-sm">
+                    {new Date(cat?.updatedAt).toLocaleString("en-US", {
+                      month: "short",
+                      day: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    })}
+                  </td>
+                  <td className="py-3  px-12 text-sm">{cat?.pricePerHour}</td>
+                  <td className="py-3 px-4    space-x-4">
                     <button
                       className="text-gray-600 hover:text-yellow-500"
                       onClick={() => {
@@ -71,29 +125,37 @@ const SubCategories = () => {
                     </button>
                     <button
                       className="text-gray-600 hover:text-red-500"
-                      onClick={() => handleDelete(cat._id)}
+                      onClick={() => {
+                        setSelectedCategory(cat);
+                        setIsDeleteModalOpen(true); // Open the delete modal
+                      }}
                     >
                       <FiTrash2 size={18} />
                     </button>
                   </td>
                 </tr>
               ))
-            ) : (
-              <tr>
-                <td colSpan={columns.length} className="text-center py-4">
-                  No subcategories found.
-                </td>
-              </tr>
             )}
           </tbody>
         </table>
       </div>
 
-      <AddSubCategories isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* Add & Edit Modals */}
+      <AddSubCategories isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+
       <EditSubCategories
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         category={selectedCategory}
+        handleSave={handleSave}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteSubCategoriesModal
+        isOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        handleDelete={handleDelete}
+        categoryId={selectedCategory?._id}
       />
     </div>
   );
