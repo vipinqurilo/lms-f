@@ -39,9 +39,20 @@ const TeachersTable = () => {
   return (
     <div className="rounded-lg w- mx-auto p-10">
       <TeacherFilter />
-      <div className="overflow-x-auto mt-4 flex flex-col gap-4">
-          <TableHeader headingsData={columns} />
-          <div className="text-center ">
+      <div className="overflow-x-auto mt-4 flex flex-col gap-4"> 
+      <div className="bg-gray-100 w-full rounded-lg border-b ">
+      <div className="grid grid-cols-12 ">
+        {columns?.map((heading, index) => (
+          <th
+            key={index}
+            className="col-span-2 px-6 py-4 text-[15px] text-center font-semibold text-black"
+          >
+            {heading}
+          </th>
+        ))}
+      </div>
+    </div>
+           <div className="text-center ">
             {teachers?.map((item, index) => {
               const { user } = item;
               
@@ -84,7 +95,7 @@ const TeachersTable = () => {
                     }`}
                   >
                     {/* Session Details */}
-                    <div className="bg-white relative border-gray-200 p-4">
+                    <div className="bg-white relative border-gray-200 p-7">
                       <div className="absolute top-0 left-[50%] translate-x-[-50%] w-[93%] h-[1px] bg-gray-200"></div>
                       <div className="flex items-center space-x-9 ml-11">
                         <h3 className="text-sm font-semibold">Session Details :</h3>

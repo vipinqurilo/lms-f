@@ -56,7 +56,7 @@ const UserFilter = ({
   const pathname = usePathname();
   const [isMoreFilters, setIsMoreFilters] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const statusArray = statusData ? statusData[0] : ["Inactive", "Active"];
+  const statusArray = statusData ? statusData[0] : ["inactive", "active"];
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(filters.search), 500);
@@ -138,9 +138,15 @@ const UserFilter = ({
           {isRole && (
             <Dropdown
               label="Role"
-              value={filters.role}
+              value={
+                filters.role === "role"
+                  ? "Role"
+                  : filters.role.charAt(0).toUpperCase() + filters.role.slice(1)
+              } // Display capitalized value
               options={["Student", "Teacher", "Admin"]}
-              onChange={(role) => setFilters({ ...filters, role })}
+              onChange={(role) =>
+                setFilters({ ...filters, role: role.toLowerCase() })
+              } // Send lowercase value to backend
             />
           )}
 
