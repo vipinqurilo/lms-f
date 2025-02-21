@@ -142,7 +142,7 @@ const SupportDashboard = () => {
 
           {getInstrcutorLoading || getInstrcutorFilterLoading ? (
             <div className="w-full flex items-center justify-center py-16">
-              <Loader color={"text-primary"} isBig={true} />
+              <Loader color={"text-secondary"} isBig={true} />
             </div>
           ) : (
             <SupportTable

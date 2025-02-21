@@ -11,15 +11,17 @@ export default function FeaturedCourses({ cardData = [] }) {
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div
-          className="bg-no-repeat h-full md:px-20 px-4 "
-          style={{
-            backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,
-          }}
-        >
+      <div
+        className="bg-no-repeat h-full md:px-20 px-4 "
+        style={{
+          backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,
+        }}
+      >
+        {isLoading ? (
+          <div className="w-full py-24 pt-32 flex items-center justify-center">
+            <Loader isBig={true} />
+          </div>
+        ) : (
           <div className="md:py-20">
             <div data-aos="fade-up" className="pt-8">
               <p className="text-xl font-bold text-orange-600">What's New</p>
@@ -44,16 +46,18 @@ export default function FeaturedCourses({ cardData = [] }) {
               className="grid md:grid-cols-3 grid-cols-1 gap-2 lg:gap-16 md:mt-8"
             >
               {cardData?.length > 0 ? (
-                cardData?.slice(0, 6)?.map((card, index) => (
-                  <FeaturedCard data={card} isFull={true} key={index} />
-                ))
+                cardData
+                  ?.slice(0, 6)
+                  ?.map((card, index) => (
+                    <FeaturedCard data={card} isFull={true} key={index} />
+                  ))
               ) : (
                 <p className="text-center col-span-3">No courses available</p>
               )}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }

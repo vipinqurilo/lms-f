@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { VscTriangleUp } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
+import dateFormat from "dateformat";
 
 const MessageModal = ({ ticket, setMessages }) => {
   const { authUser } = useSelector((state) => state.user);

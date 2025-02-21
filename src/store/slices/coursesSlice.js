@@ -32,6 +32,11 @@ export const addOrderAsync = CreateApiAsyncThunk(
   (data) => api.post(`/order/create-payment-intent`, data)
 );
 
+// create order
+export const createOrder = CreateApiAsyncThunk("courses/createOrder", (data) =>
+  api.post(`/order/stripe`, data)
+);
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
@@ -39,6 +44,7 @@ const coursesSlice = createSlice({
     courses: [],
     totalPages: null,
     courseData: {},
+    perchasedCourse: null,
     wishlist: [],
     orders: [],
     isLoading: {},
@@ -106,6 +112,18 @@ const coursesSlice = createSlice({
       .addCase(fetchSingleCourse.rejected, (state, action) => {
         state.isLoading["fetchSingleCourse"] = false;
         state.error["fetchSingleCourse"] = action.payload;
+      })
+      // create Course order
+      .addCase(createOrder.pending, (state, action) => {
+        state.isLoading["createOrder"] = true;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.isLoading["createOrder"] = false;
+        state.perchasedCourse = action.payload?.data;
+      })
+      .addCase(createOrder.rejected, (state, action) => {
+        state.isLoading["createOrder"] = false;
+        state.error["createOrder"] = action.payload;
       });
   },
 });

@@ -114,7 +114,7 @@ const ManageCourses = () => {
       </div>
 
       {isLoading ? (
-        <Loader color={"text-primary"} isBig={true} />
+        <Loader color={"text-secondary"} isBig={true} />
       ) : (
         <CreatedCourses
           headingsData={["Courses", "Enrolled", "Status"]}
