@@ -20,7 +20,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
     <div
       className={`fixed bottom-0  ${
         isCollapsed ? "w-[calc(100vw-80px)]" : "w-[calc(100vw-240px)]"
-      } z-[1000] px-10 bg-white py-2 flex items-center justify-between`}
+      } z-[10] px-10 bg-white py-2 flex items-center justify-between`}
     >
       <p className="text-sm text-gray-500">
         Page {currentPage} of {totalPages}

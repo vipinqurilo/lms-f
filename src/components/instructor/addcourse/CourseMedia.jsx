@@ -76,46 +76,44 @@ const CourseMedia = () => {
   };
 
   return (
-    <form className="w-full grid grid-cols-2 gap-10">
-      <div>
-        <label className="block text-sm font-medium text-light mb-2">
+    <form className="w-full grid grid-cols-2 gap-6">
+      {/* Cover Image Upload */}
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700">
           Choose Cover Image
         </label>
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => {
-            handleImageUpload(e);
-          }}
-          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:cursor-not-allowed disabled:opacity-60"
+          onChange={handleImageUpload}
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 cursor-pointer hover:border-primary transition-all disabled:cursor-not-allowed disabled:opacity-60"
           disabled={imageLoader}
         />
         {media.image && (
           <div
-            className="w-full h-80 bg-no-repeat bg-cover bg-center mt-5 rounded-lg"
+            className="w-full h-64 bg-no-repeat bg-cover bg-center rounded-lg shadow-md border overflow-hidden"
             style={{ backgroundImage: `url(${media.image})` }}
           ></div>
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-light mb-2">
+      {/* Course Video Upload */}
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700">
           Course Video
         </label>
         <input
           type="file"
           accept="video/*"
-          onChange={(e) => {
-            handleVideoUpload(e);
-          }}
-          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          onChange={handleVideoUpload}
+          className="block w-full text-sm text-gray-500 border border-gray-300 rounded-md shadow-sm p-2 cursor-pointer hover:border-primary transition-all disabled:opacity-60 disabled:cursor-not-allowed"
           disabled={videoLoading}
         />
         {media.video && (
-          <div className="w-full h-80 rounded-lg">
+          <div className="w-full h-64 rounded-lg shadow-md border overflow-hidden">
             <video
               src={media.video}
-              className="w-full h-full rounded-lg mt-5"
+              className="w-full h-full rounded-lg"
               controls
             />
           </div>

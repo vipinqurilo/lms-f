@@ -16,23 +16,25 @@ export default function AddCoursePage() {
   const dispatch = useDispatch();
   return (
     <StudentDashboardLayout>
-      <div className="mb-4">
-        <CommonButton
-          label={"Back"}
-          onClick={() => {
-            dispatch(editCourseData({}));
-            dispatch(updateStep(1));
-            router.back();
-          }}
-          variant="primary"
-        />
-      </div>
-      <main className="dashboard-container">
-        <TitleComp
-          heading={"Add New Course"}
-          des={"Fill in the details to create a new course."}
-        />
-        <AddCourseProcessContainer />
+      <main className="p-10">
+        <div className="mb-4">
+          <CommonButton
+            label={"Back"}
+            onClick={() => {
+              dispatch(editCourseData({}));
+              dispatch(updateStep(1));
+              router.back();
+            }}
+            variant="primary"
+          />
+        </div>
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Add New Course"}
+            des={"Fill in the details to create a new course."}
+          />
+          <AddCourseProcessContainer />
+        </div>
       </main>
     </StudentDashboardLayout>
   );

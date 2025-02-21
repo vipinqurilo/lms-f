@@ -6,10 +6,8 @@ import InstructorButton from "@/components/instructor/InstructorButton";
 import RaiseTicketModal from "@/components/instructor/RaiseTicketModal";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { StatsCard } from "@/components/student-dashboard/StatsCard";
-import { StatusBadge } from "@/components/student-dashboard/StatusBadge";
 import {
   getAdminTickets,
-  getFilteredInstructorTickets,
   getInstructorTickets,
 } from "@/store/slices/supportSlice";
 import React, { useEffect, useState } from "react";
@@ -17,7 +15,6 @@ import { FaCheckCircle, FaRegHourglass, FaTicketAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import SupportTable from "./SupportTable";
 import MessageModal from "./MessageModal";
-import { getSubjects } from "@/store/slices/categorySlice";
 
 const SupportDashboard = () => {
   const dispatch = useDispatch();
@@ -27,7 +24,7 @@ const SupportDashboard = () => {
   const getInstrcutorFilterLoading = useSelector(
     (state) => state.support.isLoading.getFilteredInstructorTickets
   );
-  const { tickets } = useSelector((state) => state.support);
+  const { tickets, totalPages } = useSelector((state) => state.support);
   const { authUser } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("All");
   const [isAdd, setisAdd] = useState(false);
@@ -65,105 +62,106 @@ const SupportDashboard = () => {
   ];
 
   useEffect(() => {
-    if (authUser?.role === "admin") {
-      if (filter.toLowerCase() !== "all") {
-        dispatch(getFilteredInstructorTickets(filter?.toLowerCase()));
-      } else {
-        dispatch(getAdminTickets());
-      }
-    } else {
-      if (filter.toLowerCase() !== "all") {
-        dispatch(getFilteredInstructorTickets(filter?.toLowerCase()));
-      } else {
-        dispatch(getInstructorTickets());
-      }
+    const status =
+      filter?.toLowerCase() === "all" ? undefined : filter?.toLowerCase();
+    const requestData = {
+      page: currentPage,
+      limit: 5,
+    };
+    if (status) {
+      requestData.status = status.toLowerCase();
     }
-  }, [filter]);
+    if (authUser?.role === "admin") {
+      dispatch(getAdminTickets(requestData));
+    } else {
+      dispatch(getInstructorTickets(requestData));
+    }
+  }, [dispatch, currentPage, filter]);
 
   return (
-    <div className="w-full flex items-start justify-between gap-10">
-      <div
-        className={`w-full flex flex-col items-start gap-8 dashboard-container p-5 ${
-          messages ? "!w-[70%]" : "w-full"
-        }`}
-      >
-        <div className="flex items-center justify-between w-full">
-          <div className="flex flex-col items-start gap-1">
-            <h2 className="text-2xl text-background font-bold">
-              Support Tickets
-            </h2>
-            <p className="max-w-4xl text-light">
-              Raise and manage tickets for quick resolution of your issues.
-            </p>
-          </div>
-          {authUser !== null && authUser?.role === "admin" ? null : (
-            <CommonButton label={"Raise New Ticket"} onClick={toggleIsAdd} />
-          )}
-        </div>
-
+    <div className="">
+      <div className="w-full flex items-start justify-between gap-10">
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full ${
-            messages && "!grid-cols-2"
+          className={`w-full flex flex-col items-start gap-8 dashboard-container !rounded-none pb-20 p-10 ${
+            messages ? "!w-[70%]" : "w-full"
           }`}
         >
-          {stats.map((stat, index) => (
-            <StatsCard
-              key={index}
-              title={stat.title}
-              value={stat.value}
-              Icon={stat.icon}
-              color={stat?.color}
-              isIcon={true}
-            />
-          ))}
-        </div>
-
-        {/* Tickets Section */}
-        <div className="bg-white rounded-lg w-full">
-          <div className=" my-4 ">
-            {/* Filter Tabs */}
-            <div className="flex gap-3">
-              {filters.map((filterItem, index) => (
-                <>
-                  <InstructorButton
-                    condition={
-                      filter === filterItem.value
-                        ? "bg-secondary text-white"
-                        : "bg-none"
-                    }
-                    handleClick={() => setFilter(filterItem.value)}
-                    tab={`${filterItem.label}`}
-                    key={index}
-                  />
-                </>
-              ))}
+          <div className="flex items-center justify-between w-full">
+            <div className="flex flex-col items-start gap-1">
+              <h2 className="text-2xl text-background font-bold">
+                Support Tickets
+              </h2>
+              <p className="max-w-4xl text-light">
+                Raise and manage tickets for quick resolution of your issues.
+              </p>
             </div>
+            {authUser !== null && authUser?.role === "admin" ? null : (
+              <CommonButton label={"Raise New Ticket"} onClick={toggleIsAdd} />
+            )}
           </div>
 
-          {getInstrcutorLoading || getInstrcutorFilterLoading ? (
-            <div className="w-full flex items-center justify-center py-16">
-              <Loader color={"text-secondary"} isBig={true} />
-            </div>
-          ) : (
-            <SupportTable
-              tickets={tickets}
-              setMessages={setMessages}
-              messages={messages}
-            />
-          )}
+          <div
+            className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full ${
+              messages && "!grid-cols-2"
+            }`}
+          >
+            {stats.map((stat, index) => (
+              <StatsCard
+                key={index}
+                title={stat.title}
+                value={stat.value}
+                Icon={stat.icon}
+                color={stat?.color}
+                isIcon={true}
+              />
+            ))}
+          </div>
 
-          {/* Pagination */}
-          <div className="px-6 py-4 ">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={2}
-              onPageChange={setCurrentPage}
-            />
+          <div className="bg-white rounded-lg w-full">
+            <div className=" my-4 sticky top-0 bg-white z-10">
+              <div className="flex gap-3">
+                {filters.map((filterItem, index) => (
+                  <>
+                    <InstructorButton
+                      condition={
+                        filter === filterItem.value
+                          ? "bg-secondary text-white"
+                          : "bg-none"
+                      }
+                      handleClick={() => setFilter(filterItem.value)}
+                      tab={`${filterItem.label}`}
+                      key={index}
+                    />
+                  </>
+                ))}
+              </div>
+            </div>
+
+            {getInstrcutorLoading || getInstrcutorFilterLoading ? (
+              <div className="w-full flex items-center justify-center py-16">
+                <Loader color={"text-secondary"} isBig={true} />
+              </div>
+            ) : (
+              <SupportTable
+                tickets={tickets}
+                setMessages={setMessages}
+                messages={messages}
+              />
+            )}
           </div>
         </div>
+        {messages && (
+          <MessageModal ticket={messages} setMessages={setMessages} />
+        )}
+      </div>
+      <div className="">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
       {isAdd && <RaiseTicketModal toggleIsAdd={toggleIsAdd} />}
-      {messages && <MessageModal ticket={messages} setMessages={setMessages} />}
     </div>
   );
 };

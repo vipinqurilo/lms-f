@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -13,6 +13,7 @@ import FooterLinks from "./footer/FooterLinks";
 import Image from "next/image";
 
 const Footer = () => {
+  const [date, setdate] = useState(new Date());
   const contactDetails = [
     {
       Icon: FaLocationArrow,
@@ -66,10 +67,6 @@ const Footer = () => {
       title: "For Students",
       linksArray: [
         {
-          name: "Admissions",
-          link: "/admissions",
-        },
-        {
           name: "Courses",
           link: "/courses",
         },
@@ -78,12 +75,12 @@ const Footer = () => {
           link: "/student-portal",
         },
         {
-          name: "Financial Aid",
-          link: "/financial-aid",
+          name: "Tutors",
+          link: "/tutors",
         },
         {
-          name: "Campus Life",
-          link: "/campus-life",
+          name: "Financial Aid",
+          link: "/financial-aid",
         },
         {
           name: "FAQs",
@@ -96,27 +93,19 @@ const Footer = () => {
       linksArray: [
         {
           name: "Instructor Portal",
-          link: "/instructor-portal",
+          link: "/instructor-dashboard",
         },
         {
           name: "Course Management",
-          link: "/course-management",
+          link: "/instructor-dashboard/my-courses",
         },
         {
-          name: "Teaching Resources",
-          link: "/teaching-resources",
-        },
-        {
-          name: "Professional Development",
-          link: "/professional-development",
-        },
-        {
-          name: "Community Forums",
-          link: "/community-forums",
+          name: "Bookings Management",
+          link: "/instructor-dashboard/bookings",
         },
         {
           name: "Support",
-          link: "/contact-us",
+          link: "/contactus",
         },
       ],
     },
@@ -129,7 +118,7 @@ const Footer = () => {
         },
         {
           name: "Contact Us",
-          link: "/contact-us",
+          link: "/contactus",
         },
         {
           name: "Privacy Policy",
@@ -139,10 +128,10 @@ const Footer = () => {
           name: "Terms of Service",
           link: "/terms-of-service",
         },
-        {
-          name: "Blog",
-          link: "/blog",
-        },
+        // {
+        //   name: "Blog",
+        //   link: "/blog",
+        // },
       ],
     },
   ];
@@ -193,7 +182,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="w-full bg-gray-50 py-3 text-center">
-        © 2025 STEAM Institute. All rights reserved
+        © {date.getFullYear()} STEAM Institute. All rights reserved
       </p>
     </footer>
   );

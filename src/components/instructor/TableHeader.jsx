@@ -2,7 +2,7 @@ import React from "react";
 
 const TableHeader = ({ headingsData }) => {
   return (
-    <thead className="bg-gray-100 w-full border-b border-black/10">
+    <thead className="bg-gray-200 w-full">
       <tr>
         {headingsData?.map((heading, index) => (
           <th
