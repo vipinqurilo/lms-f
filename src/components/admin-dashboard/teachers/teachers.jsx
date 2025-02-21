@@ -42,7 +42,7 @@ const TeachersTable = () => {
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg ">
           <TableHeader headingsData={columns} />
-          <tbody className="text-center">
+          <tbody className=" ">
             {teachers?.map((item, index) => {
               const {
                 user,
@@ -62,8 +62,8 @@ const TeachersTable = () => {
                     onMouseEnter={() => setHoveredRow(item._id)}
                     onMouseLeave={() => setHoveredRow(null)}
                   >
-                    <td className="text-sm py-4">{index + 1}</td>
-                    <td className="p-4 flex items-center gap-5 justify-center ">
+                    <td className="text-sm py-4 px-8">{index + 1}</td>
+                    <td className="py-4  flex items-center gap-5   ">
                       <img
                         src={user?.profilePhoto || "/placeholder.svg"}
                         alt="profile"
@@ -77,8 +77,8 @@ const TeachersTable = () => {
                     </td>
                     <td className="p-4 text-sm">{user?.email}</td>
                     <td className="p-4 text-sm">{user?.phone?.number}</td>
-                    <td className="p-4 text-sm">{item.requestedOn || "N/A"}</td>
-                    <td className="p-4">
+                    <td className="py-4 px-16 text-sm">{item.requestedOn || "N/A"}</td>
+                    <td className="py-4 px-10">
                       <button className="text-gray-600">
                         <GrView className="text-base" />
                       </button>
@@ -103,7 +103,7 @@ const TeachersTable = () => {
                             <h3 className="text-sm font-semibold">
                               Session Details :
                             </h3>
-                            <div className="flex space-x-8">
+                            <div className="flex space-x-8  ">
                               {/* Pending Courses */}
                               <div className="border rounded-lg px-4 h-9 flex w-32 items-center justify-center space-x-1 shadow-sm">
                                 <p className="text-sm text-gray-600">Pending</p>
@@ -138,8 +138,10 @@ const TeachersTable = () => {
                         </td>
                       </tr>
 
-                      {/* Horizontal Line */}
-   
+
+
+
+                   
 
 
 
@@ -149,7 +151,7 @@ const TeachersTable = () => {
                           colSpan={6}
                           className="p-4 bg-white shadow-lg animate-fadeDown"
                         >
-                          <div className="flex items-center gap-4 p-4 ml-2 rounded-lg">
+                          <div className="flex items-center gap-4 p-4 ml-7 rounded-lg">
                             <div>
                               <h3 className="text-sm font-semibold w-36">
                                 Courses Details :

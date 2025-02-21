@@ -96,15 +96,15 @@ const Categories = () => {
           <tbody>
             {subjects?.map((cat, index) => (
               <tr key={cat.id} className="border-t border-gray-200">
-                <td className="py-3 px-4 text-sm text-center">{index + 1}</td>
-                <td className="py-3 px-4 text-sm text-center">{cat.name}</td>
+                <td className="py-3 px-8 text-sm  ">{index + 1}</td>
+                <td className="py-3 px-4 text-sm  ">{cat.name}</td>
                 <td
-                  className="py-3 px-4 text-blue-600 cursor-pointer text-sm text-center"
+                  className="py-3 px-16  text-blue-600 cursor-pointer text-sm   "
                   onClick={() => navigateToSubCategories(cat)}
                 >
                   {cat.courseSubCategory?.length}
                 </td>
-                <td className="py-3 px-4 text-sm text-center">
+                <td className="py-3 px-4 text-sm  ">
                   {new Date(cat?.updatedAt).toLocaleString("en-US", {
                     month: "short",
                     day: "2-digit",
@@ -114,7 +114,7 @@ const Categories = () => {
                     hour12: false,
                   })}
                 </td>
-                <td className="py-3 px-4 text-center flex items-center justify-center space-x-4">
+                <td className="py-3 px-4  space-x-4">
                   <button
                     className="text-gray-600 hover:text-yellow-500"
                     onClick={() => openEditModal(cat)}
