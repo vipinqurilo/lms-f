@@ -5,7 +5,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { BiBook, BiCheckCircle, BiTime, BiEdit } from "react-icons/bi";
+import {
+  BiBook,
+  BiCheckCircle,
+  BiTime,
+  BiEdit,
+  BiPauseCircle,
+  BiXCircle,
+} from "react-icons/bi";
 import DeleteModal from "@/components/instructor/DeleteModal";
 import { useRouter } from "next/navigation";
 import CreatedCourses from "./CreatedCourses";
@@ -30,12 +37,22 @@ const tabs = [
     icon: <BiTime size={20} />,
     tab: "Pending",
   },
+  {
+    icon: <BiXCircle size={20} />,
+    tab: "Rejected",
+  },
+  {
+    icon: <BiPauseCircle size={20} />,
+    tab: "Inactive",
+  },
 ];
 
 const InstructorMyCourses = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { courses, totalPages } = useSelector((state) => state.instructor.course);
+  const { courses, totalPages } = useSelector(
+    (state) => state.instructor.course
+  );
   const getloading = useSelector(
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );

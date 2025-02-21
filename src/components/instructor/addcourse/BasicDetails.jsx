@@ -37,8 +37,14 @@ const BasicDetails = () => {
   // const [description, setDescription] = useState([]);
 
   const submitHandler = (data) => {
-    if (selectedSubSubject === "" || selectedSubject === "") {
-      return toast.error("Select Category and SubCategory first");
+    if (
+      selectedSubSubject === "" ||
+      selectedSubject === "" ||
+      features?.length === 0 ||
+      whatYouWillLearn?.length === 0 ||
+      requirements?.length === 0
+    ) {
+      return toast.error("All Fields are Required");
     } else {
       const formData = {
         ...data,
@@ -87,7 +93,7 @@ const BasicDetails = () => {
     reset({
       title: courseAddData.basic.title || "",
       category: courseAddData.basic.category || "",
-      level: courseAddData.basic.level || "",
+      // level: courseAddData.basic.level || "",
       features: courseAddData.basic.features || [""],
       requirements: courseAddData.basic.requirements || [""],
       whatYouWillLearn: courseAddData.basic.whatYouWillLearn || [""],
@@ -164,7 +170,7 @@ const BasicDetails = () => {
         </div>
       </div>
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">
           Course Level (optional)
         </label>
@@ -180,7 +186,7 @@ const BasicDetails = () => {
             ))}
           </select>
         </div>
-      </div>
+      </div> */}
 
       {/* <SettingsInputField
         errors={errors}
@@ -199,7 +205,7 @@ const BasicDetails = () => {
         setValueArray={setFeatures}
         formValueName="features"
         setFormValue={setValue}
-        placeholder="Enter feature"
+        placeholder="Add feature"
       />
 
       {/* Requirements */}
@@ -209,7 +215,7 @@ const BasicDetails = () => {
         setValueArray={setRequirements}
         formValueName="requirements"
         setFormValue={setValue}
-        placeholder="Enter requirement"
+        placeholder="Add requirement"
       />
 
       {/* What You Will Learn */}
@@ -219,7 +225,7 @@ const BasicDetails = () => {
         setValueArray={setWhatYouWillLearn}
         formValueName="whatYouWillLearn"
         setFormValue={setValue}
-        placeholder="Enter learning outcome"
+        placeholder="Add learning outcome"
       />
 
       {/* Description */}

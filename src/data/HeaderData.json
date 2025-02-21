@@ -49,23 +49,11 @@
     },
     {
       "title": "Find a Tutor",
-      "href": "/tutors",
-      "items": [
-        {
-          "title": "Browse Tutors",
-          "href": "/tutors",
-          "description": "Find the perfect tutor for your needs"
-        },
-        {
-          "title": "Book a Session",
-          "href": "/tutors/book",
-          "description": "Schedule one-on-one tutoring sessions"
-        }
-      ]
+      "href": "/tutors"
     },
     {
       "title": "Contact us",
-      "href": "/contact-us"
+      "href": "/contactus"
     },
     {
       "title": "Teach on Steam",

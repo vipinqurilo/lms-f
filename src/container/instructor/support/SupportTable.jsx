@@ -4,31 +4,32 @@ import dateFormat from "dateformat";
 import React from "react";
 
 const SupportTable = ({ tickets, setMessages, messages }) => {
-  console.log("tickets in support table", tickets);
+  const headingsData = ["S.No","Ticket ID", "Date", "Subject", "Category", "Status"]
 
   return (
     <div
       className="overflow-x-auto border rounded-lg"
       style={{
-        scrollbarWidth: "thin",
+        scrollbarWidth: "none", // Firefox
+        msOverflowStyle: "none", // Internet Explorer/Edge
       }}
     >
       <table className="w-full">
         <TableHeader
-          headingsData={["Ticket ID", "Date", "Subject", "Category", "Status"]}
+          headingsData={headingsData}
         />
         <tbody className="divide-y divide-gray-200">
           {tickets?.length === 0 ? (
             <tr>
               <td
-                colSpan={5}
+                colSpan={headingsData?.length}
                 className="px-6 py-8 text-sm text-gray-600 text-center"
               >
                 No Tickets Found
               </td>
             </tr>
           ) : (
-            tickets?.map((ticket) => (
+            tickets?.map((ticket, index) => (
               <tr
                 key={ticket?._id}
                 className={`hover:bg-gray-50 cursor-pointer text-nowrap bg-white ${
@@ -36,6 +37,9 @@ const SupportTable = ({ tickets, setMessages, messages }) => {
                 }`}
                 onClick={() => setMessages(ticket)}
               >
+                <td className="px-6 py-4 text-sm text-gray-600">
+                  {index+1}
+                </td>
                 <td className="px-6 py-4 text-sm text-gray-600">
                   {ticket?._id}
                 </td>
