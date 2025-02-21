@@ -5,7 +5,7 @@ import { api } from "@/store/api/api";
 // Fetch all teachers without search parameters
 export const getAllTeachers = CreateApiAsyncThunk(
   "GET/teachers/getAllTeachers",
-  () => api.get("/tutors")
+  () => api.get("/teachers")
 );
 
 // Update teacher status

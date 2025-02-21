@@ -94,21 +94,21 @@ export default function DashboardPage() {
           {!isLoading["fetchEnrolledCoursesAsync"] &&
             enrolledCourses?.map((enrollment) => (
               <CourseCard
-                key={enrollment._id}
+                key={enrollment?._id}
                 course={{
-                  id: enrollment.course._id,
-                  title: enrollment.course.courseTitle,
+                  id: enrollment?.course?._id,
+                  title: enrollment?.course?.courseTitle,
                   instructor: {
-                    name: enrollment.course.courseInstructor || "N/A",
-                    image: enrollment.course.courseImage,
+                    name: enrollment?.course?.courseInstructor || "N/A",
+                    image: enrollment?.course?.courseImage,
                   },
-                  thumbnail: enrollment.course.courseImage,
-                  lessons: enrollment.course.courseContent.reduce(
+                  thumbnail: enrollment?.course?.courseImage,
+                  lessons: enrollment?.course?.courseContent.reduce(
                     (acc, module) => acc + module.lessons.length,
                     0
                   ),
                   duration: "N/A", // Replace if duration data is available
-                  price: enrollment.course.coursePrice,
+                  price: enrollment?.course?.coursePrice,
                   
                 }}
                 onWishlist={false}

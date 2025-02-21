@@ -1,13 +1,13 @@
 import React from "react";
 import { TbLoader } from "react-icons/tb";
-import { ImSpinner10 } from "react-icons/im";
+import { CgSpinner } from "react-icons/cg";
 
 const Loader = ({ text, color, isBig=false }) => {
   return (
     <div className="flex justify-center items-center">
       {isBig ? (
 
-        <ImSpinner10 size={40} className={`animate-spin ${color}`} />
+        <CgSpinner size={50} className={`animate-spin ${color}`} />
 
       ) : (
         <div className="flex items-center gap-2">

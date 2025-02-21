@@ -70,7 +70,7 @@ const BookingList = ({ bookings, isLoading }) => {
       <div className="space-y-6 ">
         {isLoading ? (
           <div className="text-center py-12">
-            <Loader color={"text-primary"} isBig={true} />
+            <Loader color={"text-secondary"} isBig={true} />
           </div>
         ) : bookings.length > 0 ? (
           <>

@@ -3,8 +3,13 @@ import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncT
 import { api } from "@/store/api/api";
 
 export const fetchOrderHistoryAsync = CreateApiAsyncThunk(
-  "orders/fetchOrderHistoryAsync",
-  () => api.get(`/order`)
+  "GET/orders/fetchOrderHistoryAsync",
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/order?${query}`);
+  }
 );
 
 const initialState = {

@@ -5,6 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { CourseCard } from "../../../components/student-dashboard/CourseCard";
 import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
+import TitleComp from "@/components/instructor/TitleComp";
+import UserFilter from "@/components/admin-dashboard/user/UserFilter";
+import { Pagination } from "@/components/student-dashboard/Pagination";
 
 const TabButton = ({ active, onClick, children }) => (
   <button
@@ -21,70 +24,82 @@ const TabButton = ({ active, onClick, children }) => (
 );
 
 export default function EnrolledCoursesPage() {
-  const [activeTab, setActiveTab] = useState("enrolled");
   const dispatch = useDispatch();
   const { data: enrolledCourses, isLoading } = useSelector(
     (state) => state.student.enrolledCourses
   );
-  console.log(enrolledCourses, "enrolledCourses");
+  const [filters, setfilters] = useState({});
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     dispatch(fetchEnrolledCoursesAsync());
   }, [dispatch]);
 
-  const tabs = [
-    {
-      id: "enrolled",
-      label: "Enrolled Courses",
-      count: enrolledCourses?.length?.toString(),
-    },
-    { id: "active", label: "Active Courses", count: "03" },
-    { id: "completed", label: "Completed Courses", count: "03" },
-  ];
+  // const tabs = [
+  //   {
+  //     id: "enrolled",
+  //     label: "Enrolled Courses",
+  //     count: enrolledCourses?.length?.toString(),
+  //   },
+  //   { id: "active", label: "Active Courses", count: "03" },
+  //   { id: "completed", label: "Completed Courses", count: "03" },
+  // ];
 
   return (
     <StudentDashboardLayout className="space-y-8 ">
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-4 mb-6">
-        {tabs.map((tab) => (
-          <TabButton
-            key={tab.id}
-            active={activeTab === tab.id}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label} ({tab.count})
-          </TabButton>
-        ))}
+      <div className="p-10">
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Enrolled Courses"}
+            des={
+              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
+            }
+          />
+
+          <div className="w-full !sticky !-top-0 bg-white px-5 !z-[5]">
+            <UserFilter
+              isRole={false}
+              isStatus={false}
+              statusData={[]}
+              onApplyFilters={setfilters}
+            />
+          </div>
+
+          {/* Orders Table */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 ">
+            {!isLoading["fetchEnrolledCoursesAsync"] &&
+              enrolledCourses?.map((enrollment) => (
+                <CourseCard
+                  key={enrollment?._id}
+                  course={{
+                    id: enrollment?.courseId?._id,
+                    title: enrollment?.courseId?.courseTitle,
+                    instructor: {
+                      name: enrollment?.courseId?.courseInstructor || "N/A",
+                      image: enrollment?.courseId?.courseImage,
+                    },
+                    thumbnail: enrollment?.courseId?.courseImage,
+                    lessons: enrollment?.courseId?.courseContent.reduce(
+                      (acc, module) => acc + module.lessons.length,
+                      0
+                    ),
+                    duration: "N/A", // Replace if duration data is available
+                    price: enrollment?.courseId?.coursePrice,
+                    originalPrice: "N/A", // Replace if original price is available
+                  }}
+                  onWishlist={false}
+                  onWishlistClick={() => {}}
+                />
+              ))}
+          </div>
+        </div>
       </div>
 
-      {/* Course Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-        {!isLoading["fetchEnrolledCoursesAsync"] &&
-          activeTab === "enrolled" &&
-          enrolledCourses?.map((enrollment) => (
-            <CourseCard
-              key={enrollment._id}
-              course={{
-                id: enrollment.course._id,
-                title: enrollment.course.courseTitle,
-                instructor: {
-                  name: enrollment.course.courseInstructor || "N/A",
-                  image: enrollment.course.courseImage,
-                },
-                thumbnail: enrollment.course.courseImage,
-                lessons: enrollment.course.courseContent.reduce(
-                  (acc, module) => acc + module.lessons.length,
-                  0
-                ),
-                duration: "N/A", // Replace if duration data is available
-                price: enrollment.course.coursePrice,
-                originalPrice: "N/A", // Replace if original price is available
-              }}
-              onWishlist={false}
-              onWishlistClick={() => {}}
-            />
-          ))}
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={2}
+        onPageChange={setCurrentPage}
+      />
     </StudentDashboardLayout>
   );
 }

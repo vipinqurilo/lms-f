@@ -4,19 +4,25 @@ import { api } from "@/store/api/api";
 
 const initialState = {
   clientSecret: null,
+  courseSessionURL: null,
   isLoading: {},
   error: {},
 };
 
 export const createPaymentIntent = CreateApiAsyncThunk(
   "payment/createPaymentIntent",
-  (data) => api.post('/stripe/create-payment-intent', data)
+  (data) => api.post("/stripe/create-payment-intent", data)
+);
+
+export const createPaymentCourse = CreateApiAsyncThunk(
+  "payment/createPaymentCourse",
+  (data) => api.post("/payment/stripe/course", data)
 );
 
 const paymentSlice = createSlice({
   name: "payment",
   initialState,
-  reducers: {   
+  reducers: {
     clearPaymentError: (state, action) => {
       const errorKey = action.payload;
       if (errorKey) {
@@ -38,6 +44,17 @@ const paymentSlice = createSlice({
       .addCase(createPaymentIntent.rejected, (state, action) => {
         state.isLoading["createPaymentIntent"] = false;
         state.error["createPaymentIntent"] = action.payload;
+      })
+      .addCase(createPaymentCourse.pending, (state) => {
+        state.isLoading["createPaymentCourse"] = true;
+      })
+      .addCase(createPaymentCourse.fulfilled, (state, action) => {
+        state.isLoading["createPaymentCourse"] = false;
+        state.courseSessionURL = action.payload?.sessionId;
+      })
+      .addCase(createPaymentCourse.rejected, (state, action) => {
+        state.isLoading["createPaymentCourse"] = false;
+        state.error["createPaymentCourse"] = action.payload;
       });
   },
 });

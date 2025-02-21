@@ -40,7 +40,7 @@ const TeacherRequestPageViewByAdmin = () => {
   return (
     <main className="font-nunito custom-margin-top">
       {loading ? (
-        <Loader color={"text-primary"} isBig={true} />
+        <Loader color={"text-secondary"} isBig={true} />
       ) : (
         <TeacherRegistrationContainer />
       )}

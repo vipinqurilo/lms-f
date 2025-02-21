@@ -40,7 +40,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
             className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors
                 ${
                   page === currentPage
-                    ? "bg-primary text-white"
+                    ? "bg-secondary text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
           >
