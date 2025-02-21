@@ -36,7 +36,7 @@ export default function FeaturedCourses({ cardData = [] }) {
                 descWidth={"md:!w-2/3"}
               />
               <div className="md:block hidden">
-                <button>All Courses</button>
+                <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">All Courses</button>
               </div>
             </div>
 
