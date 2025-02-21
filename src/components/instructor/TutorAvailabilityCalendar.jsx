@@ -15,8 +15,6 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
     { day: "fri", slots: Array(48).fill(false) },
     { day: "sat", slots: Array(48).fill(false) },
   ]);
-  console.log(calendar, "calendar");
-
   const updateLoading = useSelector(
     (state) => state.instructor.availability.isLoading.updateAvailabilityAsync
   );
@@ -216,7 +214,8 @@ const TutorAvailabilityCalendar = ({ calendar }) => {
   };
   return (
     <div className="w-full overflow-x-auto select-none bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-      <div className="w-full flex items-center justify-end pb-4">
+      <div className="w-full flex items-center justify-between pb-4">
+        <h1 className="text-xl font-semibold">Update Availability Calender</h1>
         <CommonButton
           label={"Update Availability"}
           onClick={handleSave}

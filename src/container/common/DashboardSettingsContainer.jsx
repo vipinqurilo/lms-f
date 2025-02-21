@@ -68,63 +68,65 @@ const DashboardSettingsContainer = () => {
   }, []);
 
   return (
-    <div className="bg-white rounded-lg border">
-      <TitleComp
-        heading={"Settings"}
-        des={"You have full control to manage your own account settings"}
-      />
+    <div className="p-10">
+      <div className="bg-white rounded-lg border">
+        <TitleComp
+          heading={"Settings"}
+          des={"You have full control to manage your own account settings"}
+        />
 
-      {/* Tabs */}
-      <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        {/* Tabs */}
+        <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {/* Content */}
-      <div className="">
-        {activeTab === "edit-profile" && (
-          <div className="space-y-8">
-            <AvatarUpload
-              avatarUrl={avatarUrl}
-              onUpload={handleImageValidation}
-              onDelete={handleAvatarDelete}
-            />
-            <EditProfile />
-          </div>
-        )}
+        {/* Content */}
+        <div className="">
+          {activeTab === "edit-profile" && (
+            <div className="space-y-8">
+              <AvatarUpload
+                avatarUrl={avatarUrl}
+                onUpload={handleImageValidation}
+                onDelete={handleAvatarDelete}
+              />
+              <EditProfile />
+            </div>
+          )}
 
-        {activeTab === "change-password" && <ChangePassword />}
+          {activeTab === "change-password" && <ChangePassword />}
 
-        {activeTab === "social-profiles" && <SocialProfiles />}
+          {activeTab === "social-profiles" && <SocialProfiles />}
 
-        {activeTab === "withdrawal" && <WithdrawalTabProfile />}
+          {activeTab === "withdrawal" && <WithdrawalTabProfile />}
 
-        {activeTab === "subject-language" && (
-          <div className="p-4 px-8">
-            <SubjectAndLanguage />
-          </div>
-        )}
+          {activeTab === "subject-language" && (
+            <div className="p-4 px-8">
+              <SubjectAndLanguage />
+            </div>
+          )}
 
-        {activeTab === "experience" && (
-          <div className="p-4 px-8">
-            <Experience />
-          </div>
-        )}
+          {activeTab === "experience" && (
+            <div className="p-4 px-8">
+              <Experience />
+            </div>
+          )}
 
-        {activeTab === "price" && (
-          <div className="p-4 px-8">
-            <PriceTab />
-          </div>
-        )}
+          {activeTab === "price" && (
+            <div className="p-4 px-8">
+              <PriceTab />
+            </div>
+          )}
 
-        {activeTab === "linked-accounts" && (
-          <div className="text-gray-500">
-            Linked Accounts settings coming soon...
-          </div>
-        )}
+          {activeTab === "linked-accounts" && (
+            <div className="text-gray-500">
+              Linked Accounts settings coming soon...
+            </div>
+          )}
 
-        {activeTab === "notifications" && (
-          <div className="text-gray-500">
-            Notification settings coming soon...
-          </div>
-        )}
+          {activeTab === "notifications" && (
+            <div className="text-gray-500">
+              Notification settings coming soon...
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

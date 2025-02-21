@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { MdOutlineCategory } from "react-icons/md";
 import {
   LayoutDashboard,
   User,
@@ -22,7 +20,6 @@ import {
   SquareLibrary,
 } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 
 import {
   Megaphone,
@@ -34,10 +31,10 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkComponent } from "@/components/layout/LinkComponent";
-import { LuTickets } from "react-icons/lu";
-import { FaBook } from "react-icons/fa";
+import { LuCalendarClock, LuTickets } from "react-icons/lu";
 import { logout } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
+
 const studentSidebarLinks = [
   {
     title: "Dashboard",
@@ -105,11 +102,6 @@ const instructorSidebarLinks = [
   //   icon: FileText,
   //   href: "/instructor-dashboard/quiz-attempts",
   // },
-  // {
-  //   title: "Assignments",
-  //   icon: ClipboardCheck,
-  //   href: "/instructor-dashboard/assignments",
-  // },
   {
     title: "Earnings",
     icon: DollarSign,
@@ -119,6 +111,11 @@ const instructorSidebarLinks = [
     title: "Bookings",
     icon: CalendarCheck,
     href: "/instructor-dashboard/bookings",
+  },
+  {
+    title: "Availability Calendar",
+    icon: LuCalendarClock,
+    href: "/instructor-dashboard/calender",
   },
 ];
 
@@ -215,7 +212,7 @@ export function Sidebar() {
   return (
     <div className={`h-full !transition-custom`}>
       <nav
-        className={`flex-1 !overflow-y-auto overflow-x-hidden h-full px-4 bg-background py-5 text-white ${
+        className={`flex-1 !overflow-y-auto text-nowrap overflow-x-hidden h-full px-4 bg-background py-5 text-white ${
           isCollapsed ? "w-[80px]" : "w-[240px]"
         } transition-custom`}
         style={{ scrollbarWidth: "none", scrollbarColor: "#e8ebe9" }}

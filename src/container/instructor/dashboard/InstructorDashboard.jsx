@@ -160,7 +160,7 @@ const InstructorDashboard = () => {
   }, []);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full p-10">
       {loading ? (
         <div className="w-full h-full flex items-center justify-center">
           <Loader color={"text-secondary"} text={"Loader..."} isBig={true} />

@@ -83,7 +83,7 @@ const MessageModal = ({ ticket, setMessages }) => {
   };
 
   return (
-    <div className="w-80 lg:w-[50%] h-[calc(100vh-120px)] sticky top-0 flex flex-col border border-black/10 rounded-lg drop-shadow bg-white">
+    <div className="w-80 lg:w-[50%] h-[calc(100vh-160px)] sticky top-5 flex flex-col border border-black/10 rounded-lg drop-shadow bg-white">
       <div className="bg-secondary text-white p-3 font-semibold rounded-t-lg flex items-center justify-between">
         <h2>Conversations</h2>
 
@@ -137,14 +137,14 @@ const MessageModal = ({ ticket, setMessages }) => {
 
       {/* Messages List */}
       <div
-        className="flex-1 overflow-y-auto p-3 space-y-4"
+        className="flex-1 overflow-y-auto p-3 space-y-4 bg-gradient-to-b from-gray-100 via-white to-gray-50"
         style={{
           scrollbarWidth: "thin",
           scrollbarColor: "#888 #f1f1f1",
         }}
       >
         {ticket?.messages?.map((msg, index) => {
-          const isSender = msg?.sender === authUser?._id;
+          const isSender = msg?.sender?._id === authUser?._id;
           return (
             <div
               key={index}

@@ -43,7 +43,7 @@ const availabilitySlice = createSlice({
       })
       .addCase(fetchAvailabilityAsync.fulfilled, (state, action) => {
         state.isLoading["fetchAvailabilityAsync"] = false;
-        state.availability = action.payload?.data || [];
+        state.availability = action.payload?.data?.availability || [];
       })
       .addCase(fetchAvailabilityAsync.rejected, (state, action) => {
         state.isLoading["fetchAvailabilityAsync"] = false;

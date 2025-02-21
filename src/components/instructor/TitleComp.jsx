@@ -14,11 +14,12 @@ const TitleComp = ({ heading, des, iscourse = false }) => {
 
       {iscourse && (
         <InstructorButton
-        icon={<RiPresentationLine size={20} />}
+          icon={<RiPresentationLine size={20} />}
           tab={"Add Course"}
           handleClick={() =>
-            router.push("/instructor-dashboard/my-courses/add-course")}
-          variant="secondary"
+            router.push("/instructor-dashboard/my-courses/add-course")
+          }
+          condition={"bg-secondary text-white"}
         />
       )}
     </div>
