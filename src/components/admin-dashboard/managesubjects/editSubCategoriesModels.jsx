@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
+  console.log(category, "subcategory");
   const dispatch = useDispatch();
   const { subjects: categories, isLoading } = useSelector((state) => state.admin.managesubjects);
 
