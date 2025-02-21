@@ -5,6 +5,7 @@ import TeacherFilter from "../teachers/teacherFilter";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { GrView } from "react-icons/gr";
 import { getStudent } from "@/store/slices/admin-dashboard/studentSlice";
+import TitleComp from "@/components/instructor/TitleComp";
 
 const StudentsTable = () => {
   const dispatch = useDispatch();
@@ -26,11 +27,12 @@ const StudentsTable = () => {
 
   return (
     <div className="rounded-lg p-1 w-11/12 mx-auto">
+      <TitleComp heading={'Students'} des={`Detail of Students`}  />
       <TeacherFilter />
       <div className="overflow-x-auto mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
-          <tbody className="text-center">
+          <tbody className="text-left">
             {students?.map((item, index) => (
               <tr
                 key={item._id}
@@ -39,22 +41,22 @@ const StudentsTable = () => {
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <td className="p-4 text-sm">{(page - 1) * 2 + index + 1}</td> {/* Serial Number */}
-                <td className="p-4 flex items-center gap-5 justify-center">
+                <td className="p-4 flex items-center gap-5 justify-left">
                   <img
                     src={item?.user?.profilePhoto || "/placeholder.svg"}
                     alt="profile"
                     className="w-10 h-10 rounded-full"
                   />
                   <div className="text-sm">
-                    <p>{item?.user?.firstName}</p>
+                    <p>{item?.user?.firstName || "student"}</p>
                   </div>
                 </td>
                 <td className="p-4 text-sm">{item?.user?.email}</td>
-                <td className="p-4 text-sm">{item?.user?.phone?.number}</td>
-                <td className="p-4 text-sm">{item.requestedOn}</td>
+                <td className="p-4 text-sm pl-8">{item?.user?.phone?.number || "N/A"}</td>
+                <td className="p-4 text-sm pl-8">{item.requestedOn || "N/A"}</td>
                 <td className="p-4 relative">
                   <button className="text-gray-600">
-                    <GrView className="text-base" />
+                    <GrView className="text-base ml-4" />
                   </button>
                 </td>
                 {hoveredRow === item._id && (
