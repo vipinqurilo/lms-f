@@ -9,7 +9,7 @@ export const getAllUsers = CreateApiAsyncThunk(
     api.get("/users", {
       params: { search, userStatus, role, page, limit },
     })
-);
+); 
 
 // Update user status
 export const updateUserStatus = CreateApiAsyncThunk(

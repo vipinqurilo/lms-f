@@ -5,6 +5,7 @@ import  manageSubjectsSlice  from "./manageSubjectsCategorySlice";
 import  manageSubjectsSubCategorySlice  from "./manageSubjectsSubCategorySlice";
 import  usersSlice  from "./userSlice";
 import teachersSlice  from "./teachersSlice";
+import studentSlice  from "./studentSlice";
 
 const adminRootReducer = combineReducers({
   course: adminCourseReducer,
@@ -12,7 +13,8 @@ const adminRootReducer = combineReducers({
   managesubjects: manageSubjectsSlice,
   managesubjectssubctegory:manageSubjectsSubCategorySlice,
   user:usersSlice,
-  teachers: teachersSlice
+  teachers: teachersSlice,
+  student:studentSlice
 });
 
 export default adminRootReducer;
