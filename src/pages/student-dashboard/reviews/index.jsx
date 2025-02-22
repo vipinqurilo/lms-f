@@ -9,11 +9,16 @@ import {
   editReviewAsync,
 } from "@/store/slices/student-dashboard/reviewSlice";
 import EditReviewModal from "@/components/common/EditReviewModal";
+import { Pagination } from "@/components/student-dashboard/Pagination";
+import TitleComp from "@/components/instructor/TitleComp";
+import { Loader } from "lucide-react";
 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setcurrentPage] = useState(1);
+
   const dispatch = useDispatch();
   const { data, isLoading, error } = useSelector(
     (state) => state.student.review
@@ -65,43 +70,57 @@ export default function ReviewsPage() {
   }, [data]);
 
   return (
-    <StudentDashboardLayout className="space-y-8">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="text-2xl font-semibold p-4 px-8 ">Reviews</div>
-        <hr />
+    <StudentDashboardLayout>
+      <div className="p-10">
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Reviews"}
+            des={
+              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
+            }
+          />
 
-        {isLoading["fetchReviewAsync"] ? (
-          <div className="text-center py-12">Loading...</div>
-        ) : error["fetchReviewAsync"] ? (
-          <div className="text-center py-12 text-red-500">
-            Error loading reviews
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="divide-y">
-              {reviews.map((review) => (
-                <ReviewCard
-                  key={review.id}
-                  review={review}
-                  onEdit={() => handleEdit(review)}
-                  onDelete={handleDelete}
-                />
-              ))}
+          {isLoading["fetchReviewAsync"] ? (
+            <div className="w-full flex items-center justify-center py-12">
+              <Loader color={"text-secondary"} isBig={true} />
             </div>
-
-            {reviews.length === 0 && (
-              <div className="text-center py-12">
-                <h3 className="text-xl font-semibold text-gray-600">
-                  No reviews yet
-                </h3>
-                <p className="text-gray-500 mt-2">
-                  Your reviews will appear here
-                </p>
+          ) : error["fetchReviewAsync"] ? (
+            <div className="text-center py-12 text-red-500">
+              Error loading reviews
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="divide-y">
+                {reviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    review={review}
+                    onEdit={() => handleEdit(review)}
+                    onDelete={handleDelete}
+                  />
+                ))}
               </div>
-            )}
-          </div>
-        )}
+
+              {reviews.length === 0 && (
+                <div className="text-center py-12">
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    No reviews yet
+                  </h3>
+                  <p className="text-gray-500 mt-2">
+                    Your reviews will appear here
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={(val) => setcurrentPage(val)}
+        totalPages={5}
+      />
+
       {isModalOpen && (
         <EditReviewModal
           review={selectedReview}

@@ -59,62 +59,63 @@ export default function DashboardPage() {
   }, [dispatch, startDate]);
 
   return (
-    <StudentDashboardLayout className="space-y-8">
-      <div className="flex gap-6">
-        <div className="w-2/3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-            {stats.map((stat, index) => (
-              <StatsCard
-                key={index}
-                title={stat.title}
-                value={stat.value}
-                iconSrc={stat.iconSrc}
-                bgColor={stat.bgColor}
-              />
-            ))}
+    <StudentDashboardLayout>
+      <div className="w-full p-10 space-y-8">
+        <div className="flex gap-6">
+          <div className="w-2/3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              {stats.map((stat, index) => (
+                <StatsCard
+                  key={index}
+                  title={stat.title}
+                  value={stat.value}
+                  iconSrc={stat.iconSrc}
+                  bgColor={stat.bgColor}
+                />
+              ))}
+            </div>
+            <ContinueWatching />
           </div>
-          <ContinueWatching />
+          <div className="w-2/3">
+            <ScheduleView
+              bookingLoading={bookingLoading}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              bookings={bookings}
+            />
+          </div>
         </div>
-        <div className="w-2/3">
-          <ScheduleView
-            bookingLoading={bookingLoading}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            bookings={bookings}
-          />
-        </div>
-      </div>
 
-      {/* Recently Enrolled Courses */}
-      <div className="py-8">
-        <h2 className="text-2xl font-bold text-dark mb-6">
-          Recently Enrolled Courses
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {!isLoading["fetchEnrolledCoursesAsync"] &&
-            enrolledCourses?.map((enrollment) => (
-              <CourseCard
-                key={enrollment?._id}
-                course={{
-                  id: enrollment?.course?._id,
-                  title: enrollment?.course?.courseTitle,
-                  instructor: {
-                    name: enrollment?.course?.courseInstructor || "N/A",
-                    image: enrollment?.course?.courseImage,
-                  },
-                  thumbnail: enrollment?.course?.courseImage,
-                  lessons: enrollment?.course?.courseContent.reduce(
-                    (acc, module) => acc + module.lessons.length,
-                    0
-                  ),
-                  duration: "N/A", // Replace if duration data is available
-                  price: enrollment?.course?.coursePrice,
-                  
-                }}
-                onWishlist={false}
-                onWishlistClick={() => {}}
-              />
-            ))}
+        {/* Recently Enrolled Courses */}
+        <div className="py-8">
+          <h2 className="text-2xl font-bold text-dark mb-6">
+            Recently Enrolled Courses
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {!isLoading["fetchEnrolledCoursesAsync"] &&
+              enrolledCourses?.map((enrollment) => (
+                <CourseCard
+                  key={enrollment?._id}
+                  course={{
+                    id: enrollment?.course?._id,
+                    title: enrollment?.course?.courseTitle,
+                    instructor: {
+                      name: enrollment?.course?.courseInstructor || "N/A",
+                      image: enrollment?.course?.courseImage,
+                    },
+                    thumbnail: enrollment?.course?.courseImage,
+                    lessons: enrollment?.course?.courseContent.reduce(
+                      (acc, module) => acc + module.lessons.length,
+                      0
+                    ),
+                    duration: "N/A", // Replace if duration data is available
+                    price: enrollment?.course?.coursePrice,
+                  }}
+                  onWishlist={false}
+                  onWishlistClick={() => {}}
+                />
+              ))}
+          </div>
         </div>
       </div>
     </StudentDashboardLayout>

@@ -71,27 +71,33 @@ export default function OrderHistoryPage() {
                     ]}
                   />
                   <tbody className="divide-y divide-gray-200">
-                    {orders?.map((order, index) => (
-                      <tr key={order._id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {index + 1}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          #{order?.orderId}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {order?.paymentId}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {order?.courseId?.courseTitle}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {dateFormat(order?.createdAt, "mmm dd yyyy")}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 capitalize">
-                          {order?.amount} {order?.currency}
-                        </td>
-                        {/* <td className="px-6 py-4">
+                    {orders?.length === 0 ? (
+                      <tr>
+                        <td className=" py-4 text-center" colSpan={6}>No Order History</td>
+                      </tr>
+                    ) : (
+                      <>
+                        {orders?.map((order, index) => (
+                          <tr key={order._id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {index + 1}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              #{order?.orderId}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {order?.paymentId}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {order?.courseId?.courseTitle}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600">
+                              {dateFormat(order?.createdAt, "mmm dd yyyy")}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600 capitalize">
+                              {order?.amount} {order?.currency}
+                            </td>
+                            {/* <td className="px-6 py-4">
                         <span
                           className={`inline-flex px-3 py-1 text-sm font-medium rounded-full
                           ${
@@ -103,13 +109,15 @@ export default function OrderHistoryPage() {
                           {order.status || "Pending"}
                         </span>
                       </td> */}
-                        {/* <td className="px-6 py-4">
+                            {/* <td className="px-6 py-4">
                         <button className="text-gray-400 hover:text-primary">
                           <Download className="w-5 h-5" />
                         </button>
                       </td> */}
-                      </tr>
-                    ))}
+                          </tr>
+                        ))}
+                      </>
+                    )}
                   </tbody>
                 </table>
               </div>
