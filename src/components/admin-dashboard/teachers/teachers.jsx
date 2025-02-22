@@ -113,7 +113,7 @@ const TeachersTable = () => {
                     }`}
                   >
                     {/* Session Details */}
-                    <div className="bg-white relative border-gray-200 p-4">
+                    <div className="bg-white relative border-gray-200 p-7">
                       <div className="absolute top-0 left-[50%] translate-x-[-50%] w-[93%] h-[1px] bg-gray-200"></div>
                       <div className="flex items-center space-x-9 ml-11">
                         <h3 className="text-sm font-semibold">
