@@ -18,6 +18,9 @@ import {
   LogOut,
   Settings,
   SquareLibrary,
+  ListTree,
+  UsersRound,
+  UserPlus,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -120,25 +123,21 @@ const adminSidebarLinks = [
     icon: GraduationCap,
     href: "/admin-dashboard/approvals/courses",
   },
-
   {
     title: "Teachers",
     icon: Users,
     href: "/admin-dashboard/teachers",
   },
-
   {
     title: "Teachers Request",
-    icon: Users,
+    icon: UserPlus,
     href: "/admin-dashboard/approvals/teachers",
   },
-
   {
     title: "Student",
-    icon: Users,
+    icon: User,
     href: "/admin-dashboard/manage-students",
   },
-
   {
     title: "Withdrawals",
     icon: Wallet,
@@ -154,13 +153,11 @@ const adminSidebarLinks = [
     icon: BookCheck,
     href: "/admin-dashboard/manage-booking",
   },
-
   {
     title: "Manage Users",
-    icon: Users,
+    icon: UsersRound,
     href: "/admin-dashboard/user",
   },
-
   {
     title: "Category",
     icon: SquareLibrary,
@@ -168,7 +165,7 @@ const adminSidebarLinks = [
   },
   {
     title: "Sub-Category",
-    icon: Users,
+    icon: ListTree,
     href: "/admin-dashboard/managesubjects/subCategories",
   },
 ];
