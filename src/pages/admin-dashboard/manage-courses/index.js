@@ -21,7 +21,7 @@ export default function index() {
 
   return (
     <StudentDashboardLayout>
-      <main className="dashboard-container">
+      <main className="dashboard-container md:px-8 mx-4">
         <TitleComp
           heading={"Manage Courses"}
           des={"Manage your courses and its updates"}

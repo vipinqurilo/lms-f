@@ -15,11 +15,18 @@ import CreatedCourses from "../instructor/dashboard/CreatedCourses";
 const tabs = [
   {
     icon: <BiTime size={20} />,
-    tab: "pending",
+    tab: "Pending",
+    value: "pending",
   },
   {
     icon: <BiCheckCircle size={20} />,
-    tab: "publish",
+    tab: "Approved",
+    value: "published",
+  },
+  {
+    icon: <BiCheckCircle size={20} />,
+    tab: "Rejected",
+    value: "unpublished",
   },
 ];
 
@@ -51,7 +58,7 @@ const ManageCourses = () => {
         dispatch(getAllAdminCourses({ status: selectedStatus }));
       }
     );
-  };
+  };``
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
@@ -78,9 +85,12 @@ const ManageCourses = () => {
               value={course.status}
               onChange={(e) => handleStatusUpdate(course?._id, e.target.value)}
             >
-              <option value="pending">Pending</option>
-              <option className="text-green-600" value="publish">
+              <option className="" value="pending">Pending</option>
+              <option className="text-green-600" value="published">
                 Published
+              </option>
+              <option className="text-red-600" value="unpublished">
+                Reject
               </option>
             </select>
           </div>
@@ -106,9 +116,9 @@ const ManageCourses = () => {
             tab={tab?.tab}
             icon={tab?.icon}
             condition={`${
-              selectedStatus === tab?.tab && "!bg-secondary text-white"
+              selectedStatus === tab?.value && "!bg-secondary text-white"
             }`}
-            handleClick={() => handleStatusChange(tab?.tab)}
+            handleClick={() => handleStatusChange(tab?.value)}
           />
         ))}
       </div>
