@@ -83,7 +83,7 @@ const MessageModal = ({ ticket, setMessages }) => {
   };
 
   return (
-    <div className="w-80 lg:w-[50%] h-[calc(100vh-160px)] sticky top-5 flex flex-col border border-black/10 rounded-lg drop-shadow bg-white">
+    <div className="w-80 lg:w-[30%] h-[calc(100vh-160px)] sticky top-5 flex flex-col border border-black/10 rounded-lg drop-shadow bg-white">
       <div className="bg-secondary text-white p-3 font-semibold rounded-t-lg flex items-center justify-between">
         <h2>Conversations</h2>
 
@@ -153,7 +153,7 @@ const MessageModal = ({ ticket, setMessages }) => {
               }`}
             >
               <div
-                className={`p-2 max-w-[70%] rounded-lg text-sm ${
+                className={`p-2 max-w-[70%] text-wrap break-words rounded-lg text-sm ${
                   isSender
                     ? "bg-secondary/10 text-background rounded-br-none"
                     : "bg-gray-200 text-black rounded-bl-none"

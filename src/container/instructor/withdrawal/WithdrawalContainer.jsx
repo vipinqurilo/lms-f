@@ -11,6 +11,7 @@ import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
 import RejectModal from "@/components/admin-dashboard/withdrawrequests/rejectModal";
+import TitleComp from "@/components/instructor/TitleComp";
 
 const WithdrawalContainer = () => {
   const dispatch = useDispatch();
@@ -50,62 +51,85 @@ const WithdrawalContainer = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col items-start gap-6 py-5">
-      <h3
-        className={`${
-          user === "admin" ? "hidden" : "w-full "
-        } text-lg px-5 font-semibold`}
-      >
-        Withdrawal History
-      </h3>
-      <div
-        className={`${
-          user === "admin" ? "hidden" : "w-full flex"
-        } px-5  items-center justify-between`}
-      >
-        <div className="w-full flex items-center gap-2">
-          <MdOutlineAccountBalanceWallet size={40} className="text-primary" />
+    <>
+      <div className="p-10">
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Withdrawals"}
+            des={
+              "Manage your withdrawal requests and track transaction status effortlessly."
+            }
+          />
+          <div className="w-full flex flex-col items-start gap-6 pt-5">
+            <h3
+              className={`${
+                user === "admin" ? "hidden" : "w-full "
+              } text-lg px-5 font-semibold`}
+            >
+              Withdrawal History
+            </h3>
+            <div
+              className={`${
+                user === "admin" ? "hidden" : "w-full flex"
+              } px-5  items-center justify-between`}
+            >
+              <div className="w-full flex items-center gap-2">
+                <MdOutlineAccountBalanceWallet
+                  size={40}
+                  className="text-primary"
+                />
 
-          <div className="">
-            <p>Current Balance</p>
-            <p className=" font-medium">
-              You have{" "}
-              <span className="font-semibold text-background">₹{balance}</span>{" "}
-              ready to withdraw now
-            </p>
+                <div className="">
+                  <p>Current Balance</p>
+                  <p className=" font-medium">
+                    You have{" "}
+                    <span className="font-semibold text-background">
+                      ₹{balance}
+                    </span>{" "}
+                    ready to withdraw now
+                  </p>
+                </div>
+              </div>
+
+              <InstructorButton
+                tab={"Withdrawal Request"}
+                icon={<PiHandWithdraw size={20} />}
+                condition={"text-nowrap"}
+                handleClick={() => setisWithdrawal(true)}
+              />
+            </div>
+
+            <div className="w-full px-5 !sticky !-top-12 bg-white">
+              <UserFilter
+                onApplyFilters={(data) => setfiltersData(data)}
+                isRole={false}
+                statusData={[
+                  ["pending", "approved", "rejected"],
+                  ["not_initiated", "processing", "success", "failure"],
+                ]}
+              />
+            </div>
+
+            {loading ? (
+              <div className="w-full flex items-center justify-center py-10">
+                <Loader color={"text-secondary"} isBig={true} />
+              </div>
+            ) : (
+              <WithdrawalsTable
+                headingsData={headingsData}
+                withdrawals={withdrawals}
+              />
+            )}
           </div>
         </div>
 
-        <InstructorButton
-          tab={"Withdrawal Request"}
-          icon={<PiHandWithdraw size={20} />}
-          condition={"text-nowrap"}
-          handleClick={() => setisWithdrawal(true)}
-        />
+        {isWithdrawal && (
+          <RequestWithdrawal
+            handleClose={() => setisWithdrawal(false)}
+            balance={balance}
+          />
+        )}
       </div>
-
-      <div className="w-full px-5 !sticky !-top-12 bg-white">
-        <UserFilter
-          onApplyFilters={(data) => setfiltersData(data)}
-          isRole={false}
-          statusData={[
-            ["pending", "approved", "rejected"],
-            ["not_initiated", "processing", "success", "failure"],
-          ]}
-        />
-      </div>
-
-      {loading ? (
-        <div className="w-full flex items-center justify-center py-10">
-          <Loader color={"text-secondary"} isBig={true} />
-        </div>
-      ) : (
-        <WithdrawalsTable
-          headingsData={headingsData}
-          withdrawals={withdrawals}
-        />
-      )}
-
       <div className="w-full ">
         <Pagination
           currentPage={1}
@@ -113,14 +137,7 @@ const WithdrawalContainer = () => {
           onPageChange={(value) => setcurrentPage(value)}
         />
       </div>
-
-      {isWithdrawal && (
-        <RequestWithdrawal
-          handleClose={() => setisWithdrawal(false)}
-          balance={balance}
-        />
-      )}
-    </div>
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ const CreatedCourses = ({
   headingsData,
   data,
   status,
+  isCols = false,
 }) => {
   const getStatusCss = (status) => {
     return status === "Draft"
@@ -39,7 +40,11 @@ const CreatedCourses = ({
                           className="rounded-lg object-cover"
                         />
                       </div>
-                      <div className=" hover:text-primary col-span-2">
+                      <div
+                        className={`hover:text-primary ${
+                          isCols ? "col-span-3" : "col-span-2"
+                        }`}
+                      >
                         {course?.title}
                         <p className="line-clamp-3 text-light/60 text-sm">
                           {course?.des}

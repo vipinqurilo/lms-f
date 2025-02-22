@@ -24,6 +24,7 @@ const Courses = () => {
     const requestData = {
       page: currentPage,
       limit: 6,
+      status: "published"
     };
     if (categoryId) {
       requestData.categoryId = categoryId;

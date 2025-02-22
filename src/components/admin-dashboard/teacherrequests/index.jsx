@@ -14,6 +14,9 @@ import {
 } from "@/store/slices/admin-dashboard/teacherSlice";
 import Link from "next/link";
 import UserFilter from "../user/UserFilter";
+import TitleComp from "@/components/instructor/TitleComp";
+import { Pagination } from "@/components/student-dashboard/Pagination";
+import Loader from "@/components/common/Loader";
 
 const columns = [
   "Sr. No.",
@@ -33,8 +36,9 @@ const TeacherRequests = () => {
   const [selectedTeacherId, setSelectedTeacherId] = useState(null);
   const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
+  const [currentPage, setcurrentPage] = useState(1);
 
-  const { teachers } = useSelector((state) => state.admin?.teacher);
+  const { teachers, isLoading } = useSelector((state) => state.admin?.teacher);
 
   useEffect(() => {
     dispatch(fetchData());
@@ -107,78 +111,105 @@ const TeacherRequests = () => {
     }
   };
 
+  if (isLoading["fetchTeachers"]) {
+    return (
+      <div className="w-full h-[80%] flex items-center justify-center">
+        <Loader isBig={true} color={"text-secondary"} />
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white rounded-lg p-6 w-full max-w-6xl mx-auto">
-             <UserFilter  />
+    <>
+      <div className="p-10">
+        <div className="dashboard-container w-full mx-auto">
+          <TitleComp
+            heading={"Teacher Requests"}
+            des={
+              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, officiis."
+            }
+          />
+          <div className="w-full sticky py-4 top-0 bg-white px-5">
+            <UserFilter />
+          </div>
 
+          <div className="overflow-x-auto mt-4 rounded-b-lg">
+            <table className="w-full border border-gray-200 rounded-lg">
+              <TableHeader headingsData={columns} />
+              <tbody>
+                {teachers?.map((teacher, index) => (
+                  <tr
+                    key={teacher.userId}
+                    className="border-t border-gray-200 text-sm text-nowrap"
+                  >
+                    <td className="py-4 px-4 text-gray-700">{index + 1}</td>
+                    <td className="py-4 px-4 text-gray-700">
+                      {teacher?.userId}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700">
+                      {teacher.personalInfo?.firstName}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700">
+                      {teacher.email}amankumar@gmail.com
+                    </td>
+                    <td className="py-4 px-4 text-gray-700">
+                      {teacher.personalInfo?.firstName}
+                    </td>
+                    <td className="py-4 px-4 text-gray-700">
+                      {new Date(teacher.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="py-4 px-4 text-center text-gray-700">
+                      {teacher?.approvalStatus}
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <div className="flex items-center justify-center gap-4">
+                        <button
+                          className="text-gray-600 hover:text-blue-500"
+                          onClick={() => handleOpenApproveModal(teacher._id)}
+                        >
+                          <FaRegCalendarCheck size={16} />
+                        </button>
+                        <button className="text-gray-600 hover:text-yellow-500">
+                          <Link href={`/instructor-request/${teacher?._id}`}>
+                            <FiEye size={18} />
+                          </Link>
+                        </button>
+                        <button
+                          className="text-gray-600 hover:text-red-500"
+                          onClick={() => handleOpenRejectModal(teacher._id)}
+                        >
+                          <RxCross2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      <div className="overflow-x-auto mt-4">
-        <table className="w-full border border-gray-200 rounded-lg">
-          <TableHeader headingsData={columns} />
-          <tbody>
-            {teachers?.map((teacher, index) => (
-              <tr
-                key={teacher.userId}
-                className="border-t border-gray-200 text-sm text-nowrap"
-              >
-                <td className="py-4 px-4 text-gray-700">{index + 1}</td>
-                <td className="py-4 px-4 text-gray-700">{teacher?.userId}</td>
-                <td className="py-4 px-4 text-gray-700">
-                  {teacher.personalInfo?.firstName}
-                </td>
-                <td className="py-4 px-4 text-gray-700">
-                  {teacher.email}amankumar@gmail.com
-                </td>
-                <td className="py-4 px-4 text-gray-700">
-                  {teacher.personalInfo?.firstName}
-                </td>
-                <td className="py-4 px-4 text-gray-700">
-                  {new Date(teacher.createdAt).toLocaleDateString()}
-                </td>
-                <td className="py-4 px-4 text-center text-gray-700">
-                  {teacher?.approvalStatus}
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="flex items-center justify-center gap-4">
-                    <button
-                      className="text-gray-600 hover:text-blue-500"
-                      onClick={() => handleOpenApproveModal(teacher._id)}
-                    >
-                      <FaRegCalendarCheck size={16} />
-                    </button>
-                    <button className="text-gray-600 hover:text-yellow-500">
-                      <Link href={`/instructor-request/${teacher?._id}`}>
-                        <FiEye size={18} />
-                      </Link>
-                    </button>
-                    <button
-                      className="text-gray-600 hover:text-red-500"
-                      onClick={() => handleOpenRejectModal(teacher._id)}
-                    >
-                      <RxCross2 size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          {/* Reject Modal */}
+          <RejectModal
+            isOpen={isRejectModalOpen}
+            onClose={() => setIsRejectModalOpen(false)}
+            onReject={handleReject}
+            rejectionReason={rejectionReason} // Pass rejectionReason to modal
+            setRejectionReason={setRejectionReason} // Function to update rejectionReason in the modal
+          />
+          <ApprovelModal
+            isOpen={isApproveModalOpen}
+            onClose={() => setIsApproveModalOpen(false)}
+            onConfirm={handleApprove}
+          />
+        </div>
       </div>
 
-      {/* Reject Modal */}
-      <RejectModal
-        isOpen={isRejectModalOpen}
-        onClose={() => setIsRejectModalOpen(false)}
-        onReject={handleReject}
-        rejectionReason={rejectionReason} // Pass rejectionReason to modal
-        setRejectionReason={setRejectionReason} // Function to update rejectionReason in the modal
+      <Pagination
+        totalPages={5}
+        currentPage={currentPage}
+        onPageChange={(value) => setcurrentPage(value)}
       />
-      <ApprovelModal
-        isOpen={isApproveModalOpen}
-        onClose={() => setIsApproveModalOpen(false)}
-        onConfirm={handleApprove}
-      />
-    </div>
+    </>
   );
 };
 
