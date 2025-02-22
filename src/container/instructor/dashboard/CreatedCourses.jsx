@@ -59,7 +59,7 @@ const CreatedCourses = ({
                   </td>
                   <td className="px-6 py-4">
                     <div
-                      className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm ${
+                      className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
                         headingsData[2] === "Status" &&
                         `${getStatusCss(course?.value2)} w-fit capitalize`
                       }`}

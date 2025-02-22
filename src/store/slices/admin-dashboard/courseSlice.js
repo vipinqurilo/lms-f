@@ -4,9 +4,13 @@ import { api } from "@/store/api/api";
 
 export const getAllAdminCourses = CreateApiAsyncThunk(
   "GET/course/getAllAdminCourses",
-  ({status}) => api.get(`/course/admin/get?status=${status}`)
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/course/admin/get?${query}`);
+  }
 );
-
 
 export const updateAdminCourseStatus = CreateApiAsyncThunk(
   "GET/course/updateAdminCourseStatus",
@@ -18,6 +22,7 @@ export const courseSlice = createSlice({
   name: "course",
   initialState: {
     courses: [],
+    totalPages: null,
     isLoading: {},
     error: {},
   },
@@ -30,6 +35,7 @@ export const courseSlice = createSlice({
       .addCase(getAllAdminCourses.fulfilled, (state, action) => {
         state.isLoading["getAllAdminCourses"] = false;
         state.courses = action.payload?.data;
+        state.totalPages = action.payload?.pagination?.totalPages;
       })
       .addCase(getAllAdminCourses.rejected, (state, action) => {
         state.isLoading["getAllAdminCourses"] = false;

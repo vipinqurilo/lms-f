@@ -11,6 +11,7 @@ import {
   getAllAdminCourses,
 } from "@/store/slices/admin-dashboard/courseSlice";
 import CreatedCourses from "../instructor/dashboard/CreatedCourses";
+import TitleComp from "@/components/instructor/TitleComp";
 
 const tabs = [
   {
@@ -33,6 +34,7 @@ const tabs = [
 const ManageCourses = () => {
   const dispatch = useDispatch();
   const rawCourses = useSelector((state) => state.admin?.course?.courses);
+  const totalPages = useSelector((state) => state.admin?.course?.totalPages);
   const courses = Array.isArray(rawCourses) ? rawCourses : [];
   const isLoading = useSelector(
     (state) => state.admin.course.isLoading.getAllAdminCourses
@@ -41,11 +43,17 @@ const ManageCourses = () => {
   const [editCourseId, setEditCourseId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 2;
 
   useEffect(() => {
-    dispatch(getAllAdminCourses({ status: selectedStatus }));
-  }, [dispatch, selectedStatus]);
+    const requestData = {
+      page: currentPage,
+      limit: 10,
+    };
+    if (selectedStatus) {
+      requestData.status = selectedStatus.toLowerCase();
+    }
+    dispatch(getAllAdminCourses(requestData));
+  }, [dispatch, currentPage, selectedStatus]);
 
   const handleEditClick = (courseId) => {
     setEditCourseId(editCourseId === courseId ? null : courseId);
@@ -58,20 +66,15 @@ const ManageCourses = () => {
         dispatch(getAllAdminCourses({ status: selectedStatus }));
       }
     );
-  };``
+  };
+  ``;
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
     setCurrentPage(1);
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedCourses = courses?.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
-
-  const filteredData = paginatedCourses.map((course) => ({
+  const filteredData = courses?.map((course) => ({
     image: course?.courseImage,
     title: course?.courseTitle,
     des: course?.courseDescription,
@@ -85,7 +88,9 @@ const ManageCourses = () => {
               value={course.status}
               onChange={(e) => handleStatusUpdate(course?._id, e.target.value)}
             >
-              <option className="" value="pending">Pending</option>
+              <option className="" value="pending">
+                Pending
+              </option>
               <option className="text-green-600" value="published">
                 Published
               </option>
@@ -108,36 +113,45 @@ const ManageCourses = () => {
   }));
 
   return (
-    <section className="dashboard-sub-container flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        {tabs.map((tab, index) => (
-          <InstructorButton
-            key={index}
-            tab={tab?.tab}
-            icon={tab?.icon}
-            condition={`${
-              selectedStatus === tab?.value && "!bg-secondary text-white"
-            }`}
-            handleClick={() => handleStatusChange(tab?.value)}
+    <>
+      <div className="p-10">
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Manage Courses"}
+            des={"Manage your courses and its updates"}
           />
-        ))}
+          <div className="px-5 pb-10">
+            <div className="flex items-center gap-4 sticky top-0 py-4 bg-white">
+              {tabs.map((tab, index) => (
+                <InstructorButton
+                  key={index}
+                  tab={tab?.tab}
+                  icon={tab?.icon}
+                  condition={`${
+                    selectedStatus === tab?.value && "!bg-secondary text-white"
+                  }`}
+                  handleClick={() => handleStatusChange(tab?.value)}
+                />
+              ))}
+            </div>
+
+            {isLoading ? (
+              <Loader color={"text-secondary"} isBig={true} />
+            ) : (
+              <CreatedCourses
+                headingsData={["Courses", "Enrolled", "Status"]}
+                data={filteredData}
+              />
+            )}
+          </div>
+        </div>
       </div>
-
-      {isLoading ? (
-        <Loader color={"text-secondary"} isBig={true} />
-      ) : (
-        <CreatedCourses
-          headingsData={["Courses", "Enrolled", "Status"]}
-          data={filteredData}
-        />
-      )}
-
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(courses.length / itemsPerPage)}
+        totalPages={totalPages}
         onPageChange={(val) => setCurrentPage(val)}
       />
-    </section>
+    </>
   );
 };
 
