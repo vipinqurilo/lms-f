@@ -26,7 +26,7 @@ const StudentsTable = () => {
   };
 
   return (
-    <div className="rounded-lg p-1 w-11/12 mx-auto">
+    <div className="rounded-lg p-1 w-11/12">
       <TitleComp heading={'Students'} des={`Detail of Students`}  />
       <TeacherFilter />
       <div className="overflow-x-auto mt-4">
