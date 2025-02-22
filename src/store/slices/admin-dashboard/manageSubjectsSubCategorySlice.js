@@ -56,15 +56,19 @@ export const manageSubjectsSubCategorySlice = createSlice({
       .addCase(getAllSubCategories.rejected, (state, action) => {
         state.isLoading["getAllSubCategories"] = false;
         state.error["getAllSubCategories"] = action.payload;
-        state.subcategories = []; 
-
+        state.subcategories = [];
       })
       .addCase(deleteSubCategoryById.fulfilled, (state, action) => {
         state.subcategories = state.subcategories.filter(
           (subcategory) => subcategory._id !== action.meta.arg
         );
       })
+      .addCase(editSubCategoryById.pending, (state, action) => {
+        state.isLoading["editSubCategoryById"] = true;
+        state.error["editSubCategoryById"] = null;
+      })
       .addCase(editSubCategoryById.fulfilled, (state, action) => {
+        state.isLoading["editSubCategoryById"] = false;
         const index = state.subcategories.findIndex(
           (subcategory) => subcategory._id === action.meta.arg.id
         );
@@ -74,6 +78,10 @@ export const manageSubjectsSubCategorySlice = createSlice({
             ...action.payload.data,
           };
         }
+      })
+      .addCase(editSubCategoryById.rejected, (state, action) => {
+        state.isLoading["editSubCategoryById"] = false;
+        state.error["editSubCategoryById"] = action.payload;
       })
       .addCase(addSubCategory.pending, (state) => {
         state.isLoading["addSubCategory"] = true;

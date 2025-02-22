@@ -13,19 +13,18 @@ export const deleteCategoryById = CreateApiAsyncThunk(
 );
 
 export const editCategoryById = CreateApiAsyncThunk(
-    "PUT/category/editCategoryById",
-    async ({ id, updatedData }) => {
-      return await api.put(`/category/${id}`, updatedData);
-    }
-  );
+  "PUT/category/editCategoryById",
+  async ({ id, updatedData }) => {
+    return await api.put(`/category/${id}`, updatedData);
+  }
+);
 
-  export const addCategory = CreateApiAsyncThunk(
-    "POST/category/addCategory",
-    async (categoryData) => {
-      return await api.post(`/category`, categoryData);
-    }
-  );
-
+export const addCategory = CreateApiAsyncThunk(
+  "POST/category/addCategory",
+  async (categoryData) => {
+    return await api.post(`/category`, categoryData);
+  }
+);
 
 export const managesubjectsSlice = createSlice({
   name: "managesubjects",
@@ -47,21 +46,53 @@ export const managesubjectsSlice = createSlice({
         state.isLoading["getAllManageSubjects"] = false;
         state.error["getAllManageSubjects"] = action.payload;
       })
+      .addCase(deleteCategoryById.pending, (state, action) => {
+        state.isLoading["deleteCategoryById"] = true;
+        state.error["deleteCategoryById"] = null;
+      })
       .addCase(deleteCategoryById.fulfilled, (state, action) => {
+        state.isLoading["deleteCategoryById"] = false;
+
         state.subjects = state.subjects.filter(
           (category) => category.id !== action.meta.arg
         );
       })
+      .addCase(deleteCategoryById.rejected, (state, action) => {
+        state.isLoading["deleteCategoryById"] = false;
+        state.error["deleteCategoryById"] = action.payload;
+      })
+      .addCase(editCategoryById.pending, (state, action) => {
+        state.isLoading["editCategoryById"] = true;
+        state.error["editCategoryById"] = null;
+      })
       .addCase(editCategoryById.fulfilled, (state, action) => {
+        state.isLoading["editCategoryById"] = false;
+
         const index = state.subjects.findIndex(
           (category) => category._id === action.meta.arg.id
         );
         if (index !== -1) {
-          state.subjects[index] = { ...state.subjects[index], ...action.payload.data };
+          state.subjects[index] = {
+            ...state.subjects[index],
+            ...action.payload.data,
+          };
         }
       })
+      .addCase(editCategoryById.rejected, (state, action) => {
+        state.isLoading["editCategoryById"] = false;
+        state.error["editCategoryById"] = action.payload;
+      })
+      .addCase(addCategory.pending, (state, action) => {
+        state.isLoading["addCategory"] = true;
+        state.error["addCategory"] = null;
+      })
       .addCase(addCategory.fulfilled, (state, action) => {
+        state.isLoading["addCategory"] = false;
         state.subjects.push(action.payload.data);
+      })
+      .addCase(addCategory.rejected, (state, action) => {
+        state.isLoading["addCategory"] = false;
+        state.error["addCategory"] = action.payload;
       });
   },
 });

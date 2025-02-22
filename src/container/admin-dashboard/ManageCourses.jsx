@@ -58,7 +58,7 @@ const ManageCourses = () => {
         dispatch(getAllAdminCourses({ status: selectedStatus }));
       }
     );
-  };``
+  };
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);

@@ -14,7 +14,14 @@ const StudentsTable = () => {
   ); // Adjust the path to your state
   const [hoveredRow, setHoveredRow] = useState(null);
   const [page, setPage] = useState(1); // Current page state
-  const columns = ["S.No.", "Name", "Email ID", "Mobile no", "Registered No", "Action"];
+  const columns = [
+    "S.No.",
+    "Name",
+    "Email ID",
+    "Mobile no",
+    "Registered No",
+    "Action",
+  ];
 
   // Fetch student data on component mount or page change
   useEffect(() => {
@@ -26,10 +33,10 @@ const StudentsTable = () => {
   };
 
   return (
-    <div className="rounded-lg p-1 w-11/12">
-      <TitleComp heading={'Students'} des={`Detail of Students`}  />
+    <div className="rounded-lg p-1 flex flex-col justify-center px-10 border border-gray-200">
+      <TitleComp heading={"Students"} des={`Detail of Students`} />
       <TeacherFilter />
-      <div className="overflow-x-auto mt-4">
+      <div className="overflow-x-auto overflow-y-hidden mt-4">
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
           <tbody className="text-left">
@@ -40,7 +47,8 @@ const StudentsTable = () => {
                 onMouseEnter={() => setHoveredRow(item._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
-                <td className="p-4 text-sm">{(page - 1) * 2 + index + 1}</td> {/* Serial Number */}
+                <td className="p-4 text-sm">{(page - 1) * 2 + index + 1}</td>{" "}
+                {/* Serial Number */}
                 <td className="p-4 flex items-center gap-5 justify-left">
                   <img
                     src={item?.user?.profilePhoto || "/placeholder.svg"}
@@ -52,8 +60,12 @@ const StudentsTable = () => {
                   </div>
                 </td>
                 <td className="p-4 text-sm">{item?.user?.email}</td>
-                <td className="p-4 text-sm pl-8">{item?.user?.phone?.number || "N/A"}</td>
-                <td className="p-4 text-sm pl-8">{item.requestedOn || "N/A"}</td>
+                <td className="p-4 text-sm pl-8">
+                  {item?.user?.phone?.number || "N/A"}
+                </td>
+                <td className="p-4 text-sm pl-8">
+                  {item.requestedOn || "N/A"}
+                </td>
                 <td className="p-4 relative">
                   <button className="text-gray-600">
                     <GrView className="text-base ml-4" />
