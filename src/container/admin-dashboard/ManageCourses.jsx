@@ -67,7 +67,6 @@ const ManageCourses = () => {
       }
     );
   };
-  ``;
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);

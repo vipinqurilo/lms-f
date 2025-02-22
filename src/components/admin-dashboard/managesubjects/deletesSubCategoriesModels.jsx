@@ -1,10 +1,10 @@
 import React from "react";
 
-const DeleteSubCategoriesModal = ({ isOpen, onClose, onConfirm }) => {
+const DeleteSubCategoriesModal = ({ isOpen, onClose, handleDelete,categoryId }) => {
   if (!isOpen) return null;
 
   const handleConfirm = () => {
-    onConfirm(); // Execute the delete action
+    handleDelete(categoryId); // Execute the delete action
     onClose(); // Close the modal after confirming
   };
 

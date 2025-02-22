@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
@@ -14,6 +11,8 @@ import {
 } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
 import DeleteSubCategoriesModal from "./deletesSubCategoriesModels";
 import { useRouter } from "next/router"; // Import useRouter from next/router
+import Loader from "@/components/common/Loader";
+import { fetchCategories } from "@/store/slices/coursesSlice";
 
 const columns = [
   "S.No",
@@ -30,6 +29,7 @@ const SubCategories = () => {
   const { subcategories, isLoading } = useSelector(
     (state) => state.admin.managesubjectssubctegory
   );
+
   const router = useRouter(); // Use Next.js router for query parameters
   const { categoryId, categoryName } = router.query; // Extract categoryId and categoryName from the URL query
 
@@ -61,16 +61,26 @@ const SubCategories = () => {
           id: selectedCategory._id,
           updatedData: updatedCategory,
         })
-      );
+      ).then(() => {
+        dispatch(getAllSubCategories());
+      });
       setIsEditModalOpen(false);
     }
   };
 
+  if (isLoading.length) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <Loader isBig={true} color={"text-secondary"} />
+      </div>
+    );
+  }
+
   return (
-    <div className="p-6 rounded-lg">
+    <div className="p-6 rounded-lg md:mt-4">
       {/* Header with dynamic category name */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-2xl text-background font-bold">
           {categoryName ? `Subcategories of ${categoryName}` : "Subcategories"}
         </h2>
         <button
@@ -86,16 +96,21 @@ const SubCategories = () => {
         <table className="w-full border border-gray-200 rounded-lg">
           <TableHeader headingsData={columns} />
           <tbody className="">
-            {isLoading?.["getAllSubCategories"] ? (
+            {isLoading?.["getAllSubCategories"] ||
+            isLoading?.["editSubCategoryById"] ? (
               <tr>
-                <td colSpan={columns.length} className="py-4">
-                  Loading...
+                <td colSpan={columns?.length}>
+                  <div className=" w-full py-10 flex justify-center items-center">
+                    <Loader isBig={true} color={"text-secondary"} />
+                  </div>
                 </td>
               </tr>
             ) : subcategories.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="py-4">
-                  No data found.
+                  <div className=" w-full py-10 flex justify-center items-center">
+                    No Data Found.
+                  </div>
                 </td>
               </tr>
             ) : (
@@ -104,9 +119,7 @@ const SubCategories = () => {
                   <td className="py-3  px-8  text-sm">{index + 1}</td>
                   <td className="py-4 px-4 align-middle">
                     <img
-                      src={
-                        cat.profilePhoto || "https://via.placeholder.com/40"
-                      }
+                      src={cat.profilePhoto || "https://via.placeholder.com/40"}
                       alt="User"
                       className="w-10 h-10 rounded-full"
                     />
@@ -160,11 +173,13 @@ const SubCategories = () => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         category={selectedCategory}
-        onSave={handleSave}      />
+        onSave={handleSave}
+      />
 
       {/* Delete Confirmation Modal */}
       <DeleteSubCategoriesModal
         isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
         setIsDeleteModalOpen={setIsDeleteModalOpen}
         handleDelete={handleDelete}
         categoryId={selectedCategory?._id}

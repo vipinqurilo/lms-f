@@ -11,6 +11,7 @@ import {
 } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 import DeleteCategoriesModal from "./deleteCategoriesModels";
 import { useRouter } from "next/router";
+import Loader from "@/components/common/Loader";
 
 const columns = ["S.No", "Name", "Sub Categories", "Updated", "Action"];
 
@@ -22,7 +23,7 @@ const Categories = () => {
     (state) => state.admin.managesubjects
   );
 
-  console.log(subjects, "pppppp");
+  // console.log(subjects, "pppppp");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Track delete modal state
@@ -48,6 +49,7 @@ const Categories = () => {
       .unwrap()
       .then(() => {
         console.log("Category deleted successfully");
+        // dispatch(getAllManageSubjects());
         setIsDeleteModalOpen(false); // Close modal after success
       })
       .catch((error) => {
@@ -56,8 +58,8 @@ const Categories = () => {
   };
 
   const navigateToSubCategories = (category) => {
-    console.log(category._id, "pppp");
-    console.log(category.name, "pppp");
+    // console.log(category._id, "pppp");
+    // console.log(category.name, "pppp");
     router.push(
       `/admin-dashboard/managesubjects/subCategories?categoryId=${category._id}&categoryName=${category.name}`
     );
@@ -75,6 +77,14 @@ const Categories = () => {
         console.error("Error updating category:", error);
       });
   };
+
+  if (isLoading["deleteCategoryById"] || isLoading["editCategoryById"]) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <Loader isBig={true} color={"text-secondary"} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 rounded-lg">
