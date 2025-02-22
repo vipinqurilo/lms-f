@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 import { addSubCategory } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
+import Loader from "@/components/common/Loader";
 
 const AddSubCategories = ({ isOpen, onClose, setIsModalOpen }) => {
   const dispatch = useDispatch();
@@ -54,6 +55,8 @@ const AddSubCategories = ({ isOpen, onClose, setIsModalOpen }) => {
         console.error("Error adding subcategory:", error);
       });
   };
+
+ 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

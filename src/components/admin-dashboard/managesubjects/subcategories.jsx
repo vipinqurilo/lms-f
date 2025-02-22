@@ -61,12 +61,20 @@ const SubCategories = () => {
           id: selectedCategory._id,
           updatedData: updatedCategory,
         })
-      ).then(()=>{
-        dispatch(getAllSubCategories())
-      })
+      ).then(() => {
+        dispatch(getAllSubCategories());
+      });
       setIsEditModalOpen(false);
     }
   };
+
+  if (isLoading.length) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <Loader isBig={true} color={"text-secondary"} />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 rounded-lg md:mt-4">

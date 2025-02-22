@@ -54,8 +54,8 @@ export const managesubjectsSlice = createSlice({
         state.isLoading["deleteCategoryById"] = false;
 
         state.subjects = state.subjects.filter(
-          (category) => category.id !== action.meta.arg
-        );
+          (category) => category._id !== action.payload?.data?._id
+        )
       })
       .addCase(deleteCategoryById.rejected, (state, action) => {
         state.isLoading["deleteCategoryById"] = false;

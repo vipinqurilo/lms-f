@@ -23,7 +23,7 @@ const Categories = () => {
     (state) => state.admin.managesubjects
   );
 
-  console.log(subjects, "pppppp");
+  // console.log(subjects, "pppppp");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Track delete modal state
@@ -49,7 +49,7 @@ const Categories = () => {
       .unwrap()
       .then(() => {
         console.log("Category deleted successfully");
-        dispatch(getAllManageSubjects());
+        // dispatch(getAllManageSubjects());
         setIsDeleteModalOpen(false); // Close modal after success
       })
       .catch((error) => {
@@ -58,8 +58,8 @@ const Categories = () => {
   };
 
   const navigateToSubCategories = (category) => {
-    console.log(category._id, "pppp");
-    console.log(category.name, "pppp");
+    // console.log(category._id, "pppp");
+    // console.log(category.name, "pppp");
     router.push(
       `/admin-dashboard/managesubjects/subCategories?categoryId=${category._id}&categoryName=${category.name}`
     );
@@ -78,7 +78,7 @@ const Categories = () => {
       });
   };
 
-  if (isLoading["deleteCategoryById"]) {
+  if (isLoading["deleteCategoryById"] || isLoading["editCategoryById"]) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
         <Loader isBig={true} color={"text-secondary"} />
