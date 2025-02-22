@@ -23,7 +23,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
       } z-[10] px-10 bg-white py-2 flex items-center justify-between`}
     >
       <p className="text-sm text-gray-500">
-        Page {currentPage} of {totalPages}
+        Page {currentPage} of {totalPages === null ? 0 : totalPages}
       </p>
       <div className="flex gap-2">
         <button

@@ -5,12 +5,20 @@ import { useDispatch, useSelector } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { CourseCard } from "../../../components/student-dashboard/CourseCard";
 
-import { fetchWishlistAsync, removeFromWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
-
+import {
+  fetchWishlistAsync,
+  removeFromWishlistAsync,
+} from "@/store/slices/student-dashboard/wishlistSlice";
+import TitleComp from "@/components/instructor/TitleComp";
+import { Pagination } from "@/components/student-dashboard/Pagination";
+import Loader from "@/components/common/Loader";
 
 export default function WishlistPage() {
   const dispatch = useDispatch();
-  const { wishlist, isLoading } = useSelector((state) => state.student.wishlist);
+  const { wishlist, isLoading } = useSelector(
+    (state) => state.student.wishlist
+  );
+  const [currentPage, setcurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchWishlistAsync());
@@ -21,55 +29,66 @@ export default function WishlistPage() {
   };
 
   return (
-    <StudentDashboardLayout className="space-y-8 ">
-      <div className="bg-white rounded-lg border ">
-        <div className="text-2xl font-semibold p-4 px-8 ">Wishlist</div>
-        <hr />
+    <StudentDashboardLayout>
+      <div className="p-10">
+        <div className="dashboard-container">
+          <TitleComp
+            heading={"Wishlist"}
+            des={
+              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
+            }
+          />
 
-        {/* Loading State */}
-        {isLoading["fetchWishlistAsync"] ? (
-          <div className="text-center py-12 m-4 mx-8 text-gray-600">
-            Loading your wishlist...
-          </div>
-        ) : (
-          <>
-            {/* Course Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-4 mx-8">
-              {wishlist?.map((item) => (
-                <CourseCard
-                  key={item._id}
-                  course={{
-                    id: item.course._id,
-                    title: item.course.courseTitle,
-                    instructor: {
-                      name: item.course?.courseInstructor?.name,
-                      image: item.course.courseImage,
-                    },
-                    thumbnail: item.course.courseImage,
-                    lessons: item.course.courseContent.length,
-                    duration: "70hr 30min",
-                    rating: 4.0, 
-                    price: item.course.coursePrice,
-                  }}
-                  onWishlist={true}
-                  onWishlistClick={() => handleRemoveFromWishlist(item._id)}
-                />
-              ))}
+          {/* Loading State */}
+          {isLoading["fetchWishlistAsync"] ? (
+            <div className="w-full flex items-center justify-center py-12">
+              <Loader color={"text-secondary"} isBig={true} />
             </div>
-            {/* Empty State */}
-            {wishlist?.length === 0 && (
-              <div className="text-center py-12 m-4 mx-8">
-                <h3 className="text-xl font-semibold text-gray-600">
-                  Your wishlist is empty
-                </h3>
-                <p className="text-gray-500 mt-2">
-                  Browse courses and add some to your wishlist!
-                </p>
+          ) : (
+            <>
+              {/* Course Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-4 mx-8">
+                {wishlist?.map((item) => (
+                  <CourseCard
+                    key={item._id}
+                    course={{
+                      id: item.course._id,
+                      title: item.course.courseTitle,
+                      instructor: {
+                        name: item.course?.courseInstructor?.name,
+                        image: item.course.courseImage,
+                      },
+                      thumbnail: item.course.courseImage,
+                      lessons: item.course.courseContent.length,
+                      duration: "70hr 30min",
+                      rating: 4.0,
+                      price: item.course.coursePrice,
+                    }}
+                    onWishlist={true}
+                    onWishlistClick={() => handleRemoveFromWishlist(item._id)}
+                  />
+                ))}
               </div>
-            )}
-          </>
-        )}
+              {/* Empty State */}
+              {wishlist?.length === 0 && (
+                <div className="text-center py-12 m-4 mx-8">
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    Your wishlist is empty
+                  </h3>
+                  <p className="text-gray-500 mt-2">
+                    Browse courses and add some to your wishlist!
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={(val) => setcurrentPage(val)}
+        totalPages={5}
+      />
     </StudentDashboardLayout>
   );
 }

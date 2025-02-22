@@ -8,6 +8,7 @@ import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enro
 import TitleComp from "@/components/instructor/TitleComp";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import { Pagination } from "@/components/student-dashboard/Pagination";
+import Loader from "@/components/common/Loader";
 
 const TabButton = ({ active, onClick, children }) => (
   <button
@@ -29,7 +30,7 @@ export default function EnrolledCoursesPage() {
     (state) => state.student.enrolledCourses
   );
   const [filters, setfilters] = useState({});
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchEnrolledCoursesAsync());
@@ -66,8 +67,15 @@ export default function EnrolledCoursesPage() {
           </div>
 
           {/* Orders Table */}
+          {enrolledCourses?.length === 0 && (
+            <p className="text-center py-12 text-gray-500">No Courses Entrolled</p>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 ">
-            {!isLoading["fetchEnrolledCoursesAsync"] &&
+            {isLoading["fetchEnrolledCoursesAsync"] ? (
+              <div className="w-full col-span-3 py-10 flex items-center justify-center">
+                <Loader color={"text-secondary"} isBig={true} />
+              </div>
+            ) : (
               enrolledCourses?.map((enrollment) => (
                 <CourseCard
                   key={enrollment?._id}
@@ -90,7 +98,8 @@ export default function EnrolledCoursesPage() {
                   onWishlist={false}
                   onWishlistClick={() => {}}
                 />
-              ))}
+              ))
+            )}
           </div>
         </div>
       </div>

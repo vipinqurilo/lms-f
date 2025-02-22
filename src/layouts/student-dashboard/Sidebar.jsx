@@ -43,11 +43,6 @@ const studentSidebarLinks = [
     color: "text-primary",
   },
   {
-    title: "My Profile",
-    icon: User,
-    href: "/student-dashboard/profile",
-  },
-  {
     title: "Enrolled Courses",
     icon: GraduationCap,
     href: "/student-dashboard/enrolled-courses",
@@ -96,12 +91,6 @@ const instructorSidebarLinks = [
     icon: Wallet,
     href: "/instructor-dashboard/withdrawals",
   },
-
-  // {
-  //   title: "Quiz Attempts",
-  //   icon: FileText,
-  //   href: "/instructor-dashboard/quiz-attempts",
-  // },
   {
     title: "Earnings",
     icon: DollarSign,
