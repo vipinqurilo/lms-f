@@ -68,7 +68,7 @@ const AddRemoveInput = ({
         value={newItem}
         onChange={(e) => setNewItem(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary transition outline-none"
+        className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-2 focus:ring-secondary transition outline-none"
         placeholder={placeholder}
       />
     </div>

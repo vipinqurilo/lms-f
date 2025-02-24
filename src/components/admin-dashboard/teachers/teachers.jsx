@@ -7,19 +7,27 @@ import { useDispatch, useSelector } from "react-redux";
 import TeacherFilter from "./teacherFilter";
 import Loader from "@/components/common/Loader";
 import TitleComp from "@/components/instructor/TitleComp";
+import { Pagination } from "@/components/student-dashboard/Pagination";
 
 const TeachersTable = () => {
   const [hoveredRow, setHoveredRow] = useState(null);
   const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
+  // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
-  const { teachers, isLoading, error } = useSelector(
+  const { teachers, isLoading, error , totalPages,} = useSelector(
     (state) => state.admin.teachers
   );
 
-  useEffect(() => {
-    dispatch(getAllTeachers());
-  }, [dispatch]);
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  useEffect(() => {
+    dispatch(getAllTeachers({ page, limit: 2 })); // Set the limit as needed
+  }, [dispatch, page]);
+  
   const columns = [
     "S. No.",
     "Name",
@@ -205,6 +213,11 @@ const TeachersTable = () => {
           </div>
         </div>
       </div>
+        <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
     </div>
   );
 };

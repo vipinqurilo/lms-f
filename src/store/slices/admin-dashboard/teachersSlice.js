@@ -3,10 +3,21 @@ import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncT
 import { api } from "@/store/api/api";
 
 // Fetch all teachers without search parameters
+// Fetch all teachers, show all data when no parameters are sent
 export const getAllTeachers = CreateApiAsyncThunk(
   "GET/teachers/getAllTeachers",
-  () => api.get("/teachers")
+  ({ search, page, limit } = {}) => {
+    const params = {};
+
+    if (search) params.search = search;
+    if (page) params.page = page;
+    if (limit) params.limit = limit;
+
+    return api.get("/teachers", { params });
+  }
 );
+
+
 
 // Update teacher status
 export const updateTeacherStatus = CreateApiAsyncThunk(
@@ -34,7 +45,10 @@ export const teachersSlice = createSlice({
       .addCase(getAllTeachers.fulfilled, (state, action) => {
         state.isLoading["getAllTeachers"] = false;
         state.teachers = action.payload.data;
+        state.currentPage = action.payload.currentPage;
+        state.totalPages = action.payload.totalPages;
       })
+      
       .addCase(getAllTeachers.rejected, (state, action) => {
         state.isLoading["getAllTeachers"] = false;
         state.error["getAllTeachers"] = action.payload;

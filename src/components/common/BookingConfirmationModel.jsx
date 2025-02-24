@@ -117,7 +117,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
         </div>
 
         {/* Confirm Button */}
-        <button className="w-full py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+        <button className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
           Confirm
         </button>
       </div>
@@ -154,7 +154,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
               </div>
             </div>
 
-            <button disabled={link===''} onClick={()=>handleConfirmation()} className="w-full py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+            <button disabled={link===''} onClick={()=>handleConfirmation()} className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
               Confirm
             </button>
           </div>
