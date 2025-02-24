@@ -78,14 +78,14 @@ export default function ContinueWatching() {
         <h2 className="text-xl font-semibold text-gray-900">Continue Watching</h2>
         <div className="flex gap-2">
           <button
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-primary text-gray-400 hover:text-white "
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-secondary text-gray-400 hover:text-white "
 
             onClick={() => swiperRef.current?.slidePrev()}
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-primary text-gray-400 hover:text-white "
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-secondary text-gray-400 hover:text-white "
             onClick={() => swiperRef.current?.slideNext()}
           >
             <ChevronRight className="w-4 h-4" />
@@ -145,7 +145,7 @@ function CourseCard({ course }) {
         </div>
         {/* Progress overlay at the bottom of the image */}
         <div className="absolute bottom-0 left-0  right-0 h-1 bg-gray-200 z-10">
-          <div className="h-full bg-primary transition-all duration-300" style={{ width: `${course.progress}%` }} />
+          <div className="h-full bg-secondary transition-all duration-300" style={{ width: `${course.progress}%` }} />
         </div>
         {/* Progress percentage */}
         <div className="absolute bottom-2 right-2 px-2 py-1 text-xs font-medium bg-black/60 text-white rounded-md z-10">

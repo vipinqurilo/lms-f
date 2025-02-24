@@ -178,7 +178,7 @@ export function EditProfile({ isInstructorRequest = null }) {
           </label>
           <input
             id="firstName"
-            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
             value={localProfile.firstName}
             onChange={(e) =>
               setLocalProfile({ ...localProfile, firstName: e.target.value })
@@ -195,7 +195,7 @@ export function EditProfile({ isInstructorRequest = null }) {
           </label>
           <input
             id="lastName"
-            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
             value={localProfile.lastName}
             onChange={(e) =>
               setLocalProfile({ ...localProfile, lastName: e.target.value })
@@ -216,7 +216,7 @@ export function EditProfile({ isInstructorRequest = null }) {
             </label>
             <input
               id="userName"
-              className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
               value={localProfile.userName}
               onChange={(e) =>
                 setLocalProfile({ ...localProfile, userName: e.target.value })
@@ -233,7 +233,7 @@ export function EditProfile({ isInstructorRequest = null }) {
             </label>
             <select
               id="gender"
-              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
               value={localProfile.gender}
               onChange={(e) =>
                 setLocalProfile({ ...localProfile, gender: e.target.value })
@@ -301,7 +301,7 @@ export function EditProfile({ isInstructorRequest = null }) {
             </label>
             <select
               id="gender"
-              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
               value={localProfile.gender}
               onChange={(e) =>
                 setLocalProfile({ ...localProfile, gender: e.target.value })
@@ -324,7 +324,7 @@ export function EditProfile({ isInstructorRequest = null }) {
               </label>
               <input
                 id="country"
-                className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+                className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
                 value={localProfile.country}
                 onChange={(e) =>
                   setLocalProfile({ ...localProfile, country: e.target.value })
@@ -344,7 +344,7 @@ export function EditProfile({ isInstructorRequest = null }) {
           </label>
           <input
             id="designation"
-            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary      focus:ring focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
             value={idProof}
             onChange={(e) => setIdProof(e.target.value)}
             disabled={isInstructorRequest && authUser?.role === "admin"}
@@ -363,7 +363,7 @@ export function EditProfile({ isInstructorRequest = null }) {
           </label>
           <textarea
             id="bio"
-            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none resize-none"
             value={localProfile.bio}
             onChange={(e) =>
               setLocalProfile({ ...localProfile, bio: e.target.value })
@@ -386,7 +386,7 @@ export function EditProfile({ isInstructorRequest = null }) {
         <>
           <button
             type="submit"
-            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
           >
             Update Profile
           </button>

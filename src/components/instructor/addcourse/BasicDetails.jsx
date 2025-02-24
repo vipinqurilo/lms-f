@@ -135,7 +135,7 @@ const BasicDetails = () => {
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none text-black"
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none text-black"
           >
             <option value="">Select Category</option>
             {category?.map((cat, index) => (
@@ -155,7 +155,7 @@ const BasicDetails = () => {
           <select
             value={selectedSubSubject}
             onChange={(e) => setSelectedSubSubject(e.target.value)}
-            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none text-black"
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none text-black"
           >
             <option value="">Select Sub Category</option>
 
@@ -177,7 +177,7 @@ const BasicDetails = () => {
         <div className="">
           <select
             {...register("level")}
-            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none text-black"
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none text-black"
           >
             {courseLevels?.map((sub, index) => (
               <option key={index} value={sub?.value}>
@@ -235,7 +235,7 @@ const BasicDetails = () => {
         </label>
         <textarea
           {...register("description", { required: "Description is reuired" })}
-          className="mt-1 block h-20 resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+          className="mt-1 block h-20 resize-none px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
           placeholder="Enter Course Description"
         />
         {/* {description.map((item, index) => (
@@ -248,7 +248,7 @@ const BasicDetails = () => {
                 setDescription(updatedDescription);
                 setValue("description", updatedDescription); // Update the form value
               }}
-              className="mt-1 h-16 resize-none block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+              className="mt-1 h-16 resize-none block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
               placeholder="Enter Description"
             />
             <CommonButton

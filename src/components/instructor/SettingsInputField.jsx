@@ -62,7 +62,7 @@ const SettingsInputField = ({
         ) : (
           <input
             id={label}
-            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            className="mt-1 block px-4 py-2  w-full rounded-md border-gray-300 shadow-sm focus:border-primary    focus:ring-[1px] focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
             {...register(name, { required: `${name} is required` })}
             placeholder={placeholder}
           />

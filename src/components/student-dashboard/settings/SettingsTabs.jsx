@@ -70,8 +70,8 @@ export function SettingsTabs({ activeTab, onTabChange }) {
             onClick={() => onTabChange(tab.id)}
             className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? "text-primary border-b border-primary"
-                : "text-gray-500 hover:text-primary"
+                ? "text-secondary border-b border-secondary"
+                : "text-gray-500 hover:text-secondary"
             }`}
           >
             <tab.Icon className="h-5 w-5" />
