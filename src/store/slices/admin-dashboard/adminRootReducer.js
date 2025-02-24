@@ -1,20 +1,22 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import adminCourseReducer from "./courseSlice";
 import teacherRequestSlice from "./teacherSlice";
-import  manageSubjectsSlice  from "./manageSubjectsCategorySlice";
-import  manageSubjectsSubCategorySlice  from "./manageSubjectsSubCategorySlice";
-import  usersSlice  from "./userSlice";
-import teachersSlice  from "./teachersSlice";
-import studentSlice  from "./studentSlice";
+import manageSubjectsSlice from "./manageSubjectsCategorySlice";
+import manageSubjectsSubCategorySlice from "./manageSubjectsSubCategorySlice";
+import usersSlice from "./userSlice";
+import teachersSlice from "./teachersSlice";
+import studentSlice from "./studentSlice";
+import orderSlice from "./orderSlice";
 
 const adminRootReducer = combineReducers({
   course: adminCourseReducer,
   teacher: teacherRequestSlice,
   managesubjects: manageSubjectsSlice,
-  managesubjectssubctegory:manageSubjectsSubCategorySlice,
-  user:usersSlice,
+  managesubjectssubctegory: manageSubjectsSubCategorySlice,
+  user: usersSlice,
   teachers: teachersSlice,
-  student:studentSlice
+  student: studentSlice,
+  order: orderSlice,
 });
 
 export default adminRootReducer;
