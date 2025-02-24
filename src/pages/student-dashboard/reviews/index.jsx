@@ -18,11 +18,11 @@ export default function ReviewsPage() {
   const [selectedReview, setSelectedReview] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setcurrentPage] = useState(1);
-
   const dispatch = useDispatch();
   const { data, isLoading, error } = useSelector(
     (state) => state.student.review
   );
+  console.log(data, "reviews data");
 
   const handleEdit = (review) => {
     setSelectedReview(review);
@@ -58,8 +58,9 @@ export default function ReviewsPage() {
       const formattedReviews = data.map((item) => ({
         id: item._id,
         courseId: item.course._id,
-        author: "Student", // You might want to get actual student name from the student object
-        avatar: "/assets/student-dashboard/course/course-03.jpg", // Default avatar or from student data
+        
+        author: item?.user?.name,
+        avatar: item?.course?.courseImage,
         date: new Date(item.course.createdAt).toLocaleDateString(),
         rating: item.rating,
         content: item.message,

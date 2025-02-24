@@ -4,7 +4,7 @@ import { api } from "@/store/api/api";
 
 // Thunk to fetch enrolled courses
 export const fetchEnrolledCoursesAsync = CreateApiAsyncThunk(
-  "enrolledCourses/fetchEnrolledCoursesAsync",
+  "GET/enrolledCourses/fetchEnrolledCoursesAsync",
   async () => {
     const response = await api.get(`/order`);
     return response.data; // Assuming the course data is in the "data" property

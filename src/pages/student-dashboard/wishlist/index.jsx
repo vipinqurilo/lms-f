@@ -84,11 +84,7 @@ export default function WishlistPage() {
           )}
         </div>
       </div>
-      <Pagination
-        currentPage={currentPage}
-        onPageChange={(val) => setcurrentPage(val)}
-        totalPages={5}
-      />
+      
     </StudentDashboardLayout>
   );
 }

@@ -11,6 +11,7 @@ const BookingsFilter = ({
   endDate,
   handleEndDateChange,
 }) => {
+  
   return (
     <div className="sticky top-[60px] bg-gray-50    pb-4 z-20">
       <div className="flex items-center gap-4  pt-4">

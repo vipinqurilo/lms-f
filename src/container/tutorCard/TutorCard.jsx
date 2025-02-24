@@ -2,10 +2,8 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import TutorDetails from "./TutorDetails";
 import AvlbaleCalendar from "./AvailabilityCalendar";
-import { BookingModal } from "../booking/BookingModal";
-import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setIsAvailableModelOpen,
   setIsContactModelOpen,
@@ -17,7 +15,6 @@ import { setTutorId, setUserID } from "@/store/slices/tutorsSlice";
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-
   return (
     <div className="">
       <div
@@ -31,9 +28,12 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
               <Image
                 width={140}
                 height={140}
-                src={tutor.user.profilePhoto || "/assets/tutor/default.jpg"}
+                src={tutor.user.profilePhoto || "/assets/tutor/default.webp"}
                 alt="Tutor"
                 className="rounded-xl object-cover w-[80px] lg:w-[140px] h-[80px] lg:h-[140px]"
+                onError={(e) => {
+                  e.target.src = "/assets/tutor/default.webp";
+                }}
               />
               <div className="px-2 w-full block lg:hidden">
                 <div className="flex justify-between items-center">
@@ -75,7 +75,12 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
               </div>
             </div>
             <div className="text-[12px] font-bold text-gray-700 my-2">
-              $2.50 - $20.00
+              {!tutor?.subjectsTaught?.length 
+                ? 'Price not set'
+                : tutor?.subjectsTaught?.length === 1 
+                  ? `ZAR ${tutor?.subjectsTaught[0]?.pricePerHour}`
+                  : `ZAR ${Math.min(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))} - ZAR ${Math.max(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))}`
+              }
             </div>
             <div className="flex lg:flex-col gap-4">
               <button

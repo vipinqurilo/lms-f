@@ -3,7 +3,7 @@ import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncT
 import { api } from "@/store/api/api";
 
 export const fetchReviewAsync = CreateApiAsyncThunk(
-  "review/fetchReviewAsync",
+  "GET/review/fetchReviewAsync",
   () => api.get(`/review`)
 );
 export const deleteReviewAsync = CreateApiAsyncThunk(

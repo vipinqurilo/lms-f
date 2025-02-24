@@ -40,13 +40,21 @@ export const GetLoggedInTutorRequestData = CreateApiAsyncThunk(
 
 // Async thunk for fetching tutor profile
 export const fetchTutorProfileAsync = CreateApiAsyncThunk(
-  "tutors/fetchTutorProfileAsync",
+  "GET/tutors/fetchTutorProfileAsync",
   (tutorId) => api.get(`/profile/teacher/${tutorId}`) // Assuming you have an endpoint like this
 );
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
-  "tutors/fetchAllTutorProfileAsync",
-  ({ search, timeRanges }) =>
-    api.get(`/tutors?search=${search}&timeRanges=${timeRanges}`) // Assuming you have an endpoint like this
+  "GET/tutors/fetchAllTutorProfileAsync",
+  ({ search, timeRanges, subjects }) => {
+    let url = `/tutors?search=${search || ''}`;
+    if (timeRanges) {
+      url += `&timeRanges=${timeRanges}`;
+    }
+    if (subjects) {
+      url += `&subjects=${subjects}`;
+    }
+    return api.get(url);
+  }
 );
 
 const tutorsSlice = createSlice({

@@ -12,7 +12,7 @@ import CommonButton from "../common/CommonButton";
 export default function PaymentStatus({ status }) {
   const { perchasedCourse, error } = useSelector((state) => state.courses);
   const loading = useSelector((state) => state.courses?.isLoading?.createOrder);
-
+  
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 font-nunito">
       <div className="w-full custom-margin-top max-w-md bg-white shadow-lg rounded-lg p-6 text-center flex flex-col items-center gap-4">

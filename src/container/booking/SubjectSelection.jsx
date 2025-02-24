@@ -3,7 +3,6 @@
 import { Check } from "lucide-react";
 
 export function SubjectSelection({ selected, onSelect, sub: subjects }) {
-  console.log(selected, "selected");
   if (!subjects?.length) {
     return (
       <div className="p-8 flex justify-center items-center">
