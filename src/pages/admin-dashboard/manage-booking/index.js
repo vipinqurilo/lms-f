@@ -25,6 +25,10 @@ export default function index() {
   const [endDateError, setEndDateError] = useState(false);
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const [currentPage, setCurrentPage] = useState(1);
+  const [teacher, setTeacher] = useState("all");
+
+  console.log(teacher, "= teacher admin");
+
   // Validate end date whenever start date or end date changes
   useEffect(() => {
     if (endDate < startDate) {
@@ -72,6 +76,7 @@ export default function index() {
         endDate: endDate.toISOString(),
         keyword: debouncedKeyword, // Use debounced keyword
         page: currentPage, // Add page parameter
+        teacher, // added teacher fitler
       })
     );
   }, [dispatch, activeTab, startDate, endDate, debouncedKeyword, currentPage]);
@@ -138,6 +143,8 @@ export default function index() {
           startDate={startDate}
           handleEndDateChange={handleEndDateChange}
           handleStartDateChange={handleStartDateChange}
+          teacher={teacher}
+          setTeacher={setTeacher}
         />
 
         {/* Bookings Content */}

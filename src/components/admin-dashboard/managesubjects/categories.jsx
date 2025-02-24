@@ -12,6 +12,7 @@ import {
 import DeleteCategoriesModal from "./deleteCategoriesModels";
 import { useRouter } from "next/router";
 import Loader from "@/components/common/Loader";
+import { Pagination } from "@/components/student-dashboard/Pagination";
 
 const columns = ["S.No", "Name", "Sub Categories", "Updated", "Action"];
 
@@ -19,7 +20,7 @@ const Categories = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { subjects, isLoading, error } = useSelector(
+  const { subjects, isLoading, error, totalPages } = useSelector(
     (state) => state.admin.managesubjects
   );
 
@@ -28,10 +29,16 @@ const Categories = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Track delete modal state
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getAllManageSubjects());
-  }, [dispatch]);
+    const data = {
+      page: currentPage,
+      limit: 10,
+    };
+
+    dispatch(getAllManageSubjects(data));
+  }, [dispatch, currentPage]);
 
   const openEditModal = (category) => {
     setSelectedCategory(category);
@@ -160,6 +167,12 @@ const Categories = () => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)} // Close modal
         onConfirm={deleteCategory} // Confirm deletion
+      />
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(val) => setCurrentPage(val)}
       />
     </div>
   );

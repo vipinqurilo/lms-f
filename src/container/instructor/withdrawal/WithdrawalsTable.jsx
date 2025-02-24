@@ -89,7 +89,6 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
     setRejectionReason("");
   };
 
-
   return (
     <table className="w-full border-l border-r border-black/10 !rounded-lg">
       <TableHeader headingsData={headingsData} />
@@ -192,14 +191,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                     >
                       <FaRegCalendarCheck size={16} />
                     </button>
-                    <button className="text-gray-600 hover:text-yellow-500">
-                      <Link
-                        href={""}
-                        // href={`/instructor-request/${teacher?._id}`}
-                      >
-                        <FiEye size={18} />
-                      </Link>
-                    </button>
+
                     <button
                       className="text-gray-600 hover:text-red-500"
                       onClick={() => handleApproval(row?._id, "rejected")}
