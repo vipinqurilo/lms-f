@@ -9,9 +9,18 @@ const initialState = {
 };
 
 export const fetchData = CreateApiAsyncThunk(
-  "upload/fetchTeachers",  // Adjusted action name
-  () => api.get('/requests/teachers') // Call the teachers API endpoint
+  "upload/fetchTeachers",
+  ({ search, page, limit } = {}) => {
+    const params = {};
+
+    if (search) params.search = search;
+    if (page) params.page = page;
+    if (limit) params.limit = limit;
+
+    return api.get("/requests/teachers", { params });
+  }
 );
+
 
 export const approveTeacher = CreateApiAsyncThunk(
   "upload/approveTeacher",
