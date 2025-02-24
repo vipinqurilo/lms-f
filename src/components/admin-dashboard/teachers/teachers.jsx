@@ -1,28 +1,48 @@
 "use client";
 
 import { getAllTeachers } from "@/store/slices/admin-dashboard/teachersSlice";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GrView } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import TeacherFilter from "./teacherFilter";
 import Loader from "@/components/common/Loader";
 import TitleComp from "@/components/instructor/TitleComp";
 import { Pagination } from "@/components/student-dashboard/Pagination";
+import UserFilter from "../user/UserFilter";
 
 const TeachersTable = () => {
   const [hoveredRow, setHoveredRow] = useState(null);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+    const [filtersData, setFiltersData] = useState({});
+
 
   const { teachers, isLoading, error , totalPages,} = useSelector(
     (state) => state.admin.teachers
   );
 
+  console.log(teachers,"[[[[[[[");
+
+  
+  useEffect(() => {
+    const data = {};
+    if (filtersData?.startDate) data.startDate = filtersData.startDate;
+    if (filtersData?.endDate) data.endDate = filtersData.endDate;
+    if (filtersData?.search) data.search = filtersData.search;
+
+    dispatch(getAllTeachers({ ...data, page, limit: 2 })); // Fetch teachers with filters and pagination
+  }, [filtersData, page]); // Re-run when filtersData or page changes
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
+
+  const handleApplyFilters = (data) => {
+    setFiltersData(data);
+    setPage(1); // Reset to page 1 when new filters are applied
+  };
+
 
   useEffect(() => {
     dispatch(getAllTeachers({ page, limit: 2 })); // Set the limit as needed
@@ -59,7 +79,8 @@ const TeachersTable = () => {
           }
         />
         <div className="w-full sticky top-0 py-4 px-5 bg-white">
-          <TeacherFilter />
+        <UserFilter onApplyFilters={handleApplyFilters} isRole={false} isStatus={false} />
+
         </div>
         <div className="overflow-x-auto mt-4 rounded-b-lg">
           <div className="w-full grid grid-cols-6 gap-4 bg-gray-200 font-semibold py-4">
