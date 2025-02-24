@@ -31,7 +31,7 @@ const CourseDetails = () => {
           <CourseHighLights data={data} />
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
-          <CourseOverview data={data?.courseOverview} />
+          <CourseOverview data={data} />
           <LecturesOverview data={data?.courseContent} />
           <AboutInstructor data={data?.instructor} />
           <CommentForm />

@@ -30,6 +30,7 @@ const Home = () => {
     const requestData = {
       page: 1,
       limit: 6,
+      status: "published"
     };
     dispatch(fetchCoursesAsync(requestData));
   }, [dispatch]);
