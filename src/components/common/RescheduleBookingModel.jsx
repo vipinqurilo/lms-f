@@ -88,7 +88,7 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                 <div className="space-y-3">
                   <button
                     onClick={() => setIsOpen(true)}
-                    className="w-full py-3 bg-primary text-white rounded-lg hover:bg-opacity-95 transition-colors"
+                    className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-95 transition-colors"
                   >
                     Reschedule
                   </button>
@@ -159,14 +159,14 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                   <textarea
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 h-14 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 h-14 focus:outline-none focus:ring-2 focus:ring-secondary"
                     placeholder="Eg. your text here"
                   />
                 </div>
 
                 <button
                   onClick={() => handleReschedule()}
-                  className=" px-8 py-2 w-fit bg-primary text-white rounded-lg hover:bg-opacity-95 transition-colors"
+                  className=" px-8 py-2 w-fit bg-secondary text-white rounded-lg hover:bg-opacity-95 transition-colors"
                 >
                   Reschedule
                 </button>

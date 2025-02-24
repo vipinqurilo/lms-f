@@ -69,7 +69,7 @@ export function SocialProfiles() {
           </label>
           <input
             id={key}
-            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary ring-[1px] ring-gray-200 outline-none"
+            className="mt-1 block px-4 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-secondary ring-[1px] ring-gray-200 outline-none"
             value={profiles[key]}
             onChange={(e) =>
               setProfiles({ ...profiles, [key]: e.target.value })
@@ -82,7 +82,7 @@ export function SocialProfiles() {
       <button
         type="submit"
         disabled={isLoading["updateSocialProfilesAsync"]}
-        className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+        className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
       >
         {isLoading["updateSocialProfilesAsync"] ? "Saving..." : "Save Profile"}
       </button>

@@ -267,7 +267,7 @@ const Curriculum = () => {
                   moduleIndex: index,
                 })
               }
-              className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-primary/10 "
+              className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-secondary/10 "
             >
               <RiUploadCloud2Line size={20} />
               {lecture?.video !== ""

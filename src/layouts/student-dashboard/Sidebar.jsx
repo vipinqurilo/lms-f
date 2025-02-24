@@ -3,37 +3,32 @@
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
-  User,
   GraduationCap,
   Heart,
   Star,
-  FileQuestion,
   ShoppingCart,
-  MessageSquare,
   Grid2x2Check,
-  Users,
-  BookCheck,
-  LibraryBig,
-  LifeBuoy,
   LogOut,
   Settings,
-  SquareLibrary,
 } from "lucide-react";
 import { useState } from "react";
 
-import {
-  Megaphone,
-  Wallet,
-  FileText,
-  ClipboardCheck,
-  DollarSign,
-  CalendarCheck,
-} from "lucide-react";
+import { Wallet, DollarSign, CalendarCheck } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkComponent } from "@/components/layout/LinkComponent";
 import { LuCalendarClock, LuTickets } from "react-icons/lu";
 import { logout } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
+
+import {
+  MdDashboard,
+  MdCategory,
+  MdSchool,
+  MdPeople,
+  MdAccountBalanceWallet,
+  MdBook,
+  MdSupervisorAccount,
+} from "react-icons/md";
 
 const studentSidebarLinks = [
   {
@@ -111,65 +106,71 @@ const instructorSidebarLinks = [
 const adminSidebarLinks = [
   {
     title: "Dashboard",
-    icon: LayoutDashboard,
+    icon: MdDashboard,
     href: "/admin-dashboard",
     color: "text-primary",
   },
   {
     title: "Courses",
-    icon: GraduationCap,
-    href: "/admin-dashboard/approvals/courses",
+    icon: MdSchool,
+    subLinks: [
+      {
+        title: "Manage Courses",
+        href: "/admin-dashboard/manage-courses",
+      },
+      {
+        title: "Course Request",
+        href: "/admin-dashboard/approvals/courses",
+      },
+    ],
   },
-
   {
     title: "Teachers",
-    icon: Users,
-    href: "/admin-dashboard/teachers",
+    icon: MdPeople,
+    subLinks: [
+      {
+        title: "Teachers Request",
+        href: "/admin-dashboard/approvals/teachers",
+      },
+      {
+        title: "Teachers",
+        href: "/admin-dashboard/teachers",
+      },
+    ],
   },
-
-  {
-    title: "Teachers Request",
-    icon: Users,
-    href: "/admin-dashboard/approvals/teachers",
-  },
-
   {
     title: "Student",
-    icon: Users,
+    icon: MdSupervisorAccount,
     href: "/admin-dashboard/manage-students",
   },
-
   {
     title: "Withdrawals",
-    icon: Wallet,
+    icon: MdAccountBalanceWallet,
     href: "/admin-dashboard/approvals/withdrawals",
   },
   {
-    title: "Manage Courses",
-    icon: LibraryBig,
-    href: "/admin-dashboard/manage-courses",
-  },
-  {
     title: "Manage Bookings",
-    icon: BookCheck,
+    icon: MdBook,
     href: "/admin-dashboard/manage-booking",
   },
-
   {
     title: "Manage Users",
-    icon: Users,
+    icon: MdSupervisorAccount,
     href: "/admin-dashboard/user",
   },
-
   {
     title: "Category",
-    icon: SquareLibrary,
-    href: "/admin-dashboard/managesubjects/categories",
-  },
-  {
-    title: "Sub-Category",
-    icon: Users,
-    href: "/admin-dashboard/managesubjects/subCategories",
+    icon: MdCategory,
+    subLinks: [
+      {
+        title: "Sub-Category",
+        href: "/admin-dashboard/managesubjects/subCategories",
+      },
+      {
+        title: "Category",
+        href: "/admin-dashboard/managesubjects/categories",
+      },
+    ],
   },
 ];
 
@@ -208,7 +209,20 @@ export function Sidebar() {
       >
         <div className="space-y-2">
           {sidebarLinks.map((link, index) => {
-            const isActive = pathname === link.href;
+            const hasHref = link.href;
+            let isActive = hasHref
+              ? pathname === link.href || pathname.startsWith(link.href + "/")
+              : link.subLinks?.some(
+                  (subLink) =>
+                    pathname === subLink.href ||
+                    pathname.startsWith(subLink.href + "/")
+                );
+
+            // Ensure "Dashboard" is active only when pathname matches exactly
+            if (link?.title === "Dashboard") {
+              isActive = pathname === link.href;
+            }
+
             return (
               <LinkComponent
                 link={link}

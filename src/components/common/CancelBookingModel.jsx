@@ -57,7 +57,7 @@ const CancelBookingModel = ({ date, onClose, bookingId }) => {
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-3 h-32 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full border border-gray-300 rounded-lg p-3 h-32 focus:outline-none focus:ring-2 focus:ring-secondary"
             placeholder="Eg. your text here"
           />
         </div>
@@ -72,7 +72,7 @@ const CancelBookingModel = ({ date, onClose, bookingId }) => {
                 onClose();
               })
           }
-          className="w-full bg-primary text-white py-3 rounded-lg hover:bg-red-600 transition-colors"
+          className="w-full bg-secondary text-white py-3 rounded-lg hover:bg-red-600 transition-colors"
         >
           Cancel
         </button>

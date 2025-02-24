@@ -1,14 +1,11 @@
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState, useEffect } from "react";
-import { FiEye, FiEdit2, FiMoreVertical } from "react-icons/fi"; // Importing icons
-import EditModal from "./EditModel";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { useDispatch, useSelector } from "react-redux"; // Import useDispatch, useSelector
 import {
   getAllUsers,
   updateUserStatus,
 } from "@/store/slices/admin-dashboard/userSlice";
-import { CiLogin } from "react-icons/ci";
 import { MdLogin } from "react-icons/md";
 import UserFilter from "./UserFilter";
 import TitleComp from "@/components/instructor/TitleComp";
@@ -28,42 +25,27 @@ const columns = [
 
 const UsersHistory = () => {
   const dispatch = useDispatch();
-  const { users, total, currentPage, totalPages, isLoading } = useSelector(
+  const { users, totalPages, isLoading } = useSelector(
     (state) => state.admin.user
   );
-  const [searchTerm, setSearchTerm] = useState("");
+
   const [filters, setFilters] = useState({});
   const [filteredUsers, setFilteredUsers] = useState(users);
   const [page, setPage] = useState(1);
 
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-
-  // Debounce search input
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm); // Update debounced search term after delay
-    }, 1000); // 1000ms debounce delay
+    const { role, status, search } = filters;
 
-    return () => clearTimeout(timeoutId); // Clear timeout on cleanup or when searchTerm changes
-  }, [searchTerm]);
-
-  // Fetch users when page or filters or debouncedSearchTerm change
-  useEffect(() => {
-    const { role, status } = filters;
-    if (debouncedSearchTerm) {
-      dispatch(
-        getAllUsers({
-          role,
-          userStatus: status,
-          search: debouncedSearchTerm,
-          page: 1,
-          limit: 5,
-        })
-      );
-    } else {
-      dispatch(getAllUsers({ role, userStatus: status, page, limit: 5 }));
-    }
-  }, [page, filters, debouncedSearchTerm, dispatch]);
+    dispatch(
+      getAllUsers({
+        role,
+        userStatus: status,
+        search: search,
+        page: page,
+        limit: 5,
+      })
+    );
+  }, [page, filters, dispatch]);
 
   // Handle page change
   const handlePageChange = (newPage) => {
@@ -97,11 +79,7 @@ const UsersHistory = () => {
             des={"Reset filtered users when users from Redux store change"}
           />
           <div className="w-full sticky top-0 py-4 bg-white px-5">
-            <UserFilter
-              onApplyFilters={handleApplyFilters}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-            />
+            <UserFilter onApplyFilters={handleApplyFilters} />
           </div>
           <div className="rounded-b-lg">
             {isLoading["getAllUsers"] ? (
