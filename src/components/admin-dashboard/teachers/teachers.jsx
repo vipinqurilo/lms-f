@@ -22,8 +22,8 @@ const TeachersTable = () => {
     (state) => state.admin.teachers
   );
 
-  console.log(teachers,"[[[[[[[");
-
+  console.log(teachers,"[[[[]]]][[[][[]][")
+ 
   
   useEffect(() => {
     const data = {};
@@ -196,7 +196,7 @@ const TeachersTable = () => {
                     <div className="bg-white relative border-gray-200 p-4">
                       <div className="absolute top-0 left-[50%] translate-x-[-50%] w-[93%] h-[1px] bg-gray-200"></div>
 
-                      <div className="flex items-center gap-4 p-4 ml-2">
+                      <div className="flex items-center gap-4 p-4 ml-4">
                         <h3 className="text-sm font-semibold w-36">
                           Course Details :
                         </h3>
