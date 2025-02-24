@@ -1,6 +1,7 @@
 import { StartEndDateSelector } from "@/components/student-dashboard/StartEndDateSelector";
 import { Search } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const BookingsFilter = ({
   keyword,
@@ -10,7 +11,11 @@ const BookingsFilter = ({
   handleStartDateChange,
   endDate,
   handleEndDateChange,
+  teacher,
+  setTeacher,
 }) => {
+  const user = useSelector((state) => state.user?.authUser?.role);
+
   return (
     <div className="sticky top-[60px] bg-gray-50    pb-4 z-20">
       <div className="flex items-center gap-4  pt-4">
@@ -26,7 +31,9 @@ const BookingsFilter = ({
         </div>
 
         <div className="flex justify-center items-center gap-4">
-          <label className="block text-sm text-gray-600">Lesson start date</label>
+          <label className="block text-sm text-gray-600">
+            Lesson start date
+          </label>
           <StartEndDateSelector
             selectedDate={startDate}
             onDateSelect={handleStartDateChange}
@@ -38,7 +45,9 @@ const BookingsFilter = ({
           <label className="block text-sm text-gray-600">
             Lesson end date
             {endDateError && (
-              <span className="text-red-500 ml-2">Must be after start date</span>
+              <span className="text-red-500 ml-2">
+                Must be after start date
+              </span>
             )}
           </label>
           <StartEndDateSelector
@@ -49,6 +58,20 @@ const BookingsFilter = ({
             isError={endDateError}
           />
         </div>
+        {user === "admin" && (
+          <div className="flex justify-center items-center gap-4 ">
+            <select
+              onChange={(e) => setTeacher(e.target.value)}
+              className="px-6 py-1 bg-white border-gray-300 border rounded-md"
+            >
+              <option disabled value="all">All</option>
+              <option value="first">teacher</option>
+              <option value="second">teacher</option>
+              <option value="third">teacher</option>
+              <option value="fourth">teacher</option>
+            </select>
+          </div>
+        )}
       </div>
     </div>
   );

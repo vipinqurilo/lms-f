@@ -46,7 +46,7 @@ const TopBanner = () => {
           </button>
         </div>
 
-        <div className="relative lg:w-[60%]">
+        {/* <div className="relative lg:w-[60%]">
           <input
             type="text"
             // value={searchTerm}
@@ -58,7 +58,7 @@ const TopBanner = () => {
           <IoSearch
             className={`text-xl text-light absolute top-[50%] left-3 translate-y-[-50%] cursor-pointer`}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="flex items-center gap-4 relative">
