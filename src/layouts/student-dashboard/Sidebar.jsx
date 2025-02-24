@@ -10,6 +10,7 @@ import {
   Grid2x2Check,
   LogOut,
   Settings,
+  ListOrdered,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -125,6 +126,11 @@ const adminSidebarLinks = [
     ],
   },
   {
+    title: "Student",
+    icon: MdSupervisorAccount,
+    href: "/admin-dashboard/manage-students",
+  },
+  {
     title: "Teachers",
     icon: MdPeople,
     subLinks: [
@@ -137,11 +143,6 @@ const adminSidebarLinks = [
         href: "/admin-dashboard/teachers",
       },
     ],
-  },
-  {
-    title: "Student",
-    icon: MdSupervisorAccount,
-    href: "/admin-dashboard/manage-students",
   },
   {
     title: "Withdrawals",
@@ -157,6 +158,11 @@ const adminSidebarLinks = [
     title: "Manage Users",
     icon: MdSupervisorAccount,
     href: "/admin-dashboard/user",
+  },
+  {
+    title: "Orders",
+    icon: ListOrdered,
+    href: "/admin-dashboard/orders",
   },
   {
     title: "Category",
