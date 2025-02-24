@@ -37,16 +37,28 @@ const TeacherRequests = () => {
   const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [currentPage, setcurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
 
-  const { teachers, isLoading } = useSelector((state) => state.admin?.teacher);
+  const { teachers, isLoading ,totalPages, } = useSelector((state) => state.admin?.teacher);
 
-  useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchData({ search: "", limit: 2, page }));
+  // }, [dispatch,page]);
+
+
+    useEffect(() => {
+      dispatch(fetchData({ page, limit: 2 })); // Set the limit as needed
+    }, [dispatch, page]);
 
   const handleOpenApproveModal = (teacherId) => {
     setSelectedTeacherId(teacherId);
     setIsApproveModalOpen(true);
+  };
+
+
+  
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
   };
 
   const handleApprove = async () => {
@@ -84,6 +96,7 @@ const TeacherRequests = () => {
   //   } catch (error) {
   //     console.error("Error rejecting teacher:", error);
   //   }
+
   // };
 
   const handleReject = async () => {
@@ -205,9 +218,9 @@ const TeacherRequests = () => {
       </div>
 
       <Pagination
-        totalPages={5}
-        currentPage={currentPage}
-        onPageChange={(value) => setcurrentPage(value)}
+         currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
       />
     </>
   );
