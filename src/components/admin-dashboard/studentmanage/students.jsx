@@ -183,7 +183,7 @@ const handlePageChange = (newPage) => {
     <div className="p-10">
       <div className="dashboard-container">
         <TitleComp
-          heading={"Teachers List"}
+          heading={"Student List"}
           des={
             "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, ad!"
           }
