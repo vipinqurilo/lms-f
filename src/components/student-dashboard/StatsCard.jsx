@@ -9,7 +9,7 @@ export function StatsCard({
   color,
 }) {
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border">
+    <div className="bg-white p-5 rounded-xl shadow-sm border">
       <div className="flex items-start gap-4">
         {isIcon ? (
           <div

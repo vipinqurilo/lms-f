@@ -39,7 +39,7 @@ const tabs = [
   },
   {
     icon: <BiXCircle size={20} />,
-    tab: "Rejected",
+    tab: "Unpublished",
   },
   {
     icon: <BiPauseCircle size={20} />,
@@ -75,10 +75,12 @@ const InstructorMyCourses = () => {
     const status =
       selecteStatus?.toLowerCase() === "all"
         ? undefined
+        : selecteStatus === "Inactive"
+        ? "inactive"
         : selecteStatus?.toLowerCase();
     const requestData = {
       page: currentPage,
-      limit: 10,
+      limit: 3,
     };
     if (status) {
       requestData.status = status.toLowerCase();
@@ -109,13 +111,18 @@ const InstructorMyCourses = () => {
     router.push("/instructor-dashboard/my-courses/add-course");
   };
 
+  const handleRequestAgain = (id) => {
+    console.log(id);
+  };
+
   const filteredData = useMemo(() => {
     return courses?.map((course) => ({
       image: course?.courseImage,
       title: course?.courseTitle,
       des: course?.courseDescription,
       value1: course?.entrolled || 425,
-      value2: (
+      value2: course?.status,
+      value3: (
         <div className="flex items-center gap-5">
           <button
             onClick={() => handleEditCourse(course)}
@@ -129,6 +136,14 @@ const InstructorMyCourses = () => {
           >
             <MdDeleteOutline size={20} />
           </button>
+          {course?.status === "unpublished" && (
+            <div className="text-nowrap">
+              <InstructorButton
+                handleClick={() => handleRequestAgain(course?._id)}
+                tab={"Request Again"} condition={"!bg-secondary hover:!bg-background text-white"}
+              />
+            </div>
+          )}
         </div>
       ),
     }));
@@ -137,19 +152,19 @@ const InstructorMyCourses = () => {
   return (
     <>
       <main className="p-10 ">
-        <div className="dashboard-container pb-10">
+        <div className="dashboard-container">
           <TitleComp
             heading={"My Courses"}
             des={"Manage your courses and its updates"}
             iscourse={true}
           />
-          <div className=" flex flex-col px-5">
-            <div className="flex items-center gap-4 sticky top-0 bg-white z-10 py-4">
+          <div className=" flex flex-col">
+            <div className="flex items-center gap-4 px-5 sticky top-0 bg-white z-10 py-6">
               {tabs.map((tab, index) => (
                 <InstructorButton
                   key={index}
                   tab={tab?.tab}
-                  icon={tab?.icon}
+                  // icon={tab?.icon}
                   condition={`${
                     selecteStatus === tab?.tab && "!bg-secondary text-white"
                   }`}
@@ -169,8 +184,10 @@ const InstructorMyCourses = () => {
             ) : (
               <>
                 <CreatedCourses
-                  headingsData={["Courses", "Enrolled", "Action"]}
+                  headingsData={["Courses", "Enrolled", "Status", "Action"]}
                   data={filteredData}
+                  title=""
+                  isCols={true}
                 />
               </>
             )}
