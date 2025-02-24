@@ -2,15 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "@/store/api/api";
 
-// Fetch all subcategories (modified to check if categoryId exists and handle accordingly)
+
 export const getAllSubCategories = CreateApiAsyncThunk(
   "GET/subcategory/getAllSubCategories",
   (categoryId) => {
-    // If categoryId is provided, fetch subcategories for that category
     if (categoryId) {
       return api.get(`/subcategory?courseCategory=${categoryId}`);
     }
-    // Otherwise, fetch all subcategories
     return api.get("/subcategory");
   }
 );
