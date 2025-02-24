@@ -3,14 +3,40 @@ import Heading from "./Heading";
 import { BiPlayCircle } from "react-icons/bi";
 
 const LecturesOverview = ({ data }) => {
+  // Convert "HH:MM" to total minutes
+  const getMinutes = (time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+
+  // Reduce to get total minutes
+  const totalMinutes = data.reduce((acc, module) => {
+    return (
+      acc +
+      module.lessons.reduce((lessonAcc, lesson) => {
+        return lessonAcc + getMinutes(lesson.duration);
+      }, 0)
+    );
+  }, 0);
+
+  // Convert total minutes back to HH:MM format
+  const totalHours = Math.floor(totalMinutes / 60);
+  const remainingMinutes = totalMinutes % 60;
+  const formattedDuration = `${String(totalHours).padStart(2, "0")}:${String(
+    remainingMinutes
+  ).padStart(2, "0")}`;
+
   const details = [
     {
       name: "Total Lectures",
-      value: data?.totals,
+      value: data?.reduce(
+        (acc, item) => acc + (item?.lessons?.length || 0),
+        0
+      ),
     },
     {
       name: "Duratin",
-      value: data?.totalDuration,
+      value: formattedDuration,
     },
   ];
 
@@ -44,14 +70,14 @@ const LecturesOverview = ({ data }) => {
         ))}
       </div>
       <div className="w-full space-y-4">
-        {data?.sections?.map((section, index) => (
+        {data?.map((section, index) => (
           <div className="w-full">
             <button
               onClick={() => toggleSection(index)}
               className="flex justify-between items-center w-full font-medium text-lg text-left bg-secondary/5 p-2 px-4 rounded border border-black/10"
             >
               <span className="font-[700] text-base">
-                {index + 1}. {section?.title}
+                {index + 1}. {section?.moduleTitle}
               </span>
               <svg
                 className={`transition-transform ${
@@ -76,15 +102,20 @@ const LecturesOverview = ({ data }) => {
               }}
               ref={contentRef}
             >
-              {section?.lectures?.map((lecture, i) => (
-                <div key={i} className="w-full md:flex md:items-center md:justify-between px-2 py-2 md:py-4">
+              {section?.lessons?.map((lecture, i) => (
+                <div
+                  key={i}
+                  className="w-full md:flex md:items-center md:justify-between px-2 py-2 md:py-4"
+                >
                   <h6 className="flex items-start gap-1">
                     <BiPlayCircle className="text-secondary text-lg" />
                     <span className="-mt-[2px] font-medium">
-                      Lecture{index + 1}.{i + 1} {lecture?.title}
+                      Lecture{index + 1}.{i + 1} {lecture?.lessonTitle}
                     </span>
                   </h6>
-                  <p className="font-medium text-light text-sm">{lecture?.duration}</p>
+                  <p className="font-medium text-light text-sm">
+                    {lecture?.duration}
+                  </p>
                 </div>
               ))}
             </div>

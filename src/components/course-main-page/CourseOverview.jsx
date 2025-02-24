@@ -5,17 +5,20 @@ const CourseOverview = ({ data }) => {
   return (
     <div data-aos="fade-up" className="course-sub-container">
       <Heading data="Course Overview" />
-      {data?.description?.map((des, index) => (
+      {/* {data?.description?.map((des, index) => (
         <p key={index} className="text-light">
           {des}
         </p>
-      ))}
+        ))} */}
+        <p className="text-light">
+          {data?.courseDescription}
+        </p>
 
       <PointsDiv
-        data={data?.whatYouWillLearn}
+        data={data?.courseLearning}
         heading={"What Will You Learn"}
       />
-      <PointsDiv data={data?.requirements} heading={"What are requirements"} />
+      <PointsDiv data={data?.courseRequirements} heading={"What are requirements"} />
     </div>
   );
 };

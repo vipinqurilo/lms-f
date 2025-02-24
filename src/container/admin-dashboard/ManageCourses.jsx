@@ -119,8 +119,8 @@ const ManageCourses = () => {
             heading={"Manage Courses"}
             des={"Manage your courses and its updates"}
           />
-          <div className="px-5 pb-10">
-            <div className="flex items-center gap-4 sticky top-0 py-4 bg-white">
+          <div className="">
+            <div className="flex items-center gap-4 sticky top-0 py-6 px-5 bg-white">
               {tabs.map((tab, index) => (
                 <InstructorButton
                   key={index}
@@ -140,6 +140,7 @@ const ManageCourses = () => {
               <CreatedCourses
                 headingsData={["Courses", "Enrolled", "Status"]}
                 data={filteredData}
+                title=""
               />
             )}
           </div>

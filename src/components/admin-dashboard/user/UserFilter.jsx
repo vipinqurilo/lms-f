@@ -64,7 +64,7 @@ const UserFilter = ({
   }, [filters.search]);
 
   useEffect(() => {
-    if (debouncedSearch) onApplyFilters({ search: debouncedSearch });
+    onApplyFilters({ search: debouncedSearch });
   }, [debouncedSearch]);
 
   const handleApplyFilters = () => {

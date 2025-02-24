@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { FaHeart, FaPlayCircle, FaShareAlt } from "react-icons/fa";
 
-const CourseCard = () => {
+const CourseCard = ({data}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -11,7 +11,7 @@ const CourseCard = () => {
     <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
       <div className="relative rounded-lg overflow-hidden">
         <Image
-          src={"/assets/common/courseImage.jpg"} // Replace with your image source
+          src={data?.courseImage || "/assets/common/courseImage.jpg"} // Replace with your image source
           alt="Course"
           width={100}
           height={100}
@@ -30,10 +30,10 @@ const CourseCard = () => {
       </div>
       <div className=" py-4 ">
         <h3 className="text-xl font-bold pb-2">
-          The Complete Web Developer Course 2.0
+          {data?.courseTitle || "Course Title"}
         </h3>
         <div className="w-full flex justify-between items-center">
-          <h3 className="text-green-500 text-2xl font-bold">₹1000</h3>
+          <h3 className="text-green-500 text-2xl font-bold">{data?.coursePrice || "--"}</h3>
           <p className="text-gray-500">
             <span className="line-through">₹1999.00</span> <span>50% off</span>
           </p>
@@ -68,7 +68,7 @@ const CourseCard = () => {
               <iframe
                 width="660"
                 height="415"
-                src={"https://youtu.be/iuJDhFRDx9M?si=RHBQ6IqseBGzyYhL"}
+                src={data?.courseVideo || "https://youtu.be/iuJDhFRDx9M?si=RHBQ6IqseBGzyYhL"}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

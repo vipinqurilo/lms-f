@@ -5,11 +5,11 @@ import { api } from "@/store/api/api";
 
 export const getAllSubCategories = CreateApiAsyncThunk(
   "GET/subcategory/getAllSubCategories",
-  (categoryId) => {
-    if (categoryId) {
-      return api.get(`/subcategory?courseCategory=${categoryId}`);
-    }
-    return api.get("/subcategory");
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/subcategory?${query}`);
   }
 );
 
@@ -39,6 +39,7 @@ export const manageSubjectsSubCategorySlice = createSlice({
   name: "managesubcategories",
   initialState: {
     subcategories: [],
+    totalPages: 0,
     isLoading: {},
     error: {},
   },
@@ -49,7 +50,8 @@ export const manageSubjectsSubCategorySlice = createSlice({
       })
       .addCase(getAllSubCategories.fulfilled, (state, action) => {
         state.isLoading["getAllSubCategories"] = false;
-        state.subcategories = action.payload.data; // Updates subcategories based on categoryId
+        state.subcategories = action.payload.data;
+        state.totalPages = action.payload?.pagination?.totalPages;
       })
       .addCase(getAllSubCategories.rejected, (state, action) => {
         state.isLoading["getAllSubCategories"] = false;
