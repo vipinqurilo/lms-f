@@ -16,7 +16,7 @@ const TabButton = ({ active, onClick, children }) => (
     className={`px-6 py-3 rounded-lg text-sm font-medium transition-colors
       ${
         active
-          ? "bg-primary text-white"
+          ? "bg-secondary text-white"
           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
       }`}
   >

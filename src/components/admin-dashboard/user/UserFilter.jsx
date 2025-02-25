@@ -59,9 +59,15 @@ const UserFilter = ({
   const statusArray = statusData ? statusData[0] : ["inactive", "active"];
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(filters.search), 500);
+    const timer = setTimeout(() => setDebouncedSearch(filters.search), 1000);
     return () => clearTimeout(timer);
   }, [filters.search]);
+
+  useEffect(() => {
+
+    onApplyFilters({ search: debouncedSearch });
+
+  }, [debouncedSearch]);
 
   const handleApplyFilters = () => {
     const appliedFilters = Object.fromEntries(

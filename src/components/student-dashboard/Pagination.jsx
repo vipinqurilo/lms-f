@@ -28,28 +28,90 @@ export function Pagination({ currentPage, totalPages, onPageChange }) {
       <div className="flex gap-2">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
-          className="w-8 h-8 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+          className="w-8 h-8 text-sm rounded-lg font-medium text-gray-600 hover:bg-gray-100"
           disabled={currentPage === 1}
         >
           ←
         </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors
-                ${
-                  page === currentPage
-                    ? "bg-secondary text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-          >
-            {page}
-          </button>
-        ))}
+
+        <div className="flex items-center justify-between gap-3">
+          {totalPages <= 3 ? (
+            // If total pages are 3 or less, show all page buttons directly
+            Array.from({ length: totalPages }, (_, index) => {
+              const page = index + 1;
+              return (
+                <button
+                  key={page}
+                  className={`${
+                    currentPage === page
+                      ? "w-8 h-8 text-sm flex items-center justify-center bg-secondary text-white rounded-md"
+                      : "text-black"
+                  }`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              );
+            })
+          ) : (
+            // Original logic for cases where totalPages > 3
+            <>
+              {currentPage > 3 && (
+                <>
+                  <button
+                    className={`${
+                      currentPage === 1
+                        ? "w-8 h-8 text-sm flex items-center justify-center bg-secondary text-white rounded-md"
+                        : "text-black"
+                    }`}
+                    onClick={() => handlePageChange(1)}
+                  >
+                    1
+                  </button>
+                  <span>...</span>
+                </>
+              )}
+              {Array.from({ length: 3 }, (_, index) => {
+                const page = currentPage - 1 + index;
+                if (page > 0 && page <= totalPages) {
+                  return (
+                    <button
+                      key={page}
+                      className={`${
+                        currentPage === page
+                          ? "w-8 h-8 text-sm flex items-center justify-center bg-secondary text-white rounded-md"
+                          : "text-black"
+                      }`}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  );
+                }
+                return null;
+              })}
+              {currentPage < totalPages - 2 && (
+                <>
+                  <span>...</span>
+                  <button
+                    className={`${
+                      currentPage === totalPages
+                        ? "w-8 h-8 text-sm flex items-center justify-center bg-secondary text-white rounded-md"
+                        : "text-black"
+                    }`}
+                    onClick={() => handlePageChange(totalPages)}
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              )}
+            </>
+          )}
+        </div>
+
         <button
           onClick={() => handlePageChange(currentPage + 1)}
-          className="w-8 h-8 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+          className="w-8 h-8 text-sm rounded-lg font-medium text-gray-600 hover:bg-gray-100"
           disabled={currentPage === totalPages}
         >
           →

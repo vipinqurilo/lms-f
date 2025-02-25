@@ -78,10 +78,11 @@ export default function DashboardPage() {
           </div>
           <div className="w-2/3">
             <ScheduleView
-              bookingLoading={bookingLoading}
+              bookingLoading={bookingLoading?.["fetchBookingsAsync"]}
               startDate={startDate}
               setStartDate={setStartDate}
               bookings={bookings}
+              link={"/student-dashboard/booking"}
             />
           </div>
         </div>

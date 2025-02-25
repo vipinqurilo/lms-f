@@ -1,3 +1,4 @@
+import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";
 import TableHeader from "@/components/instructor/TableHeader";
 import Image from "next/image";
 import React from "react";
@@ -10,19 +11,21 @@ const CreatedCourses = ({
   isCols = false,
 }) => {
   const getStatusCss = (status) => {
-    return status === "Draft"
-      ? "bg-gray-200 text-gray-800"
-      : status === "publish"
+    return status === "unpublished"
+      ? "bg-red-200 text-red-800"
+      : status === "published"
       ? "bg-green-200 text-green-800"
       : status === "pending"
       ? "bg-yellow-200 text-yellow-800"
-      : "bg-red-200 text-red-800";
+      : "bg-gray-200 text-gray-800";
   };
   return (
-    <div className="pt-8">
-      <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
-      <div className="bg-white rounded-lg shadow-md overflow-hiddenp-4 ">
-        <div className="overflow-x-auto rounded-lg">
+    <div className="">
+      {title !== "" && (
+        <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
+      )}
+      <div className="bg-white rounded-b-lg shadow-md overflow-hiddenp-4 ">
+        <div className="overflow-x-auto">
           <table className="w-full rounded-lg">
             <TableHeader headingsData={headingsData} />
             <tbody className="divide-y divide-gray-100">
@@ -57,14 +60,36 @@ const CreatedCourses = ({
                       {course?.value1 ? course?.value1 : "-"}
                     </div>
                   </td>
+                  {headingsData?.length > 3 && (
+                    <td className="px-6 py-4">
+                      <div
+                        className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
+                          headingsData[2] === "Status" &&
+                          `${getStatusCss(course?.value2)} w-fit capitalize flex items-center gap-2`
+                        }`}
+                      >
+                        {course?.value2}
+                        {course?.value2 === "unpublished" && (
+                          <RejectReasonPopup data={course?.rejectionReason} />
+                        )}
+                      </div>
+                    </td>
+                  )}
                   <td className="px-6 py-4">
                     <div
                       className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
                         headingsData[2] === "Status" &&
-                        `${getStatusCss(course?.value2)} w-fit capitalize`
+                        headingsData?.length < 4 &&
+                        `${getStatusCss(
+                          headingsData?.length > 3
+                            ? course?.value3
+                            : course?.value2
+                        )} w-fit capitalize`
                       }`}
                     >
-                      {course?.value2}
+                      {headingsData?.length > 3
+                        ? course?.value3
+                        : course?.value2}
                     </div>
                   </td>
                 </tr>

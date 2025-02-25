@@ -53,7 +53,7 @@ const EditMeetingLink = ({ onClose, bookingId , meetingLink}) => {
           <button
             disabled={link === ""}
             onClick={() => handleEditMeetingLink()}
-            className="w-full py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors"
+            className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors"
           >
             Confirm
           </button>

@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 const CourseDetails = () => {
   const [isScrolled, setisScrolled] = useState(false);
   const { courseData: data } = useSelector((state) => state.courses);
+  const { authUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -31,10 +32,12 @@ const CourseDetails = () => {
           <CourseHighLights data={data} />
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
-          <CourseOverview data={data?.courseOverview} />
+          <CourseOverview data={data} />
           <LecturesOverview data={data?.courseContent} />
           <AboutInstructor data={data?.instructor} />
-          <CommentForm />
+          {authUser && authUser?.role === "student" && (
+            <CommentForm id={data?._id} />
+          )}
           <CourseReview data={data?.reviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">

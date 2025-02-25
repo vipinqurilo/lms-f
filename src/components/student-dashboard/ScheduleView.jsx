@@ -9,6 +9,7 @@ export default function ScheduleView({
   setStartDate,
   bookings,
   bookingLoading,
+  link,
 }) {
   const router = useRouter();
   const [showCalendar, setShowCalendar] = useState(false);
@@ -99,7 +100,7 @@ export default function ScheduleView({
         <div className="flex justify-between items-center">
           <h3 className="text-xl text-gray-800">Lessons</h3>
           <button
-            onClick={() => router.push("/student-dashboard/booking")}
+            onClick={() => router.push(link)}
             className="text-sm text-gray-400 hover:text-gray-600"
           >
             View all
@@ -107,14 +108,14 @@ export default function ScheduleView({
         </div>
 
         <div className="space-y-3">
-          {bookingLoading?.["fetchBookingsAsync"] ? (
+          {bookingLoading ? (
             <SkeletonLoader />
           ) : bookings.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-500">No bookings the day</p>
             </div>
           ) : (
-            bookings.map((booking, index) => {
+            bookings?.slice(0, 3).map((booking) => {
               const startTime = new Date(booking.sessionStartTime);
               const endTime = new Date(
                 startTime.getTime() + booking.sessionDuration * 60000

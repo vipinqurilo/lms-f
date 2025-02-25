@@ -101,7 +101,7 @@ const EarningSummary = ({ type }) => {
     >
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-primary rounded-full"></div>
+          <div className="w-3 h-3 bg-secondary rounded-full"></div>
           <h2 className="text-base font-medium text-textColor">
             Earning Summary
           </h2>

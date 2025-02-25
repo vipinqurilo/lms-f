@@ -4,7 +4,16 @@ import { api } from "@/store/api/api";
 
 export const getAllManageSubjects = CreateApiAsyncThunk(
   "GET/category/getAllManageSubjects",
-  () => api.get(`/category`)
+  (data) => {
+    let queryParams = "";
+
+    if (data) {
+      const query = new URLSearchParams(data).toString();
+      queryParams = `?${query}`;
+    }
+
+    return api.get(`/category${queryParams}`);
+  }
 );
 
 export const deleteCategoryById = CreateApiAsyncThunk(
@@ -30,6 +39,7 @@ export const managesubjectsSlice = createSlice({
   name: "managesubjects",
   initialState: {
     subjects: [],
+    totalPages: 0,
     isLoading: {},
     error: {},
   },
@@ -41,6 +51,7 @@ export const managesubjectsSlice = createSlice({
       .addCase(getAllManageSubjects.fulfilled, (state, action) => {
         state.isLoading["getAllManageSubjects"] = false;
         state.subjects = action.payload.data;
+        state.totalPages = action.payload.pagination?.totalPages || 1;
       })
       .addCase(getAllManageSubjects.rejected, (state, action) => {
         state.isLoading["getAllManageSubjects"] = false;
@@ -55,7 +66,7 @@ export const managesubjectsSlice = createSlice({
 
         state.subjects = state.subjects.filter(
           (category) => category._id !== action.payload?.data?._id
-        )
+        );
       })
       .addCase(deleteCategoryById.rejected, (state, action) => {
         state.isLoading["deleteCategoryById"] = false;

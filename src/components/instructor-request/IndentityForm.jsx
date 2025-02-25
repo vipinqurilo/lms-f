@@ -134,7 +134,7 @@ export default function IndentityForm({ isInstructorRequest = null }) {
             type="url"
             placeholder="Enter a valid YouTube video link"
             {...register("introVideo")}
-            className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none"
+            className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-secondary focus:outline-none"
             disabled={isInstructorRequest && authUser?.role === "admin"}
           />
           {errors?.introVideo && (
@@ -152,7 +152,7 @@ export default function IndentityForm({ isInstructorRequest = null }) {
           <textarea
             placeholder="Write a short biography about yourself..."
             {...register("bio", { required: "Bio is required" })}
-            className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-primary focus:outline-none resize-none min-h-[100px]"
+            className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-secondary focus:outline-none resize-none min-h-[100px]"
             disabled={isInstructorRequest && authUser?.role === "admin"}
           />
           {errors?.bio && (

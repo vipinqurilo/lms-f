@@ -92,13 +92,13 @@ const SlideShow = () => {
       </Swiper>
       {/* <div
                 ref={prevRef}
-                className="bg-zinc-100 w-fit p-1 rounded-full border-2 transition-all ease-in-out duration-200 text-primary-500 hover:bg-primary-500 hover:text-white border-primary-500 absolute top-1/2 left-0 -translate-x-1/2 cursor-pointer z-20"
+                className="bg-zinc-100 w-fit p-1 rounded-full border-2 transition-all ease-in-out duration-200 text-primary-500 hover:bg-secondary-500 hover:text-white border-primary-500 absolute top-1/2 left-0 -translate-x-1/2 cursor-pointer z-20"
             >
                 <FaAngleLeft size={15} />
             </div>
             <div
                 ref={nextRef}
-                className="bg-zinc-100 w-fit p-1 rounded-full border-2 transition-all ease-in-out duration-200 text-primary-500 hover:bg-primary-500 hover:text-white border-primary-500 absolute top-1/2 right-0 -translate-x-1/2 cursor-pointer z-30"
+                className="bg-zinc-100 w-fit p-1 rounded-full border-2 transition-all ease-in-out duration-200 text-primary-500 hover:bg-secondary-500 hover:text-white border-primary-500 absolute top-1/2 right-0 -translate-x-1/2 cursor-pointer z-30"
             >
                 <FaAngleRight size={15} />
             </div> */}

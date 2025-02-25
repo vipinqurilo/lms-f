@@ -52,8 +52,7 @@ const Curriculum = () => {
   const handleAddLecture = (moduleIndex) => {
     if (
       lecture?.lessonTitle.trim() !== "" &&
-      lecture?.video.trim() !== "" &&
-      lecture?.duration.trim() !== ""
+      lecture?.video.trim() !== ""
     ) {
       setModules((prevModules) => {
         const updatedModules = prevModules.map((module, index) => {
@@ -267,7 +266,7 @@ const Curriculum = () => {
                   moduleIndex: index,
                 })
               }
-              className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-primary/10 "
+              className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-secondary/10 "
             >
               <RiUploadCloud2Line size={20} />
               {lecture?.video !== ""

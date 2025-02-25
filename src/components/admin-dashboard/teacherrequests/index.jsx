@@ -34,19 +34,43 @@ const TeacherRequests = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-  const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
+  const [rejectionReason, setRejectionReason] = useState(""); 
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-  const [currentPage, setcurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [filters, setfilters] = useState({});
 
-  const { teachers, isLoading } = useSelector((state) => state.admin?.teacher);
+  const { teachers, isLoading, totalPages } = useSelector(
+    (state) => state.admin?.teacher
+  );
+
+  // useEffect(() => {
+  //   dispatch(fetchData({ search: "", limit: 2, page }));
+  // }, [dispatch,page]);
 
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    const data = {
+      page,
+      limit: 5,
+    };
+    if (filters?.search) {
+      data.search = filters?.search;
+    }
+    if (filters?.startDate) {
+      data.startDate = filters?.startDate;
+    }
+    if (filters?.endDate) {
+      data.endDate = filters?.endDate;
+    }
+    dispatch(fetchData(data));
+  }, [dispatch, page, filters]);
 
   const handleOpenApproveModal = (teacherId) => {
     setSelectedTeacherId(teacherId);
     setIsApproveModalOpen(true);
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
   };
 
   const handleApprove = async () => {
@@ -84,6 +108,7 @@ const TeacherRequests = () => {
   //   } catch (error) {
   //     console.error("Error rejecting teacher:", error);
   //   }
+
   // };
 
   const handleReject = async () => {
@@ -111,14 +136,6 @@ const TeacherRequests = () => {
     }
   };
 
-  if (isLoading["fetchTeachers"]) {
-    return (
-      <div className="w-full h-[80%] flex items-center justify-center">
-        <Loader isBig={true} color={"text-secondary"} />
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="p-10">
@@ -130,61 +147,96 @@ const TeacherRequests = () => {
             }
           />
           <div className="w-full sticky py-4 top-0 bg-white px-5">
-            <UserFilter />
+            <UserFilter
+              onApplyFilters={(filter) => setfilters(filter)}
+              isRole={false}
+              isStatus={false}
+            />
           </div>
 
           <div className="overflow-x-auto mt-4 rounded-b-lg">
             <table className="w-full border border-gray-200 rounded-lg">
               <TableHeader headingsData={columns} />
-              <tbody>
-                {teachers?.map((teacher, index) => (
-                  <tr
-                    key={teacher.userId}
-                    className="border-t border-gray-200 text-sm text-nowrap"
-                  >
-                    <td className="py-4 px-4 text-gray-700">{index + 1}</td>
-                    <td className="py-4 px-4 text-gray-700">
-                      {teacher?.userId}
-                    </td>
-                    <td className="py-4 px-4 text-gray-700">
-                      {teacher.personalInfo?.firstName}
-                    </td>
-                    <td className="py-4 px-4 text-gray-700">
-                      {teacher.email}amankumar@gmail.com
-                    </td>
-                    <td className="py-4 px-4 text-gray-700">
-                      {teacher.personalInfo?.firstName}
-                    </td>
-                    <td className="py-4 px-4 text-gray-700">
-                      {new Date(teacher.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="py-4 px-4 text-center text-gray-700">
-                      {teacher?.approvalStatus}
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex items-center justify-center gap-4">
-                        <button
-                          className="text-gray-600 hover:text-blue-500"
-                          onClick={() => handleOpenApproveModal(teacher._id)}
+              {isLoading["fetchTeachers"] ? (
+                <tr>
+                  <td colSpan={columns?.length}>
+                    <div className="w-full py-12 flex items-center justify-center">
+                      <Loader isBig={true} color={"text-secondary"} />
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <tbody>
+                  {teachers?.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={columns?.length}
+                        className="text-center py-2"
+                      >
+                        No Data Found
+                      </td>
+                    </tr>
+                  ) : (
+                    <>
+                      {teachers?.map((teacher, index) => (
+                        <tr
+                          key={teacher.userId}
+                          className="border-t border-gray-200 text-sm text-nowrap"
                         >
-                          <FaRegCalendarCheck size={16} />
-                        </button>
-                        <button className="text-gray-600 hover:text-yellow-500">
-                          <Link href={`/instructor-request/${teacher?._id}`}>
-                            <FiEye size={18} />
-                          </Link>
-                        </button>
-                        <button
-                          className="text-gray-600 hover:text-red-500"
-                          onClick={() => handleOpenRejectModal(teacher._id)}
-                        >
-                          <RxCross2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+                          <td className="py-4 px-4 text-gray-700">
+                            {index + 1}
+                          </td>
+                          <td className="py-4 px-4 text-gray-700">
+                            {teacher?.userId}
+                          </td>
+                          <td className="py-4 px-4 text-gray-700">
+                            {teacher.personalInfo?.firstName}
+                          </td>
+                          <td className="py-4 px-4 text-gray-700">
+                            {teacher.email}amankumar@gmail.com
+                          </td>
+                          <td className="py-4 px-4 text-gray-700">
+                            {teacher.personalInfo?.firstName}
+                          </td>
+                          <td className="py-4 px-4 text-gray-700">
+                            {new Date(teacher.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className="py-4 px-4 text-center text-gray-700">
+                            {teacher?.approvalStatus}
+                          </td>
+                          <td className="py-4 px-4 text-center">
+                            <div className="flex items-center justify-center gap-4">
+                              <button
+                                className="text-gray-600 hover:text-blue-500"
+                                onClick={() =>
+                                  handleOpenApproveModal(teacher._id)
+                                }
+                              >
+                                <FaRegCalendarCheck size={16} />
+                              </button>
+                              <button className="text-gray-600 hover:text-yellow-500">
+                                <Link
+                                  href={`/instructor-request/${teacher?._id}`}
+                                >
+                                  <FiEye size={18} />
+                                </Link>
+                              </button>
+                              <button
+                                className="text-gray-600 hover:text-red-500"
+                                onClick={() =>
+                                  handleOpenRejectModal(teacher._id)
+                                }
+                              >
+                                <RxCross2 size={18} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  )}
+                </tbody>
+              )}
             </table>
           </div>
 
@@ -205,9 +257,9 @@ const TeacherRequests = () => {
       </div>
 
       <Pagination
-        totalPages={5}
-        currentPage={currentPage}
-        onPageChange={(value) => setcurrentPage(value)}
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </>
   );
