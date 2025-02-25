@@ -9,102 +9,8 @@ import SortBy from "./SortBy";
 import GenderSelector from "./GenderSelector";
 import { useSelector } from "react-redux";
 
-const data = [
-  {
-    subject: "Mathematics",
-    chapters: [
-      "Arithmetic & Basic Math",
-      "Algebra",
-      "Geometry",
-      "Calculus",
-      "Statistics & Probability",
-      "Linear Algebra",
-      "Discrete Mathematics",
-    ],
-  },
-  {
-    subject: "Science",
-    chapters: ["Physics", "Chemistry", "Biology", "Earth Sciences"],
-  },
-  {
-    subject: "History",
-    chapters: ["World History", "Regional History", "Philosophy"],
-  },
-  {
-    subject: "Literature",
-    chapters: [
-      "English Literature",
-      "World Literature",
-      "Genres",
-      "Literary Criticism",
-    ],
-  },
-  {
-    subject: "Social Studies",
-    chapters: ["Geography", "Sociology", "Political Science", "Economics"],
-  },
-  {
-    subject: "Foreign Languages",
-    chapters: [
-      "Spanish",
-      "French",
-      "English",
-      "German",
-      "Italian",
-      "Portuguese",
-    ],
-  },
-  {
-    subject: "Philosophy",
-    chapters: [
-      "Ancient Philosophy",
-      "Modern Philosophy",
-      "Ethics & Moral Philosophy",
-      "Political Philosophy",
-      "Philosophy of Science",
-    ],
-  },
-  {
-    subject: "Art & Design",
-    chapters: ["Fine Arts", "Design", "Art History", "Digital Art"],
-  },
-  {
-    subject: "Technology & Computing",
-    chapters: [
-      "Computer Science",
-      "Cybersecurity",
-      "Artificial Intelligence",
-      "Data Science",
-      "Software Engineering",
-      "Cloud Computing",
-    ],
-  },
-  {
-    subject: "Health & Medicine",
-    chapters: [
-      "Human Anatomy",
-      "Physiology",
-      "Medical Sciences",
-      "Healthcare Professions",
-      "Nutrition & Dietetics",
-    ],
-  },
-  {
-    subject: "Business & Economics",
-    chapters: [
-      "Accounting",
-      "Marketing",
-      "Business Management",
-      "Entrepreneurship",
-    ],
-  },
-  {
-    subject: "Music",
-    chapters: [],
-  },
-];
 
-const TutorFilter = ({ search, setSearch }) => {
+const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects, setSelectedSubjects }) => {
   const [gender, setGender] = useState("Any");
   const [sortBy, setSortBy] = useState("By popularity");
   const [filterOpened, setfilterOpened] = useState("");
@@ -214,7 +120,7 @@ const TutorFilter = ({ search, setSearch }) => {
             All Subjects
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "subject" && <SubjectFilterDropdown />}
+          {filterOpened === "subject" && <SubjectFilterDropdown setfilterOpened={setfilterOpened} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} handleApplySubjects={handleApplySubjects} />}
         </div>
         <div
           onClick={() => handlePriceClick()}

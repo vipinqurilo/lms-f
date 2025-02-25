@@ -1,54 +1,46 @@
 import React, { useState } from "react";
 import { GoCheck } from "react-icons/go";
 
-const SubjectSelection = ({ setSelectedItems, selectedItems, data }) => {
+const SubjectSelection = ({ setSelectedSubjects, selectedSubjects, data }) => {
+  // console.log(selectedSubjects,data, "selectedSubjects and data");
+  
   // Helper function to check if all chapters are selected
   const areAllChaptersSelected = (subject) => {
     const subjectData = data.find((item) => item.subject === subject);
-    return subjectData?.chapters.every((chapter) => selectedItems.includes(chapter));
+    const subjectChapterIds = subjectData?.chapters.map(ch => ch._id) || [];
+    const selectedChapterIds = selectedSubjects.map(ch => ch._id);
+    return subjectChapterIds.every(id => selectedChapterIds.includes(id));
   };
 
   // Toggle selection for subject or chapter
   const toggleSelection = (item, isSubject) => {
-    setSelectedItems((prev) => {
+    setSelectedSubjects((prev) => {
       if (isSubject) {
         const subjectData = data.find((subject) => subject.subject === item);
         const subjectChapters = subjectData?.chapters || [];
+        
+        // Check if all chapters of this subject are already selected
+        const allChaptersSelected = areAllChaptersSelected(item);
 
-        const isSubjectSelected = prev.includes(item);
-
-        if (isSubjectSelected) {
-          // Deselect subject and its chapters
-          return prev.filter(
-            (selected) => selected !== item && !subjectChapters.includes(selected)
-          );
+        if (allChaptersSelected) {
+          // Deselect all chapters of this subject
+          return prev.filter(selected => !subjectChapters.some(ch => ch._id === selected._id));
         } else {
-          // Select subject and all its chapters
-          return [...new Set([...prev, item, ...subjectChapters])];
+          // Select all chapters of this subject
+          const currentSelectedIds = prev.map(ch => ch._id);
+          const chaptersToAdd = subjectChapters.filter(ch => !currentSelectedIds.includes(ch._id));
+          return [...prev, ...chaptersToAdd];
         }
       } else {
-        const chapter = item;
-        const subjectData = data.find((subject) => subject.chapters.includes(chapter));
-        const subjectName = subjectData?.subject;
-
-        const isChapterSelected = prev.includes(chapter);
-
+        // For chapter selection
+        const isChapterSelected = prev.some(ch => ch._id === item._id);
+        
         if (isChapterSelected) {
           // Deselect chapter
-          const updatedSelection = prev.filter((selected) => selected !== chapter);
-          // If all chapters are deselected, remove the subject too
-          if (updatedSelection.includes(subjectName) && !areAllChaptersSelected(subjectName)) {
-            return updatedSelection.filter((selected) => selected !== subjectName);
-          }
-          return updatedSelection;
+          return prev.filter(ch => ch._id !== item._id);
         } else {
           // Select chapter
-          const updatedSelection = [...prev, chapter];
-          // If all chapters are selected, add the subject
-          if (areAllChaptersSelected(subjectName)) {
-            return [...updatedSelection, subjectName];
-          }
-          return updatedSelection;
+          return [...prev, item];
         }
       }
     });
@@ -61,7 +53,7 @@ const SubjectSelection = ({ setSelectedItems, selectedItems, data }) => {
           {/* Subject Title */}
           <div
             className={`font-semibold cursor-pointer flex justify-between items-center ${
-              selectedItems.includes(item.subject) ? "text-black" : "text-[#b4b4b4]"
+              areAllChaptersSelected(item.subject) ? "text-black" : "text-[#b4b4b4]"
             }`}
             onClick={() => toggleSelection(item.subject, true)}
           >
@@ -75,13 +67,13 @@ const SubjectSelection = ({ setSelectedItems, selectedItems, data }) => {
             {item.chapters.length > 0 &&
               item.chapters.map((chapter) => (
                 <div
-                  key={chapter}
+                  key={chapter._id}
                   className={`flex items-center gap-2 justify-between pl-2 rounded-lg cursor-pointer ${
-                    selectedItems.includes(chapter) ? "text-black" : "text-[#b4b4b4]"
+                    selectedSubjects.some(ch => ch._id === chapter._id) ? "text-black" : "text-[#b4b4b4]"
                   }`}
                   onClick={() => toggleSelection(chapter, false)}
                 >
-                  {chapter} <GoCheck />
+                  {chapter.name} <GoCheck />
                 </div>
               ))}
           </div>

@@ -14,6 +14,7 @@ const BookingsFilter = ({
   teacher,
   setTeacher,
 }) => {
+
   const user = useSelector((state) => state.user?.authUser?.role);
 
   return (

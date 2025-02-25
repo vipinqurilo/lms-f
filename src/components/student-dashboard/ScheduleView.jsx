@@ -28,10 +28,9 @@ export default function ScheduleView({
       .reduce((sum, char) => sum + char.charCodeAt(0), 0);
     return colors[charSum % colors.length];
   };
-
+  console.log(startDate, "startDate");
   // Get the start of the week from the startDate
   const weekStart = startOfWeek(startDate);
-  console.log(bookings, "bookings");
   // Generate array of dates for the current week
   const weekDates = [...Array(7)].map((_, i) => addDays(weekStart, i));
 
@@ -43,8 +42,11 @@ export default function ScheduleView({
 
           <button
             onClick={() => setShowCalendar(!showCalendar)}
-            className="p-2 hover:bg-gray-50 relative rounded-lg transition-colors"
+            className="p-2 flex justify-center items-center hover:bg-gray-50 relative rounded-lg transition-colors"
           >
+            <span className="absolute top-[50%] -translate-y-1/2 right-[110%] text-sm text-gray-600">
+              {format(startDate, "MMM")}
+            </span>
             <svg
               width="20"
               height="20"
@@ -108,6 +110,10 @@ export default function ScheduleView({
         <div className="space-y-3">
           {bookingLoading ? (
             <SkeletonLoader />
+          ) : bookings.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">No bookings the day</p>
+            </div>
           ) : (
             bookings?.slice(0, 3).map((booking) => {
               const startTime = new Date(booking.sessionStartTime);

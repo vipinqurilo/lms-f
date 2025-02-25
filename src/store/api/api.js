@@ -3,12 +3,11 @@ import axios from "axios";
 const baseUrlAshokSir = "https://6g2n7ff0-8000.inc1.devtunnels.ms/api";
 const baseUrlAbhiSir = "https://56kjq9dz-8000.inc1.devtunnels.ms/api";
 const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
-
+// const baseURLVipin = "http://localhost:8000/api";
 
 export const api = axios.create({
 
-  baseURL: "https://wq1jbb9k-8000.inc1.devtunnels.ms/api", // Change this as needed
-  // baseURL: baseUrlAshokSir, // Change this as needed
+  baseURL: baseURLVipin, // Change this as needed
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
@@ -20,7 +19,7 @@ export const api = axios.create({
   },
 }); 
 
-// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers
+// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers  
 api.interceptors.request.use((config) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");

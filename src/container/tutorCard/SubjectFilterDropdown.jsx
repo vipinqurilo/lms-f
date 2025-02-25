@@ -1,103 +1,20 @@
 import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import SubjectSelection from "./SubjectSelection";
-const data = [
-  {
-    subject: "Mathematics",
-    chapters: [
-      "Arithmetic & Basic Math",
-      "Algebra",
-      "Geometry",
-      "Calculus",
-      "Statistics & Probability",
-      "Linear Algebra",
-      "Discrete Mathematics",
-    ],
-  },
-  {
-    subject: "Science",
-    chapters: ["Physics", "Chemistry", "Biology", "Earth Sciences"],
-  },
-  {
-    subject: "History",
-    chapters: ["World History", "Regional History", "Philosophy"],
-  },
-  {
-    subject: "Literature",
-    chapters: [
-      "English Literature",
-      "World Literature",
-      "Genres",
-      "Literary Criticism",
-    ],
-  },
-  {
-    subject: "Social Studies",
-    chapters: ["Geography", "Sociology", "Political Science", "Economics"],
-  },
-  {
-    subject: "Foreign Languages",
-    chapters: [
-      "Spanish",
-      "French",
-      "English",
-      "German",
-      "Italian",
-      "Portuguese",
-    ],
-  },
-  {
-    subject: "Philosophy",
-    chapters: [
-      "Ancient Philosophy",
-      "Modern Philosophy",
-      "Ethics & Moral Philosophy",
-      "Political Philosophy",
-      "Philosophy of Science",
-    ],
-  },
-  {
-    subject: "Art & Design",
-    chapters: ["Fine Arts", "Design", "Art History", "Digital Art"],
-  },
-  {
-    subject: "Technology & Computing",
-    chapters: [
-      "Computer Science",
-      "Cybersecurity",
-      "Artificial Intelligence",
-      "Data Science",
-      "Software Engineering",
-      "Cloud Computing",
-    ],
-  },
-  {
-    subject: "Health & Medicine",
-    chapters: [
-      "Human Anatomy",
-      "Physiology",
-      "Medical Sciences",
-      "Healthcare Professions",
-      "Nutrition & Dietetics",
-    ],
-  },
-  {
-    subject: "Business & Economics",
-    chapters: [
-      "Accounting",
-      "Marketing",
-      "Business Management",
-      "Entrepreneurship",
-    ],
-  },
-  {
-    subject: "Music",
-    chapters: [],
-  },
-];
+import { useSelector } from "react-redux";
 
-const SubjectFilterDropdown = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
+const SubjectFilterDropdown = ({setfilterOpened, selectedSubjects, setSelectedSubjects, handleApplySubjects}) => {
+  const { subjects } = useSelector((state) => state.category);
+
+  // Transform subjects data to match required format
+  const transformedData = subjects.map(subject => ({
+    _id: subject._id,
+    subject: subject.name,
+    chapters: subject.courseSubCategory.map(category => ({
+      _id: category._id,
+      name: category.name
+    }))
+  }));
 
   return (
     <div
@@ -130,9 +47,9 @@ const SubjectFilterDropdown = () => {
           className=" overflow-y-scroll"
         >
           <SubjectSelection
-            data={data}
-            setSelectedItems={setSelectedItems}
-            selectedItems={selectedItems}
+            data={transformedData}
+            setSelectedSubjects={setSelectedSubjects}
+            selectedSubjects={selectedSubjects}
           />
         </div>
         <hr />
@@ -142,7 +59,10 @@ const SubjectFilterDropdown = () => {
           <button className="px-5 py-1 rounded-lg bg-[#E9E8EB] text-black  ">
             Clear
           </button>
-          <button className="px-5 py-1 rounded-lg bg-black text-white ">
+          <button onClick={() => {
+            handleApplySubjects();
+            setfilterOpened('');
+          }} className="px-5 py-1 rounded-lg bg-black text-white ">
             Apply
           </button>
         </div>
