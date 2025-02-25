@@ -52,9 +52,7 @@ export default function EnrolledCoursesPage() {
         <div className="dashboard-container">
           <TitleComp
             heading={"Enrolled Courses"}
-            des={
-              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
-            }
+            
           />
 
           <div className="w-full !sticky !-top-0 bg-white px-5 !z-[5]">

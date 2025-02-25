@@ -14,8 +14,8 @@ import TutorCard from "../../container/tutorCard/TutorCard";
 import { BookingModal } from "@/container/booking/BookingModal";
 import LoginModel from "@/container/login/LoginModel";
 import { debounce } from "lodash";
-import { Loader } from "lucide-react";
 import { getSubjects } from "@/store/slices/categorySlice";
+import Loader from "@/components/common/Loader";
 
 const index = () => {
   const [search, setSearch] = useState("");
@@ -85,7 +85,7 @@ const index = () => {
       <TutorFilter handleApplySubjects={handleApplySubjects} search={search} setSearch={setSearch} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} />
       {isLoading["fetchAllTutorProfileAsync"] ? (
         <div className="flex justify-center items-center ">
-          <Loader />
+          <Loader isBig={true} color={"text-secondary"} />
         </div>
       ) : (
         <>

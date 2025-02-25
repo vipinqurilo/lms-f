@@ -37,9 +37,7 @@ export default function OrderHistoryPage() {
         <div className="dashboard-container">
           <TitleComp
             heading={"Order History"}
-            des={
-              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
-            }
+            
           />
 
           <div className="w-full !sticky !-top-0 bg-white px-5">

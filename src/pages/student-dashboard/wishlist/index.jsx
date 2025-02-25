@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { CourseCard } from "../../../components/student-dashboard/CourseCard";
-
 import {
   fetchWishlistAsync,
   removeFromWishlistAsync,
 } from "@/store/slices/student-dashboard/wishlistSlice";
 import TitleComp from "@/components/instructor/TitleComp";
-import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
 
 export default function WishlistPage() {
@@ -34,9 +32,7 @@ export default function WishlistPage() {
         <div className="dashboard-container">
           <TitleComp
             heading={"Wishlist"}
-            des={
-              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
-            }
+            
           />
 
           {/* Loading State */}

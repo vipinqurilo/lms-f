@@ -109,6 +109,10 @@ export default function ScheduleView({
         <div className="space-y-3">
           {bookingLoading?.["fetchBookingsAsync"] ? (
             <SkeletonLoader />
+          ) : bookings.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">No bookings the day</p>
+            </div>
           ) : (
             bookings.map((booking, index) => {
               const startTime = new Date(booking.sessionStartTime);

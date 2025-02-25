@@ -11,14 +11,18 @@ export function ReviewCard({ review, onEdit, onDelete }) {
             className="w-10 h-10 rounded-full"
           />
           <div>
-            <h3 className="font-semibold text-dark">{review.courseTitle}  </h3>
+            <h3 className="font-semibold text-dark">{review.name} </h3>
             <p className="text-sm text-gray-500">{review.date}</p>
           </div>
         </div>
         <StarRating rating={review.rating} />
       </div>
-
-      <div className="mt-4 text-gray-600 leading-relaxed">{review.content}</div>
+      <div className="mt-4">
+        <h2 className="font-semibold text-md">{review.title}</h2>
+        <div className=" text-gray-600 leading-relaxed">
+          {review.content}
+        </div>
+      </div>
 
       <div className="mt-4 space-x-4">
         <button
@@ -27,7 +31,6 @@ export function ReviewCard({ review, onEdit, onDelete }) {
         >
           Edit
         </button>
-       
       </div>
     </div>
   );

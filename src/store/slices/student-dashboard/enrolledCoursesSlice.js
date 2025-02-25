@@ -9,7 +9,7 @@ export const fetchEnrolledCoursesAsync = CreateApiAsyncThunk(
     const response = await api.get(`/order`);
     return response.data; // Assuming the course data is in the "data" property
   }
-);
+);  
 
 const initialState = {
   data: [],
