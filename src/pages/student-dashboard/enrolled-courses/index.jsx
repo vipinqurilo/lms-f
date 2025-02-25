@@ -26,15 +26,22 @@ const TabButton = ({ active, onClick, children }) => (
 
 export default function EnrolledCoursesPage() {
   const dispatch = useDispatch();
-  const { data: enrolledCourses, isLoading } = useSelector(
-    (state) => state.student.enrolledCourses
-  );
+  const {
+    data: enrolledCourses,
+    isLoading,
+    totalPages,
+  } = useSelector((state) => state.student.enrolledCourses);
   const [filters, setfilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    dispatch(fetchEnrolledCoursesAsync());
-  }, [dispatch]);
+    const data = {
+      page: currentPage,
+      limit: 5,
+    };
+    if (filters?.search) data.search = filters.search;
+    dispatch(fetchEnrolledCoursesAsync(data));
+  }, [dispatch, filters, currentPage]);
 
   // const tabs = [
   //   {
@@ -66,9 +73,11 @@ export default function EnrolledCoursesPage() {
 
           {/* Orders Table */}
           {enrolledCourses?.length === 0 && (
-            <p className="text-center py-12 text-gray-500">No Courses Entrolled</p>
+            <p className="text-center py-12 text-gray-500">
+              No Courses Entrolled
+            </p>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 px-5">
             {isLoading["fetchEnrolledCoursesAsync"] ? (
               <div className="w-full col-span-3 py-10 flex items-center justify-center">
                 <Loader color={"text-secondary"} isBig={true} />
@@ -81,7 +90,8 @@ export default function EnrolledCoursesPage() {
                     id: enrollment?.courseId?._id,
                     title: enrollment?.courseId?.courseTitle,
                     instructor: {
-                      name: enrollment?.courseId?.courseInstructor || "N/A",
+                      name:
+                        enrollment?.courseId?.courseInstructor?.email || "N/A",
                       image: enrollment?.courseId?.courseImage,
                     },
                     thumbnail: enrollment?.courseId?.courseImage,
@@ -96,6 +106,7 @@ export default function EnrolledCoursesPage() {
                   onWishlist={false}
                   onWishlistClick={() => {}}
                 />
+                // <p>Hello</p>
               ))
             )}
           </div>
@@ -104,7 +115,7 @@ export default function EnrolledCoursesPage() {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={2}
+        totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
     </StudentDashboardLayout>

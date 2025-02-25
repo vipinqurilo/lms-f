@@ -2,17 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "@/store/api/api";
 
-// Thunk to fetch enrolled courses
 export const fetchEnrolledCoursesAsync = CreateApiAsyncThunk(
   "GET/enrolledCourses/fetchEnrolledCoursesAsync",
-  async () => {
-    const response = await api.get(`/order`);
-    return response.data; // Assuming the course data is in the "data" property
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/students/enrolled-courses?${query}`);
   }
 );  
 
 const initialState = {
   data: [],
+  totalPages: 0,
   isLoading: {},
   error: {},
 };
@@ -23,13 +25,13 @@ const enrolledCoursesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Handle fetchEnrolledCoursesAsync
       .addCase(fetchEnrolledCoursesAsync.pending, (state) => {
         state.isLoading["fetchEnrolledCoursesAsync"] = true;
       })
       .addCase(fetchEnrolledCoursesAsync.fulfilled, (state, action) => {
         state.isLoading["fetchEnrolledCoursesAsync"] = false;
-        state.data = action.payload;
+        state.data = action.payload.data;
+        state.totalPages = action.payload.pagination.totalPages;
       })
       .addCase(fetchEnrolledCoursesAsync.rejected, (state, action) => {
         state.isLoading["fetchEnrolledCoursesAsync"] = false;

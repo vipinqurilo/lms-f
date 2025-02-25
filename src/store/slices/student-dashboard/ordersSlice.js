@@ -29,7 +29,7 @@ const ordersSlice = createSlice({
       })
       .addCase(fetchOrderHistoryAsync.fulfilled, (state, action) => {
         state.isLoading["fetchOrderHistoryAsync"] = false;
-        state.orderHistory = action.payload?.data || [];
+        state.orderHistory = action.payload?.data?.orders || [];
       })
       .addCase(fetchOrderHistoryAsync.rejected, (state, action) => {
         state.isLoading["fetchOrderHistoryAsync"] = false;

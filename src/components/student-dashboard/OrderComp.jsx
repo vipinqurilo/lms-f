@@ -16,26 +16,32 @@ const OrderComp = () => {
   const { orderHistory: orders, isLoading } = useSelector(
     (state) => state.student.orders
   );
-  const { orderHistory: adminOrder, isLoading: adminLoading } = useSelector(
-    (state) => state.admin.order
-  );
+  // const { orderHistory: adminOrder, isLoading: adminLoading } = useSelector(
+  //   (state) => state.admin.order
+  // );
   const [filters, setfilters] = useState({});
 
   useEffect(() => {
     const data = {
-        page: currentPage,
-        limit: 5,
+      page: currentPage,
+      limit: 5,
     };
-
     if (filters?.search) data.search = filters.search;
     if (filters?.startDate) data.startDate = filters.startDate;
     if (filters?.endDate) data.endDate = filters.endDate;
-    if (authUser?.role === "admin") {
-      dispatch(fetchAllOrders(data));
-    } else {
-      dispatch(fetchOrderHistoryAsync(data));
-    }
-  }, [dispatch, filters.search, filters.startDate, filters.endDate, currentPage]);
+    // if (authUser?.role === "admin") {
+    //   dispatch(fetchAllOrders(data));
+    // } else {
+    dispatch(fetchOrderHistoryAsync(data));
+    // }
+  }, [
+    dispatch,
+    filters.search,
+    filters.startDate,
+    filters.endDate,
+    currentPage,
+  ]);
+
   return (
     <>
       <div className="p-10">
@@ -58,8 +64,8 @@ const OrderComp = () => {
 
           {/* Orders Table */}
           <div className="bg-white rounded-b-lg shadow-md overflow-hidden">
-            {isLoading["fetchOrderHistoryAsync"] ||
-            adminLoading["fetchAllOrders"] ? (
+            {isLoading["fetchOrderHistoryAsync"] ? (
+              // || adminLoading["fetchAllOrders"]
               <div className="text-center py-8">
                 <Loader isBig={true} color={"text-secondary"} />
               </div>
@@ -71,7 +77,7 @@ const OrderComp = () => {
                       "S.No",
                       "Order ID",
                       "Payment ID",
-                      ...(authUser?.role === "admin" ? ["User Name"] : []), // Spread it correctly
+                      ...(authUser?.role === "admin" ? ["Student Name"] : []),
                       "Course Name",
                       "Date",
                       "Price",
@@ -88,10 +94,11 @@ const OrderComp = () => {
                       </tr>
                     ) : (
                       <>
-                        {(authUser?.role === "admin"
+                        {/* {(authUser?.role === "admin"
                           ? adminOrder
                           : orders
-                        )?.map((order, index) => (
+                        )? */}
+                        {orders?.map((order, index) => (
                           <tr key={order._id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 text-sm text-gray-600">
                               {index + 1}
