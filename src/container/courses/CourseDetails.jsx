@@ -32,13 +32,13 @@ const CourseDetails = () => {
           <CourseHighLights data={data} />
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
-          <CourseOverview data={data} />
-          <LecturesOverview data={data?.courseContent} />
-          <AboutInstructor data={data?.instructor} />
+          <CourseOverview data={data?.course} />
+          <LecturesOverview data={data?.course?.courseContent} />
+          <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
-            <CommentForm id={data?._id} />
+            <CommentForm id={data?.course?._id} />
           )}
-          <CourseReview data={data?.reviews} />
+          <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
           <CourseHighLights data={data} />

@@ -7,6 +7,7 @@ import { verifyLoggedInUser } from "@/store/slices/userSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
+import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const GetLoggedInUser = () => {
         dispatch(getWallet());
       } else if (authUser?.role === "student") {
         dispatch(fetchWishlistAsync());
+        dispatch(fetchEnrolledCoursesAsync({ page: 1, limit:10 }));
       }
     }
   }, [dispatch, authUser]);
