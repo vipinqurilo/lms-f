@@ -47,14 +47,24 @@ const RegisterForm = () => {
           onSubmit={handleSubmit(submitHandler)}
           className="w-full space-y-8"
         >
-          <InputField
-            type="text"
-            label={"Full Name"}
-            name={"name"}
-            register={register}
-            errors={errors}
-            placeHolder={"Enter Your Full Name"}
-          />
+          <div className="w-full grid lg:grid-cols-2 gap-8">
+            <InputField
+              type="text"
+              label={"First Name"}
+              name={"firstName"}
+              register={register}
+              errors={errors}
+              placeHolder={"Enter Your First Name"}
+            />
+            <InputField
+              type="text"
+              label={"Last Name"}
+              name={"lastName"}
+              register={register}
+              errors={errors}
+              placeHolder={"Enter Your Last Name"}
+            />
+          </div>
           <InputField
             type="email"
             label={"Email"}
@@ -99,7 +109,10 @@ const RegisterForm = () => {
             )}
           </div>
 
-          <SubmitButton text={loading ? <Loader /> : "Register"} loading={loading} />
+          <SubmitButton
+            text={loading ? <Loader /> : "Register"}
+            loading={loading}
+          />
         </form>
       </div>
       <LoginOptions type={"register"} />
