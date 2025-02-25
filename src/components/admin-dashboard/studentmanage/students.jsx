@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -17,22 +16,17 @@ const StudentsTable = () => {
   // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const { students, totalPages, currentPage } = useSelector(
     (state) => state.admin.student
-  
   ); // Adjust the path to your state
-  console.log(students,";;;;;;")
+  console.log(students, ";;;;;;");
 
+  // Fetch student data on component mount or page change
+  useEffect(() => {
+    dispatch(getStudent({ search: "", limit: 2, page }));
+  }, [dispatch, page]); // Fetch students when page changes
 
-
- // Fetch student data on component mount or page change
- useEffect(() => {
-  dispatch(getStudent({ search: "", limit: 2, page }));
-}, [dispatch, page]); // Fetch students when page changes
-
-
-
-const handlePageChange = (newPage) => {
-  setPage(newPage);
-};
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
 
   const columns = [
     "S.No.",
@@ -42,7 +36,6 @@ const handlePageChange = (newPage) => {
     "Registered No",
     "Action",
   ];
-
 
   // if (isLoading["getAllTeachers"]) {
   //   return (
@@ -94,14 +87,14 @@ const handlePageChange = (newPage) => {
                       {index + 1}
                     </div>
                     <div className="col-span-2 p-4 flex items-center gap-5">
-                    <img
-                    src={item?.user?.profilePhoto || "/placeholder.svg"}
-                    alt="profile"
-                    className="w-10 h-10 rounded-full"
-                  />
-                       <div className="text-sm">
-                    <p>{item?.user?.firstName || "student"}</p>
-                  </div>
+                      <img
+                        src={item?.user?.profilePhoto || "/placeholder.svg"}
+                        alt="profile"
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <div className="text-sm">
+                        <p>{item?.user?.firstName || "student"}</p>
+                      </div>
                     </div>
                     <div className="col-span-2 p-4 text-sm">{user?.email}</div>
                     <div className="col-span-2 p-4 text-sm">
@@ -218,11 +211,11 @@ const handlePageChange = (newPage) => {
           </div>
         </div>
       </div>
-        <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
