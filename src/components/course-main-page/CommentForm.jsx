@@ -1,9 +1,14 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Heading from "./Heading";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import InputField from "../login/InputField";
 import SubmitButton from "../login/SubmitButton";
+import { useDispatch } from "react-redux";
+import { addReview } from "@/store/slices/coursesSlice";
+import { useSelector } from "react-redux";
 
 const RatingInput = ({ initialRating = 0, onRatingChange }) => {
   const maxStars = 5;
@@ -43,14 +48,17 @@ const RatingInput = ({ initialRating = 0, onRatingChange }) => {
   );
 };
 
-const CommentForm = () => {
+const CommentForm = ({ id }) => {
   const {
     register,
     formState: { errors },
     setValue,
     handleSubmit,
+    reset,
   } = useForm();
-  const [ratings, setRatings] = useState(3);
+  const [ratings, setRatings] = useState(5);
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.courses);
 
   const handleRatingChange = (newRating) => {
     setRatings(newRating);
@@ -61,11 +69,18 @@ const CommentForm = () => {
   }, [ratings]);
 
   const submitHandler = (data) => {
-    console.log(data);
+    const formData = {
+      ...data,
+      course: id,
+      rating: ratings
+    };
+    dispatch(addReview(formData))
+      .unwrap()
+      .then(() => reset());
   };
 
   return (
-    <div data-aos="fade-up" className="course-sub-container">
+    <div className="course-sub-container">
       <Heading data={"Write Review and Ratings"} />
       <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
         <div className="text-2xl flex items-center justify-start">
@@ -75,35 +90,37 @@ const CommentForm = () => {
           />
         </div>
         <InputField
-          label={"Name:"}
+          label={"Review:"}
           errors={errors}
-          name={"name"}
-          placeHolder={"Enter Your Name"}
+          name={"review"}
+          placeHolder={"Enter Your Review"}
           register={register}
           type={"text"}
         />
         <div className="">
           <label
-            htmlFor={"review"}
+            htmlFor={"message"}
             className="text-light mb-2 block font-medium"
           >
-            Write Review:
+            Write Message:
           </label>
           <div className="relative">
             <textarea
-              id={"review"}
-              {...register("review", { required: `*${"review"} is required` })}
+              id={"message"}
+              {...register("message", {
+                required: `*${"Message"} is required`,
+              })}
               className="w-full h-40 resize-none border border-black/10 p-3 rounded px-4 focus:outline-secondary transition-custom"
-              placeholder={"Enter Review Here"}
+              placeholder={"Enter message Here"}
             />
           </div>
-          {errors.review && (
+          {errors.message && (
             <span className="text-xs text-red-500">
-              {errors.review.message}
+              {errors.message.message}
             </span>
           )}
         </div>
-        <SubmitButton text={"Submit Review"} />
+        <SubmitButton text={"Submit Review"} loading={isLoading["addReview"]} />
       </form>
     </div>
   );

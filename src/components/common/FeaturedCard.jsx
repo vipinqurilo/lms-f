@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { addOrderAsync, wishlistAsync } from "@/store/slices/coursesSlice";
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { IoMdHeart } from "react-icons/io";
@@ -22,6 +22,7 @@ import CheckoutForm from "../payment/CheckoutForm";
 
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
+  const { wishlist } = useSelector((state) => state.student.wishlist);
 
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
@@ -29,18 +30,7 @@ export default function FeaturedCard({ data, isFull = false }) {
   const dispatch = useDispatch();
 
   const handleAddWishlist = (id) => {
-    console.log(id, "iddd");
     dispatch(wishlistAsync({ course: id }));
-  };
-
-  const handleAddOrder = async (id, price) => {
-    const response = await dispatch(
-      addOrderAsync({ course: id, amountTotal: price })
-    );
-
-    if (response?.payload?.status === "success") {
-      window.open(response?.payload.checkoutUrl, "_blank");
-    }
   };
 
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -67,7 +57,7 @@ export default function FeaturedCard({ data, isFull = false }) {
         });
     }
   };
-
+  
   return (
     <>
       <div className="flex gap-2 md:p-0  p-2">
@@ -106,7 +96,11 @@ export default function FeaturedCard({ data, isFull = false }) {
                   onClick={() => handleAddWishlist(data?._id)}
                   className="  text-red-500  group-hover:text-white"
                 >
-                  <FaRegHeart className="text-xl hover:text-red-500" />
+                  {wishlist?.some((item) => item?.course?._id === data?._id) ? (
+                    <FaHeart className={`text-xl hover:text-red-500 `} />
+                  ) : (
+                    <FaRegHeart className={`text-xl hover:text-red-500 `} />
+                  )}
                 </button>
               </div>
             </div>

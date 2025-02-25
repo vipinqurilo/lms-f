@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Heading from "./Heading";
 import { BiPlayCircle } from "react-icons/bi";
+import Link from "next/link";
 
 const LecturesOverview = ({ data }) => {
   // Convert "HH:MM" to total minutes
@@ -10,7 +11,7 @@ const LecturesOverview = ({ data }) => {
   };
 
   // Reduce to get total minutes
-  const totalMinutes = data.reduce((acc, module) => {
+  const totalMinutes = data && data?.reduce((acc, module) => {
     return (
       acc +
       module.lessons.reduce((lessonAcc, lesson) => {
@@ -60,7 +61,7 @@ const LecturesOverview = ({ data }) => {
   }, []);
 
   return (
-    <div data-aos="fade-up" className="course-sub-container">
+    <div className="course-sub-container">
       <Heading data={"Course Content "} />
       <div className="flex items-center justify-between text-sm">
         {details?.map((item, index) => (
@@ -109,9 +110,9 @@ const LecturesOverview = ({ data }) => {
                 >
                   <h6 className="flex items-start gap-1">
                     <BiPlayCircle className="text-secondary text-lg" />
-                    <span className="-mt-[2px] font-medium">
+                    <Link href={lecture?.video} target="_blank" className="-mt-[2px] font-medium hover:text-secondary transition-custom">
                       Lecture{index + 1}.{i + 1} {lecture?.lessonTitle}
-                    </span>
+                    </Link>
                   </h6>
                   <p className="font-medium text-light text-sm">
                     {lecture?.duration}

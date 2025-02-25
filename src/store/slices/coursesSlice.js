@@ -37,6 +37,11 @@ export const createOrder = CreateApiAsyncThunk("courses/createOrder", (data) =>
   api.post(`/order/stripe`, data)
 );
 
+// add review
+export const addReview = CreateApiAsyncThunk("courses/addReview", (data) =>
+  api.post(`/review`, data)
+);
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
@@ -124,6 +129,17 @@ const coursesSlice = createSlice({
       .addCase(createOrder.rejected, (state, action) => {
         state.isLoading["createOrder"] = false;
         state.error["createOrder"] = action.payload;
+      })
+      // add review
+      .addCase(addReview.pending, (state, action) => {
+        state.isLoading["addReview"] = true;
+      })
+      .addCase(addReview.fulfilled, (state, action) => {
+        state.isLoading["addReview"] = false;
+      })
+      .addCase(addReview.rejected, (state, action) => {
+        state.isLoading["addReview"] = false;
+        state.error["addReview"] = action.payload;
       });
   },
 });
