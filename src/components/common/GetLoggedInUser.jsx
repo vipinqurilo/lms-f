@@ -6,6 +6,7 @@ import { getLanguages } from "@/store/slices/languageSlice";
 import { verifyLoggedInUser } from "@/store/slices/userSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const GetLoggedInUser = () => {
         authUser?.userStatus === "active"
       ) {
         dispatch(getWallet());
+      } else if (authUser?.role === "student") {
+        dispatch(fetchWishlistAsync());
       }
     }
   }, [dispatch, authUser]);

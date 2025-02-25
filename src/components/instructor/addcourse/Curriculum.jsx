@@ -52,8 +52,7 @@ const Curriculum = () => {
   const handleAddLecture = (moduleIndex) => {
     if (
       lecture?.lessonTitle.trim() !== "" &&
-      lecture?.video.trim() !== "" &&
-      lecture?.duration.trim() !== ""
+      lecture?.video.trim() !== ""
     ) {
       setModules((prevModules) => {
         const updatedModules = prevModules.map((module, index) => {

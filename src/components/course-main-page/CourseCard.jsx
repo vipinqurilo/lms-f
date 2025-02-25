@@ -1,12 +1,43 @@
+"use client";
+
+import { wishlistAsync } from "@/store/slices/coursesSlice";
 import Image from "next/image";
 import React, { useState } from "react";
-import { FaHeart, FaPlayCircle, FaShareAlt } from "react-icons/fa";
+import {
+  FaHeart,
+  FaPlayCircle,
+  FaShareAlt,
+  FaFacebook,
+  FaTwitter,
+  FaWhatsapp,
+  FaLinkedin,
+  FaCopy,
+} from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../common/Loader";
 
-const CourseCard = ({data}) => {
+const CourseCard = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const { isLoading } = useSelector((state) => state.courses);
+  const { wishlist } = useSelector((state) => state.student.wishlist);
+  const dispatch = useDispatch();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const toggleIsShareModalOpen = () => setIsShareModalOpen(!isShareModalOpen);
+
+  const courseLink = `https://yourwebsite.com/course/${data?._id}`;
+
+  const handleAddToWishList = () => {
+    dispatch(wishlistAsync({ course: data?._id }));
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(courseLink);
+    alert("Course link copied!");
+  };
+
   return (
     <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
       <div className="relative rounded-lg overflow-hidden">
@@ -24,7 +55,6 @@ const CourseCard = ({data}) => {
             className="text-secondary hover:text-white"
           >
             <FaPlayCircle size={50} />{" "}
-            {/* Replace with a custom icon if needed */}
           </button>
         </div>
       </div>
@@ -33,16 +63,31 @@ const CourseCard = ({data}) => {
           {data?.courseTitle || "Course Title"}
         </h3>
         <div className="w-full flex justify-between items-center">
-          <h3 className="text-green-500 text-2xl font-bold">{data?.coursePrice || "--"}</h3>
+          <h3 className="text-green-500 text-2xl font-bold">
+            {data?.coursePrice || "--"}
+          </h3>
           <p className="text-gray-500">
             <span className="line-through">₹1999.00</span> <span>50% off</span>
           </p>
         </div>
         <div className="flex justify-between mt-4">
-          <button className="flex items-center text-red-500 hover:text-white hover:bg-red-500 transition-custom border border-red-500 rounded-lg px-4 py-1">
-            <FaHeart className="" />
+          <button
+            onClick={handleAddToWishList}
+            className={`flex items-center text-red-500 hover:text-white hover:bg-red-500 transition-custom border border-red-500 rounded-lg px-4 py-1 ${
+              wishlist?.some((item) => item?.course?._id === data?._id) &&
+              "!bg-red-500 !text-white hover:!bg-white hover:!text-red-500"
+            }`}
+          >
+            {isLoading["wishlistAsync"] ? (
+              <Loader color={"text-secondary"} />
+            ) : (
+              <FaHeart className="" />
+            )}
           </button>
-          <button className="flex items-center text-green-500 hover:bg-green-500 hover:text-white border border-green-500 transition-custom rounded-lg px-4 py-1">
+          <button
+            onClick={toggleIsShareModalOpen}
+            className="flex items-center text-green-500 hover:bg-green-500 hover:text-white border border-green-500 transition-custom rounded-lg px-4 py-1"
+          >
             <FaShareAlt className="mr-2" />
             Share
           </button>
@@ -68,7 +113,10 @@ const CourseCard = ({data}) => {
               <iframe
                 width="660"
                 height="415"
-                src={data?.courseVideo || "https://youtu.be/iuJDhFRDx9M?si=RHBQ6IqseBGzyYhL"}
+                src={
+                  data?.courseVideo ||
+                  "https://youtu.be/iuJDhFRDx9M?si=RHBQ6IqseBGzyYhL"
+                }
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -76,6 +124,60 @@ const CourseCard = ({data}) => {
                 allowFullScreen
               ></iframe>
             </div>
+          </div>
+        </div>
+      )}
+      {isShareModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="relative w-[90%] max-w-md bg-white p-6 rounded-lg shadow-lg">
+            <button
+              onClick={toggleIsShareModalOpen}
+              className="absolute top-2 right-2 text-gray-600 text-lg"
+            >
+              ✕
+            </button>
+            <h3 className="text-lg font-bold text-center mb-4">
+              Share This Course
+            </h3>
+            <div className="flex justify-center space-x-4">
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${courseLink}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebook className="text-blue-600 text-3xl hover:scale-110 transition" />
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?url=${courseLink}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaTwitter className="text-blue-400 text-3xl hover:scale-110 transition" />
+              </a>
+              <a
+                href={`https://wa.me/?text=${courseLink}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp className="text-green-500 text-3xl hover:scale-110 transition" />
+              </a>
+              <a
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${courseLink}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaLinkedin className="text-blue-700 text-3xl hover:scale-110 transition" />
+              </a>
+              <button
+                onClick={handleCopyLink}
+                className="text-gray-700 text-3xl hover:scale-110 transition"
+              >
+                <FaCopy />
+              </button>
+            </div>
+            <p className="text-center text-sm text-gray-500 mt-4">
+              Click on an icon to share the course
+            </p>
           </div>
         </div>
       )}

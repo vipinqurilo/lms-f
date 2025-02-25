@@ -40,7 +40,7 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.authUser = null;
       localStorage.removeItem("token");
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("adminToken");
     },
   },
 

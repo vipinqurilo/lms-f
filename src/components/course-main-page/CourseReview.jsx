@@ -22,7 +22,6 @@ const CourseReview = ({ data }) => {
 
   return (
     <div
-      data-aos="fade-up"
       className="course-sub-container !border-none !shadow-none"
     >
       <Heading data={"Students Reviews"} />

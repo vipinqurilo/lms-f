@@ -18,6 +18,7 @@ const UploadLecture = ({ handleCancel, setLecture }) => {
   const handleUpload = (e) => {
     const reply = confirm("Are you sure? you want to upload this file");
     if (reply) {
+      const file = e.target.files?.[0];
       const videoElement = document.createElement("video");
       videoElement.preload = "metadata";
       videoElement.src = URL.createObjectURL(file);
@@ -27,7 +28,6 @@ const UploadLecture = ({ handleCancel, setLecture }) => {
         const duration = formatDuration(videoElement.duration);
         setVideoDuration(duration);
       };
-      const file = e.target.files?.[0];
       const formData = new FormData();
       formData.append("video", file);
       dispatch(uploadVideo(formData))
