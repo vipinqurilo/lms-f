@@ -10,7 +10,7 @@ export const fetchEnrolledCoursesAsync = CreateApiAsyncThunk(
       .join("&");
     return api.get(`/students/enrolled-courses?${query}`);
   }
-);
+);  
 
 const initialState = {
   data: [],

@@ -80,15 +80,15 @@ export function PaymentSelection({
           <div className="space-y-2 leading-3 text-xs border p-3 px-6">
             <div className="flex justify-between text-xs">
               <span>Lesson Count: 1</span>
-              <span>${(price * duration / 60).toFixed(2)}</span>
+              <span>ZAR {(price * duration / 60).toFixed(2)}</span>
             </div>
             <div>Lesson(s) Duration: {duration} Minutes</div>
-            <div>Item price: ${(price * duration / 60).toFixed(2)}</div>
+            <div>Item price: ZAR {(price * duration / 60).toFixed(2)}</div>
             <div>Teach subject: {subject?.name}</div>
             <div className="pt-4 border-t mt-4">
               <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>
-                <span className="">${(price * duration / 60).toFixed(2)}</span>
+                <span className="">ZAR {(price * duration / 60).toFixed(2)}</span>
               </div>
             </div>
           </div>

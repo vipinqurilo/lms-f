@@ -14,10 +14,17 @@ import TutorCard from "../../container/tutorCard/TutorCard";
 import { BookingModal } from "@/container/booking/BookingModal";
 import LoginModel from "@/container/login/LoginModel";
 import { debounce } from "lodash";
-import { Loader } from "lucide-react";
+import { getSubjects } from "@/store/slices/categorySlice";
+import Loader from "@/components/common/Loader";
 
 const index = () => {
   const [search, setSearch] = useState("");
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [applySubjects, setApplySubjects] = useState(false);
+  const handleApplySubjects = () => {
+    setApplySubjects(true);
+    console.log(selectedSubjects, "selectedSubjects");
+  }
   const { authUser } = useSelector((state) => state.user);
   const {
     bookings: rawBookings,
@@ -33,26 +40,34 @@ const index = () => {
   const [showBooking, setShowBooking] = useState(false);
   const [tutor, setTutor] = useState(null);
 
-  const debouncedFetch = debounce((searchTerm, timeRanges) => {
-    if (timeRanges) {
-      const timeRangesString = timeRanges
+  const debouncedFetch = debounce((searchTerm, timeRanges, applySubjects) => {
+    if (timeRanges || selectedSubjects.length > 0) {
+      const timeRangesString = timeRanges ? timeRanges
         .map((time) => time.replace(/\s*-\s*/g, "-"))
-        .join(",");
+        .join(",") : "";
+      const selectedSubjectsString = selectedSubjects.map(subject => subject._id).join(",");
       dispatch(
         fetchAllTutorProfileAsync({
           search: searchTerm,
           timeRanges: timeRangesString,
+          subjects: selectedSubjectsString,
         })
-      );
+      ).unwrap().then(() => {
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        setApplySubjects(false);
+      });
     } else {
+
       dispatch(fetchAllTutorProfileAsync({ search: searchTerm }));
     }
   }, 1000);
 
   useEffect(() => {
-    debouncedFetch(search, timeRanges);
+    debouncedFetch(search, timeRanges, applySubjects);
     return () => debouncedFetch.cancel();
-  }, [search, timeRanges]);
+  }, [search, timeRanges, applySubjects]);
 
   useEffect(() => {
     if (isAvailableModelOpen) {
@@ -62,13 +77,15 @@ const index = () => {
       };
     }
   }, [isAvailableModelOpen]);
-
+  useEffect(() => {
+    dispatch(getSubjects());
+  }, []);
   return (
     <div className="text-lg bg-light_bg w-full min-h-screen  p-2 md:p-10 lg:px-20  custom-margin-top">
-      <TutorFilter search={search} setSearch={setSearch} />
+      <TutorFilter handleApplySubjects={handleApplySubjects} search={search} setSearch={setSearch} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} />
       {isLoading["fetchAllTutorProfileAsync"] ? (
         <div className="flex justify-center items-center ">
-          <Loader />
+          <Loader isBig={true} color={"text-secondary"} />
         </div>
       ) : (
         <>

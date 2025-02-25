@@ -11,19 +11,28 @@ import {
 import EditReviewModal from "@/components/common/EditReviewModal";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import TitleComp from "@/components/instructor/TitleComp";
-import { Loader } from "lucide-react";
+import InstructorButton from "@/components/instructor/InstructorButton";
+import Loader from "@/components/common/Loader";
 
 export default function ReviewsPage() {
+  const [activeTab, setActiveTab] = useState("review");
   const [reviews, setReviews] = useState([]);
   const [selectedReview, setSelectedReview] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setcurrentPage] = useState(1);
-
   const dispatch = useDispatch();
-  const { data, isLoading, error } = useSelector(
-    (state) => state.student.review
-  );
-
+  const {
+    data,
+    isLoading,
+    error,
+    totalPages,
+    currentPage: currentPageFromStore,
+  } = useSelector((state) => state.student.review);
+  const [currentPage, setcurrentPage] = useState(currentPageFromStore);
+  console.log(data, "reviews data");
+  const filters = [
+    { label: "Course Reviews", value: "review" },
+    { label: "Teacher Reviews", value: "tutorReview" },
+  ];
   const handleEdit = (review) => {
     setSelectedReview(review);
     setIsModalOpen(true);
@@ -41,29 +50,39 @@ export default function ReviewsPage() {
   const handleReviewUpdate = (updatedReview) => {
     console.log(updatedReview, "updatedReview");
     const data = {
-      course: updatedReview.courseId,
-      review: updatedReview.content,
+      message:updatedReview.content,
+      review: updatedReview.title,
       rating: updatedReview.rating,
     };
-    dispatch(editReviewAsync(data));
+    dispatch(editReviewAsync({tab:activeTab, id:updatedReview?.id,data}));
     setIsModalOpen(false);
   };
 
   useEffect(() => {
-    dispatch(fetchReviewAsync());
-  }, [dispatch]);
+    dispatch(fetchReviewAsync(activeTab));
+  }, [dispatch, activeTab]);
 
   useEffect(() => {
     if (data) {
       const formattedReviews = data.map((item) => ({
         id: item._id,
-        courseId: item.course._id,
-        author: "Student", // You might want to get actual student name from the student object
-        avatar: "/assets/student-dashboard/course/course-03.jpg", // Default avatar or from student data
-        date: new Date(item.course.createdAt).toLocaleDateString(),
+        ...(activeTab === 'review' 
+          ? { courseId: item?.course?._id ,
+            name: item?.course?.courseTitle,
+            avatar: item?.course?.courseImage,
+        date: new Date(item?.course?.createdAt).toLocaleDateString(),
+
+          }
+          : { tutorId: item?.tutorId?._id ,
+            name: item?.tutorId?.firstName, 
+            avatar: item?.tutorId?.profilePhoto,
+            date: new Date(item?.tutorId?.createdAt).toLocaleDateString(),
+          }
+        ),
+        author: item?.user?.name,
         rating: item.rating,
+        title:item.review,
         content: item.message,
-        courseTitle: item.course.courseTitle,
       }));
       setReviews(formattedReviews);
     }
@@ -75,10 +94,47 @@ export default function ReviewsPage() {
         <div className="dashboard-container">
           <TitleComp
             heading={"Reviews"}
-            des={
-              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
-            }
           />
+          <div className=" my-4 sticky top-0 bg-white z-10 px-4" >
+              <div className="flex gap-3">
+                {filters.map((filterItem, index) => (
+                  <>
+                    <InstructorButton
+                      condition={
+                        activeTab === filterItem.value
+                          ? "bg-secondary text-white"
+                          : "bg-none"
+                      }
+                      handleClick={() => setActiveTab(filterItem.value)}
+                      tab={`${filterItem.label}`}
+                      key={index}
+                    />
+                  </>
+                ))}
+              </div>
+            </div>
+          {/* <div className="flex gap-4 mb-6 border-b border-gray-200 px-6 py-1">
+            <div
+              onClick={() => setActiveTab('review')}
+              className={`flex items-center gap-2 px-4 py-1 text-sm rounded cursor-pointer transition-colors ${
+                activeTab === 'review'
+                  ? 'bg-secondary text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+            > 
+              Course Reviews
+            </div>
+            <div
+              onClick={() => setActiveTab('tutorReview')} 
+              className={`flex items-center gap-2 px-4 py-1 text-sm rounded cursor-pointer transition-colors ${
+                activeTab === 'tutorReview'
+                  ? 'bg-secondary text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+            >
+              Teacher Reviews
+            </div>
+          </div> */}
 
           {isLoading["fetchReviewAsync"] ? (
             <div className="w-full flex items-center justify-center py-12">
@@ -118,7 +174,7 @@ export default function ReviewsPage() {
       <Pagination
         currentPage={currentPage}
         onPageChange={(val) => setcurrentPage(val)}
-        totalPages={5}
+        totalPages={totalPages}
       />
 
       {isModalOpen && (

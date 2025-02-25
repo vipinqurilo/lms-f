@@ -71,7 +71,7 @@ export function Calendar({ selectedDate, onDateSelect, minDate }) {
     new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
   return (
-    <div className="bg-white rounded-lg p-4 w-[320px]">
+    <div  className="bg-white rounded-lg p-4 w-[320px]">
       <div className="flex justify-between items-center mb-4">
         <button onClick={handlePrevMonth} className="p-1">
           <ChevronLeft className="h-4 w-4" />

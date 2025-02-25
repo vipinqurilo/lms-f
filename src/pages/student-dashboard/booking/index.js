@@ -23,7 +23,11 @@ export default function BookingsPage() {
   const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(() => {
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    return nextWeek;
+  });
   const [endDateError, setEndDateError] = useState(false);
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const [currentPage, setCurrentPage] = useState(1);

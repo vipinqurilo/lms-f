@@ -8,6 +8,7 @@ export const fetchProfileAsync = CreateApiAsyncThunk(
   () => api.get(`/profile`)
 );
 
+
 export const updatePersonalInfoAsync = CreateApiAsyncThunk(
   "profile/updatePersonalInfoAsync",
   (personalInfo) => api.put(`/profile/personal-info`, personalInfo)
@@ -21,6 +22,7 @@ const initialState = {
   profile: null,
   isLoading: {},
   error: {},
+  allSubjects: [],
 };
 
 const profileSlice = createSlice({

@@ -34,7 +34,7 @@ const TeacherRequests = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-  const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
+  const [rejectionReason, setRejectionReason] = useState(""); 
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [filters, setfilters] = useState({});
@@ -199,13 +199,41 @@ const TeacherRequests = () => {
                             {teacher.personalInfo?.firstName}
                           </td>
                           <td className="py-4 px-4 text-gray-700">
-                            {new Date(teacher.createdAt).toLocaleDateString()}
+                            {new Date(teacher.createdAt).toLocaleString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              }
+                            )}
                           </td>
                           <td className="py-4 px-4 text-center text-gray-700">
-                            {teacher?.approvalStatus}
+                            <div
+                              className={`px-2 py-1 rounded-full ${
+                                teacher?.approvalStatus === "in review"
+                                  ? "bg-yellow-200 text-yellow-950"
+                                  : teacher?.approvalStatus === "Approved"
+                                  ? "bg-green-200 text-green-800"
+                                  : "bg-red-200 text-red-800"
+                              }`}
+                            >
+                              {teacher?.approvalStatus}
+                            </div>
                           </td>
+
                           <td className="py-4 px-4 text-center">
                             <div className="flex items-center justify-center gap-4">
+                              <button className="text-gray-600 hover:text-yellow-500">
+                                <Link
+                                  href={`/instructor-request/${teacher?._id}`}
+                                >
+                                  <FiEye size={18} />
+                                </Link>
+                              </button>
                               <button
                                 className="text-gray-600 hover:text-blue-500"
                                 onClick={() =>
@@ -214,13 +242,7 @@ const TeacherRequests = () => {
                               >
                                 <FaRegCalendarCheck size={16} />
                               </button>
-                              <button className="text-gray-600 hover:text-yellow-500">
-                                <Link
-                                  href={`/instructor-request/${teacher?._id}`}
-                                >
-                                  <FiEye size={18} />
-                                </Link>
-                              </button>
+
                               <button
                                 className="text-gray-600 hover:text-red-500"
                                 onClick={() =>
@@ -266,3 +288,11 @@ const TeacherRequests = () => {
 };
 
 export default TeacherRequests;
+
+
+
+
+
+
+
+

@@ -6,7 +6,9 @@ import OrderComp from "@/components/student-dashboard/OrderComp";
 export default function OrderHistoryPage() {
   return (
     <StudentDashboardLayout>
+
       <OrderComp />
+
     </StudentDashboardLayout>
   );
 }

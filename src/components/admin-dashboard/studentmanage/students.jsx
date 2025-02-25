@@ -1,5 +1,4 @@
 "use client";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import TableHeader from "@/components/instructor/TableHeader";
@@ -9,18 +8,15 @@ import { getStudent } from "@/store/slices/admin-dashboard/studentSlice";
 import TitleComp from "@/components/instructor/TitleComp";
 import UserFilter from "../user/UserFilter";
 import Loader from "@/components/common/Loader";
-
 const StudentsTable = () => {
   const [hoveredRow, setHoveredRow] = useState(null);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [filtersData, setFiltersData] = useState({});
   const [loading, setLoading] = useState(false);
-
   const { students, totalPages, currentPage } = useSelector(
     (state) => state.admin.student
   );
-
   console.log(students,"popopppppp")
   useEffect(() => {
     const fetchData = async () => {
@@ -31,11 +27,9 @@ const StudentsTable = () => {
     };
     fetchData();
   }, [dispatch, page, filtersData]);
-
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
-
   const columns = [
     "S.No.",
     "Name",
@@ -44,7 +38,6 @@ const StudentsTable = () => {
     "Registered No",
     "Action",
   ];
-
   return (
     <div className="p-10">
       <div className="dashboard-container">
@@ -64,7 +57,6 @@ const StudentsTable = () => {
             isStatus={false}
           />
         </div>
-
         {loading ? (
           <Loader isBig={true} color={"text-secondary"} />
         ) : (
@@ -76,7 +68,6 @@ const StudentsTable = () => {
                 </p>
               ))}
             </div>
-
             <div className="text-center">
               {students?.map((item, index) => {
                 const { user } = item;
@@ -116,7 +107,6 @@ const StudentsTable = () => {
                         </button>
                       </div>
                     </div>
-
                     <div
                       className={`transition-all duration-300 origin-top ${
                         hoveredRow === item._id
@@ -172,10 +162,8 @@ const StudentsTable = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="bg-white relative border-gray-200 p-4">
                         <div className="absolute top-0 left-[50%] translate-x-[-50%] w-[93%] h-[1px] bg-gray-200"></div>
-
                         <div className="flex items-center gap-4 p-4 ml-5">
                           <h3 className="text-sm font-semibold w-36">
                             Course Details :
@@ -214,7 +202,6 @@ const StudentsTable = () => {
             </div>
           </div>
         )}
-
         <Pagination
           currentPage={page}
           totalPages={totalPages}
@@ -224,5 +211,4 @@ const StudentsTable = () => {
     </div>
   );
 };
-
 export default StudentsTable;
