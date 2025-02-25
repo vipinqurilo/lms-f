@@ -34,7 +34,7 @@ const TeacherRequests = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-  const [rejectionReason, setRejectionReason] = useState(""); // Track rejection reason
+  const [rejectionReason, setRejectionReason] = useState(""); 
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [filters, setfilters] = useState({});
