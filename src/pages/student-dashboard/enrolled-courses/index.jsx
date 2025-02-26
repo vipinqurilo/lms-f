@@ -21,7 +21,7 @@ const TabButton = ({ active, onClick, children }) => (
       }`}
   >
     {children}
-  </button>
+  </button> 
 );
 
 export default function EnrolledCoursesPage() {
@@ -30,14 +30,15 @@ export default function EnrolledCoursesPage() {
     data: enrolledCourses,
     isLoading,
     totalPages,
+    currentPage:storedCurrentPage
   } = useSelector((state) => state.student.enrolledCourses);
   const [filters, setfilters] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(storedCurrentPage || 1);
 
   useEffect(() => {
     const data = {
       page: currentPage,
-      limit: 5,
+      limit: 1,
     };
     if (filters?.search) data.search = filters.search;
     dispatch(fetchEnrolledCoursesAsync(data));
