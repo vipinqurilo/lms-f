@@ -13,25 +13,27 @@ const OrderComp = () => {
   const { authUser } = useSelector((state) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
- 
+
   const {orderHistory,isLoading,totalPages}=useSelector((state)=>state.student.orders)
   console.log(orderHistory,'order history')
+
 
   const [filters, setfilters] = useState({});
 
   useEffect(() => {
     const data = {
-        page: currentPage,
-        limit: 5,
+      page: currentPage,
+      limit: 5,
     };
-
     if (filters?.search) data.search = filters.search;
     if (filters?.startDate) data.startDate = filters.startDate;
     if (filters?.endDate) data.endDate = filters.endDate;
+
     
       dispatch(fetchOrderHistoryAsync(data));
     
   }, [dispatch, filters.search, filters.startDate, filters.endDate, currentPage]);
+
 
   return (
     <>
@@ -55,7 +57,9 @@ const OrderComp = () => {
 
           {/* Orders Table */}
           <div className="bg-white rounded-b-lg shadow-md overflow-hidden">
+
             {isLoading["fetchOrderHistoryAsync"]  ? (
+
               <div className="text-center py-8">
                 <Loader isBig={true} color={"text-secondary"} />
               </div>
@@ -67,7 +71,7 @@ const OrderComp = () => {
                       "S.No",
                       "Order ID",
                       "Payment ID",
-                      ...(authUser?.role === "admin" ? ["User Name"] : []), // Spread it correctly
+                      ...(authUser?.role === "admin" ? ["Student Name"] : []),
                       "Course Name",
                       "Date",
                       "Price",
@@ -83,7 +87,9 @@ const OrderComp = () => {
                       </tr>
                     ) : (
                       <>
+
                         {orderHistory?.map((order, index) => (
+
                           <tr key={order._id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 text-sm text-gray-600">
                               {index + 1}
