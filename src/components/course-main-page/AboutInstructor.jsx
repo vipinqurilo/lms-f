@@ -38,15 +38,15 @@ const AboutInstructor = ({ data }) => {
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 relative">
             <Image
-              src={data?.course?.courseInstructor?.profileImage}
+              src={data?.courseInstructor?.profileImage}
               alt={data?.name}
               fill={true}
               className="object-cover rounded-full border-4 border-black/10"
             />
           </div>
           <div className="">
-            <p className="text-lg font-semibold">{data?.course?.courseInstructor?.firstName} {data?.course?.courseInstructor?.lastName}</p>
-            <p className="font-medium">{data?.course?.courseInstructor?.role || "Instructor"}</p>
+            <p className="text-lg font-semibold">{data?.courseInstructor?.firstName} {data?.courseInstructor?.lastName}</p>
+            <p className="font-medium">{data?.courseInstructor?.role || "Instructor"}</p>
           </div>
         </div>
         <div className="flex items-center font-semibold gap-1">

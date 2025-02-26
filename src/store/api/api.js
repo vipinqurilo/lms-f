@@ -6,8 +6,8 @@ const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
 // const baseURLVipin = "http://localhost:8000/api";
 
 export const api = axios.create({
-
-  baseURL: baseURLVipin, // Change this as needed
+  // baseURL: "https://wq1jbb9k-8000.inc1.devtunnels.ms/api",
+  baseURL: baseURLVipin,
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
@@ -17,9 +17,9 @@ export const api = axios.create({
   validateStatus: function (status) {
     return status >= 200 && status < 300; // Allow only successful responses
   },
-}); 
+});
 
-// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers  
+// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers
 api.interceptors.request.use((config) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");

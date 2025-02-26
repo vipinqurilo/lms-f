@@ -27,10 +27,10 @@ const CourseCard = ({ data }) => {
   const closeModal = () => setIsModalOpen(false);
   const toggleIsShareModalOpen = () => setIsShareModalOpen(!isShareModalOpen);
 
-  const courseLink = `https://yourwebsite.com/course/${data?.course?._id}`;
+  const courseLink = `https://yourwebsite.com/course/${data?._id}`;
 
   const handleAddToWishList = () => {
-    dispatch(wishlistAsync({ course: data?.course?._id }));
+    dispatch(wishlistAsync({ course: data?._id }));
   };
 
   const handleCopyLink = () => {
@@ -42,7 +42,7 @@ const CourseCard = ({ data }) => {
     <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
       <div className="relative w-full h-60 rounded-lg overflow-hidden">
         <Image
-          src={data?.course?.courseImage || "/assets/common/courseImage.jpg"} // Replace with your image source
+          src={data?.courseImage || "/assets/common/courseImage.jpg"} // Replace with your image source
           alt="Course"
           // width={100}
           // height={100}
@@ -60,11 +60,11 @@ const CourseCard = ({ data }) => {
       </div>
       <div className=" py-4 ">
         <h3 className="text-xl font-bold pb-2">
-          {data?.course?.courseTitle || "Course Title"}
+          {data?.courseTitle || "Course Title"}
         </h3>
         <div className="w-full flex justify-between items-center">
           <h3 className="text-green-500 text-2xl font-bold">
-            {data?.course?.coursePrice || "--"}
+            {data?.coursePrice || "--"}
           </h3>
           <p className="text-gray-500">
             <span className="line-through">₹1999.00</span> <span>50% off</span>
@@ -74,7 +74,7 @@ const CourseCard = ({ data }) => {
           <button
             onClick={handleAddToWishList}
             className={`flex items-center text-red-500 hover:text-white hover:bg-red-500 transition-custom border border-red-500 rounded-lg px-4 py-1 ${
-              wishlist?.some((item) => item?.course?._id === data?.course?._id) &&
+              wishlist?.some((item) => item?._id === data?._id) &&
               "!bg-red-500 !text-white hover:!bg-white hover:!text-red-500"
             }`}
           >
@@ -114,7 +114,7 @@ const CourseCard = ({ data }) => {
                 width="660"
                 height="415"
                 src={
-                  data?.course?.courseVideo ||
+                  data?.courseVideo ||
                   "https://youtu.be/iuJDhFRDx9M?si=RHBQ6IqseBGzyYhL"
                 }
                 title="YouTube video player"

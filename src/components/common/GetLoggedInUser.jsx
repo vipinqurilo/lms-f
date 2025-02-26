@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
+import { fetchAllTutorProfileAsync } from "@/store/slices/tutorsSlice";
+import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const GetLoggedInUser = () => {
     dispatch(getSubjects());
     dispatch(getSubSubjects());
     dispatch(getLanguages());
+    dispatch(fetchAllTutorProfileAsync({ search: "" }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const GetLoggedInUser = () => {
         dispatch(getWallet());
       } else if (authUser?.role === "student") {
         dispatch(fetchWishlistAsync());
-        dispatch(fetchEnrolledCoursesAsync({ page: 1, limit:10 }));
+        dispatch(getAllEnrolledCourses());
       }
     }
   }, [dispatch, authUser]);
