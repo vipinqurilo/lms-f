@@ -3,13 +3,21 @@ import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncT
 import { api } from "@/store/api/api";
 
 export const fetchOrderHistoryAsync = CreateApiAsyncThunk(
-  "orders/fetchOrderHistoryAsync",
-  () => api.get(`/order`)
+  "GET/orders/fetchOrderHistoryAsync",
+  (formData) => {
+    const query = Object.keys(formData)
+      .map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/order?${query}`);
+  }
 );
 
 const initialState = {
   orderHistory: [],
   isLoading: {},
+  totalOrders:null,
+  totalPages:1,
+  currentPage:1,
   error: {},
 };
 
@@ -23,8 +31,12 @@ const ordersSlice = createSlice({
         state.isLoading["fetchOrderHistoryAsync"] = true;
       })
       .addCase(fetchOrderHistoryAsync.fulfilled, (state, action) => {
+        console.log(action.payload,'action.payload')
         state.isLoading["fetchOrderHistoryAsync"] = false;
-        state.orderHistory = action.payload?.data || [];
+        state.orderHistory = action.payload?.data?.orders || [];
+        state.currentPage=action.payload?.data?.currentPage;
+        state.totalOrders=action.payload?.data?.totalOrders;
+        state.totalPages=action.payload?.data?.totalPages;
       })
       .addCase(fetchOrderHistoryAsync.rejected, (state, action) => {
         state.isLoading["fetchOrderHistoryAsync"] = false;
