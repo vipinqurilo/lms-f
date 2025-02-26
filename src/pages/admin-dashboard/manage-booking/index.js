@@ -82,10 +82,10 @@ export default function index() {
         endDate: endDate.toISOString().split("T")[0],
         keyword: debouncedKeyword, // Use debounced keyword
         page: currentPage,
-        // teacherId, 
+        teacherId, 
       })
     );
-  }, [dispatch, activeTab, startDate, endDate, debouncedKeyword, currentPage]);
+  }, [dispatch, activeTab, startDate, endDate, debouncedKeyword, currentPage, teacherId]);
 
   return (
     <StudentDashboardLayout className="">
@@ -149,8 +149,8 @@ export default function index() {
           startDate={startDate}
           handleEndDateChange={handleEndDateChange}
           handleStartDateChange={handleStartDateChange}
-          // teacher={teacherId}
-          // setTeacher={setTeacherId}
+          teacher={teacherId}
+          setTeacher={setTeacherId}
         />
 
         {/* Bookings Content */}

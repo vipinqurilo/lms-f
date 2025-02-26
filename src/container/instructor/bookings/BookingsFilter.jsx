@@ -67,11 +67,11 @@ const BookingsFilter = ({
               onChange={(e) => setTeacher(e.target.value)}
               className="px-6 py-1 bg-white border-gray-300 border rounded-md"
             >
-              <option selected disabled value={"all"}>
+              <option selected  value={"all"}>
                 All
               </option>
               {teachers?.map((teacher) => (
-                <option value={teacher?._id} key={teacher?._id}>
+                <option value={teacher?.user?._id} key={teacher?._id}>
                   {teacher?.user?.firstName}
                 </option>
               ))}
