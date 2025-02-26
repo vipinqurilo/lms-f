@@ -178,7 +178,7 @@ export default function FeaturedCard({ data, isFull = false }) {
               PropComponent={
                 <div className="w-[90%] lg:w-[70%] bg-white flex flex-col gap-5 rounded-lg relative p-6">
                   {!authUser ? (
-                    <div className="w-full flex items-center font-nunito !h-[90%]">
+                    <div className="w-full flex items-center font-nunito !h-screen">
                       <SlideShow />
                       <LoginForm />
                     </div>
