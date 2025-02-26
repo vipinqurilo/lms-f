@@ -113,14 +113,6 @@ const SubCategories = () => {
                     </div>
                   </td>
                 </tr>
-              ) : subcategories.length === 0 ? (
-                <tr>
-                  <td colSpan={columns.length} className="py-4">
-                    <div className=" w-full py-10 flex justify-center items-center">
-                      No Data Found.
-                    </div>
-                  </td>
-                </tr>
               ) : (
                 subcategories.map((cat, index) => (
                   <tr key={cat?._id} className="border-t border-gray-200">

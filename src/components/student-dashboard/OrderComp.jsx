@@ -14,8 +14,9 @@ const OrderComp = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const { orderHistory: orders, isLoading } = useSelector(
-    (state) => state.student.orders
+    (state) => state.student.orders 
   );
+  
   const { orderHistory: adminOrder, isLoading: adminLoading } = useSelector(
     (state) => state.admin.order
   );

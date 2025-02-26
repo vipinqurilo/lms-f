@@ -7,12 +7,7 @@ export const fetchBookingsAsync = CreateApiAsyncThunk(
   "GET/booking/fetchBookingsAsync",
   ({ status, startDate, endDate, search, page = 1, limit = 10, teacherId }) =>
     api.get(`/bookings`, {
-      params: { status,
-         startDate, endDate,
-          search, page, limit,
-         teacherId 
-        
-        },
+      params: { status, startDate, endDate, search, page, limit, teacherId },
     })
 );
 

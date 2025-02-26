@@ -14,8 +14,10 @@ const BookingsFilter = ({
   teacher,
   setTeacher,
 }) => {
-
   const user = useSelector((state) => state.user?.authUser?.role);
+
+  const { teachers } = useSelector((state) => state.admin.teachers || []);
+  console.log(teachers, "teachers");
 
   return (
     <div className="sticky top-[60px] bg-gray-50    pb-4 z-20">
@@ -65,11 +67,14 @@ const BookingsFilter = ({
               onChange={(e) => setTeacher(e.target.value)}
               className="px-6 py-1 bg-white border-gray-300 border rounded-md"
             >
-              <option disabled value="all">All</option>
-              <option value="first">teacher</option>
-              <option value="second">teacher</option>
-              <option value="third">teacher</option>
-              <option value="fourth">teacher</option>
+              <option selected disabled value={"all"}>
+                All
+              </option>
+              {teachers?.map((teacher) => (
+                <option value={teacher?._id} key={teacher?._id}>
+                  {teacher?.user?.firstName}
+                </option>
+              ))}
             </select>
           </div>
         )}

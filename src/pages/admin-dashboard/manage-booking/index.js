@@ -5,16 +5,18 @@ import { Clock, User } from "lucide-react";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 import BookingView from "@/container/instructor/bookings/BookingView";
 import BookingTabs from "@/container/instructor/bookings/BookingTabs";
 import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
 import BookingList from "@/container/instructor/bookings/BookingList";
+import { Pagination } from "@/components/student-dashboard/Pagination";
+import { getAllTeachers } from "@/store/slices/admin-dashboard/teachersSlice";
+import { fetchBookingsAsync } from "@/store/slices/admin-dashboard/bookingSlice";
 
 export default function index() {
   const dispatch = useDispatch();
   const { bookings, isLoading, totalPages } = useSelector(
-    (state) => state.student.booking
+    (state) => state.admin.booking
   );
 
   const [activeTab, setActiveTab] = useState("All lessons");
@@ -25,9 +27,9 @@ export default function index() {
   const [endDateError, setEndDateError] = useState(false);
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const [currentPage, setCurrentPage] = useState(1);
-  const [teacher, setTeacher] = useState("all");
+  const [teacherId, setTeacherId] = useState("all");
 
-  console.log(teacher, "= teacher admin");
+  console.log(teacherId, "= teacher admin");
 
   // Validate end date whenever start date or end date changes
   useEffect(() => {
@@ -55,6 +57,10 @@ export default function index() {
     }
   };
 
+  useEffect(() => {
+    dispatch(getAllTeachers());
+  }, [dispatch]);
+
   // Debounce the keyword input
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -72,11 +78,11 @@ export default function index() {
     dispatch(
       fetchBookingsAsync({
         status: activeTab === "All lessons" ? undefined : activeTab,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0],
         keyword: debouncedKeyword, // Use debounced keyword
-        page: currentPage, // Add page parameter
-        teacher, // added teacher fitler
+        page: currentPage,
+        // teacherId, 
       })
     );
   }, [dispatch, activeTab, startDate, endDate, debouncedKeyword, currentPage]);
@@ -143,8 +149,8 @@ export default function index() {
           startDate={startDate}
           handleEndDateChange={handleEndDateChange}
           handleStartDateChange={handleStartDateChange}
-          teacher={teacher}
-          setTeacher={setTeacher}
+          // teacher={teacherId}
+          // setTeacher={setTeacherId}
         />
 
         {/* Bookings Content */}
@@ -159,6 +165,12 @@ export default function index() {
         ) : (
           <AvailabilityCalendar />
         )}
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(val) => setCurrentPage(val)}
+        />
       </div>
     </StudentDashboardLayout>
   );
