@@ -15,6 +15,8 @@ export const fetchEnrolledCoursesAsync = CreateApiAsyncThunk(
 const initialState = {
   data: [],
   totalPages: 0,
+  currentPage: 0,
+
   isLoading: {},
   error: {},
 };
@@ -30,8 +32,11 @@ const enrolledCoursesSlice = createSlice({
       })
       .addCase(fetchEnrolledCoursesAsync.fulfilled, (state, action) => {
         state.isLoading["fetchEnrolledCoursesAsync"] = false;
-        state.data = action.payload.data;
-        state.totalPages = action.payload.pagination.totalPages;
+        state.data = action.payload?.data;
+        state.totalPages = action.payload?.pagination?.totalPages;
+        state.currentPage = action.payload?.pagination?.currentPage;
+
+
       })
       .addCase(fetchEnrolledCoursesAsync.rejected, (state, action) => {
         state.isLoading["fetchEnrolledCoursesAsync"] = false;

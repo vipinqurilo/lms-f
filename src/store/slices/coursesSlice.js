@@ -77,7 +77,15 @@ const coursesSlice = createSlice({
       })
       .addCase(wishlistAsync.fulfilled, (state, action) => {
         state.isLoading["wishlistAsync"] = false;
-        state.wishlist = action.payload?.data;
+        const { message, data } = action.payload;
+        if (message === "removed from wishlist") {
+          state.wishlist = state.wishlist.filter((item) => item._id !== data._id);
+        } else if (message === "added to wishlist") {
+          state.wishlist.push(data);
+        }
+        else{
+          toast.error(message);
+        }
       })
       .addCase(wishlistAsync.rejected, (state, action) => {
         state.isLoading["wishlistAsync"] = false;

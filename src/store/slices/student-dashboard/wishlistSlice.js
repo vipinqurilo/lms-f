@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "@/store/api/api";
+import toast from "react-hot-toast";
 
 // Thunk to fetch wishlist
 export const fetchWishlistAsync = CreateApiAsyncThunk(
@@ -10,7 +11,13 @@ export const fetchWishlistAsync = CreateApiAsyncThunk(
     return response.data;
   }
 );
-
+export const addToWishlistAsync = CreateApiAsyncThunk(
+  "POST/wishlist/addToWishlistAsync",
+  async (data) => {
+    const response = await api.post(`/whishlist`, data);
+    return response;
+  }
+);
 // Thunk to remove item from wishlist
 export const removeFromWishlistAsync = CreateApiAsyncThunk(
   "wishlist/removeFromWishlistAsync",
@@ -43,6 +50,26 @@ const wishlistSlice = createSlice({
       .addCase(fetchWishlistAsync.rejected, (state, action) => {
         state.isLoading["fetchWishlistAsync"] = false;
         state.error["fetchWishlistAsync"] = action.error;
+      })
+      // Handle addToWishlistAsync
+      .addCase(addToWishlistAsync.pending, (state) => {
+        state.isLoading["addToWishlistAsync"] = true;
+      })
+      .addCase(addToWishlistAsync.fulfilled, (state, action) => {
+        state.isLoading["addToWishlistAsync"] = false;
+        const { message, data } = action.payload;
+        if (message === "removed from wishlist") {
+          state.wishlist = state.wishlist.filter((item) => item._id !== data._id);
+        } else if (message === "added to wishlist") {
+          state.wishlist.push(data);
+        }
+        else{
+          toast.error(message);
+        }
+      })
+      .addCase(addToWishlistAsync.rejected, (state, action) => {
+        state.isLoading["addToWishlistAsync"] = false;
+        state.error["addToWishlistAsync"] = action.error;
       })
       // Handle removeFromWishlistAsync
       .addCase(removeFromWishlistAsync.pending, (state) => {
