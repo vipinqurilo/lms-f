@@ -36,7 +36,7 @@ const GetLoggedInUser = () => {
         dispatch(getAllEnrolledCourses());
       }
     }
-  }, [dispatch, authUser]);
+  }, [dispatch, authUser, isAuthenticated]);
 
   return null;
 };

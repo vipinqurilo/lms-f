@@ -21,9 +21,7 @@ const CourseReview = ({ data }) => {
   };
 
   return (
-    <div
-      className="course-sub-container !border-none !shadow-none"
-    >
+    <div className="course-sub-container !border-none !shadow-none">
       <Heading data={"Students Reviews"} />
       <div className="space-y-6">
         {data?.map((review, index) => (
@@ -31,13 +29,14 @@ const CourseReview = ({ data }) => {
             <div className="flex items-center gap-2">
               <div className="flex items-center justify-between w-full">
                 <h6 className="text-dark font-semibold">
-                  {review?.reviewerName}
+                  {`${review?.student?.firstName} ${review?.student?.lastName}`}
                 </h6>
-                {data?.ratings && <RatingStars rating={review?.rating} />}
+                {review?.rating && <RatingStars rating={review?.rating} />}
               </div>
             </div>
             <p className="text-light">{review?.review}</p>
-            <div className="flex items-center gap-4 w-full justify-between">
+            <p className="text-light text-sm">{review?.message}</p>
+            {/* <div className="flex items-center gap-4 w-full justify-between">
               <button
                 onClick={() => toggleISLikes(index)}
                 className="flex items-center gap-1 text-light"
@@ -61,7 +60,7 @@ const CourseReview = ({ data }) => {
                   Reply
                 </button>
               )}
-            </div>
+            </div> */}
             {isReply === index && (
               <div className="flex items-center gap-2">
                 <input

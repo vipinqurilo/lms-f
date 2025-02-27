@@ -48,7 +48,7 @@ const RatingInput = ({ initialRating = 0, onRatingChange }) => {
   );
 };
 
-const CommentForm = ({ id }) => {
+const CommentForm = ({ id, data }) => {
   const {
     register,
     formState: { errors },
@@ -56,7 +56,7 @@ const CommentForm = ({ id }) => {
     handleSubmit,
     reset,
   } = useForm();
-  const { enrolledCourses } = useSelector((state) => state.courses);
+  const { authUser } = useSelector((state) => state.user);
   const [ratings, setRatings] = useState(5);
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.courses);
@@ -79,6 +79,17 @@ const CommentForm = ({ id }) => {
       .unwrap()
       .then(() => reset());
   };
+
+  if (data?.some((review) => `${review?.student?.firstName}${review?.student?.lastName}` === authUser?.name)) {
+    return (
+      <div className="course-sub-container">
+        <Heading data={"Write Review and Ratings"} />
+        <p className="text-lg text-start">
+          You have already reviewed this course
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="course-sub-container">

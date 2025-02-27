@@ -25,7 +25,11 @@ export const RatingStars = ({ rating }) => {
             <FaRegStar key={`empty-${index}`} className="text-yellow-500" />
           ))}
       </div>
-      {rating}
+      {rating?.toString()?.includes(".") ? (
+        <span className="text-yellow-500">{rating}</span>
+      ) : (
+        <span className="text-yellow-500">{rating}.0</span>
+      )}
     </div>
   );
 };
