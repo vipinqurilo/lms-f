@@ -2,8 +2,7 @@ import axios from "axios";
 
 const baseUrlAshokSir = "https://6g2n7ff0-8000.inc1.devtunnels.ms/api";
 const baseUrlAbhiSir = "https://56kjq9dz-8000.inc1.devtunnels.ms/api";
-const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
-// const baseURLVipin = "http://localhost:8000/api";
+const baseURLVipin = "http://localhost:8000/api";
 
 export const api = axios.create({
 
@@ -17,9 +16,9 @@ export const api = axios.create({
   validateStatus: function (status) {
     return status >= 200 && status < 300; // Allow only successful responses
   },
-}); 
+});
 
-// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers  
+// Request Interceptor: Add Authorization Token & Enforce No-Cache Headers
 api.interceptors.request.use((config) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");

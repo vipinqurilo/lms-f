@@ -1,50 +1,40 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import Heading from "./Heading";
-import { BiPlayCircle } from "react-icons/bi";
+import { BiPlayCircle, BiSolidLockAlt } from "react-icons/bi";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { formatDuration } from "@/utils/TimeFormat";
 
-const LecturesOverview = ({ data }) => {
-  // Convert "HH:MM" to total minutes
-  const getMinutes = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
-
-  // Reduce to get total minutes
-  const totalMinutes = data && data?.reduce((acc, module) => {
+const LecturesOverview = ({ data, id }) => {
+  const { enrolledCourses } = useSelector((state) => state.courses);
+  const totalSeconds = data?.reduce((total, module) => {
     return (
-      acc +
-      module.lessons.reduce((lessonAcc, lesson) => {
-        return lessonAcc + getMinutes(lesson.duration);
+      total +
+      module.lessons.reduce((sum, lesson) => {
+        return sum + parseInt(lesson?.duration);
       }, 0)
     );
   }, 0);
 
-  // Convert total minutes back to HH:MM format
-  const totalHours = Math.floor(totalMinutes / 60);
-  const remainingMinutes = totalMinutes % 60;
-  const formattedDuration = `${String(totalHours).padStart(2, "0")}:${String(
-    remainingMinutes
-  ).padStart(2, "0")}`;
+
 
   const details = [
     {
       name: "Total Lectures",
-      value: data?.reduce(
-        (acc, item) => acc + (item?.lessons?.length || 0),
-        0
-      ),
+      value: data?.reduce((acc, item) => acc + (item?.lessons?.length || 0), 0),
     },
     {
-      name: "Duratin",
-      value: formattedDuration,
+      name: "Duration",
+      value: formatDuration(totalSeconds),
     },
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
 
   const [height, setHeight] = useState(0);
-  const contentRef = useRef(null);
+  const contentRefs = useRef([]);
 
   const toggleSection = (index) => {
     if (activeIndex === index) {
@@ -52,7 +42,11 @@ const LecturesOverview = ({ data }) => {
       setHeight(0);
     } else {
       setActiveIndex(index);
-      setHeight(contentRef.current.scrollHeight);
+      setTimeout(() => {
+        if (contentRefs.current[index]) {
+          setHeight(contentRefs.current[index].scrollHeight);
+        }
+      }, 50);
     }
   };
 
@@ -101,24 +95,49 @@ const LecturesOverview = ({ data }) => {
               style={{
                 maxHeight: activeIndex === index ? `${height}px` : "0px",
               }}
-              ref={contentRef}
+              ref={(el) => (contentRefs.current[index] = el)}
             >
-              {section?.lessons?.map((lecture, i) => (
-                <div
-                  key={i}
-                  className="w-full md:flex md:items-center md:justify-between px-2 py-2 md:py-4"
-                >
-                  <h6 className="flex items-start gap-1">
-                    <BiPlayCircle className="text-secondary text-lg" />
-                    <Link href={lecture?.video} target="_blank" className="-mt-[2px] font-medium hover:text-secondary transition-custom">
-                      Lecture{index + 1}.{i + 1} {lecture?.lessonTitle}
-                    </Link>
-                  </h6>
-                  <p className="font-medium text-light text-sm">
-                    {lecture?.duration}
-                  </p>
-                </div>
-              ))}
+              {section?.lessons?.map((lecture, i) => {
+                const isAccessible =
+                  enrolledCourses?.some((item) => item === id) ||
+                  (i === 0 && index === 0);
+
+                return (
+                  <div
+                    key={i}
+                    className="w-full md:flex md:items-center md:justify-between px-2 py-2 md:py-4"
+                  >
+                    <h6 className="flex items-start gap-1">
+                      {isAccessible ? (
+                        <BiPlayCircle className="text-secondary text-lg" />
+                      ) : (
+                        <BiSolidLockAlt className="text-black/60 text-lg" />
+                      )}
+
+                      {isAccessible ? (
+                        <Link
+                          href={lecture?.video}
+                          target="_blank"
+                          className="-mt-[2px] font-medium hover:text-secondary transition-custom"
+                        >
+                          Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
+                        </Link>
+                      ) : (
+                        <p className="text-black/60">
+                          Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
+                        </p>
+                      )}
+                    </h6>
+                    <p
+                      className={`font-medium ${
+                        isAccessible ? "text-light" : "text-light/60"
+                      } text-sm`}
+                    >
+                      {formatDuration(lecture?.duration)}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}

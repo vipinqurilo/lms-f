@@ -23,6 +23,8 @@ import {
 } from "@/store/slices/instructor/courseSlice";
 import Loader from "@/components/common/Loader";
 import TitleComp from "@/components/instructor/TitleComp";
+import { FaRedoAlt } from "react-icons/fa";
+import { CiRedo } from "react-icons/ci";
 
 const tabs = [
   {
@@ -41,10 +43,10 @@ const tabs = [
     icon: <BiXCircle size={20} />,
     tab: "Unpublished",
   },
-  {
-    icon: <BiPauseCircle size={20} />,
-    tab: "Inactive",
-  },
+  // {
+  //   icon: <BiPauseCircle size={20} />,
+  //   tab: "Inactive",
+  // },
 ];
 
 const InstructorMyCourses = () => {
@@ -80,7 +82,7 @@ const InstructorMyCourses = () => {
         : selecteStatus?.toLowerCase();
     const requestData = {
       page: currentPage,
-      limit: 3,
+      limit: 5,
     };
     if (status) {
       requestData.status = status.toLowerCase();
@@ -111,10 +113,6 @@ const InstructorMyCourses = () => {
     router.push("/instructor-dashboard/my-courses/add-course");
   };
 
-  const handleRequestAgain = (id) => {
-    console.log(id);
-  };
-
   const filteredData = useMemo(() => {
     return courses?.map((course) => ({
       image: course?.courseImage,
@@ -123,26 +121,26 @@ const InstructorMyCourses = () => {
       value1: course?.entrolled || 425,
       value2: course?.status,
       value3: (
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 text-black">
           <button
             onClick={() => handleEditCourse(course)}
             className="p-1.5 border border-black/10 rounded hover:border-green-200 transition-custom hover:text-green-500"
           >
-            <FiEdit3 size={20} />
+            <FiEdit3 size={16} />
           </button>
           <button
             onClick={() => setisDelete(course?._id)}
             className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500"
           >
-            <MdDeleteOutline size={20} />
+            <MdDeleteOutline size={16} />
           </button>
           {course?.status === "unpublished" && (
-            <div className="text-nowrap">
-              <InstructorButton
-                handleClick={() => handleRequestAgain(course?._id)}
-                tab={"Request Again"} condition={"!bg-secondary hover:!bg-background text-white"}
-              />
-            </div>
+            <button
+              onClick={() => handleEditCourse(course)}
+              className="p-1.5 border border-black/10 rounded hover:border-red-200 hover:bg-green-200 transition-custom hover:text-green-500"
+            >
+              <CiRedo size={20} />
+            </button>
           )}
         </div>
       ),

@@ -19,9 +19,16 @@ import toast from "react-hot-toast";
 import SlideShow from "@/container/login/SlideShow";
 import LoginForm from "@/container/login/LoginForm";
 import CheckoutForm from "../payment/CheckoutForm";
+import Loader from "./Loader";
+import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
+  const {
+    enrolledCourses,
+    wishlist: recentWishList,
+    isLoading,
+  } = useSelector((state) => state.courses);
   const { wishlist } = useSelector((state) => state.student.wishlist);
 
   if (!data || typeof data !== "object") {
@@ -57,7 +64,7 @@ export default function FeaturedCard({ data, isFull = false }) {
         });
     }
   };
-  
+
   return (
     <>
       <div className="flex gap-2 md:p-0  p-2">
@@ -90,16 +97,26 @@ export default function FeaturedCard({ data, isFull = false }) {
                   </span>
                 </div>
               </div>
-
               <div>
                 <button
-                  onClick={() => handleAddWishlist(data?._id)}
+                  onClick={() => dispatch(addToWishlistAsync({course:data?._id}))}
                   className="  text-red-500  group-hover:text-white"
                 >
-                  {wishlist?.some((item) => item?.course?._id === data?._id) ? (
-                    <FaHeart className={`text-xl hover:text-red-500 `} />
+                  {isLoading["wishlistAsync"] ? (
+                    <Loader />
                   ) : (
-                    <FaRegHeart className={`text-xl hover:text-red-500 `} />
+                    <>
+                      {wishlist?.some(
+                        (item) => item?.course?._id === data?._id
+                      ) ||
+                      recentWishList?.some(
+                        (item) => item?.course?._id === data?._id
+                      ) ? (
+                        <FaHeart className="text-xl text-red-500 hover:text-red-500" />
+                      ) : (
+                        <FaRegHeart className="text-xl hover:text-red-500" />
+                      )}
+                    </>
                   )}
                 </button>
               </div>
@@ -128,13 +145,21 @@ export default function FeaturedCard({ data, isFull = false }) {
                   <span>4.</span> (15)
                 </span>
               </div>
-              <button
-                // onClick={() => handleAddOrder(data?._id, data?.coursePrice)}
-                onClick={() => setisModalOpen(!isModalOpen)}
-                className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] "
-              >
-                BUY NOW
-              </button>
+              {enrolledCourses?.some((item) => item === data?._id) ? (
+                <Link
+                  href={`/courses/${data?._id}`}
+                  className="px-8 py-2 text-background bg-white group-hover:bg-back group-hover:bg-transparent group-hover:text-white rounded-full border-2 border-secondary hover:bg-secborder-secondary hover:!text-secondary "
+                >
+                  View Course
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setisModalOpen(!isModalOpen)}
+                  className="px-8 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] "
+                >
+                  BUY NOW
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -144,6 +169,7 @@ export default function FeaturedCard({ data, isFull = false }) {
         <CheckoutForm
           checkoutUrl={checkoutUrl}
           setPaymentModal={setisPaymentModal}
+          setisModalOpen={setisModalOpen}
         />
       ) : (
         <>
@@ -152,7 +178,7 @@ export default function FeaturedCard({ data, isFull = false }) {
               PropComponent={
                 <div className="w-[90%] lg:w-[70%] bg-white flex flex-col gap-5 rounded-lg relative p-6">
                   {!authUser ? (
-                    <div className="w-full flex items-center font-nunito !h-[90%]">
+                    <div className="w-full flex items-center font-nunito !h-screen">
                       <SlideShow />
                       <LoginForm />
                     </div>

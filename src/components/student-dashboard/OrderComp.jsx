@@ -13,39 +13,37 @@ const OrderComp = () => {
   const { authUser } = useSelector((state) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
-  const { orderHistory: orders, isLoading } = useSelector(
-    (state) => state.student.orders 
-  );
-  
-  const { orderHistory: adminOrder, isLoading: adminLoading } = useSelector(
-    (state) => state.admin.order
-  );
+
+  const {orderHistory,isLoading,totalPages}=useSelector((state)=>state.student.orders)
+  console.log(orderHistory,'order history')
+
+
   const [filters, setfilters] = useState({});
 
   useEffect(() => {
     const data = {
-        page: currentPage,
-        limit: 5,
+      page: currentPage,
+      limit: 5,
     };
-
     if (filters?.search) data.search = filters.search;
     if (filters?.startDate) data.startDate = filters.startDate;
     if (filters?.endDate) data.endDate = filters.endDate;
-    if (authUser?.role === "admin") {
-      dispatch(fetchAllOrders(data));
-    } else {
+
+    
       dispatch(fetchOrderHistoryAsync(data));
-    }
+    
   }, [dispatch, filters.search, filters.startDate, filters.endDate, currentPage]);
+
+
   return (
     <>
       <div className="p-10">
         <div className="dashboard-container">
           <TitleComp
             heading={"Order History"}
-            des={
-              "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
-            }
+            // des={
+            //   "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, corporis."
+            // }
           />
 
           <div className="w-full !sticky !-top-0 bg-white px-5">
@@ -59,8 +57,9 @@ const OrderComp = () => {
 
           {/* Orders Table */}
           <div className="bg-white rounded-b-lg shadow-md overflow-hidden">
-            {isLoading["fetchOrderHistoryAsync"] ||
-            adminLoading["fetchAllOrders"] ? (
+
+            {isLoading["fetchOrderHistoryAsync"]  ? (
+
               <div className="text-center py-8">
                 <Loader isBig={true} color={"text-secondary"} />
               </div>
@@ -72,7 +71,7 @@ const OrderComp = () => {
                       "S.No",
                       "Order ID",
                       "Payment ID",
-                      ...(authUser?.role === "admin" ? ["User Name"] : []), // Spread it correctly
+                      ...(authUser?.role === "admin" ? ["Student Name"] : []),
                       "Course Name",
                       "Date",
                       "Price",
@@ -80,8 +79,7 @@ const OrderComp = () => {
                   />
 
                   <tbody className="divide-y divide-gray-200">
-                    {(authUser?.role === "admin" ? adminOrder : orders)
-                      ?.length === 0 ? (
+                    {orderHistory?.length === 0 ? (
                       <tr>
                         <td className=" py-4 text-center" colSpan={6}>
                           No Order History
@@ -89,10 +87,9 @@ const OrderComp = () => {
                       </tr>
                     ) : (
                       <>
-                        {(authUser?.role === "admin"
-                          ? adminOrder
-                          : orders
-                        )?.map((order, index) => (
+
+                        {orderHistory?.map((order, index) => (
+
                           <tr key={order._id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 text-sm text-gray-600">
                               {index + 1}
@@ -130,7 +127,7 @@ const OrderComp = () => {
       </div>
       <Pagination
         currentPage={currentPage}
-        totalPages={52}
+        totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
     </>

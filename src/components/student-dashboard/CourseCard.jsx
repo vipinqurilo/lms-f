@@ -1,5 +1,8 @@
+"use client";
+
 import { Heart } from "lucide-react";
 import { Star } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export function CourseCard({
   course = {}, // Provide empty object as default
@@ -7,10 +10,16 @@ export function CourseCard({
   onWishlistClick = () => {},
   type = "buy",
 }) {
+  const { data: enrolledCourses } = useSelector(
+    (state) => state.student.enrolledCourses
+  );
   // Destructure with default values
   const {
     title = "Untitled Course",
-    instructor = { name: "Unknown Instructor", image: "/placeholder.svg" },
+    instructor = {
+      name: "Unknown Instructor",
+      image: "/assets/common/courseImage.jpg",
+    },
     thumbnail = "/placeholder.svg",
     lessons = 0,
     duration = "0h 0m",
@@ -22,11 +31,11 @@ export function CourseCard({
   } = course;
 
   return (
-    <div className="w-full group cursor-pointer hover:bg-[#413655] bg-white transition-colors duration-300 rounded-lg shadow-lg p-4">
+    <div className="w-full group cursor-pointer hover:!bg-background/20 bg-white transition-colors duration-300 rounded-lg shadow-lg p-4">
       {/* Thumbnail */}
       <div className="relative overflow-hidden rounded-md">
         <img
-          src={thumbnail || "/placeholder.svg"}
+          src={thumbnail || "/assets/common/courseImage.jpg"}
           alt={title}
           className="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-110"
         />
@@ -108,6 +117,7 @@ export function CourseCard({
           </div>
 
           <button className="px-6 py-2 text-[#413655] bg-white group-hover:bg-[#413655] group-hover:text-white rounded-full border-2 border-[#917cf6] hover:bg-[#917cf6] transition-colors duration-300">
+            {/* {enrolledCourses?.some(())} */}
             {type === "buy" ? "Buy Now" : "View Course"}
           </button>
         </div>

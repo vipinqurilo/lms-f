@@ -40,14 +40,14 @@ const CourseCard = ({ data }) => {
 
   return (
     <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
-      <div className="relative rounded-lg overflow-hidden">
+      <div className="relative w-full h-60 rounded-lg overflow-hidden">
         <Image
           src={data?.courseImage || "/assets/common/courseImage.jpg"} // Replace with your image source
           alt="Course"
-          width={100}
-          height={100}
-          layout="responsive"
-          className="w-full rounded-lg"
+          // width={100}
+          // height={100}
+          layout="fill"
+          className="w-full rounded-lg object-cover"
         />
         <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 rounded-t-lg">
           <button
@@ -74,7 +74,7 @@ const CourseCard = ({ data }) => {
           <button
             onClick={handleAddToWishList}
             className={`flex items-center text-red-500 hover:text-white hover:bg-red-500 transition-custom border border-red-500 rounded-lg px-4 py-1 ${
-              wishlist?.some((item) => item?.course?._id === data?._id) &&
+              wishlist?.some((item) => item?._id === data?._id) &&
               "!bg-red-500 !text-white hover:!bg-white hover:!text-red-500"
             }`}
           >

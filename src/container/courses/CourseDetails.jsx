@@ -33,12 +33,12 @@ const CourseDetails = () => {
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
           <CourseOverview data={data} />
-          <LecturesOverview data={data?.courseContent} />
-          <AboutInstructor data={data?.instructor} />
+          <LecturesOverview data={data?.courseContent} id={data?._id} />
+          <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
             <CommentForm id={data?._id} />
           )}
-          <CourseReview data={data?.reviews} />
+          <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
           <CourseHighLights data={data} />

@@ -42,9 +42,15 @@ export const addReview = CreateApiAsyncThunk("courses/addReview", (data) =>
   api.post(`/review`, data)
 );
 
+export const getAllEnrolledCourses = CreateApiAsyncThunk(
+  "GET/courses/getAllEnrolledCourses",
+  () => api.get(`/students/enrolled-course-ids`)
+);
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
+    enrolledCourses: [],
     categories: [],
     courses: [],
     totalPages: null,
@@ -77,7 +83,15 @@ const coursesSlice = createSlice({
       })
       .addCase(wishlistAsync.fulfilled, (state, action) => {
         state.isLoading["wishlistAsync"] = false;
-        state.wishlist = action.payload?.data;
+        const { message, data } = action.payload;
+        if (message === "removed from wishlist") {
+          state.wishlist = state.wishlist.filter((item) => item._id !== data._id);
+        } else if (message === "added to wishlist") {
+          state.wishlist.push(data);
+        }
+        else{
+          toast.error(message);
+        }
       })
       .addCase(wishlistAsync.rejected, (state, action) => {
         state.isLoading["wishlistAsync"] = false;
@@ -140,6 +154,18 @@ const coursesSlice = createSlice({
       .addCase(addReview.rejected, (state, action) => {
         state.isLoading["addReview"] = false;
         state.error["addReview"] = action.payload;
+      })
+      // get all enrolled courses
+      .addCase(getAllEnrolledCourses.pending, (state, action) => {
+        state.isLoading["getAllEnrolledCourses"] = true;
+      })
+      .addCase(getAllEnrolledCourses.fulfilled, (state, action) => {
+        state.isLoading["getAllEnrolledCourses"] = false;
+        state.enrolledCourses = action.payload?.data;
+      })
+      .addCase(getAllEnrolledCourses.rejected, (state, action) => {
+        state.isLoading["getAllEnrolledCourses"] = false;
+        state.error["getAllEnrolledCourses"] = action.payload;
       });
   },
 });

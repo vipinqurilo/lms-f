@@ -51,7 +51,7 @@ const TopSection = ({ data }) => {
           <h1 className="text-2xl lg:text-3xl lg:font-extrabold font-bold">
             {data?.courseTitle}
           </h1>
-          <p className="text-white/90 lg:text-lg">{data?.subtitle}</p>
+          <p className="text-white/90 lg:text-lg line-clamp-2">{data?.courseDescription}</p>
         </div>
       </div>
     </div>

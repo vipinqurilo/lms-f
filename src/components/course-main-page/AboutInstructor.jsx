@@ -11,7 +11,7 @@ const AboutInstructor = ({ data }) => {
   const lessonsData = [
     {
       Icon: <MdOutlinePlayLesson />,
-      value: `${data?.courses} Courses`,
+      value: `${data?.totalCourses} Courses`,
       color: "text-blue-500", // Add a Tailwind class for blue color
     },
     {
@@ -26,7 +26,7 @@ const AboutInstructor = ({ data }) => {
     },
     {
       Icon: <FaUsers />,
-      value: `${data?.studentsEnrolled} students enrolled`,
+      value: `${data?.totalStudents} students enrolled`,
       color: "text-red-500", // Add a Tailwind class for red color
     },
   ];
@@ -38,15 +38,15 @@ const AboutInstructor = ({ data }) => {
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 relative">
             <Image
-              src={data?.profileImage}
+              src={data?.courseInstructor?.profileImage}
               alt={data?.name}
               fill={true}
               className="object-cover rounded-full border-4 border-black/10"
             />
           </div>
           <div className="">
-            <p className="text-lg font-semibold">{data?.name}</p>
-            <p className="font-medium">{data?.role}</p>
+            <p className="text-lg font-semibold">{data?.courseInstructor?.firstName} {data?.courseInstructor?.lastName}</p>
+            <p className="font-medium">{data?.courseInstructor?.role || "Instructor"}</p>
           </div>
         </div>
         <div className="flex items-center font-semibold gap-1">

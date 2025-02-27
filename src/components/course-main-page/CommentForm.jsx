@@ -56,6 +56,7 @@ const CommentForm = ({ id }) => {
     handleSubmit,
     reset,
   } = useForm();
+  const { enrolledCourses } = useSelector((state) => state.courses);
   const [ratings, setRatings] = useState(5);
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.courses);
@@ -72,7 +73,7 @@ const CommentForm = ({ id }) => {
     const formData = {
       ...data,
       course: id,
-      rating: ratings
+      rating: ratings,
     };
     dispatch(addReview(formData))
       .unwrap()
@@ -110,7 +111,7 @@ const CommentForm = ({ id }) => {
               {...register("message", {
                 required: `*${"Message"} is required`,
               })}
-              className="w-full h-40 resize-none border border-black/10 p-3 rounded px-4 focus:outline-secondary transition-custom"
+              className="w-full h-20 resize-none border border-black/10 p-3 rounded px-4 focus:outline-secondary transition-custom"
               placeholder={"Enter message Here"}
             />
           </div>

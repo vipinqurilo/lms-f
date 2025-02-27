@@ -42,6 +42,7 @@ const UserFilter = ({
   isRole = true,
   isSearch = true,
   isStatus = true,
+  isDate = true,
   statusData,
 }) => {
   const [filters, setFilters] = useState({
@@ -64,9 +65,7 @@ const UserFilter = ({
   }, [filters.search]);
 
   useEffect(() => {
-
     onApplyFilters({ search: debouncedSearch });
-
   }, [debouncedSearch]);
 
   const handleApplyFilters = () => {
@@ -106,40 +105,46 @@ const UserFilter = ({
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
           />
-          <button
-            onClick={() => setIsMoreFilters(!isMoreFilters)}
-            className="border ml-5 px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500 hover:bg-gray-100"
-          >
-            More Filters <IoMdOptions />
-          </button>
+          {isDate && (
+            <button
+              onClick={() => setIsMoreFilters(!isMoreFilters)}
+              className="border ml-5 px-4 py-1 h-10 bg-white flex justify-center items-center gap-2 text-sm rounded-full text-gray-500 hover:bg-gray-100"
+            >
+              More Filters <IoMdOptions />
+            </button>
+          )}
         </div>
       )}
 
       <div className="flex justify-between w-full">
         <div className="flex w-10/12 space-x-1 items-center flex-wrap">
-          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
-            <span className="text-xs w-24">Start Date:</span>
-            <input
-              type="date"
-              className="bg-transparent outline-none w-full font-semibold"
-              value={filters.startDate}
-              onChange={(e) =>
-                setFilters({ ...filters, startDate: e.target.value })
-              }
-            />
-          </div>
+          {isDate && (
+            <>
+              <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+                <span className="text-xs w-24">Start Date:</span>
+                <input
+                  type="date"
+                  className="bg-transparent outline-none w-full font-semibold"
+                  value={filters.startDate}
+                  onChange={(e) =>
+                    setFilters({ ...filters, startDate: e.target.value })
+                  }
+                />
+              </div>
 
-          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
-            <span className="text-xs w-24">End Date:</span>
-            <input
-              type="date"
-              className="bg-transparent outline-none w-full font-semibold"
-              value={filters.endDate}
-              onChange={(e) =>
-                setFilters({ ...filters, endDate: e.target.value })
-              }
-            />
-          </div>
+              <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+                <span className="text-xs w-24">End Date:</span>
+                <input
+                  type="date"
+                  className="bg-transparent outline-none w-full font-semibold"
+                  value={filters.endDate}
+                  onChange={(e) =>
+                    setFilters({ ...filters, endDate: e.target.value })
+                  }
+                />
+              </div>
+            </>
+          )}
 
           {isRole && (
             <Dropdown
@@ -178,22 +183,24 @@ const UserFilter = ({
             )}
         </div>
 
-        <div className="flex gap-3 justify-center items-center">
-          {isFilterApplied && (
+        {isDate && (
+          <div className="flex gap-3 justify-center items-center">
+            {isFilterApplied && (
+              <button
+                className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm"
+                onClick={handleClearFilters}
+              >
+                Clear Filters
+              </button>
+            )}
             <button
-              className="border py-1 w-28 h-10 rounded-full bg-[#f6f6f6] hover:bg-gray-300 text-sm"
-              onClick={handleClearFilters}
+              className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm"
+              onClick={handleApplyFilters}
             >
-              Clear Filters
+              Apply Filters
             </button>
-          )}
-          <button
-            className="border py-1 w-28 h-10 rounded-full bg-black text-white hover:bg-[#4f4f4f] text-sm"
-            onClick={handleApplyFilters}
-          >
-            Apply Filters
-          </button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

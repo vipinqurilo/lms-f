@@ -9,11 +9,8 @@ const ScheduleCalendar = ({
   rawBookings,
   duration,
   calendar,
-  scheduledDate,
   setScheduledDate,
-  sessionStartTime,
   setSessionStartTime,
-  sessionEndTime,
   setSessionEndTime,
 }) => {
   const data = calendar?.availability?.reduce((acc, { day, slots }) => {
