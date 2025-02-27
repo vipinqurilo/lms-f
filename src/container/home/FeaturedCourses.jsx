@@ -3,6 +3,7 @@ import FeaturedCard from "@/components/common/FeaturedCard";
 import Heading from "@/components/common/Heading";
 import { useSelector } from "react-redux";
 import Loader from "@/components/common/Loader";
+import Link from "next/link";
 
 export default function FeaturedCourses({ cardData = [] }) {
   const isLoading = useSelector(
@@ -36,7 +37,7 @@ export default function FeaturedCourses({ cardData = [] }) {
                 descWidth={"md:!w-2/3"}
               />
               <div className="md:block hidden">
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">All Courses</button>
+                <Link href={"/courses"} className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">All Courses</Link>
               </div>
             </div>
 

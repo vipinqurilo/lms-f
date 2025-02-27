@@ -206,7 +206,7 @@ export default function FeaturedCard({ data, isFull = false }) {
                       }}
                     >
                       <SlideShow />
-                      <LoginForm setisModalOpen={setisModalOpen} />
+                      <LoginForm setisModalOpen={setisModalOpen} isModal={true} />
                       <button
                         onClick={() => setisModalOpen(!isModalOpen)}
                         className="absolute top-2 right-2 lg:right-6 text-gray-500 border border-black/10 rounded-full p-1 hover:bg-background hover:text-white transition-custom "
