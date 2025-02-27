@@ -1,7 +1,7 @@
 import React from "react";
 import BackgroundModal from "../instructor/BackgroundModal";
 
-const CheckoutForm = ({ checkoutUrl, setPaymentModal }) => {
+const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
   React.useEffect(() => {
     if (checkoutUrl) {
       // Open in a new window with specific dimensions
@@ -16,6 +16,7 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal }) => {
         if (stripeWindow.closed) {
           clearInterval(timer);
           setPaymentModal(false);
+          setisModalOpen(false);
         }
       }, 500);
 
@@ -31,8 +32,8 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal }) => {
             <button
               className="text-gray-500 hover:text-red-500"
               onClick={() => {
-                console.log("Clied");
                 setPaymentModal(false);
+                setisModalOpen(false);
               }}
             >
               Close

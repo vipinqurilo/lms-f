@@ -32,11 +32,11 @@ const CourseDetails = () => {
           <CourseHighLights data={data} />
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
-          <CourseOverview data={data?.course} />
-          <LecturesOverview data={data?.course?.courseContent} />
+          <CourseOverview data={data} />
+          <LecturesOverview data={data?.courseContent} id={data?._id} />
           <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
-            <CommentForm id={data?.course?._id} />
+            <CommentForm id={data?._id} />
           )}
           <CourseReview data={data?.totalReviews} />
         </div>

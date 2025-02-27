@@ -42,9 +42,15 @@ export const addReview = CreateApiAsyncThunk("courses/addReview", (data) =>
   api.post(`/review`, data)
 );
 
+export const getAllEnrolledCourses = CreateApiAsyncThunk(
+  "GET/courses/getAllEnrolledCourses",
+  () => api.get(`/students/enrolled-course-ids`)
+);
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
+    enrolledCourses: [],
     categories: [],
     courses: [],
     totalPages: null,
@@ -148,6 +154,18 @@ const coursesSlice = createSlice({
       .addCase(addReview.rejected, (state, action) => {
         state.isLoading["addReview"] = false;
         state.error["addReview"] = action.payload;
+      })
+      // get all enrolled courses
+      .addCase(getAllEnrolledCourses.pending, (state, action) => {
+        state.isLoading["getAllEnrolledCourses"] = true;
+      })
+      .addCase(getAllEnrolledCourses.fulfilled, (state, action) => {
+        state.isLoading["getAllEnrolledCourses"] = false;
+        state.enrolledCourses = action.payload?.data;
+      })
+      .addCase(getAllEnrolledCourses.rejected, (state, action) => {
+        state.isLoading["getAllEnrolledCourses"] = false;
+        state.error["getAllEnrolledCourses"] = action.payload;
       });
   },
 });

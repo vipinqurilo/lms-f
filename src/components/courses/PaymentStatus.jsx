@@ -51,6 +51,12 @@ export default function PaymentStatus({ status }) {
                   {perchasedCourse?.transactionId}
                   {/* {perchasedCourse?.transactionId} */}
                 </p>
+                <p>
+                  {/* note:change it later */}
+                  <strong>Order ID:</strong>{" "}
+                  {perchasedCourse?.orderId}
+                  {/* {perchasedCourse?.transactionId} */}
+                </p>
               </div>
             )}
 

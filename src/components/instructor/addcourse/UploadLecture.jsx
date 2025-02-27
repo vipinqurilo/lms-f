@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadVideo } from "@/store/slices/uploadSlice";
 
 const UploadLecture = ({ handleCancel, setLecture }) => {
-  const [videoDuration, setVideoDuration] = useState("");
   const videoRef = useRef(null);
   const dispatch = useDispatch();
   const videoLoading = useSelector(
@@ -25,33 +24,30 @@ const UploadLecture = ({ handleCancel, setLecture }) => {
 
       videoElement.onloadedmetadata = () => {
         URL.revokeObjectURL(videoElement.src);
-        const duration = formatDuration(videoElement.duration);
-        setVideoDuration(duration);
+        const duration = videoElement.duration;
+
+        // Move formData inside onloadedmetadata to ensure duration is available
+        const formData = new FormData();
+        formData.append("video", file);
+
+        dispatch(uploadVideo(formData))
+          .unwrap()
+          .then((res) => {
+            if (res) {
+              setLecture((prev) => ({
+                ...prev,
+                video: res?.data,
+                duration: duration || "0",
+              }));
+            }
+            handleCancel();
+          });
       };
-      const formData = new FormData();
-      formData.append("video", file);
-      dispatch(uploadVideo(formData))
-        .unwrap()
-        .then((res) => {
-          if (res) {
-            setLecture((prev) => ({
-              ...prev,
-              video: res?.data,
-              duration: videoDuration,
-            }));
-          }
-          handleCancel();
-        });
     } else {
       toast.error("Denied");
     }
   };
 
-  const formatDuration = (seconds) => {
-    const min = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${min}:${sec < 10 ? "0" : ""}${sec}`;
-  };
   return (
     <BackgroundModal
       PropComponent={

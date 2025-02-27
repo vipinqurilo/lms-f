@@ -38,7 +38,7 @@ export default function EnrolledCoursesPage() {
   useEffect(() => {
     const data = {
       page: currentPage,
-      limit: 1,
+      limit: 6,
     };
     if (filters?.search) data.search = filters.search;
     dispatch(fetchEnrolledCoursesAsync(data));
@@ -69,6 +69,7 @@ export default function EnrolledCoursesPage() {
               isStatus={false}
               statusData={[]}
               onApplyFilters={setfilters}
+              isDate={false}
             />
           </div>
 
@@ -78,7 +79,7 @@ export default function EnrolledCoursesPage() {
               No Courses Entrolled
             </p>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 px-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 px-5 pb-5">
             {isLoading["fetchEnrolledCoursesAsync"] ? (
               <div className="w-full col-span-3 py-10 flex items-center justify-center">
                 <Loader color={"text-secondary"} isBig={true} />
