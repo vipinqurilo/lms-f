@@ -28,7 +28,7 @@ const TopBanner = () => {
             />
           </div>
 
-          <button
+          {/* <button
             type="button"
             onClick={handleToggle}
             className="bg-secondary hover:bg-black transition-custom text-white shadow flex items-center justify-center w-10 h-10 rounded-full absolute top-1/2 -translate-y-1/2 -right-5"
@@ -43,7 +43,7 @@ const TopBanner = () => {
                 isCollapsed ? "rotate-0" : "rotate-180"
               } transition-custom`}
             />
-          </button>
+          </button> */}
         </div>
 
         {/* <div className="relative lg:w-[60%]">
