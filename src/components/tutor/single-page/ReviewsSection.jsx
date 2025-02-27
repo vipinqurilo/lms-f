@@ -1,10 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import { useSelector } from "react-redux";
 
 const ReviewsSection = ({ activeTab, setActiveTab }) => {
-  const { tutorReviews, isLoading, error } = useSelector((state) => state.tutors);
-  console.log(tutorReviews,'tutorReviews')
   return (
     <div>
       {/* Reviews Section */}
@@ -25,25 +22,24 @@ const ReviewsSection = ({ activeTab, setActiveTab }) => {
           </select>
         </div>
         <div className="space-y-6">
-          {tutorReviews.map((review) => (
-            <div className="flex gap-4" key={review._id}>
-              <Image
-                width={40}
-                height={40}
-                src={review.student.profilePhoto}
-                alt="classes"
-                className=" object-cover rounded-lg h-[47px] w-[47px]"
-              />
-              <div>
-                <div className="font-medium">{review.student.userName}</div>
-                <div className="text-gray-600 text-sm">{review.createdAt}</div>
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="font-medium">Rating: {review.rating}</div>
-                </div>
-                <p className="mt-2">{review.review}</p>
+          <div className="flex gap-4">
+            <Image
+              width={40}
+              height={40}
+              src="/assets/tutor/Marlenereilly.jpg"
+              alt="classes"
+              className=" object-cover rounded-lg h-[47px] w-[47px]"
+            />
+            <div>
+              <div className="font-medium">Jarod Dach</div>
+              <div className="text-gray-600 text-sm">Oct 05, 2024 07:14</div>
+              <div className="flex items-center gap-2 mt-2">
+                <div className="font-medium">Really liked the Session</div>
+                <div className="text-[#FF9800]">4</div>
               </div>
+              <p className="mt-2">Really liked the Session</p>
             </div>
-          ))}
+          </div>
         </div>
       </section>
     </div>
