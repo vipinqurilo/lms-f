@@ -21,6 +21,7 @@ import LoginForm from "@/container/login/LoginForm";
 import CheckoutForm from "../payment/CheckoutForm";
 import Loader from "./Loader";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
+import { formatDuration } from "@/utils/TimeFormat";
 
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
@@ -65,6 +66,15 @@ export default function FeaturedCard({ data, isFull = false }) {
     }
   };
 
+  const totalSeconds = data?.courseContent?.reduce((total, module) => {
+    return (
+      total +
+      module.lessons.reduce((sum, lesson) => {
+        return sum + parseInt(lesson?.duration);
+      }, 0)
+    );
+  }, 0);
+
   return (
     <>
       <div className="flex gap-2 md:p-0  p-2">
@@ -84,13 +94,14 @@ export default function FeaturedCard({ data, isFull = false }) {
             <div className="flex items-center justify-between">
               <div className="flex">
                 <img
-                  src={data?.courseImage}
+                  src={data?.courseInstructor?.profilePhoto}
                   alt="Instructor"
                   className="w-12 h-12 rounded-full mr-3"
                 />
                 <div>
                   <h3 className="text-lg font-semibold group-hover:text-white">
-                    {/* {data?.author} */} static data
+                    {data?.courseInstructor?.firstName}{" "}
+                    {data?.courseInstructor?.lastName}
                   </h3>
                   <span className="text-sm group-hover:text-white font-medium text-gray-500">
                     Instructor
@@ -99,7 +110,9 @@ export default function FeaturedCard({ data, isFull = false }) {
               </div>
               <div>
                 <button
-                  onClick={() => dispatch(addToWishlistAsync({course:data?._id}))}
+                  onClick={() =>
+                    dispatch(addToWishlistAsync({ course: data?._id }))
+                  }
                   className="  text-red-500  group-hover:text-white"
                 >
                   {isLoading["wishlistAsync"] ? (
@@ -123,22 +136,30 @@ export default function FeaturedCard({ data, isFull = false }) {
             </div>
             <Link
               href={`/courses/${data?._id}`}
-              className="mt-2 text-xl group-hover:text-white text-gray-700"
+              className="!mt-4 text-xl group-hover:text-white text-gray-700"
             >
               {data?.courseTitle}
             </Link>
+            {/* <p
+              className="mt-2 text-sm group-hover:text-white text-gray-700 line-clamp-2"
+            >
+              {data?.courseDescription}
+            </p> */}
             <div className="flex items-center justify-between gap-4 mt-4">
               <span className="text-sm text-gray-600 group-hover:text-white">
-                📚 {data?.lesson}
+                📚{" "}
+                {data?.courseContent?.reduce(
+                  (acc, item) => acc + (item?.lessons?.length || 0),
+                  0
+                )}
               </span>
               <span className="text-sm text-gray-600 group-hover:text-white">
-                ⏱ {data?.time}
+                ⏱ {formatDuration(totalSeconds)}
               </span>
             </div>
 
-            <div className="flex items-center justify-between mt-6 border-t pt-6 border-gray-300">
+            <div className="flex items-center justify-between mt-2 border-t pt-2 border-gray-300">
               <div className="flex items-center">
-                {/* Rating */}
                 <span className="flex text-yellow-500 ">⭐⭐⭐⭐</span>
                 <span className="ml-1 text-sm text-gray-500 group-hover:text-white">
                   {" "}
@@ -176,16 +197,27 @@ export default function FeaturedCard({ data, isFull = false }) {
           {isModalOpen && (
             <BackgroundModal
               PropComponent={
-                <div className="w-[90%] lg:w-[70%] bg-white flex flex-col gap-5 rounded-lg relative p-6">
-                  {!authUser ? (
-                    <div className="w-full flex items-center font-nunito !h-screen">
+                <>
+                  {authUser && Object.keys(authUser)?.length === 0 ? (
+                    <div
+                      className="w-[90%] lg:w-[70vw] flex items-center font-nunito !h-[90vh] bg-white rounded-lg overflow-hidden relative"
+                      style={{
+                        scrollbarWidth: "thin",
+                      }}
+                    >
                       <SlideShow />
-                      <LoginForm />
+                      <LoginForm setisModalOpen={setisModalOpen} />
+                      <button
+                        onClick={() => setisModalOpen(!isModalOpen)}
+                        className="absolute top-2 right-2 lg:right-6 text-gray-500 border border-black/10 rounded-full p-1 hover:bg-background hover:text-white transition-custom "
+                      >
+                        <IoClose size={20} />
+                      </button>
                     </div>
                   ) : (
-                    <>
+                    <div className="w-[90%] h-[90vh] md:h-auto lg:w-[70%] bg-white overflow-y-auto lg:overflow-hidden flex flex-col gap-5 rounded-lg relative p-6">
                       <div
-                        className={`w-full flex items-center justify-between -mb-5 px-8`}
+                        className={`w-full flex items-center justify-between -mb-5 lg:px-8`}
                       >
                         <h2 className="text-xl font-semibold font-nunito ">
                           Complete Your Purchase
@@ -204,9 +236,9 @@ export default function FeaturedCard({ data, isFull = false }) {
                         selected={selectedMethod}
                         onSelect={setselectedMethod}
                       />
-                    </>
+                    </div>
                   )}
-                </div>
+                </>
               }
             />
           )}

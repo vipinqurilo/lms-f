@@ -9,7 +9,7 @@ import { userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/router";
 
-const LoginForm = ({ type }) => {
+const LoginForm = ({ type, setisModalOpen }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
@@ -42,7 +42,8 @@ const LoginForm = ({ type }) => {
             router.push("/admin-dashboard");
           }
         }
-        dispatch(verifyLoggedInUser())
+        setisModalOpen(false);
+        dispatch(verifyLoggedInUser());
       });
   };
 

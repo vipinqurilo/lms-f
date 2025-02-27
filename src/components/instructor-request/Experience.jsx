@@ -82,11 +82,34 @@ const Experience = ({ isInstructorRequest = null }) => {
   }, [profile]);
 
   const addExperience = (data) => {
-    setExperience((prev) => [...prev, data]);
+    setExperience((prev) => {
+      const newExperience = [...prev, data];
+
+      if (path !== "/instructor-dashboard/settings") {
+        dispatch(
+          updateProcessData({ field: "experience", data: newExperience })
+        );
+      }
+
+      return newExperience;
+    });
+
+    setisAdd(null);
     reset();
   };
+
   const addEducation = (data) => {
-    setEducation((prev) => [...prev, data]);
+    setEducation((prev) => {
+      const newEducation = [...prev, data];
+
+      if (path !== "/instructor-dashboard/settings") {
+        dispatch(updateProcessData({ field: "education", data: newEducation }));
+      }
+
+      return newEducation;
+    });
+
+    setisAdd(null);
     reset();
   };
 

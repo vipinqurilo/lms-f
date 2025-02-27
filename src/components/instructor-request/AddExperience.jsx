@@ -50,6 +50,7 @@ const AddExperience = ({
           label={"Start year"}
           name={"startDate"}
           register={register}
+          type="number"
         />
 
         <SettingsInputField
@@ -57,6 +58,7 @@ const AddExperience = ({
           label={"End year"}
           name={"endDate"}
           register={register}
+          type="number"
         />
       </div>
       <div className="space-y-2">

@@ -81,6 +81,13 @@ export default function HeroSection() {
     }
 
     let results = [];
+    let subjectResults = categories?.map((category) =>
+      category?.subCategories?.filter((subCategory) =>
+        subCategory?.name
+          ?.toLowerCase()
+          ?.includes(debounceSearch?.toLowerCase())
+      )
+    );
     if (selectedOption === "course") {
       results = courses?.filter((course) =>
         course?.courseTitle
@@ -95,14 +102,12 @@ export default function HeroSection() {
       );
     }
 
-    setFilteredResults(results);
+    setFilteredResults(results || subjectResults);
   }, [debounceSearch, courses, tutors, selectedOption]);
 
   const handleSearch = () => {
     router.push(`/search?query=${searchText}&type=${selectedOption}`);
   };
-
-  console.log("filteredResults", filteredResults);
 
   return (
     <div
