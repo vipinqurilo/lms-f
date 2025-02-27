@@ -26,19 +26,16 @@ export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
   const {
     enrolledCourses,
-    wishlist: recentWishList,
     isLoading,
   } = useSelector((state) => state.courses);
   const { wishlist } = useSelector((state) => state.student.wishlist);
-
+console.log(wishlist,'wishlist')
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
   }
   const dispatch = useDispatch();
 
-  const handleAddWishlist = (id) => {
-    dispatch(wishlistAsync({ course: id }));
-  };
+  
 
   const [isModalOpen, setisModalOpen] = useState(false);
   const [selectedMethod, setselectedMethod] = useState("stripe");
@@ -108,10 +105,7 @@ export default function FeaturedCard({ data, isFull = false }) {
                     <>
                       {wishlist?.some(
                         (item) => item?.course?._id === data?._id
-                      ) ||
-                      recentWishList?.some(
-                        (item) => item?.course?._id === data?._id
-                      ) ? (
+                      )  ? (
                         <FaHeart className="text-xl text-red-500 hover:text-red-500" />
                       ) : (
                         <FaRegHeart className="text-xl hover:text-red-500" />
