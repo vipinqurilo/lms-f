@@ -20,6 +20,7 @@ import SlideShow from "@/container/login/SlideShow";
 import LoginForm from "@/container/login/LoginForm";
 import CheckoutForm from "../payment/CheckoutForm";
 import Loader from "./Loader";
+import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
@@ -96,10 +97,9 @@ export default function FeaturedCard({ data, isFull = false }) {
                   </span>
                 </div>
               </div>
-
               <div>
                 <button
-                  onClick={() => handleAddWishlist(data?._id)}
+                  onClick={() => dispatch(addToWishlistAsync({course:data?._id}))}
                   className="  text-red-500  group-hover:text-white"
                 >
                   {isLoading["wishlistAsync"] ? (

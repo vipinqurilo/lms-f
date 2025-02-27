@@ -161,7 +161,7 @@ export function BookingModal({ onClose, tutor }) {
               onSelect={setDuration}
             />
           )}
-
+          
           {step === 3 && (
             <div className=" h-[calc(100%-154px)]">
               <ScheduleCalendar

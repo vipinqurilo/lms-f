@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import StudentDashboardLayout from "../../../layouts/student-dashboard/StudentDashboardLayout";
 import { CourseCard } from "../../../components/student-dashboard/CourseCard";
 import {
+  addToWishlistAsync,
   fetchWishlistAsync,
   removeFromWishlistAsync,
 } from "@/store/slices/student-dashboard/wishlistSlice";
@@ -25,6 +26,7 @@ export default function WishlistPage() {
   const handleRemoveFromWishlist = (courseId) => {
     dispatch(removeFromWishlistAsync(courseId));
   };
+  
 
   return (
     <StudentDashboardLayout>
@@ -61,7 +63,7 @@ export default function WishlistPage() {
                       price: item.course.coursePrice,
                     }}
                     onWishlist={true}
-                    onWishlistClick={() => handleRemoveFromWishlist(item._id)}
+                    onWishlistClick={() => dispatch(addToWishlistAsync({course:item.course._id}))}
                   />
                 ))}
               </div>
