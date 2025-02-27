@@ -4,6 +4,8 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "@/store/api/api";
 
 const initialState = {
+  tutorReviews:[],
+  
   userID: "",
   tutorId: "",
   processStep: 1,
@@ -56,7 +58,18 @@ export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
     return api.get(url);
   }
 );
-
+export const fetchTutorReviewAsync = CreateApiAsyncThunk(
+  "GET/review/fetchTutorReviewAsync",
+  ({id}) => api.get(`/tutorReview/${id}`)
+);
+export const deleteReviewAsync = CreateApiAsyncThunk(
+  "review/deleteReviewAsync",
+  (id) => api.delete(`/review/${id}`)
+);
+export const editReviewAsync = CreateApiAsyncThunk(
+  "review/editReviewAsync",
+  ({tab,id,data}) => api.patch(`/${tab}/${id}`, data)
+);
 const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
@@ -220,7 +233,49 @@ const tutorsSlice = createSlice({
       .addCase(editTutorRequestData.rejected, (state, action) => {
         state.isLoading["editTutorRequestData"] = false;
         state.error["editTutorRequestData"] = action.payload;
+      })
+      .addCase(fetchTutorReviewAsync.pending, (state) => {
+        state.isLoading["fetchTutorReviewAsync"] = true;
+      })
+      .addCase(fetchTutorReviewAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchTutorReviewAsync"] = false;
+        state.tutorReviews = action.payload?.data?.reviews || [];
+      })
+      .addCase(fetchTutorReviewAsync.rejected, (state, action) => {
+        state.isLoading["fetchTutorReviewAsync"] = false;
+        state.error["fetchTutorReviewAsync"] = action.error?.message;
+      })
+
+      .addCase(deleteReviewAsync.pending, (state) => {
+        state.isLoading["deleteReviewAsync"] = true;
+      })
+
+      .addCase(deleteReviewAsync.fulfilled, (state, action) => {
+        state.isLoading["deleteReviewAsync"] = false;
+        state.error["deleteReviewAsync"] = action.error?.message;
+      })
+      .addCase(deleteReviewAsync.rejected, (state, action) => {
+        state.isLoading["deleteReviewAsync"] = false;
+        state.error["deleteReviewAsync"] = action.error?.message;
+      })
+
+      .addCase(editReviewAsync.pending, (state) => {
+        state.isLoading["editReviewAsync"] = true;
+      })
+
+      .addCase(editReviewAsync.fulfilled, (state, action) => {
+        state.isLoading["editReviewAsync"] = false;
+        state.tutorReviews = state.tutorReviews.map((review) => 
+          review._id === action.payload.tutorReviews._id ? action.payload.tutorReviews : review
+        );
+        state.error["editReviewAsync"] = null;
+      })
+
+      .addCase(editReviewAsync.rejected, (state, action) => {
+        state.isLoading["editReviewAsync"] = false;
+        state.error["editReviewAsync"] = action.error?.message;
       });
+
   },
 });
 
