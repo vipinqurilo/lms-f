@@ -22,11 +22,6 @@ export const fetchSingleCourse = CreateApiAsyncThunk(
   (id) => api.get(`/course/front/${id}`)
 );
 
-export const wishlistAsync = CreateApiAsyncThunk(
-  "courses/wishlistAsync",
-  (data) => api.post(`/whishlist`, data)
-);
-
 export const addOrderAsync = CreateApiAsyncThunk(
   "courses/addOrderAsync",
   (data) => api.post(`/order/create-payment-intent`, data)
@@ -56,7 +51,6 @@ const coursesSlice = createSlice({
     totalPages: null,
     courseData: {},
     perchasedCourse: null,
-    wishlist: [],
     orders: [],
     isLoading: {},
     error: {},
@@ -77,25 +71,6 @@ const coursesSlice = createSlice({
       .addCase(fetchCategories.rejected, (state, action) => {
         state.isLoading["fetchCategories"] = false;
         state.error["fetchCategories"] = action.error.message;
-      })
-      .addCase(wishlistAsync.pending, (state, action) => {
-        state.isLoading["wishlistAsync"] = true;
-      })
-      .addCase(wishlistAsync.fulfilled, (state, action) => {
-        state.isLoading["wishlistAsync"] = false;
-        const { message, data } = action.payload;
-        if (message === "removed from wishlist") {
-          state.wishlist = state.wishlist.filter((item) => item._id !== data._id);
-        } else if (message === "added to wishlist") {
-          state.wishlist.push(data);
-        }
-        else{
-          toast.error(message);
-        }
-      })
-      .addCase(wishlistAsync.rejected, (state, action) => {
-        state.isLoading["wishlistAsync"] = false;
-        state.error["wishlistAsync"] = action.payload;
       })
       .addCase(fetchCoursesAsync.pending, (state, action) => {
         state.isLoading["fetchCoursesAsync"] = true;

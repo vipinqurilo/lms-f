@@ -1,108 +1,51 @@
-import React from "react";
-import Image from "next/image";
 import TableHeader from "@/components/instructor/TableHeader";
-import CreatedCourses from "../dashboard/CreatedCourses";
+import React from "react";
 
-const EarningTable = ({
-  title = "Earnings Overview",
-  headingsData,
-  bookingsData,
-  coursesData,
-  activeTab,
-}) => {
-
+const EarningTable = ({ title = "Earnings Overview", headingsData, data }) => {
   return (
-    <div className=" px-5">
+    <div className=" px-5 w-full">
       <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
 
-      {activeTab === "Courses" ? (
-        <>
-          {/* <CreatedCourses headingsData={["Courses", "Earning", ]} data={coursesData} /> */}
-          {/* Best-Selling Courses Section */}
-          <div className="bg-green-100 rounded-lg shadow-md p-4 mb-6">
-            <h3 className="text-xl font-semibold text-green-800 mb-4">
-              🏆 Best Selling Courses
-            </h3>
-            <div className="overflow-x-auto rounded-lg">
-              <table className="w-full rounded-lg">
-                <TableHeader
-                  headingsData={["Course Name", "Total Sales", "Earnings"]}
-                />
-                <tbody className="divide-y divide-gray-100">
-                  {coursesData
-                    ?.sort((a, b) => b.sales - a.sales)
-                    .slice(0, 3)
-                    .map((course, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">{course?.title}</td>
-                        <td className="px-6 py-4">
-                          {course?.sales || "0"} Sales
-                        </td>
-                        <td className="px-6 py-4">
-                          ${course?.earnings || "0"}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <div className="w-full rounded-lg">
+        <table className="w-full border border-black/10 !rounded-lg ">
+          <TableHeader headingsData={headingsData} />
 
-          {/* Least-Selling Courses Section */}
-          <div className="bg-red-100 rounded-lg shadow-md p-4 mb-6">
-            <h3 className="text-xl font-semibold text-red-800 mb-4">
-              📉 Least Selling Courses
-            </h3>
-            <div className="overflow-x-auto rounded-lg">
-              <table className="w-full rounded-lg">
-                <TableHeader
-                  headingsData={["Course Name", "Total Sales", "Earnings"]}
-                />
-                <tbody className="divide-y divide-gray-100">
-                  {coursesData
-                    ?.sort((a, b) => a.sales - b.sales)
-                    .slice(0, 3)
-                    .map((course, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">{course?.title}</td>
-                        <td className="px-6 py-4">
-                          {course?.sales || "0"} Sales
-                        </td>
-                        <td className="px-6 py-4">
-                          ${course?.earnings || "0"}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="bg-white rounded-lg border border-black/10 p-4 mb-6">
-          <h3 className="text-xl font-semibold text-dark mb-4">
-            📅 Earnings from Bookings
-          </h3>
-          <div className="overflow-x-auto rounded-lg">
-            <table className="w-full rounded-lg">
-              <TableHeader headingsData={headingsData} />
-              <tbody className="divide-y divide-gray-100">
-                {bookingsData?.map((booking, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 w-[40%]">
-                      {booking?.title || "No Title"}
-                    </td>
-                    <td className="px-6 py-4">
-                      {booking?.amount ? `$${booking?.amount}` : "-"}
-                    </td>
-                    <td className="px-6 py-4">{booking?.date || "-"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+          <tbody>
+            {data?.length === 0 ? (
+              <tr>
+                <td colSpan={TableHeader?.length}>No Earnings Found</td>
+              </tr>
+            ) : (
+              data?.map((item, index) => (
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2 ">
+                    {index + 1}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-start">
+                    {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {item.type === "course"
+                      ? item.courseName
+                      : item.serviceName}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-start">
+                    ${item.price}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-start">
+                    {item.type === "course"
+                      ? item.enrolledStudents
+                      : item.bookings}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-start">
+                    ${item.revenue.toLocaleString()}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

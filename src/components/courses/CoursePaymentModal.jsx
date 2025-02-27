@@ -25,7 +25,7 @@ export function CoursePaymentModal({
   );
 
   return (
-    <div className="lg:grid grid-cols-2 gap-8 p-8 font-nunito">
+    <div className="lg:grid grid-cols-2 gap-8 py-4 lg:p-8 font-nunito">
       <div>
         <h2 className="text-sm mb-4 text-[#040404]">SELECT A PAYMENT METHOD</h2>
         <div className="space-y-2">

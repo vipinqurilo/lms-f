@@ -19,7 +19,7 @@ import Loader from "../common/Loader";
 const CourseCard = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const { isLoading } = useSelector((state) => state.courses);
+  const { isLoading, enrolledCourses } = useSelector((state) => state.courses);
   const { wishlist } = useSelector((state) => state.student.wishlist);
   const dispatch = useDispatch();
 
@@ -92,9 +92,11 @@ const CourseCard = ({ data }) => {
             Share
           </button>
         </div>
-        <button className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4">
-          Enroll Now
-        </button>
+        {!enrolledCourses?.some((item) => item === data?._id) && (
+          <button className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4">
+            Enroll Now
+          </button>
+        )}
       </div>
 
       {isModalOpen && (

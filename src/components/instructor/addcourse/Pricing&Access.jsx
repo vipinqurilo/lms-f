@@ -41,44 +41,24 @@ const PricingAccess = () => {
   }, [courseAddData]);
 
   const submitHandler = (data) => {
-    const formData = new FormData();
-    formData.append("courseTitle", courseAddData?.basic?.title || "");
-    formData.append(
-      "courseDescription",
-      courseAddData?.basic?.description || ""
-    );
-    formData.append(
-      "courseCategory",
-      courseAddData?.basic?.courseCategory || ""
-    );
-    formData.append(
-      "courseSubCategory",
-      courseAddData?.basic?.courseSubCategory || ""
-    );
-    formData.append("courseLevel", courseAddData?.basic?.level || "");
-    formData.append("coursePrice", data.price || "");
-    formData.append(
-      "courseFeatures",
-      JSON.stringify(courseAddData?.basic?.features || [])
-    );
-    formData.append(
-      "courseLearning",
-      JSON.stringify(courseAddData?.basic?.whatYouWillLearn || [])
-    );
-    formData.append(
-      "courseRequirements",
-      JSON.stringify(courseAddData?.basic?.requirements || [])
-    );
-    formData.append(
-      "courseContent",
-      JSON.stringify(courseAddData?.curriculum || [])
-    );
-    formData.append("courseInstructor", authUser?._id || "");
-    formData.append("courseImage", courseAddData?.media?.image);
-    formData.append("courseVideo", courseAddData?.media?.video);
-
     if (courseAddData?.id) {
-      dispatch(editCourse({ id: courseAddData?.id, data: formData }))
+      const courseData = {
+        courseTitle: courseAddData?.basic?.title || "",
+        courseDescription: courseAddData?.basic?.description || "",
+        courseCategory: courseAddData?.basic?.courseCategory || "",
+        courseSubCategory: courseAddData?.basic?.courseSubCategory || "",
+        courseLevel: courseAddData?.basic?.level || "",
+        coursePrice: data.price || "",
+        courseFeatures: courseAddData?.basic?.features || [],
+        courseLearning: courseAddData?.basic?.whatYouWillLearn || [],
+        courseRequirements: courseAddData?.basic?.requirements || [],
+        courseContent: courseAddData?.curriculum || [],
+        courseInstructor: authUser?._id || "",
+        courseImage: courseAddData?.media?.image,
+        courseVideo: courseAddData?.media?.video,
+      };
+
+      dispatch(editCourse({ id: courseAddData?.id, data: courseData }))
         .unwrap()
         .then(() => {
           dispatch(updateStep(1));
@@ -86,6 +66,41 @@ const PricingAccess = () => {
           router.push("/instructor-dashboard");
         });
     } else {
+      const formData = new FormData();
+      formData.append("courseTitle", courseAddData?.basic?.title || "");
+      formData.append(
+        "courseDescription",
+        courseAddData?.basic?.description || ""
+      );
+      formData.append(
+        "courseCategory",
+        courseAddData?.basic?.courseCategory || ""
+      );
+      formData.append(
+        "courseSubCategory",
+        courseAddData?.basic?.courseSubCategory || ""
+      );
+      formData.append("courseLevel", courseAddData?.basic?.level || "");
+      formData.append("coursePrice", data.price || "");
+      formData.append(
+        "courseFeatures",
+        JSON.stringify(courseAddData?.basic?.features || [])
+      );
+      formData.append(
+        "courseLearning",
+        JSON.stringify(courseAddData?.basic?.whatYouWillLearn || [])
+      );
+      formData.append(
+        "courseRequirements",
+        JSON.stringify(courseAddData?.basic?.requirements || [])
+      );
+      formData.append(
+        "courseContent",
+        JSON.stringify(courseAddData?.curriculum || [])
+      );
+      formData.append("courseInstructor", authUser?._id || "");
+      formData.append("courseImage", courseAddData?.media?.image);
+      formData.append("courseVideo", courseAddData?.media?.video);
       dispatch(createCourse(formData))
         .unwrap()
         .then(() => {

@@ -1,7 +1,10 @@
 "use client";
-import { instructorRegister } from "@/store/slices/userSlice";
+import {
+  instructorRegister,
+  verifyLoggedInUser,
+} from "@/store/slices/userSlice";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +18,10 @@ const TeacherRegisterForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
+
+  useEffect(() => {
+    dispatch(verifyLoggedInUser());
+  }, []);
 
   const {
     register,

@@ -5,14 +5,16 @@ import React, { useEffect } from "react";
 // import fs from "fs";
 import CourseDetails from "@/container/courses/CourseDetails";
 import { useParams } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchSingleCourse } from "@/store/slices/coursesSlice";
+import Loader from "@/components/common/Loader";
 
 // export default function CourseDetailsPage({ pageData }) {
 export default function CourseDetailsPage() {
   const params = useParams();
 
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.courses);
 
   useEffect(() => {
     if (params?.slug) {
@@ -25,7 +27,13 @@ export default function CourseDetailsPage() {
   }
   return (
     <main className="font-nunito custom-margin-top">
-      <CourseDetails />
+      {isLoading["fetchSingleCourse"] ? (
+        <div className="font-nunito py-10">
+          <Loader isBig={true} color={"text-secondary"} />
+        </div>
+      ) : (
+        <CourseDetails />
+      )}
     </main>
   );
 }

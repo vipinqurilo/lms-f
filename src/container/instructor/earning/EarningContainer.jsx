@@ -1,89 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import EarningsChart from "./EarningsChart";
 import EarningTable from "./EarningTable";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import TitleComp from "@/components/instructor/TitleComp";
-
-export const earningsData = {
-  title: "Earnings Report",
-  headingsData: ["Course Name", "Earnings", "Status"],
-
-  // Bookings Data (Earnings from Bookings)
-  bookingsData: [
-    { title: "Yoga Retreat", amount: "500", date: "2025-02-12" },
-    { title: "Cooking Masterclass", amount: "300", date: "2025-02-10" },
-    { title: "Digital Marketing Workshop", amount: "450", date: "2025-02-08" },
-    { title: "Photography Mastery", amount: "700", date: "2025-02-05" },
-  ],
-
-  // Courses Data (Earnings from Courses)
-  coursesData: [
-    {
-      title: "ReactJS Advanced Course",
-      earnings: 1500,
-      sales: 70,
-      status: "publish",
-      image:
-        "http://res.cloudinary.com/daprkakyk/image/upload/v1739189204/luxe/ebj26romwar9k2ch84o5.jpg",
-    },
-    {
-      title: "Python Full-Stack Development",
-      earnings: 1200,
-      sales: 60,
-      status: "publish",
-      image:
-        "http://res.cloudinary.com/daprkakyk/image/upload/v1739189204/luxe/ebj26romwar9k2ch84o5.jpg",
-    },
-    {
-      title: "UI/UX Design Principles",
-      earnings: 900,
-      sales: 50,
-      status: "publish",
-      image:
-        "http://res.cloudinary.com/daprkakyk/image/upload/v1739189204/luxe/ebj26romwar9k2ch84o5.jpg",
-    },
-    {
-      title: "SEO & Content Strategy",
-      earnings: 400,
-      sales: 15,
-      status: "Draft",
-      image:
-        "http://res.cloudinary.com/daprkakyk/image/upload/v1739189204/luxe/ebj26romwar9k2ch84o5.jpg",
-    },
-    {
-      title: "Graphic Design Essentials",
-      earnings: 300,
-      sales: 10,
-      status: "pending",
-      image:
-        "http://res.cloudinary.com/daprkakyk/image/upload/v1739189204/luxe/ebj26romwar9k2ch84o5.jpg",
-    },
-    {
-      title: "Email Marketing Masterclass",
-      earnings: 200,
-      sales: 5,
-      status: "pending",
-      image:
-        "http://res.cloudinary.com/daprkakyk/image/upload/v1739189204/luxe/ebj26romwar9k2ch84o5.jpg",
-    },
-  ],
-};
+import { fetchAllEarning } from "@/store/slices/instructor/earningSlice";
+import Loader from "@/components/common/Loader";
 
 const EarningContainer = () => {
-  // const { courses } = useSelector((state) => state.instructor.course);;
+  const dispatch = useDispatch();
+  const { isLoading, earning, totalPages } = useSelector(
+    (state) => state.instructor.earning
+  );
   const [filters, setfilters] = useState({});
   const [activeTab, setactiveTab] = useState("Courses");
-  // const filteredData = courses?.map((course) => ({
-  //   image: course?.thumbnail,
-  //   title: course?.title,
-  //   des: course?.description,
-  //   value1: course?.originalPrice,
-  //   value2: 50,
-  // }));
+  const [currentPage, setcurrentPage] = useState(1);
+
+  useEffect(() => {
+    const requestData = {
+      page: currentPage,
+      limit: 5,
+    };
+    if (filters?.search) {
+      requestData.search = filters?.search;
+    }
+    if (filters?.startDate) {
+      requestData.startDate = filters?.startDate;
+    }
+    if (filters?.endDate) {
+      requestData.endDate = filters?.endDate;
+    }
+    dispatch(fetchAllEarning(requestData));
+  }, [dispatch, currentPage, filters]);
+
   return (
     <>
       <main className=" p-10">
@@ -124,17 +76,48 @@ const EarningContainer = () => {
                 </div>
               </div>
             </div>
-            <EarningTable
-              title={earningsData.title}
-              headingsData={earningsData.headingsData}
-              bookingsData={earningsData.bookingsData}
-              coursesData={earningsData.coursesData}
-              activeTab={activeTab}
-            />
+
+            {isLoading["fetchAllEarning"] ? (
+              <div className="w-full flex items-center justify-center py-10">
+                <Loader isBig={true} color={"text-secondary"} />
+              </div>
+            ) : (
+              <EarningTable
+                title={"Earnings Overview"}
+                headingsData={
+                  activeTab === "Courses"
+                    ? [
+                        "SNO.",
+                        "Type",
+                        "Name",
+                        "Price ($)",
+                        "Enrolled",
+                        "Revenue",
+                      ]
+                    : [
+                        "SNO.",
+                        "Type",
+                        "Name",
+                        "Price ($)",
+                        "Bookings",
+                        "Revenue",
+                      ]
+                }
+                data={
+                  activeTab === "Courses"
+                    ? earning?.filter((earn) => earn?.type === "course")
+                    : earning?.filter((earn) => earn?.type === "booking")
+                }
+              />
+            )}
           </div>
         </div>
       </main>
-      <Pagination totalPages={5} currentPage={1} />
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={(val) => setcurrentPage(val)}
+      />
     </>
   );
 };
