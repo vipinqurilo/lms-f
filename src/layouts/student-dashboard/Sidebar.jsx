@@ -116,13 +116,13 @@ const adminSidebarLinks = [
     icon: MdSchool,
     subLinks: [
       {
-        title: "Course Request",
+        title: "Manage Courses",
         href: "/admin-dashboard/manage-courses",
       },
-      // {
-      //   title: "Course Request",
-      //   href: "/admin-dashboard/approvals/courses",
-      // },
+      {
+        title: "Course Request",
+        href: "/admin-dashboard/approvals/courses",
+      },
     ],
   },
   {

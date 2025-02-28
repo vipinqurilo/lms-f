@@ -78,6 +78,7 @@ const ManageCourses = () => {
     title: course?.courseTitle,
     des: course?.courseDescription,
     value1: course?.entrolled || 425,
+    firstName: course?.courseInstructor?.firstName,
     value2: (
       <div className="flex items-center gap-5">
         {editCourseId === course?._id ? (
@@ -138,7 +139,7 @@ const ManageCourses = () => {
               <Loader color={"text-secondary"} isBig={true} />
             ) : (
               <CreatedCourses
-                headingsData={["Courses", "Enrolled", "Status"]}
+                headingsData={["Courses", "Enrolled", "Teacher", "Status"]}
                 data={filteredData}
                 title=""
               />
