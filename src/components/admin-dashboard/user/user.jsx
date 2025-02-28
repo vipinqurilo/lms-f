@@ -73,7 +73,7 @@ const UsersHistory = () => {
   return (
     <>
       <div className="p-10">
-        <div className="dashboard-container">
+        <div className="dashboard-container w-full overflow-x-hidden">
           <TitleComp
             heading={"Manage Users"}
             des={"Reset filtered users when users from Redux store change"}
@@ -81,20 +81,20 @@ const UsersHistory = () => {
           <div className="w-full sticky top-0 py-4 bg-white px-5">
             <UserFilter onApplyFilters={handleApplyFilters} />
           </div>
-          <div className="rounded-b-lg">
+          <div className="rounded-b-lg w-full overflow-x-scroll  ">
             {isLoading["getAllUsers"] ? (
               <div className="w-full py-10 flex items-center justify-center">
                 <Loader color={"text-secondary"} isBig={true} />
               </div>
             ) : (
-              <table className="w-full border border-black/10">
+              <table className=" border border-black/10">
                 <TableHeader headingsData={columns} />
                 <tbody className="text-center">
                   {filteredUsers?.length === 0 ? (
                     <tr>
                       <td
                         colSpan="9"
-                        className="py-4 text-center text-gray-500"
+                        className="py-4 text-center text-gray-500 "
                       >
                         Data not found
                       </td>

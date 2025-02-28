@@ -15,12 +15,15 @@ export default function index() {
 
   return (
     <StudentDashboardLayout>
-      <main className="dashboard-container  mt-4">
+      <main className="  p-10">
+        <div className="dashboard-container">
         <TitleComp
           heading={"Courses Approval Requests"}
           des={"following are the approval requests for all the courses."}
         />
         <Course />
+        </div>
+   
       </main>
     </StudentDashboardLayout>
   );
