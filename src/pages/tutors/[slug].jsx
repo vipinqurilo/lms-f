@@ -15,7 +15,7 @@ import SidebarActions from "../../components/tutor/single-page/SidebarActions";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { fetchTutorProfileAsync } from "@/store/slices/tutorsSlice";
+import { fetchReviewAsyncById, fetchTutorProfileAsync } from "@/store/slices/tutorsSlice";
 import LoginModel from "@/container/login/LoginModel";
 import { BookingModal } from "@/container/booking/BookingModal";
 import { Loader } from "lucide-react";
@@ -44,6 +44,7 @@ export default function TeacherProfile() {
     if (tutorId && userID) {
       dispatch(fetchBookingsByTutorIdAsync(userID));
       dispatch(fetchTutorProfileAsync(tutorId));
+      dispatch(fetchReviewAsyncById({id:userID}));
     } else {
       router.push("/tutors");
       toast.error("Tutor not found");

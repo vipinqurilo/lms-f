@@ -4,6 +4,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "@/store/api/api";
 
 const initialState = {
+  tutorReviews: [],
   userID: "",
   tutorId: "",
   processStep: 1,
@@ -56,7 +57,22 @@ export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
     return api.get(url);
   }
 );
-
+export const fetchReviewAsyncById = CreateApiAsyncThunk(
+  "GET/review/fetchReviewAsyncById",
+  ({id}) => api.get(`/tutorReview/${id}`)
+);
+export const fetchTutorReviewAsync = CreateApiAsyncThunk(
+  "GET/review/fetchTutorReviewAsync",
+  () => api.get(`/tutorReview`)
+);
+export const deleteReviewAsync = CreateApiAsyncThunk(
+  "review/deleteReviewAsync",
+  (id) => api.delete(`/review/${id}`)
+);
+export const editReviewAsync = CreateApiAsyncThunk(
+  "review/editReviewAsync",
+  ({tab,id,data}) => api.patch(`/${tab}/${id}`, data)
+);
 const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
@@ -220,7 +236,22 @@ const tutorsSlice = createSlice({
       .addCase(editTutorRequestData.rejected, (state, action) => {
         state.isLoading["editTutorRequestData"] = false;
         state.error["editTutorRequestData"] = action.payload;
-      });
+      })
+      .addCase(fetchReviewAsyncById.pending, (state) => {
+        state.isLoading["fetchReviewAsyncById"] = true;
+      })
+
+      .addCase(fetchReviewAsyncById.fulfilled, (state, action) => {
+        state.isLoading["fetchReviewAsyncById"] = false;
+        console.log(action.payload, "action.payload");
+        state.tutorReviews = action.payload?.data?.reviews || [];
+      })
+
+      .addCase(fetchReviewAsyncById.rejected, (state, action) => {
+        state.isLoading["fetchReviewAsyncById"] = false;
+        state.error["fetchReviewAsyncById"] = action.error?.message;
+      })
+
   },
 });
 

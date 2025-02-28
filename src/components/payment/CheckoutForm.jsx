@@ -3,7 +3,7 @@ import BackgroundModal from "../instructor/BackgroundModal";
 
 const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
   React.useEffect(() => {
-    if (checkoutUrl) {
+    if (checkoutUrl) {CheckoutForm
       // Open in a new window with specific dimensions
       const stripeWindow = window.open(
         checkoutUrl,
@@ -16,7 +16,7 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
         if (stripeWindow.closed) {
           clearInterval(timer);
           setPaymentModal(false);
-          setisModalOpen(false);
+            setisModalOpen(false);
         }
       }, 500);
 

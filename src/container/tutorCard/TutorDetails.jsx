@@ -22,8 +22,6 @@ const TutorDetails = ({ tutor }) => {
               `/tutors/${tutor.user?.firstName?.toLowerCase()}-${tutor.user?.lastName?.toLowerCase()}`
             );
           }}
-          data-tip={"Tip Here"}
-          data-for={"mytip"}
           className="text-xl font-bold cursor-pointer"
         >
           {tutor.user.firstName} {tutor.user.lastName}

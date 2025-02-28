@@ -9,7 +9,6 @@ import SortBy from "./SortBy";
 import GenderSelector from "./GenderSelector";
 import { useSelector } from "react-redux";
 
-
 const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects, setSelectedSubjects }) => {
   const [gender, setGender] = useState("Any");
   const [sortBy, setSortBy] = useState("By popularity");
