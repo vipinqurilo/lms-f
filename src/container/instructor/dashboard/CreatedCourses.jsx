@@ -11,7 +11,11 @@ const CreatedCourses = ({
   status,
   isCols = false,
 }) => {
-  console.log(data, "datak");
+  const isAdmin = useSelector(
+    (state) => state.user?.authUser?.role === "admin" || {}
+  );
+
+  console.log(isAdmin, "role");
 
   const getStatusCss = (status) => {
     return status === "unpublished"
@@ -30,9 +34,9 @@ const CreatedCourses = ({
       )}
       <div className="bg-white rounded-b-lg shadow-md p-4 ">
         <div className="overflow-x-auto">
-          <table className="w-full rounded-lg">
+          <table className="w-full rounded-lg bg-gray-100">
             <TableHeader headingsData={headingsData} />
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 bg-white">
               {data?.map((course, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 w-[60%]">
@@ -64,11 +68,13 @@ const CreatedCourses = ({
                       {course?.value1 ? course?.value1 : "-"}
                     </div>
                   </td>
-                  <td className="px-6 py-4 ">
-                    <div className="text-light/60">
-                      {course?.firstName ? course?.firstName : "-"}
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className={`px-6 py-4 `}>
+                      <div className="text-light/60">
+                        {course?.firstName ? course?.firstName : "-"}
+                      </div>
+                    </td>
+                  )}
                   {headingsData?.length > 3 && (
                     <td className="px-6 py-4">
                       <div
