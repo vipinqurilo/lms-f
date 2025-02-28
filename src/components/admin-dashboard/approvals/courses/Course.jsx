@@ -12,6 +12,7 @@ import Link from "next/link";
 import { RxCross2 } from "react-icons/rx";
 import ApprovelModal from "../../teacherrequests/approvel";
 import RejectModal from "../../teacherrequests/rejectModel";
+import Loader from "@/components/common/Loader";
 
 const columns = [
   "Sr. No.",
@@ -90,6 +91,14 @@ const Course = () => {
       setIsRejectModalOpen(true);
     };
 
+
+    if (isLoading["rejectAdminCourse"] || isLoading["updateAdminCourseStatus"]) {
+      return (
+        <div className="h-screen w-full flex justify-center items-center">
+          <Loader isBig={true} color={"text-secondary"} />
+        </div>
+      );
+    }
 
   return (
     <div className="rounded-lg p-6 w-full max-w-6xl mx-auto">
