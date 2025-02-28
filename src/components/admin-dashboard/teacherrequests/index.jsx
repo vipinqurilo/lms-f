@@ -87,18 +87,19 @@ const TeacherRequests = () => {
     }
   };
 
+
+
   const handleOpenRejectModal = (teacherId) => {
     setSelectedTeacherId(teacherId);
     setIsRejectModalOpen(true);
   };
 
+
   // const handleReject = async () => {
   //   if (!selectedTeacherId || !rejectionReason) return;
-
   //   // Log the teacher ID and rejection reason to the console
   //   console.log("Teacher ID:", selectedTeacherId);
   //   console.log("Rejection Reason:", rejectionReason);
-
   //   try {
   //     // Dispatch rejectTeacher action with teacherId and reason
   //     await dispatch(rejectTeacher({ id: selectedTeacherId, reason: rejectionReason })).unwrap();
@@ -108,9 +109,9 @@ const TeacherRequests = () => {
   //   } catch (error) {
   //     console.error("Error rejecting teacher:", error);
   //   }
-
   // };
 
+ 
   const handleReject = async () => {
     if (!selectedTeacherId || !rejectionReason) return;
 
@@ -261,7 +262,6 @@ const TeacherRequests = () => {
               )}
             </table>
           </div>
-
           {/* Reject Modal */}
           <RejectModal
             isOpen={isRejectModalOpen}

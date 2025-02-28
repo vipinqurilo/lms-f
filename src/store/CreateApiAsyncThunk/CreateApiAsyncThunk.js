@@ -4,11 +4,14 @@ export const CreateApiAsyncThunk = (type, apicall) =>
   createAsyncThunk(type, async (arg, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      const response = await apicall(arg); // Call the API function with `arg`
-      return response.data; // Return the response data
+      const response = await apicall(arg);
+      return response.data;
     } catch (error) {
       return rejectWithValue(
-        error?.response?.data || error?.message || "Something Went Wrong"
-      ); // Handle errors properly
+        error?.response?.data?.message ||
+          error?.response?.message ||
+          error?.message ||
+          "Something Went Wrong"
+      );
     }
   });

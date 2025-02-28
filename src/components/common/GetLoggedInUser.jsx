@@ -7,7 +7,6 @@ import { verifyLoggedInUser } from "@/store/slices/userSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
-import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
 import { fetchAllTutorProfileAsync } from "@/store/slices/tutorsSlice";
 import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
 
@@ -36,7 +35,7 @@ const GetLoggedInUser = () => {
         dispatch(getAllEnrolledCourses());
       }
     }
-  }, [dispatch, authUser]);
+  }, [dispatch, authUser, isAuthenticated]);
 
   return null;
 };

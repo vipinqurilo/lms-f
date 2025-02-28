@@ -24,7 +24,7 @@ const CreatedCourses = ({
       {title !== "" && (
         <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
       )}
-      <div className="bg-white rounded-b-lg shadow-md overflow-hidden p-4 ">
+      <div className="bg-white rounded-b-lg shadow-md p-4 ">
         <div className="overflow-x-auto">
           <table className="w-full rounded-lg">
             <TableHeader headingsData={headingsData} />
@@ -69,9 +69,9 @@ const CreatedCourses = ({
                         }`}
                       >
                         {course?.value2}
-                        {course?.value2 === "unpublished" && (
+                        {/* {course?.value2 === "unpublished" && (
                           <RejectReasonPopup data={course?.rejectionReason} />
-                        )}
+                        )} */}
                       </div>
                     </td>
                   )}

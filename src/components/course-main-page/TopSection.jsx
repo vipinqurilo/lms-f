@@ -20,7 +20,7 @@ const TopSection = ({ data }) => {
               {data?.courseInstructor?.profileImage ? (
                 <Image
                   src={data?.courseInstructor?.profileImage}
-                  alt={data?.courseInstructor?.name}
+                  alt={data?.courseInstructor?.firstName}
                   fill={true}
                   className="object-cover rounded-full"
                 />
@@ -37,7 +37,7 @@ const TopSection = ({ data }) => {
 
             <div className="">
               <p className="text-lg font-bold">{data?.courseInstructor?.firstName} {data?.courseInstructor?.lastName}</p>
-              <p className="">{data?.courseInstructor?.role}</p>
+              <p className="">{data?.courseInstructor?.role || "Instructor"}</p>
             </div>
           </div>
           <div className="flex items-center text-xl gap-1">

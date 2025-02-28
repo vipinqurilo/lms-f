@@ -1,14 +1,19 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import { startOfWeek, eachDayOfInterval, format } from "date-fns";
 
 const EarningsChart = () => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
-  const [date, setdate] = useState(new Date());
+  const [weekLabels, setWeekLabels] = useState([]);
 
   useEffect(() => {
-    setdate(date?.getFullYear());
+    const start = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const weekDays = eachDayOfInterval({ start, end: new Date() }).map((day) =>
+      format(day, "EEE")
+    );
+    setWeekLabels(weekDays);
   }, []);
 
   useEffect(() => {
@@ -18,34 +23,23 @@ const EarningsChart = () => {
 
     const ctx = chartRef.current.getContext("2d");
     chartInstance.current = new Chart(ctx, {
-      type: "line",
+      type: "bar",
       data: {
-        labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
+        labels: weekLabels,
         datasets: [
           {
-            label: "Earnings",
-            data: [20, 40, 30, 55, 25, 30, 20, 50, 20, 40, 20, 50],
-            borderColor: "#F79902",
-            backgroundColor: "rgba(247, 153, 2, 0.1)",
+            label: "Courses Earnings",
+            data: [5, 10, 15, 20, 25, 30, 35, 30, 35],
+            backgroundColor: "#4CAF50",
+            borderColor: "#4CAF50",
             borderWidth: 2,
-            fill: true,
-            pointBackgroundColor: "#F79902",
-            pointBorderColor: "#fff",
-            pointRadius: 5,
-            pointHoverRadius: 7,
+          },
+          {
+            label: "Bookings Earnings",
+            data: [8, 12, 18, 22, 28, 35, 40, 30, 35],
+            backgroundColor: "#F79902",
+            borderColor: "#F79902",
+            borderWidth: 2,
           },
         ],
       },
@@ -54,7 +48,7 @@ const EarningsChart = () => {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            display: false,
+            display: true,
           },
           tooltip: {
             callbacks: {
@@ -84,28 +78,13 @@ const EarningsChart = () => {
         },
       },
     });
-  }, []);
-
-  // const getYearsOptions = (date) => {
-  //   const options = [];
-  //   for (let i = 0; i < 5; i++) {
-  //     options.push(date.getFullYear() - i);
-  //   }
-  //   return options;
-  // };
+  }, [weekLabels]);
 
   return (
-    <div className="w-full mx-auto  bg-white rounded-lg px-5">
+    <div className="w-full mx-auto bg-white rounded-lg px-5">
       <div className="w-full flex items-center justify-between">
-        <h2 className="text-lg font-semibold mb-4">Earnings by Year</h2>
-
-        <select value={date} onChange={(e) => setdate(e.target.value)}>
-          {/* {getYearsOptions(date)?.map((year, index) => (
-            <option value={year} key={index}>
-              {year}
-            </option>
-          ))} */}
-        </select>
+        <h2 className="text-lg font-semibold mb-4">Weekly Earnings</h2>
+        {/* <select name="" id=""></select> */}
       </div>
       <div className="relative h-64">
         <canvas ref={chartRef}></canvas>

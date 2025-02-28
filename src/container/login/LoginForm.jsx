@@ -9,7 +9,7 @@ import { userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/router";
 
-const LoginForm = ({ type }) => {
+const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const loading = useSelector((state) => state.user.isLoading.userLoginAsync);
@@ -23,7 +23,6 @@ const LoginForm = ({ type }) => {
     dispatch(userLoginAsync(data))
       .unwrap()
       .then((res) => {
-        console.log(res);
         if (res?.data?.role === "student") {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
@@ -33,8 +32,8 @@ const LoginForm = ({ type }) => {
         } else if (res?.data?.role === "teacher") {
           localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
-          if (type !== "model") {
-            router.push("/");
+          if (type !== "model" && res?.data?.userStatus === "active") {
+            router.push("/instructor-dashboard");
           }
         } else if (res?.data?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);
@@ -43,6 +42,10 @@ const LoginForm = ({ type }) => {
             router.push("/admin-dashboard");
           }
         }
+        if (isModal) {
+          setisModalOpen(false);
+        }
+        dispatch(verifyLoggedInUser());
       });
   };
 
@@ -88,7 +91,12 @@ const LoginForm = ({ type }) => {
               Forgot Password?
             </button>
           </div>
-          {<SubmitButton text={loading ? <Loader /> : "Login"} loading={loading} />}
+          {
+            <SubmitButton
+              text={loading ? <Loader /> : "Login"}
+              loading={loading}
+            />
+          }
         </form>
       </div>
       <LoginOptions type={"login"} />

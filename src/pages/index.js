@@ -1,23 +1,15 @@
 "use client";
 
-import FeaturedCard from "@/components/common/FeaturedCard";
-import Footer from "@/components/Footer";
-// import FeaturedInstructor from "@/components/home/FeaturedInstructor";
 import HeroSection from "@/components/home/HeroSection";
 import MasterSkill from "@/components/home/MasterSkill";
 import Mentor from "@/components/home/Mentor";
 import UnlimitedAccess from "@/components/home/UnlimitedAccess";
-import Navbar from "@/components/Navbar";
 import FeaturedCourses from "@/container/home/FeaturedCourses";
-import InstructorCard from "@/components/common/InstructorCard.jsx";
 import FeaturedInstructor from "@/container/home/FeaturedInstructor";
-import Testimonial from "../components/common/Testimonial";
 import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
-import Blog from "@/components/common/BlogCard";
 import BlogSection from "@/container/common/BlogSection";
 import LogoSlider from "@/components/common/LogoSlider";
-import axios from "axios";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
@@ -25,34 +17,32 @@ import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
 const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
- 
+
   useEffect(() => {
     const requestData = {
       page: 1,
-      limit: 6,
-      status: "published"
+      status: "published",
     };
     dispatch(fetchCoursesAsync(requestData));
   }, [dispatch]);
 
   return (
     <>
-        <main className=" font-nunito custom-margin-top !overflow-visible">
-          <HeroSection />
-          <div className="md:mt-0 mt-8"></div>
-          <FeaturedCourses cardData={courses} />
-          <FeaturedInstructor />
-          <LogoSlider />
-          <Mentor />
-          <MasterSkill />
-          <UserLove />
-          <Become />
-          <BlogSection />
-          <UnlimitedAccess />
-        </main>
-    
+      <main className=" font-nunito custom-margin-top !overflow-visible">
+        <HeroSection />
+        <div className="md:mt-0 mt-8"></div>
+        <FeaturedCourses cardData={courses} />
+        <FeaturedInstructor />
+        <LogoSlider />
+        <Mentor />
+        <MasterSkill />
+        <UserLove />
+        <Become />
+        <BlogSection />
+        <UnlimitedAccess />
+      </main>
     </>
   );
 };
 
-export default Home;  
+export default Home;

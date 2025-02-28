@@ -3,26 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import { IoSearchSharp } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HeroSection() {
-  const categories = useSelector((state) => state.courses?.categories);
   const [searchText, setSearchText] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]?._id);
-
   const [selectedOption, setselectedOption] = useState("course");
-
   const router = useRouter();
-
-  // const handleSearch = () => {
-  //   const query = new URLSearchParams({
-  //     category: selectedCategory,
-  //   }).toString();
-
-  //   router.push(`/courses?${query}`);
-  // };
 
   const data = {
     box: [
@@ -81,17 +70,28 @@ export default function HeroSection() {
     }
 
     let results = [];
+
     if (selectedOption === "course") {
-      results = courses?.filter((course) =>
-        course?.courseTitle
-          ?.toLowerCase()
-          ?.includes(debounceSearch?.toLowerCase())
+      results = courses?.filter(
+        (course) =>
+          course?.courseTitle
+            ?.toLowerCase()
+            ?.includes(debounceSearch?.toLowerCase()) ||
+          course?.courseSubCategory?.name
+            ?.toLowerCase()
+            ?.includes(debounceSearch?.toLowerCase())
       );
     } else {
-      results = tutors?.filter((tutor) =>
-        `${tutor?.user?.firstName} ${tutor?.user?.lastName}`
-          ?.toLowerCase()
-          ?.includes(debounceSearch?.toLowerCase())
+      results = tutors?.filter(
+        (tutor) =>
+          `${tutor?.user?.firstName} ${tutor?.user?.lastName}`
+            ?.toLowerCase()
+            ?.includes(debounceSearch?.toLowerCase()) ||
+          tutor?.subjectsTaught?.filter((subject) =>
+            subject?.name
+              ?.toLowerCase()
+              ?.includes(debounceSearch?.toLowerCase())
+          )
       );
     }
 
@@ -101,8 +101,6 @@ export default function HeroSection() {
   const handleSearch = () => {
     router.push(`/search?query=${searchText}&type=${selectedOption}`);
   };
-
-  console.log("filteredResults", filteredResults);
 
   return (
     <div
@@ -160,16 +158,6 @@ export default function HeroSection() {
               }
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
-            {/* <select
-              value={selectedCategory}
-              onClick={(e) => setSelectedCategory(e.target.value)}
-              className="bg-orange-100 rounded-full md:px-4 md:py-2.5 py-1 text-xs text-center text-black outline-none mx-2"
-            >
-              <option disabled>Category</option>
-              {categories?.map((category) => (
-                <option value={category?._id}>{category?.name}</option>
-              ))}
-            </select> */}
             <button
               // onClick={handleSearch}
               className="bg-orange-500 hover:bg-orange-600 text-white  md:p-3 p-1 rounded-full shadow-md"
@@ -179,7 +167,7 @@ export default function HeroSection() {
               </span>
             </button>
           </div>
-          <div className="absolute top-full -mt-5 lg:-mt-8 z-[20] lg:w-full shadow-xl rounded-b-lg">
+          <div className="absolute top-full mt-0 lg:-mt-8 z-[20] lg:w-full shadow-xl rounded-b-lg">
             {debounceSearch !== "" && filteredResults?.length === 0 && (
               <div className="w-full rounded-b-xl bg-white flex items-center justify-start gap-2 px-4 pb-4">
                 No Results Found
@@ -194,11 +182,23 @@ export default function HeroSection() {
                         ? `/courses/${result?._id}`
                         : `/tutors/${result?.user?.firstName?.toLowerCase()}-${result?.user?.lastName?.toLowerCase()}`
                     }
-                    className="lg:text-lg block hover:text-secondary transition-custom w-full text-start"
+                    className="lg:text-lg hover:text-secondary transition-custom w-full text-start flex items-center gap-2"
                     key={index}
                   >
-                    {result?.courseTitle ||
-                      `${result?.user?.firstName} ${result?.user?.lastName}`}
+                    {selectedOption === "course" && (
+                      <div className="!w-10 h-10 rounded-full relative flex-shrink-0">
+                        <Image
+                          src={result?.courseImage}
+                          alt={result?.courseTitle}
+                          fill={true}
+                          className="rounded-full object-center object-cover"
+                        />
+                      </div>
+                    )}
+                    <p className="text-wrap">
+                      {result?.courseTitle ||
+                        `${result?.user?.firstName} ${result?.user?.lastName}`}
+                    </p>
                   </Link>
                 ))}
               </div>

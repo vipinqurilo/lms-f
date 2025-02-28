@@ -148,13 +148,13 @@ const Footer = () => {
 
           <div className="w-full flex flex-col items-start gap-4">
             <h4 className="text-2xl text-black font-bold">News letter</h4>
-            <div className="border py-2 border-black/10 px-1 pl-3 h-12 rounded flex items-center justify-between">
+            <div className="border border-black/10 pl-3 h-12 rounded-lg flex items-center justify-between">
               <input
                 type="text"
-                placeholder="Enter Email Address"
-                className="focus:outline-none bg-transparent w-[80%]"
+                placeholder="Email Address"
+                className="focus:outline-none bg-transparent py-2 w-[80%]"
               />
-              <button className="h-full bg-secondary px-2 text-sm font-semibold rounded text-white hover:bg-black transition-custom">
+              <button className=" bg-secondary px-3 h-12 text-base font-semibold rounded-l-none rounded-lg text-white hover:bg-black transition-custom">
                 Send
               </button>
             </div>
