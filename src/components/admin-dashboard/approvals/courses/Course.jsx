@@ -29,7 +29,7 @@ const Course = () => {
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [selectedCoursesId, setSelectedCoursesId] = useState(null);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
-  const [rejectionReason, setRejectionReason] = useState(""); 
+  const [rejectionReason, setRejectionReason] = useState("");
 
   const { courses, isLoading } = useSelector((state) => state?.admin?.course);
   console.log(courses, "pppppppppppppooooooppp");
@@ -64,18 +64,19 @@ const Course = () => {
     setIsApproveModalOpen(true);
   };
 
-
-
   const handleReject = async () => {
     if (!selectedCoursesId || !rejectionReason) return;
-  
+
     try {
       await dispatch(
-        rejectAdminCourse({ courseId: selectedCoursesId, reason: rejectionReason })
+        rejectAdminCourse({
+          courseId: selectedCoursesId,
+          reason: rejectionReason,
+        })
       ).unwrap();
-  
+
       console.log("Course successfully rejected");
-  
+
       setIsRejectModalOpen(false);
       setRejectionReason(""); // Clear input field
       dispatch(getAllAdminCourses({})); // Refresh course list
@@ -83,22 +84,19 @@ const Course = () => {
       console.error("Error rejecting course:", error);
     }
   };
-  
-  
 
-    const handleOpenRejectModal = (courseId) => {
-      setSelectedCoursesId(courseId);
-      setIsRejectModalOpen(true);
-    };
+  const handleOpenRejectModal = (courseId) => {
+    setSelectedCoursesId(courseId);
+    setIsRejectModalOpen(true);
+  };
 
-
-    if (isLoading["rejectAdminCourse"] || isLoading["updateAdminCourseStatus"]) {
-      return (
-        <div className="h-screen w-full flex justify-center items-center">
-          <Loader isBig={true} color={"text-secondary"} />
-        </div>
-      );
-    }
+  if (isLoading["rejectAdminCourse"] || isLoading["updateAdminCourseStatus"]) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <Loader isBig={true} color={"text-secondary"} />
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-lg p-6 w-full max-w-6xl mx-auto">
