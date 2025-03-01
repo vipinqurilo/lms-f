@@ -2,6 +2,7 @@ import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";
 import TableHeader from "@/components/instructor/TableHeader";
 import Image from "next/image";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const CreatedCourses = ({
   title = "Recently Created Courses",
@@ -10,6 +11,12 @@ const CreatedCourses = ({
   status,
   isCols = false,
 }) => {
+  const isAdmin = useSelector(
+    (state) => state.user?.authUser?.role === "admin" || {}
+  );
+
+  console.log(isAdmin, "role");
+
   const getStatusCss = (status) => {
     return status === "unpublished"
       ? "bg-red-200 text-red-800"
@@ -19,6 +26,7 @@ const CreatedCourses = ({
       ? "bg-yellow-200 text-yellow-800"
       : "bg-gray-200 text-gray-800";
   };
+
   return (
     <div className="">
       {title !== "" && (
@@ -26,9 +34,9 @@ const CreatedCourses = ({
       )}
       <div className="bg-white rounded-b-lg shadow-md p-4 ">
         <div className="overflow-x-auto">
-          <table className="w-full rounded-lg">
+          <table className="w-full rounded-lg bg-gray-100">
             <TableHeader headingsData={headingsData} />
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 bg-white">
               {data?.map((course, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 w-[60%]">
@@ -60,12 +68,21 @@ const CreatedCourses = ({
                       {course?.value1 ? course?.value1 : "-"}
                     </div>
                   </td>
+                  {isAdmin && (
+                    <td className={`px-6 py-4 `}>
+                      <div className="text-light/60">
+                        {course?.firstName ? course?.firstName : "-"}
+                      </div>
+                    </td>
+                  )}
                   {headingsData?.length > 3 && (
                     <td className="px-6 py-4">
                       <div
                         className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
                           headingsData[2] === "Status" &&
-                          `${getStatusCss(course?.value2)} w-fit capitalize flex items-center gap-2`
+                          `${getStatusCss(
+                            course?.value2
+                          )} w-fit capitalize flex items-center gap-2`
                         }`}
                       >
                         {course?.value2}

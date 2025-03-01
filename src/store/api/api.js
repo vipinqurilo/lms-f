@@ -2,11 +2,11 @@ import axios from "axios";
 
 const baseUrlAshokSir = "https://6g2n7ff0-8000.inc1.devtunnels.ms/api";
 const baseUrlAbhiSir = "https://56kjq9dz-8000.inc1.devtunnels.ms/api";
+const baseUrlKd = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
 const baseURLVipin = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
 
 export const api = axios.create({
-
-  baseURL: baseURLVipin, // Change this as needed
+  baseURL: baseUrlKd, // Change this as needed
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
