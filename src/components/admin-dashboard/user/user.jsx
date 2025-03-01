@@ -139,7 +139,7 @@ const UsersHistory = () => {
                             ? "Verified"
                             : "Not Verified"}
                         </td>
-                        <td className="py-4 px-4 text-gray-700 text-sm flex items-center justify-center">
+                        <td className="py-4 px-4 text-gray-700 text-sm flex items-center h-[96px] justify-center">
                           {statusLoading === user?._id ? (
                             <Loader color={"text-secondary"} />
                           ) : (
