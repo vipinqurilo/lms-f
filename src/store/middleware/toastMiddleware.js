@@ -8,12 +8,15 @@ const toastMiddleware = (store) => (next) => (action) => {
   }
   if (action.type.endsWith("/fulfilled")) {
     const { payload } = action;
-    if (payload?.message) {
+    if (payload?.message && payload?.status === "success") {
       toast.success(payload.message);
+    } else {
+      toast.error(payload?.message);
     }
   } else if (action.type.endsWith("/rejected")) {
-    const { error } = action;
-    toast.error(error?.message || "An error occurred");
+    const { payload, error } = action;
+    const errorMessage = payload || error?.message || "An error occurred";
+    toast.error(errorMessage);
   }
   return next(action);
 };
