@@ -216,7 +216,7 @@ const TeacherRequests = () => {
                             <div
                               className={`px-2 py-1 rounded-full ${
                                 teacher?.approvalStatus === "in review"
-                                  ? "bg-yellow-200 text-yellow-950"
+                                  ? "bg-[#FEF9C3] text-yellow-950"
                                   : teacher?.approvalStatus === "Approved"
                                   ? "bg-green-200 text-green-800"
                                   : "bg-red-200 text-red-800"

@@ -32,22 +32,22 @@ const reviewSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchReviewAsync.pending, (state) => {
-        state.isLoading["fetchReviewAsync"] = true;
-      })
+        .addCase(fetchReviewAsync.pending, (state) => {
+          state.isLoading["fetchReviewAsync"] = true;
+        })
 
-      .addCase(fetchReviewAsync.fulfilled, (state, action) => {
-        state.isLoading["fetchReviewAsync"] = false;
-        console.log(action.payload, "action.payload");
-        state.data = action.payload?.data?.reviews || [];
-        state.totalPages = action.payload?.data?.totalPages || 0;
-        state.currentPage = action.payload?.data?.currentPage || 1;
-      })
+        .addCase(fetchReviewAsync.fulfilled, (state, action) => {
+          state.isLoading["fetchReviewAsync"] = false;
+          console.log(action.payload, "action.payload");
+          state.data = action.payload?.data?.reviews || [];
+          state.totalPages = action.payload?.data?.totalPages || 0;
+          state.currentPage = action.payload?.data?.currentPage || 1;
+        })
 
-      .addCase(fetchReviewAsync.rejected, (state, action) => {
-        state.isLoading["fetchReviewAsync"] = false;
-        state.error["fetchReviewAsync"] = action.error?.message;
-      })
+        .addCase(fetchReviewAsync.rejected, (state, action) => {
+          state.isLoading["fetchReviewAsync"] = false;
+          state.error["fetchReviewAsync"] = action.error?.message;
+        })
 
       .addCase(fetchTutorReviewAsync.pending, (state) => {
         state.isLoading["fetchTutorReviewAsync"] = true;

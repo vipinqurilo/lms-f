@@ -1,11 +1,20 @@
 import React from "react";
 import Link from "next/link";
 
-export default function index() {
+export default function Index() {
+  const handleGoBack = () => {
+    if (window.opener) {
+      window.opener.location.href = "/student-dashboard/bookings";
+      window.close();
+    } else {
+      window.location.href = "/student-dashboard/bookings";
+    }
+  };
+
   return (
     <>
-      <div className="bg-white h-screen  flex justify-center items-center">
-        <div className="bg-white p-6  md:mx-auto">
+      <div className="bg-white h-screen flex justify-center items-center">
+        <div className="bg-white p-6 md:mx-auto">
           <svg
             viewBox="0 0 24 24"
             className="text-green-600 w-16 h-16 mx-auto my-6"
@@ -24,12 +33,12 @@ export default function index() {
             </p>
             <p> Have a great day!</p>
             <div className="py-10 text-center">
-              <Link
-                href="/"
+              <button
+                onClick={handleGoBack}
                 className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
               >
                 GO BACK
-              </Link>
+              </button>
             </div>
           </div>
         </div>

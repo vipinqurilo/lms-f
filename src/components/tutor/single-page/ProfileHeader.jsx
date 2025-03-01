@@ -37,9 +37,7 @@ const icons = [
 ];
 const ProfileHeader = () => {
   // Get tutor profile from Redux store
-  const { tutorProfile } = useSelector((state) => state.tutors);
-  console.log(tutorProfile, "tutorProfile");
-
+  const { tutorProfile, tutorReviews } = useSelector((state) => state.tutors);
   // State to manage visibility of share icons
   const [showShareIcons, setShowShareIcons] = useState(false);
 
@@ -75,6 +73,26 @@ const ProfileHeader = () => {
                 <SlLocationPin className="mr-1" />
                 {tutorProfile?.user?.country || "United Kingdom"}{" "}
                 {/* Dynamic location */}
+                {tutorReviews.length > 0 && (
+                  <Rating
+                    rating={
+                      tutorReviews.length > 0
+                        ? Number(
+                            (
+                              tutorReviews.reduce(
+                                (acc, curr) => acc + curr.rating,
+                                0
+                              ) / tutorReviews.length
+                            ).toFixed(2)
+                          ).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : 0.0
+                    }
+                    reviews={tutorReviews.length}
+                  />
+                )}
               </div>
 
               {/* Rating */}
@@ -114,10 +132,24 @@ const ProfileHeader = () => {
               </span>{" "}
               {/* Dynamic location */}
             </div>
-            {tutorProfile?.rating && (
+            {tutorReviews.length > 0 && (
               <Rating
-                rating={tutorProfile?.rating}
-                reviews={tutorProfile?.reviewsCount}
+                rating={
+                  tutorReviews.length > 0
+                    ? Number(
+                        (
+                          tutorReviews.reduce(
+                            (acc, curr) => acc + curr.rating,
+                            0
+                          ) / tutorReviews.length
+                        ).toFixed(2)
+                      ).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    : 0.0
+                }
+                reviews={tutorReviews.length}
               />
             )}
             <div className="flex items-center gap-6">

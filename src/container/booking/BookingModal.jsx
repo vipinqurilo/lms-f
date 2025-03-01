@@ -17,6 +17,8 @@ import stripePromise from "@/utils/stripe";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();
+  const [isModalOpen, setisModalOpen] = useState(false);
+
   const [paymentModal, setPaymentModal] = useState(false);
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
@@ -137,7 +139,7 @@ export function BookingModal({ onClose, tutor }) {
   return (
     <>
       {paymentModal ? (
-        <CheckoutForm checkoutUrl={checkoutUrl} setPaymentModal={setPaymentModal} />
+        <CheckoutForm checkoutUrl={checkoutUrl} setPaymentModal={setPaymentModal} setisModalOpen={setisModalOpen} />
       ) : (
         <BookingLayout
           currentStep={step}
