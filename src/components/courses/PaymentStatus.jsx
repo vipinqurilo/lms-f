@@ -60,12 +60,19 @@ export default function PaymentStatus({ status }) {
               </div>
             )}
 
-            <Link href={"/student-dashboard/enrolled-courses"}>
+            <a
+              href="/student-dashboard/courses"
+              onClick={(e) => {
+                e.preventDefault();
+                window.opener.location.href = "/student-dashboard/enrolled-courses";
+                window.close();
+              }}
+            >
               <CommonButton
                 label={"See All Enrolled Courses"}
                 loading={loading}
               />
-            </Link>
+            </a>
           </>
         )}
 
