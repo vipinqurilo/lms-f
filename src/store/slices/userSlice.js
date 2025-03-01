@@ -23,7 +23,7 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 
 const initialState = {
   authUser: null,
-  isAuthenticated: null,
+  isAuthenticated: false,
   isLoading: {},
   error: {},
 };
@@ -52,10 +52,13 @@ const userSlice = createSlice({
       .addCase(userRegisterAsync.fulfilled, (state, action) => {
         state.isLoading["userRegisterAsync"] = false;
         state.authUser = action.payload?.data;
+        state.isAuthenticated =
+          action.payload?.status === "error" ? false : true;
       })
       .addCase(userRegisterAsync.rejected, (state, action) => {
         state.isLoading["userRegisterAsync"] = false;
         state.authUser = action.payload?.data;
+        
         state.isAuthenticated =
           action.payload?.status === "error" ? false : true;
       })
@@ -65,6 +68,7 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.authUser = action.payload?.data;
+        console.log()
         state.isAuthenticated =
           action.payload?.status === "error" ? false : true;
       })

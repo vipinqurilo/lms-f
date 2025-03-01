@@ -12,11 +12,28 @@ export const getAllAdminCourses = CreateApiAsyncThunk(
   }
 );
 
+
+
 export const updateAdminCourseStatus = CreateApiAsyncThunk(
-  "GET/course/updateAdminCourseStatus",
-  ({ courseId, status }) =>
-    api.put(`/course/admin-status/${courseId}`, { status })
+  "PUT/course/updateAdminCourseStatus",
+  async ({ courseId, status }) => {
+    return api.put(`/course/admin-status/${courseId}`, { status });
+  }
 );
+
+
+
+export const rejectAdminCourse = CreateApiAsyncThunk(
+  "PUT/course/rejectAdminCourse",
+  async ({ courseId, reason }) => {
+    return api.put(`/course/admin-status/${courseId}`, {
+      status: "unpublished",
+      reason: reason,
+    });
+  }
+);
+
+
 
 export const courseSlice = createSlice({
   name: "course",
@@ -27,9 +44,8 @@ export const courseSlice = createSlice({
     error: {},
   },
   extraReducers: (builder) => {
-    // extra reducers here
     builder
-      .addCase(getAllAdminCourses.pending, (state, action) => {
+      .addCase(getAllAdminCourses.pending, (state) => {
         state.isLoading["getAllAdminCourses"] = true;
       })
       .addCase(getAllAdminCourses.fulfilled, (state, action) => {
@@ -41,7 +57,7 @@ export const courseSlice = createSlice({
         state.isLoading["getAllAdminCourses"] = false;
         state.error["getAllAdminCourses"] = action.payload;
       })
-      .addCase(updateAdminCourseStatus.pending, (state, action) => {
+      .addCase(updateAdminCourseStatus.pending, (state) => {
         state.isLoading["updateAdminCourseStatus"] = true;
       })
       .addCase(updateAdminCourseStatus.fulfilled, (state, action) => {
@@ -51,7 +67,23 @@ export const courseSlice = createSlice({
       .addCase(updateAdminCourseStatus.rejected, (state, action) => {
         state.isLoading["updateAdminCourseStatus"] = false;
         state.error["updateAdminCourseStatus"] = action.payload;
+      })
+      .addCase(rejectAdminCourse.pending, (state) => {
+        state.isLoading["rejectAdminCourse"] = true;
+      })
+      .addCase(rejectAdminCourse.fulfilled, (state, action) => {
+        state.isLoading["rejectAdminCourse"] = false;
+        state.courses = state.courses.map(course =>
+          course._id === action.meta.arg.courseId
+            ? { ...course, status: "unpublished" }
+            : course
+        );
+      })
+      .addCase(rejectAdminCourse.rejected, (state, action) => {
+        state.isLoading["rejectAdminCourse"] = false;
+        state.error["rejectAdminCourse"] = action.payload;
       });
+      
   },
 });
 

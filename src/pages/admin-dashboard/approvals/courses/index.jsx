@@ -8,6 +8,7 @@ export default function index() {
   return (
     <StudentDashboardLayout>
       <ManageCourses />
+
     </StudentDashboardLayout>
   );
 }
