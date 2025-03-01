@@ -12,31 +12,26 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import CommonButton from "@/components/common/CommonButton";
-import { RiUploadCloud2Line } from "react-icons/ri";
-import UploadLecture from "./UploadLecture";
 import { FiEdit, FiCheck, FiTrash } from "react-icons/fi";
+import AddLecture from "@/container/instructor/addcourse/AddLecture";
 
 const Curriculum = () => {
   const { courseAddData } = useSelector((state) => state.instructor.course);
   const dispatch = useDispatch();
 
+  const [isAddLecture, setisAddLecture] = useState(null);
+
   const [lecture, setLecture] = useState({
     lessonTitle: "",
     video: "",
     duration: "",
+    attachements: [],
   });
 
   const [modules, setModules] = useState([{ moduleTitle: "", lessons: [] }]);
 
-  const [editingLecture, setEditingLecture] = useState({
-    moduleIndex: null,
-    lectureIndex: null,
-    data: { lessonTitle: "", video: "", duration: "" },
-  });
-
   const [isEditModule, setisEditModule] = useState(null);
   const [isEditLecture, setisEditLecture] = useState(null);
-  const [isChooseFile, setisChooseFile] = useState(null);
 
   useEffect(() => {
     if (
@@ -52,7 +47,7 @@ const Curriculum = () => {
   const handleAddLecture = (moduleIndex) => {
     if (
       lecture?.lessonTitle.trim() !== "" &&
-      lecture?.video.trim() !== ""
+      lecture?.attachements?.length > 0
     ) {
       setModules((prevModules) => {
         const updatedModules = prevModules.map((module, index) => {
@@ -65,6 +60,7 @@ const Curriculum = () => {
                   lessonTitle: lecture.lessonTitle,
                   video: lecture.video,
                   duration: lecture.duration,
+                  attachements: lecture?.attachements,
                 },
               ],
             };
@@ -75,7 +71,13 @@ const Curriculum = () => {
         return updatedModules;
       });
 
-      setLecture({ lessonTitle: "", video: "", duration: "" });
+      setLecture({
+        lessonTitle: "",
+        video: "",
+        duration: "",
+        attachements: [],
+      });
+      setisAddLecture(null);
     } else {
       toast.error("All fields are required");
     }
@@ -84,77 +86,46 @@ const Curriculum = () => {
   // ✅ Remove Lecture
   const handleRemoveLecture = (moduleIndex, lectureIndex) => {
     if (window.confirm(`Are you sure you want to delete this Lecture?`)) {
-      if (modules?.length > 0 && modules[moduleIndex]?.lessons?.length > 0) {
-        setModules((prevModules) => {
-          const updatedModules = [...prevModules];
-          if (
-            updatedModules[moduleIndex] &&
-            updatedModules[moduleIndex].lessons
-          ) {
-            updatedModules[moduleIndex].lessons = updatedModules[
-              moduleIndex
-            ].lessons.filter((_, i) => i !== lectureIndex);
+      setModules((prevModules) => {
+        return prevModules.map((module, index) => {
+          if (index === moduleIndex) {
+            return {
+              ...module,
+              lessons: module.lessons.filter((_, i) => i !== lectureIndex),
+            };
           }
-          return updatedModules;
+          return module;
         });
-      }
+      });
     }
-  };
-
-  // ✅ Edit Lecture
-  const handleEditLecture = (moduleIndex, lectureIndex) => {
-    const lectureToEdit = modules[moduleIndex].lessons[lectureIndex];
-
-    setEditingLecture({
-      moduleIndex,
-      lectureIndex,
-      data: {
-        lessonTitle: lectureToEdit.title,
-        video: lectureToEdit.video,
-        duration: lectureToEdit.duration,
-      },
-    });
-
-    setisEditLecture(lectureIndex);
   };
 
   // ✅ Save Edited Lecture
   const handleSaveEditedLecture = () => {
     if (
-      editingLecture.moduleIndex !== null &&
-      editingLecture.lectureIndex !== null
+      isEditLecture?.moduleIndex !== null &&
+      isEditLecture?.lectureIndex !== null
     ) {
       setModules((prevModules) => {
         const updatedModules = [...prevModules];
-        updatedModules[editingLecture.moduleIndex].lessons[
-          editingLecture.lectureIndex
+        updatedModules[isEditLecture.moduleIndex].lessons[
+          isEditLecture.lectureIndex
         ] = {
-          lessonTitle: editingLecture.data.lessonTitle,
-          video: editingLecture.data.video,
-          duration: editingLecture.data.duration,
+          lessonTitle: lecture?.lessonTitle,
+          video: lecture?.video,
+          duration: lecture?.duration,
+          attachements: lecture?.attachements,
         };
         return updatedModules;
       });
-
-      setEditingLecture({
-        moduleIndex: null,
-        lectureIndex: null,
-        data: { lessonTitle: "", video: "", duration: "" },
-      });
-
       setisEditLecture(null);
+      setLecture({
+        lessonTitle: "",
+        video: "",
+        duration: "",
+        attachements: [],
+      });
     }
-  };
-
-  const handleEditLectureChange = (e) => {
-    const { name, value } = e.target;
-    setEditingLecture((prev) => ({
-      ...prev,
-      data: {
-        ...prev.data,
-        [name]: value,
-      },
-    }));
   };
 
   const handleNext = () => {
@@ -175,6 +146,8 @@ const Curriculum = () => {
       dispatch(updateStep(4));
     }
   };
+
+  console.log("modules", modules);
 
   return (
     <div className="flex w-full flex-col gap-10">
@@ -201,6 +174,7 @@ const Curriculum = () => {
                 <input
                   type="text"
                   value={item?.moduleTitle}
+                  placeholder="Enter Module Name"
                   onChange={(e) => {
                     const updatedModules = modules.map((mod, modIndex) =>
                       modIndex === index
@@ -214,7 +188,7 @@ const Curriculum = () => {
               ) : item?.moduleTitle ? (
                 item?.moduleTitle
               ) : (
-                "Untitled Module"
+                "Enter Module Name"
               )}
             </h2>
             <div className="flex items-center gap-2">
@@ -245,39 +219,13 @@ const Curriculum = () => {
               >
                 <FiTrash size={18} />
               </button>
-            </div>
-          </div>
 
-          <div className="w-full grid grid-cols-4 gap-10 py-2">
-            {/* Add Inputs for New Lecture */}
-            <input
-              type="text"
-              placeholder="Lesson Title"
-              value={lecture.lessonTitle}
-              onChange={(e) =>
-                setLecture({ ...lecture, lessonTitle: e.target.value })
-              }
-              className="px-2 py-0.5 focus:outline-none border border-black/10 rounded text-sm"
-            />
-            <button
-              onClick={() =>
-                setisChooseFile({
-                  lectureIndex: modules?.findIndex((module, i) => i === index),
-                  moduleIndex: index,
-                })
-              }
-              className="col-span-2 border border-primary/10 justify-center text-primary rounded-lg flex items-center gap-2 bg-secondary/10 "
-            >
-              <RiUploadCloud2Line size={20} />
-              {lecture?.video !== ""
-                ? "Video uploaded successfully"
-                : "Choose File"}
-            </button>
-            <CommonButton
-              label={"Add Lecture"}
-              variant="secondary"
-              onClick={() => handleAddLecture(index)} // Pass module index
-            />
+              <CommonButton
+                label={"Add Lecture"}
+                variant="secondary"
+                onClick={() => setisAddLecture(index)} // Pass module index
+              />
+            </div>
           </div>
 
           {item?.lessons?.map((lecture, i) => (
@@ -288,41 +236,27 @@ const Curriculum = () => {
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
                   <GiHamburgerMenu size={18} />
-                  {isEditLecture === i ? (
-                    <div className="flex items-center gap-1 text-sm">
-                      Lecture {index + 1}.{i + 1}
-                      <input
-                        type="text"
-                        value={editingLecture.data.lessonTitle}
-                        onChange={handleEditLectureChange}
-                        name="lessonTitle"
-                        className="px-2 py-0.5 focus:outline-none border border-black/10 rounded"
-                      />
-                    </div>
-                  ) : (
-                    <a
-                      href={lecture?.video}
-                      className="hover:text-primary"
-                      target="_blank"
-                    >
-                      <h3 className="font-medium text-sm">
-                        Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
-                      </h3>
-                    </a>
-                  )}
+                  <a
+                    href={lecture?.video}
+                    className="hover:text-primary"
+                    target="_blank"
+                  >
+                    <h3 className="font-medium text-sm">
+                      Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
+                    </h3>
+                  </a>
                 </div>
                 <div className="flex items-center gap-2 text-xl">
-                  {isEditLecture === i ? (
-                    <CommonButton
-                      label="Save"
-                      onClick={handleSaveEditedLecture}
-                    />
-                  ) : (
-                    <AiTwotoneEdit
-                      onClick={() => handleEditLecture(index, i)}
-                      className="cursor-pointer"
-                    />
-                  )}
+                  <AiTwotoneEdit
+                    onClick={() => {
+                      setisEditLecture({
+                        moduleIndex: index,
+                        lectureIndex: i,
+                      });
+                      setLecture(lecture);
+                    }}
+                    className="cursor-pointer"
+                  />
                   <MdOutlineDelete
                     className="hover:text-red-500 cursor-pointer transition-custom"
                     onClick={() => handleRemoveLecture(index, i)}
@@ -343,10 +277,15 @@ const Curriculum = () => {
         />
       </div>
 
-      {isChooseFile !== null && (
-        <UploadLecture
-          handleCancel={() => setisChooseFile(null)}
-          moduleInfo={isChooseFile}
+      {(isAddLecture !== null || isEditLecture !== null) && (
+        <AddLecture
+          moduleIndex={isAddLecture}
+          handleAddLecture={handleAddLecture}
+          handleSaveEditedLecture={handleSaveEditedLecture}
+          setisAddLecture={setisAddLecture}
+          setisEditLecture={setisEditLecture}
+          isEdit={isEditLecture}
+          lecture={lecture}
           setLecture={setLecture}
         />
       )}
