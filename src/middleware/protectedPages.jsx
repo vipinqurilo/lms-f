@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 // Define role-based access rules
 const roleBasedRoutes = {
-  admin: ["/admin-dashboard"],
+  admin: ["/admin-dashboard", "/instructor-dashboard", "/student-dashboard"],
   teacher: ["/instructor-dashboard"],
   student: ["/student-dashboard"],
 };
@@ -28,6 +28,11 @@ function protectedPages(Component) {
 
           // Only proceed with route checking if we have a user
           if (authUser && authUser?.userStatus === "active") {
+            if (authUser?.role === "admin" ) {
+              localStorage.setItem("isAdmin", true);
+            } else {
+              localStorage.setItem("isAdmin", false);
+            }
             const allowedRoutes = roleBasedRoutes[authUser.role] || [];
             const isAuthorized = allowedRoutes.some((route) =>
               router.pathname.startsWith(route)

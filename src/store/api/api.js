@@ -23,8 +23,9 @@ export const api = axios.create({
 api.interceptors.request.use((config) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");
+  const isAdmin = localStorage.getItem("isAdmin");
 
-  if (adminToken) {
+  if (adminToken && isAdmin) {
     config.headers.Authorization = `Bearer ${adminToken}`; // Prioritize admin token
   } else if (userToken) {
     config.headers.Authorization = `Bearer ${userToken}`;
