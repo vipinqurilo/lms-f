@@ -147,8 +147,6 @@ const Curriculum = () => {
     }
   };
 
-  console.log("modules", modules);
-
   return (
     <div className="flex w-full flex-col gap-10">
       <div className="w-full flex items-center justify-between self-end">

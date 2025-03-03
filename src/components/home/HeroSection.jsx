@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
 
 export default function HeroSection() {
   const [searchText, setSearchText] = useState("");
@@ -105,7 +106,7 @@ export default function HeroSection() {
   return (
     <div
       id="HeroBg"
-      className="relative  md:bg-cover bg-contain md:h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
+      className="relative  md:bg-cover bg-cover min-h-[60vh]  lg:min-h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
     >
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
 
@@ -113,15 +114,20 @@ export default function HeroSection() {
         data-aos="fade-up"
         className="relative max-w-6xl mx-auto flex flex-col items-center text-center"
       >
-        <h3 className="md:text-xl text-base font-semibold border-b-2 text-white mb-4">
-          Trusted by over 15K Users worldwide since 2024
-        </h3>
-        <h1 className="text-2xl lg:text-5xl md:mx-40 font-bold mt-4 text-white leading-tight md:mt-2 mb-6">
+        <div className="flex items-start gap-2">
+          <div className="w-10 md:w-7 h-8 md:h-7 lg:w-7 lg:h-7 flex items-center justify-center lg:text-base text-white bg-green-600 rounded md:text-lg">
+            <VscWorkspaceTrusted />
+          </div>
+          <h3 className="md:text-xl text-base md:text-nowrap lg:font-semibold border-b text-white mb-4">
+            Trusted by over 15K Users worldwide since 2024
+          </h3>
+        </div>
+        <h1 className="text-2xl lg:text-5xl  font-bold pt-4 text-white leading-tight md:pt-2 pb-6">
           Unlock Knowledge,{" "}
           <span className="text-orange-500">Elevate Your </span>Future, Achieve
           Success
         </h1>
-        <div className="flex gap-4 mt-6">
+        <div className="flex gap-4 pt-6">
           <button
             onClick={() => setselectedOption("course")}
             className={getButtonCss("course")}
@@ -138,7 +144,7 @@ export default function HeroSection() {
 
         <div className="md:relative absolute   lg:w-2/3 md:mt-10  -bottom-24 md:-bottom-0  md:py-8 ">
           <div
-            className={`flex items-center bg-white rounded-full px-4 md:py-3 shadow-lg ${
+            className={`flex items-center bg-white rounded-full px-4 py-3 shadow-lg ${
               (filteredResults?.length > 0 ||
                 (debounceSearch !== "" && filteredResults?.length === 0)) &&
               "!rounded-xl !rounded-b-none"
@@ -167,7 +173,7 @@ export default function HeroSection() {
               </span>
             </button>
           </div>
-          <div className="absolute top-full mt-0 lg:-mt-8 z-[20] lg:w-full shadow-xl rounded-b-lg">
+          <div className="absolute top-full mt-0 lg:-mt-8 z-[20] w-full shadow-xl rounded-b-lg">
             {debounceSearch !== "" && filteredResults?.length === 0 && (
               <div className="w-full rounded-b-xl bg-white flex items-center justify-start gap-2 px-4 pb-4">
                 No Results Found
@@ -206,7 +212,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className="absolute -bottom-32 !-mt-10 hidden md:grid grid-cols-4 md:gap-20 gap-4">
+        <div className="absolute -bottom-32 !-mt-10 hidden lg:grid grid-cols-4 md:gap-20 gap-4">
           {data.box.map((item) => (
             <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
               <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">

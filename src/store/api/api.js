@@ -3,11 +3,11 @@ import axios from "axios";
 const baseUrlAshokSir = "https://6g2n7ff0-8000.inc1.devtunnels.ms/api";
 const baseUrlAbhiSir = "https://56kjq9dz-8000.inc1.devtunnels.ms/api";
 const baseUrlKd = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
-const baseURLVipin = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
+const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
 
 export const api = axios.create({
-  // baseURL: baseUrlAbhiSir, // Change this as needed
-  baseURL: baseUrlKd, // Change this as needed
+  baseURL: baseUrlAbhiSir, // Change this as needed
+  // baseURL: baseUrlKd, // Change this as needed
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
@@ -25,7 +25,7 @@ api.interceptors.request.use((config) => {
   const adminToken = localStorage.getItem("adminToken");
   const isAdmin = localStorage.getItem("isAdmin");
 
-  if (adminToken && isAdmin) {
+  if (adminToken && isAdmin === true) {
     config.headers.Authorization = `Bearer ${adminToken}`; // Prioritize admin token
   } else if (userToken) {
     config.headers.Authorization = `Bearer ${userToken}`;

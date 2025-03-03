@@ -52,6 +52,14 @@ const ProfileDropDown = () => {
       href: "/admin-dashboard",
     },
     {
+      title: "Student Dashboard",
+      href: "/student-dashboard",
+    },
+    {
+      title: "Instrcutor Dashboard",
+      href: "/instructor-dashboard",
+    },
+    {
       title: "Courses",
       href: "/admin-dashboard/approvals/courses",
     },

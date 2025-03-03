@@ -54,9 +54,9 @@ const PaginationComponent = ({ currentPage, setcurrentPage, totalPages }) => {
             {currentPage > 3 && (
               <>
                 <button
-                  className={`${
+                  className={`w-8 h-8 ${
                     currentPage === 1
-                      ? "w-8 h-8 flex items-center justify-center bg-secondary text-white rounded-md"
+                      ? " flex items-center justify-center bg-secondary text-white rounded-md"
                       : "text-black"
                   }`}
                   onClick={() => handleCurrentPage(1)}
@@ -72,9 +72,9 @@ const PaginationComponent = ({ currentPage, setcurrentPage, totalPages }) => {
                 return (
                   <button
                     key={page}
-                    className={`${
+                    className={`w-8 h-8 ${
                       currentPage === page
-                        ? "w-8 h-8 flex items-center justify-center bg-secondary text-white rounded-md"
+                        ? " flex items-center justify-center bg-secondary text-white rounded-md"
                         : "text-black"
                     }`}
                     onClick={() => handleCurrentPage(page)}
@@ -89,9 +89,9 @@ const PaginationComponent = ({ currentPage, setcurrentPage, totalPages }) => {
               <>
                 <span>...</span>
                 <button
-                  className={`${
+                  className={`w-8 h-8 ${
                     currentPage === totalPages
-                      ? "w-8 h-8 flex items-center justify-center bg-secondary text-white rounded-md"
+                      ? " flex items-center justify-center bg-secondary text-white rounded-md"
                       : "text-black"
                   }`}
                   onClick={() => handleCurrentPage(totalPages)}

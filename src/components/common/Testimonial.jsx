@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { GrFormPreviousLink } from "react-icons/gr";
 import { GrFormNextLink } from "react-icons/gr";
+import Image from "next/image";
 
 export default function Testimonial() {
   const testimonials = [
@@ -90,8 +91,8 @@ export default function Testimonial() {
     } top-[55%] -translate-y-1/2 bg-white !p-1 hover:bg-secondary transition-custom !z-[5] text-[#392c7d] hover:text-white`;
 
   return (
-    <div className="flex justify-center items-center  md:py-10 mx-4 ">
-      <div className="md:w-[60%] border-[12px] border-white outline-none w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-[3rem] shadow p-6 relative">
+    <div className="flex justify-center items-center  lg:py-10 mx-4 ">
+      <div className="lg:w-[60%] border-[12px] border-white outline-none w-full bg-gradient-to-b from-[#57504d] to-[#f2f3f6] rounded-[3rem] shadow p-6 relative">
         <Swiper
           ref={swiperRef}
           modules={[Navigation]}
@@ -118,20 +119,23 @@ export default function Testimonial() {
             <SwiperSlide key={index}>
               <div className="text-center py-6">
                 <div className="text-orange-500 text-5xl mb-4">
-                  <img
+                  <Image
                     width={50}
+                    height={50}
                     src="https://dreamslms.dreamstechnologies.com/html/assets/img/qute.png"
-                    alt=""
+                    alt="Quote Icon"
                   />
                 </div>
                 <p className="text-white md:text-xl text-[15px] font-bold italic text-center md:mx-4">
                   {testimonial.quote}
                 </p>
                 <div className="flex justify-center mt-6">
-                  <img
+                  <Image
+                    width={64}
+                    height={64}
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className="w-16 h-16 rounded-full shadow-md"
+                    className="rounded-full shadow-md"
                   />
                 </div>
                 <h4 className="mt-4 md:text-2xl text-xl font-bold">
@@ -151,7 +155,6 @@ export default function Testimonial() {
         <button ref={nextRef} className={`${getButtonCss(true)}`}>
           <GrFormNextLink className="text-5xl" />
         </button>
-   
       </div>
     </div>
   );

@@ -28,7 +28,10 @@ function protectedPages(Component) {
 
           // Only proceed with route checking if we have a user
           if (authUser && authUser?.userStatus === "active") {
-            if (authUser?.role === "admin" ) {
+            if (
+              authUser?.role === "admin" &&
+              router.pathname?.startsWith("/admin-dashboard")
+            ) {
               localStorage.setItem("isAdmin", true);
             } else {
               localStorage.setItem("isAdmin", false);

@@ -25,8 +25,6 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [rejectionReason, setRejectionReason] = useState("");
   const [rejectingId, setRejectingId] = useState(null);
 
-  console.log(headingsData, "hd data");
-
   const getStatusCss = (status) => {
     let css = "";
     switch (status) {
