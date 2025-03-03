@@ -87,6 +87,7 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
             <button
               type="button"
               className="text-sm font-medium hover:text-secondary text-light transition-custom"
+              onClick={() => router.push("/forgot-password")}
             >
               Forgot Password?
             </button>
