@@ -41,6 +41,8 @@ const initialState = {
   isLoading: {},
   error: {},
   totalPages: 1,
+  
+
 };
 
 const bookingSlice = createSlice({

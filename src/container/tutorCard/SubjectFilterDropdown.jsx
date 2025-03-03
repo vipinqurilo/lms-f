@@ -7,15 +7,17 @@ const SubjectFilterDropdown = ({setfilterOpened, selectedSubjects, setSelectedSu
   const { subjects } = useSelector((state) => state.category);
 
   // Transform subjects data to match required format
-  const transformedData = subjects.map(subject => ({
-    _id: subject._id,
-    subject: subject.name,
-    chapters: subject.courseSubCategory.map(category => ({
-      _id: category._id,
-      name: category.name
-    }))
-  }));
-
+  const transformedData = subjects
+    .filter((subject) => subject.courseSubCategory.length > 0)
+    .map((subject) => ({
+      _id: subject._id,
+      subject: subject.name,
+      chapters: subject.courseSubCategory.map((category) => ({
+        _id: category._id,
+        name: category.name,
+      })),
+    }));
+  console.log(transformedData,'transformedData')
   return (
     <div
       onClick={(e) => {
@@ -25,19 +27,7 @@ const SubjectFilterDropdown = ({setfilterOpened, selectedSubjects, setSelectedSu
     >
       <div className="w-[260px] flex flex-col  justify-between h-[377px]  bg-white rounded-lg relative mt-[12.8px]">
         <div className="w-0 h-0 absolute top-0 left-5 -translate-y-[96%] border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[13px] border-b-white"></div>
-        {/* search  */}
-        <div className="p-4 relative">
-          <FiSearch
-            className="absolute left-7 top-[50%] -translate-y-[50%]"
-            size={16}
-          />
-          <input
-            type="text"
-            className="w-full rounded-lg shadow border px-3 pl-10 py-[6px] focus:outline-none"
-            placeholder="Search subject"
-          />
-        </div>
-        <hr />
+        
         {/* subject selection */}
         <div  
           style={{
@@ -56,7 +46,7 @@ const SubjectFilterDropdown = ({setfilterOpened, selectedSubjects, setSelectedSu
 
         {/*btns */}
         <div className="py-2 px-4 relative flex justify-end gap-2">
-          <button className="px-5 py-1 rounded-lg bg-[#E9E8EB] text-black  ">
+          <button onClick={() => setSelectedSubjects([])} className="px-5 py-1 rounded-lg bg-[#E9E8EB] text-black  ">
             Clear
           </button>
           <button onClick={() => {
@@ -67,7 +57,7 @@ const SubjectFilterDropdown = ({setfilterOpened, selectedSubjects, setSelectedSu
           </button>
         </div>
       </div>
-    </div>
+    </div>  
   );
 };
 

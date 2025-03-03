@@ -12,7 +12,7 @@ export default function FeaturedCourses({ cardData = [] }) {
 
   return (
     <>
-      <div
+      <div id="courses"
         className="bg-no-repeat h-full md:px-20 px-4 "
         style={{
           backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,

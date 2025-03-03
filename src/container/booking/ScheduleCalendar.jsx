@@ -3,12 +3,13 @@ import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
 import { RxCross2 } from "react-icons/rx";
 
-
-
 const ScheduleCalendar = ({
   rawBookings,
   duration,
   calendar,
+  scheduledDate,
+  sessionStartTime,
+  sessionEndTime,
   setScheduledDate,
   setSessionStartTime,
   setSessionEndTime,
@@ -149,6 +150,59 @@ const ScheduleCalendar = ({
     calculateDateRange();
   }, [currentWeek]);
 
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(new Date());
+    };
+
+    // Initialize currentTime
+    updateTime();
+
+    // Update currentTime every second
+    const intervalId = setInterval(updateTime, 1000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (scheduledDate && sessionStartTime && sessionEndTime) {
+      const startTime = new Date(sessionStartTime);
+      
+      // Calculate the day index relative to current week
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const scheduledDay = new Date(scheduledDate);
+      scheduledDay.setHours(0, 0, 0, 0);
+      
+      const daysDiff = Math.floor((scheduledDay - today) / (1000 * 60 * 60 * 24));
+      const weeksDiff = Math.floor(daysDiff / 7);
+      
+      // Set the current week to show the selected date
+      setCurrentWeek(weeksDiff);
+      
+      // Calculate day index (0-6)
+      const dayIndex = daysDiff % 7;
+      
+      // Calculate time index (0-95 for 15-min slots)
+      const hours = startTime.getHours();
+      const minutes = startTime.getMinutes();
+      const timeIndex = (hours * 60 + minutes) / 15;
+      
+      // Calculate slots based on duration
+      const slotsPerDuration = duration / 15;
+      const spanStart = Math.floor(timeIndex / slotsPerDuration) * slotsPerDuration;
+      
+      // Create the slots array
+      const newSlots = Array.from({ length: slotsPerDuration }, (_, i) => ({
+        dayIndex,
+        timeIndex: spanStart + i,
+      }));
+      
+      setSelectedSlots(newSlots);
+    }
+  }, [scheduledDate, sessionStartTime, sessionEndTime, duration]);
+
   const times = Array.from({ length: 96 }, (_, index) => {
     const hours = Math.floor(index / 4)
       .toString()
@@ -244,21 +298,6 @@ const ScheduleCalendar = ({
 
     return true;
   };
-
-  useEffect(() => {
-    const updateTime = () => {
-      setCurrentTime(new Date());
-    };
-
-    // Initialize currentTime
-    updateTime();
-
-    // Update currentTime every second
-    const intervalId = setInterval(updateTime, 1000);
-
-    // Clear interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []);
 
   return (
     <div className=" h-full ">

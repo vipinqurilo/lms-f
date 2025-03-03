@@ -27,7 +27,7 @@ const ReviewsSection = ({ activeTab, setActiveTab }) => {
           </div>
           <div className="text-gray-600">Overall ratings</div>
         </div>
-        <div className="flex justify-end mb-6">
+        <div className={`flex justify-end mb-6 ${tutorReviews.length > 0 ? "" : "hidden"}`}>
           <select
             className="border rounded-lg px-4 py-2"
             value={activeTab}

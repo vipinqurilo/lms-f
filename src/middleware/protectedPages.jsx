@@ -16,12 +16,35 @@ function protectedPages(Component) {
     const { authUser, isAuthenticated } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
+    const [initialCheckDone, setInitialCheckDone] = useState(false);
 
     useEffect(() => {
       const handleAuth = async () => {
         try {
+          console.log("Protected Pages Debug:", {
+            pathname: router.pathname,
+            isAuthenticated,
+            authUser,
+            userStatus: authUser?.userStatus,
+            userRole: authUser?.role,
+            initialCheckDone
+          });
+
+          // On first render, skip the check until we're sure about auth state
+          if (!initialCheckDone) {
+            setInitialCheckDone(true);
+            return;
+          }
+
+          // Skip auth check if state is not yet hydrated
+          if (isAuthenticated === undefined || authUser === undefined) {
+            console.log("Debug: Auth state not yet hydrated, waiting...");
+            return;
+          }
+
           // Wait for authentication state to be determined
           if (isAuthenticated === false) {
+            console.log("Debug: Not authenticated, redirecting to home");
             await router.replace("/");
             return;
           }
@@ -33,19 +56,35 @@ function protectedPages(Component) {
               router.pathname.startsWith(route)
             );
 
+            console.log("Debug: Route authorization check:", {
+              allowedRoutes,
+              currentPath: router.pathname,
+              isAuthorized,
+              userRole: authUser.role
+            });
+
             if (!isAuthorized) {
+              console.log("Debug: User not authorized for this route, redirecting to home");
               await router.replace("/");
             }
+          } else if (authUser !== null) { // Only log if we actually have a user object
+            console.log("Debug: User status check failed:", {
+              hasAuthUser: !!authUser,
+              userStatus: authUser?.userStatus
+            });
           }
         } catch (error) {
           console.error("Navigation error:", error);
         } finally {
-          setLoading(false);
+          // Only set loading to false if we have a definitive auth state
+          if (isAuthenticated !== undefined && authUser !== undefined) {
+            setLoading(false);
+          }
         }
       };
 
       handleAuth();
-    }, [authUser, isAuthenticated, router]);
+    }, [authUser, isAuthenticated, router, initialCheckDone]);
 
     if (loading)
       return (

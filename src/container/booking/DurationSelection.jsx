@@ -3,14 +3,13 @@
 import { Check } from "lucide-react";
 
 const durations = [
-  { id: "15", minutes: 15, label: "15 minutes lesson" },
-  { id: "30", minutes: 30, label: "30 minutes lesson" },
-  { id: "45", minutes: 45, label: "45 minutes lesson" },
-  { id: "60", minutes: 60, label: "60 minutes lesson" },
+  { minutes: 15, label: "15 minutes lesson" },
+  { minutes: 30, label: "30 minutes lesson" },
+  { minutes: 45, label: "45 minutes lesson" },
+  { minutes: 60, label: "60 minutes lesson" },
 ];
 
 export function DurationSelection({ slots, selected, onSelect }) {
-  // Filter durations based on available slots
   const availableDurations = durations.filter((duration) =>
     slots?.includes(duration.minutes)
   );
@@ -23,12 +22,12 @@ export function DurationSelection({ slots, selected, onSelect }) {
       <div className="space-y-2">
         {availableDurations.map((duration) => (
           <button
-            key={duration.id}
-            onClick={() => onSelect(duration.id)}
+            key={duration.minutes}
+            onClick={() => onSelect(duration.minutes)}
             className={`
               w-full flex items-center justify-between p-4 rounded-lg border
               ${
-                selected === duration.id
+                selected === duration.minutes
                   ? "border-secondary"
                   : "border-gray-200"
               }
@@ -38,12 +37,11 @@ export function DurationSelection({ slots, selected, onSelect }) {
             <div className="flex items-center gap-3">
               <span
                 className={`${
-                  selected === duration.id ? "text-secondary" : "text-gray-200"
+                  selected === duration.minutes ? "text-secondary" : "text-gray-200"
                 }`}
               >
                 <Check />
               </span>
-
               <span>{duration.label}</span>
             </div>
           </button>

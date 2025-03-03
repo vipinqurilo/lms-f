@@ -30,7 +30,6 @@ export default function FeaturedCard({ data, isFull = false }) {
     isLoading,
   } = useSelector((state) => state.courses);
   const { wishlist } = useSelector((state) => state.student.wishlist);
-console.log(wishlist,'wishlist')
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
   }

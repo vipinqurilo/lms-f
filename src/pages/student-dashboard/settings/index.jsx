@@ -27,7 +27,7 @@ export default function SettingsPage() {
 
   return (
     <StudentDashboardLayout className="space-y-8">
-      <div className="bg-white rounded-lg border">
+      <div className="bg-white rounded-lg border m-10 shadow rounded-lg border border-gray-200">
         {/* Header */}
         <div className="p-4 px-8 border-b">
           <h1 className="text-2xl font-semibold text-dark mb-2">Settings</h1>
