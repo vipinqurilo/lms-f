@@ -6,26 +6,15 @@ import NavigationLink from "./NavigationLink";
 export default function Mentor() {
   return (
     <div
-      className="grid grid-cols-1 lg:grid-cols-2 custom-container bg-gradient-to-r from-white via-pink-50 to-blue-50"
+      className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10 custom-container bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10"
       data-aos="fade-up"
     >
-      <div className="w-full h-full hidden">
+      <div className="relative h-full w-full">
         <Image
-          src="https://dreamslms.dreamstechnologies.com/html/assets/img/share.png"
-          alt="Mentor Illustration"
-          width={600}
-          height={400}
-          className="w-full h-auto"
-          priority
-        />
-      </div>
-
-      <div className="relative h-full w-full lg:block hidden">
-        <Image
-          src="https://dreamslms.dreamstechnologies.com/html/assets/img/share.png"
+          src="/assets/home/IMAGE01.png"
           alt="Mentor Illustration"
           fill={true}
-          className="object-center object-cover"
+          className="object-center object-contain"
           priority
         />
       </div>
@@ -46,10 +35,15 @@ export default function Mentor() {
         </p>
 
         <ul className="list-none space-y-3 mb-6">
-          {["Best Courses", "Top rated Instructors"].map((item, index) => (
+          {[
+            `Best Courses for Every Skill Level – Learn, Grow, and Succeed`,
+            "Top-Rated Instructors – Industry Experts Guiding Your Success",
+            "Best Courses & Expert Instructors – Master New Skills Today",
+            "Learn from the Best – Top Courses & Highly Rated Instructors",
+          ].map((item, index) => (
             <li
               key={index}
-              className="flex items-center md:text-xl text-base text-black font-bold"
+              className="flex items-center text-base text-light"
             >
               <IoIosCheckmarkCircle className="text-secondary text-2xl mr-2" />
               {item}

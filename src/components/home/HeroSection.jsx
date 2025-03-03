@@ -106,13 +106,13 @@ export default function HeroSection() {
   return (
     <div
       id="HeroBg"
-      className="relative  md:bg-cover bg-cover min-h-[60vh]  lg:min-h-[80vh] bg-no-repeat bg-center text-black py-20 px-6"
+      className="relative  md:bg-cover bg-cover min-h-[60vh]  lg:min-h-[80vh] bg-no-repeat bg-center text-black py-20"
     >
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
 
       <div
         data-aos="fade-up"
-        className="relative max-w-6xl mx-auto flex flex-col items-center text-center"
+        className="relative max-w-5xl mx-auto flex flex-col items-center text-center"
       >
         <div className="flex items-start gap-2">
           <div className="w-10 md:w-7 h-8 md:h-7 lg:w-7 lg:h-7 flex items-center justify-center lg:text-base text-white bg-green-600 rounded md:text-lg">
@@ -211,24 +211,23 @@ export default function HeroSection() {
             )}
           </div>
         </div>
-
-        <div className="absolute -bottom-32 !-mt-10 hidden lg:grid grid-cols-4 md:gap-20 gap-4">
-          {data.box.map((item) => (
-            <div className="text-center shadow-md rounded-2xl w-full md:w-[280px]">
-              <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
-                <div className="bg-white rounded-md">
-                  <span className="text-xl font-bold text-orange-500">
-                    <img src={`${item.img}`} alt={item.desc} />
-                  </span>
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-black">{item.heading}</p>
-                  <p className="text-xs  text-black font-bold">{item.desc}</p>
-                </div>
+      </div>
+      <div className="absolute hidden -bottom-10 lg:grid grid-cols-4 md:gap-16 gap-4 w-full px-20">
+        {data.box.map((item) => (
+          <div className="text-center shadow-md rounded-2xl w-full">
+            <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
+              <div className="bg-white rounded-md">
+                <span className="text-xl font-bold text-orange-500">
+                  <img src={`${item.img}`} alt={item.desc} />
+                </span>
+              </div>
+              <div>
+                <p className="text-xl font-bold text-black">{item.heading}</p>
+                <p className="text-xs  text-black font-bold">{item.desc}</p>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

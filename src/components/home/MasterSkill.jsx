@@ -6,7 +6,7 @@ export default function MasterSkill() {
   const masterskillData = {
     heading: "Master the skills to drive your career",
     desc: `Get certified, master modern tech skills, and level up your career — whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.`,
-    img: `https://dreamslms.dreamstechnologies.com/html/assets/img/join.png`,
+    img: `/assets/home/IMAGE01.png`,
     features: [
       {
         id: 1,
@@ -32,9 +32,9 @@ export default function MasterSkill() {
   };
 
   return (
-    <div className="bg-white custom-container w-full">
+    <div className="bg-white custom-container !pb-0 w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-        <div data-aos="fade-up">
+        <div data-aos="fade-up" className="!pb-10 lg:pb-16">
           <h2 className="text-red-500 text-base font-extrabold mb-2">
             What's New
           </h2>

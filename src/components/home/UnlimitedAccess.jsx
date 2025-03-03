@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 export default function UnlimitedAccess() {
@@ -25,7 +26,6 @@ export default function UnlimitedAccess() {
     heading: `Unlimited access to 360+ courses
 and 1,600+ hands-on labs`,
     logos: [
-      "https://dreamslms.dreamstechnologies.com/html/index.html",
       "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-10.svg",
       "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-16.svg",
       "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-12.svg",
@@ -41,11 +41,11 @@ and 1,600+ hands-on labs`,
   return (
     <div
       data-aos="fade-up"
-      className="bg-gradient-to-b from-pink-50 via-white to-blue-50 py-10 px-5"
+      className="bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10 custom-container"
     >
       {/* Statistics Section */}
-      <div data-aos="fade-up" className="md:px-20 px-4">
-        <div className="flex md:flex-row flex-col md:justify-evenly py-2 bg-gradient-to-r from-blue-300 rounded-2xl to-blue-100 mb-10">
+      <div data-aos="fade-up" className="">
+        <div className="flex md:flex-row flex-col md:justify-evenly py-2 bg-gradient-to-r from-blue-100 rounded-2xl to-blue-100 mb-10">
           {data.stats.map((state) => (
             <div
               key={state.desc} // Add a unique key for React list rendering
@@ -71,22 +71,31 @@ and 1,600+ hands-on labs`,
       </div>
 
       {/* Access Information Section */}
-      <div className="text-center mb-10 md:mt-16 mt-4">
+      <div className="text-center flex flex-col items-center gap-10">
         <p className="md:text-4xl text-2xl leading-10 font-bold text-gray-900">
           Unlimited access to <span className="">360+ courses</span> <br />
           and <span className="">1,600+ hands-on labs</span>
         </p>
+        <div className="flex justify-center flex-wrap gap-6 w-full">
+          {/* Replace these spans with actual icons */}
+          {data.logos.map((logo, index) => (
+            <span
+              key={index}
+              className="bg-white p-4 !py-2 rounded hover:-translate-y-5 transition-custom hover:cursor-pointer"
+            >
+              <Image
+                className=""
+                src={logo}
+                alt={`icon${index + 1}`}
+                width={50}
+                height={50}
+              />
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Icons Section */}
-      <div className="flex justify-center flex-wrap gap-6">
-        {/* Replace these spans with actual icons */}
-        {data.logos.map((logo) => (
-          <span className="bg-white p-4 rounded hover:-translate-y-5 transition-custom hover:cursor-pointer">
-            <img className="" src={logo} alt="" />
-          </span>
-        ))}
-      </div>
     </div>
   );
 }

@@ -23,13 +23,13 @@ const BecomeCard = ({
         <NavigationLink path={link} text={linkText} />
       </div>
 
-      <div className="relative md:w-[80%] w-1/2">
+      <div className="relative md:w-[80%] w-1/2 h-full">
         <Image
           src={imgSrc}
           alt={title}
-          width={150}
-          height={150}
-          layout="responsive"
+          // width={150}
+          // height={150}
+          layout="fill"
         />
       </div>
     </div>
@@ -47,7 +47,7 @@ export default function Become() {
         description="Top instructors from around the world teach millions of students on Mentoring."
         link="/teach-on-steam"
         linkText="Join Us"
-        imgSrc="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/become-02.svg"
+        imgSrc="/assets/home/instructor.png"
         bgColor="#ffdeda"
       />
 
@@ -56,7 +56,7 @@ export default function Become() {
         description="Create an account to receive our newsletter, course recommendations and promotions."
         link="/register"
         linkText="Register Now"
-        imgSrc="https://dreamslms.dreamstechnologies.com/html/assets/img/icon/become-01.svg"
+        imgSrc="/assets/home/transform.png"
         bgColor="#ffe88f"
       />
     </div>

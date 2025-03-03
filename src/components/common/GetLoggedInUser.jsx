@@ -20,6 +20,7 @@ const GetLoggedInUser = () => {
     dispatch(getSubSubjects());
     dispatch(getLanguages());
     dispatch(fetchAllTutorProfileAsync({ search: "" }));
+    localStorage.setItem("isAdmin", false);
   }, [dispatch]);
 
   useEffect(() => {

@@ -14,10 +14,7 @@ export default function FeaturedCourses({ cardData = [] }) {
   return (
     <>
       <div
-        className="bg-no-repeat custom-container bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,
-        }}
+        className="bg-no-repeat custom-container bg-cover bg-center bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10"
       >
         {isLoading ? (
           <div className="w-full py-24 pt-32 flex items-center justify-center">
