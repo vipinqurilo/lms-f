@@ -4,15 +4,18 @@ import { api } from "@/store/api/api";
 
 export const getAllAdminCourses = CreateApiAsyncThunk(
   "GET/course/getAllAdminCourses",
-  (formData) => {
-    const query = Object.keys(formData)
-      .map((key) => `${key}=${formData[key]}`)
-      .join("&");
-    return api.get(`/course/admin/get?${query}`);
+  ({ startDate, endDate, search, page, limit } = {}) => {
+    const params = {};
+
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
+    if (search) params.search = search;
+    if (page) params.page = page;
+    if (limit) params.limit = limit;
+
+    return api.get("/course/admin/get", { params: Object.keys(params).length ? params : undefined });
   }
 );
-
-
 
 export const updateAdminCourseStatus = CreateApiAsyncThunk(
   "PUT/course/updateAdminCourseStatus",
@@ -20,8 +23,6 @@ export const updateAdminCourseStatus = CreateApiAsyncThunk(
     return api.put(`/course/admin-status/${courseId}`, { status });
   }
 );
-
-
 
 export const rejectAdminCourse = CreateApiAsyncThunk(
   "PUT/course/rejectAdminCourse",
@@ -32,8 +33,6 @@ export const rejectAdminCourse = CreateApiAsyncThunk(
     });
   }
 );
-
-
 
 export const courseSlice = createSlice({
   name: "course",
@@ -73,7 +72,7 @@ export const courseSlice = createSlice({
       })
       .addCase(rejectAdminCourse.fulfilled, (state, action) => {
         state.isLoading["rejectAdminCourse"] = false;
-        state.courses = state.courses.map(course =>
+        state.courses = state.courses.map((course) =>
           course._id === action.meta.arg.courseId
             ? { ...course, status: "unpublished" }
             : course
@@ -83,7 +82,6 @@ export const courseSlice = createSlice({
         state.isLoading["rejectAdminCourse"] = false;
         state.error["rejectAdminCourse"] = action.payload;
       });
-      
   },
 });
 
