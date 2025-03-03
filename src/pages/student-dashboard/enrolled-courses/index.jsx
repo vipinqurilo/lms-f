@@ -88,6 +88,7 @@ export default function EnrolledCoursesPage() {
               enrolledCourses?.map((enrollment) => (
                 <CourseCard
                   key={enrollment?._id}
+                  type="course"
                   course={{
                     id: enrollment?.courseId?._id,
                     title: enrollment?.courseId?.courseTitle,
@@ -102,7 +103,7 @@ export default function EnrolledCoursesPage() {
                       0
                     ),
                     duration: "N/A", // Replace if duration data is available
-                    price: enrollment?.courseId?.coursePrice,
+                    
                     originalPrice: "N/A", // Replace if original price is available
                   }}
                   onWishlist={false}
