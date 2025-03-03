@@ -23,19 +23,19 @@ export const api = axios.create({
 api.interceptors.request.use((config) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("adminToken");
-  const isAdmin = localStorage.getItem("isAdmin");
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false"); // Ensure correct boolean value
 
-  if (adminToken && isAdmin === true) {
-    config.headers.Authorization = `Bearer ${adminToken}`; // Prioritize admin token
+  if (adminToken && isAdmin) {
+    config.headers.Authorization = `Bearer ${adminToken}`; // Use admin token
   } else if (userToken) {
     config.headers.Authorization = `Bearer ${userToken}`;
   }
 
-  // Ensure all requests disable caching
   config.headers["Cache-Control"] =
     "no-store, no-cache, must-revalidate, proxy-revalidate";
   config.headers["Pragma"] = "no-cache";
   config.headers["Expires"] = "0";
+
   return config;
 });
 

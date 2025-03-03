@@ -28,7 +28,7 @@ const CourseHighLights = ({ data }) => {
     {
       Icon: FaBook,
       text: "Chapters",
-      value: data?.course?.courseContent?.reduce(
+      value: data?.courseContent?.reduce(
         (acc, item) => acc + (item?.lessons?.length || 0),
         0
       ),
@@ -36,7 +36,7 @@ const CourseHighLights = ({ data }) => {
     {
       Icon: FaPlay,
       text: "Video",
-      value: data?.course?.courseContent?.reduce(
+      value: data?.courseContent?.reduce(
         (acc, item) => acc + (item?.lessons?.length || 0),
         0
       ),
@@ -50,9 +50,9 @@ const CourseHighLights = ({ data }) => {
 
   return (
     <div className="w-full space-y-5 font-nunito">
-      <CourseCard data={data?.course} />
+      <CourseCard data={data} />
       <IncludesListRed
-        list={data?.course?.courseFeatures}
+        list={data?.courseFeatures}
         type="red"
         heading={"Features"}
       />

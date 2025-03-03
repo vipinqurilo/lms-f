@@ -28,20 +28,20 @@ const CourseDetails = () => {
 
   return (
     <div className="w-full relative overflow-hidden">
-      <TopSection data={data?.course} />
+      <TopSection data={data} />
       <div className="w-full flex flex-col lg:flex-row items-start justify-between gap-10 custom-container relative">
         <div className="lg:hidden w-full lg:!w-[35%]">
           <CourseHighLights data={data} />
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
-          <CourseOverview data={data?.course} />
+          <CourseOverview data={data} />
           <LecturesOverview
-            data={data?.course?.courseContent}
+            data={data?.courseContent}
             id={data?.course?._id}
           />
           <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
-            <CommentForm id={data?.course?._id} data={data?.totalReviews} />
+            <CommentForm id={data?._id} data={data?.totalReviews} />
           )}
           <CourseReview data={data?.totalReviews} />
         </div>
@@ -49,7 +49,7 @@ const CourseDetails = () => {
           <CourseHighLights data={data} />
         </div>
       </div>
-      {!enrolledCourses?.some((item) => item === data?.course?._id) && (
+      {!enrolledCourses?.some((item) => item === data?._id) && (
         <div className={`block ${isScrolled ? "lg:block" : "lg:hidden"}`}>
           <div className="w-full bg-white border-t border-black/10 fixed bottom-0 shadow-lg">
             <div className=" px-8 md:px-10 lg:px-20 py-4 flex items-center justify-between gap-5">

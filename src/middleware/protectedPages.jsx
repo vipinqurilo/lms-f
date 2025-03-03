@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Loader from "@/components/common/Loader";
 
 // Define role-based access rules
 const roleBasedRoutes = {
@@ -20,22 +20,18 @@ function protectedPages(Component) {
     useEffect(() => {
       const handleAuth = async () => {
         try {
-          // Wait for authentication state to be determined
           if (isAuthenticated === false) {
             await router.replace("/");
             return;
           }
 
-          // Only proceed with route checking if we have a user
           if (authUser && authUser?.userStatus === "active") {
-            if (
-              authUser?.role === "admin" &&
-              router.pathname?.startsWith("/admin-dashboard")
-            ) {
-              localStorage.setItem("isAdmin", true);
+            if (authUser?.role === "admin") {
+              localStorage.setItem("isAdmin", JSON.stringify(true)); // Fix: Store correctly
             } else {
-              localStorage.setItem("isAdmin", false);
+              localStorage.setItem("isAdmin", JSON.stringify(false));
             }
+
             const allowedRoutes = roleBasedRoutes[authUser.role] || [];
             const isAuthorized = allowedRoutes.some((route) =>
               router.pathname.startsWith(route)
@@ -58,7 +54,7 @@ function protectedPages(Component) {
     if (loading)
       return (
         <div className="h-screen w-full flex items-center justify-center">
-          <FaSpinner className="text-primary animate-spin" size={25} />
+          <Loader isBig={true} color={"text-secondary"} />
         </div>
       );
 

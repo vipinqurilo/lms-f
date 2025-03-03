@@ -20,7 +20,6 @@ const GetLoggedInUser = () => {
     dispatch(getSubSubjects());
     dispatch(getLanguages());
     dispatch(fetchAllTutorProfileAsync({ search: "" }));
-    localStorage.setItem("isAdmin", false);
   }, [dispatch]);
 
   useEffect(() => {
@@ -30,10 +29,14 @@ const GetLoggedInUser = () => {
         authUser?.role === "teacher" &&
         authUser?.userStatus === "active"
       ) {
+        localStorage.setItem("isAdmin", JSON.stringify(false)); // Store as a boolean
         dispatch(getWallet());
       } else if (authUser?.role === "student") {
+        localStorage.setItem("isAdmin", JSON.stringify(false));
         dispatch(fetchWishlistAsync());
         dispatch(getAllEnrolledCourses());
+      } else if (authUser?.role === "admin") {
+        localStorage.setItem("isAdmin", JSON.stringify(true)); // Fix: Set admin correctly
       }
     }
   }, [dispatch, authUser, isAuthenticated]);

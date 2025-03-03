@@ -6,6 +6,7 @@ import { BiPlayCircle, BiSolidLockAlt } from "react-icons/bi";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { formatDuration } from "@/utils/TimeFormat";
+import LectureItem from "./LectureItem";
 
 const LecturesOverview = ({ data, id }) => {
   const { enrolledCourses } = useSelector((state) => state.courses);
@@ -17,8 +18,6 @@ const LecturesOverview = ({ data, id }) => {
       }, 0)
     );
   }, 0);
-
-
 
   const details = [
     {
@@ -107,34 +106,19 @@ const LecturesOverview = ({ data, id }) => {
                     key={i}
                     className="w-full md:flex md:items-center md:justify-between px-2 py-2 md:py-4"
                   >
-                    <h6 className="flex items-start gap-1">
-                      {isAccessible ? (
-                        <BiPlayCircle className="text-secondary text-lg" />
-                      ) : (
-                        <BiSolidLockAlt className="text-black/60 text-lg" />
-                      )}
-
-                      {isAccessible ? (
-                        <Link
-                          href={lecture?.video}
-                          target="_blank"
-                          className="-mt-[2px] font-medium hover:text-secondary transition-custom"
-                        >
-                          Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
-                        </Link>
-                      ) : (
-                        <p className="text-black/60">
-                          Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
-                        </p>
-                      )}
-                    </h6>
-                    <p
+                    <LectureItem
+                      i={i}
+                      index={index}
+                      isAccessible={isAccessible}
+                      lecture={lecture}
+                    />
+                    {/* <p
                       className={`font-medium ${
                         isAccessible ? "text-light" : "text-light/60"
                       } text-sm`}
                     >
                       {formatDuration(lecture?.duration)}
-                    </p>
+                    </p> */}
                   </div>
                 );
               })}
