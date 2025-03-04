@@ -10,14 +10,14 @@ import LectureItem from "./LectureItem";
 
 const LecturesOverview = ({ data, id }) => {
   const { enrolledCourses } = useSelector((state) => state.courses);
-  const totalSeconds = data?.reduce((total, module) => {
-    return (
-      total +
-      module.lessons.reduce((sum, lesson) => {
-        return sum + parseInt(lesson?.duration);
-      }, 0)
-    );
-  }, 0);
+  // const totalSeconds = data?.reduce((total, module) => {
+  //   return (
+  //     total +
+  //     module.lessons.reduce((sum, lesson) => {
+  //       return sum + parseInt(lesson?.duration);
+  //     }, 0)
+  //   );
+  // }, 0);
 
   const details = [
     {
@@ -25,9 +25,22 @@ const LecturesOverview = ({ data, id }) => {
       value: data?.reduce((acc, item) => acc + (item?.lessons?.length || 0), 0),
     },
     {
-      name: "Duration",
-      value: formatDuration(totalSeconds),
+      name: "Attachments",
+      value: data?.reduce(
+        (acc, module) =>
+          acc +
+          (module.lessons?.reduce(
+            (lessonAcc, lesson) =>
+              lessonAcc + (lesson.attachements?.length || 0),
+            0
+          ) || 0),
+        0
+      ),
     },
+    // {
+    //   name: "Duration",
+    //   value: formatDuration(totalSeconds),
+    // },
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);

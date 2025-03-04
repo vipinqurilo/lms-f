@@ -3,52 +3,28 @@ import { createSlice } from "@reduxjs/toolkit";
 import { api } from "@/store/api/api";
 
 const initialState = {
-  earning: [
-    {
-      id: 1,
-      type: "course",
-      courseName: "React for Beginners",
-      price: 199,
-      enrolledStudents: 120,
-      revenue: 23880,
-    },
-    {
-      id: 2,
-      type: "course",
-      courseName: "Advanced JavaScript",
-      price: 249,
-      enrolledStudents: 80,
-      revenue: 19920,
-    },
-    {
-      id: 3,
-      type: "booking",
-      serviceName: "One-on-One Mentorship",
-      price: 50,
-      bookings: 30,
-      revenue: 1500,
-    },
-    {
-      id: 4,
-      type: "booking",
-      serviceName: "Career Guidance Session",
-      price: 75,
-      bookings: 20,
-      revenue: 1500,
-    },
-  ],
-  totalPages: 5,
+  courseEarning: [],
+  tutionEarning: [],
   isLoading: {},
   error: {},
 };
 
-export const fetchAllEarning = CreateApiAsyncThunk(
-  "earning/fetchAllEarning",
+export const fetchAllCourseEarning = CreateApiAsyncThunk(
+  "earning/fetchAllCourseEarning",
   (formData) => {
     const query = Object?.keys(formData)
       ?.map((key) => `${key}=${formData[key]}`)
       .join("&");
-    return api.get(`https://example.com/?${query}`);
+    return api.get(`/earnings/course-purchases/?${query}`);
+  }
+);
+export const fetchAllTutionEarning = CreateApiAsyncThunk(
+  "earning/fetchAllTutionEarning",
+  (formData) => {
+    const query = Object?.keys(formData)
+      ?.map((key) => `${key}=${formData[key]}`)
+      .join("&");
+    return api.get(`/earnings/tution-sessions/?${query}`);
   }
 );
 
@@ -58,17 +34,29 @@ const earningSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Add the fetchAllEarning reducer here
-      .addCase(fetchAllEarning.pending, (state, action) => {
-        state.isLoading["fetchAllEarning"] = true;
+      // Add the fetchAllCoursesEarning reducer here
+      .addCase(fetchAllCourseEarning.pending, (state, action) => {
+        state.isLoading["fetchAllCourseEarning"] = true;
       })
-      .addCase(fetchAllEarning.fulfilled, (state, action) => {
-        state.isLoading["fetchAllEarning"] = false;
-        state.earning = action.payload.data;
+      .addCase(fetchAllCourseEarning.fulfilled, (state, action) => {
+        state.isLoading["fetchAllCourseEarning"] = false;
+        state.courseEarning = action.payload.data;
       })
-      .addCase(fetchAllEarning.rejected, (state, action) => {
-        state.isLoading["fetchAllEarning"] = false;
-        state.error["fetchAllEarning"] = action.payload;
+      .addCase(fetchAllCourseEarning.rejected, (state, action) => {
+        state.isLoading["fetchAllCourseEarning"] = false;
+        state.error["fetchAllCourseEarning"] = action.payload;
+      })
+      // Add the fetchAllTutionEarning reducer here
+      .addCase(fetchAllTutionEarning.pending, (state, action) => {
+        state.isLoading["fetchAllTutionEarning"] = true;
+      })
+      .addCase(fetchAllTutionEarning.fulfilled, (state, action) => {
+        state.isLoading["fetchAllTutionEarning"] = false;
+        state.tutionEarning = action.payload.data;
+      })
+      .addCase(fetchAllTutionEarning.rejected, (state, action) => {
+        state.isLoading["fetchAllTutionEarning"] = false;
+        state.error["fetchAllTutionEarning"] = action.payload;
       });
   },
 });

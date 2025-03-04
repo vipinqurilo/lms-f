@@ -6,7 +6,7 @@ import CourseOverview from "@/components/course-main-page/CourseOverview";
 import CourseReview from "@/components/course-main-page/CourseReview";
 import LecturesOverview from "@/components/course-main-page/LecturesOverview";
 import TopSection from "@/components/course-main-page/TopSection";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 const CourseDetails = () => {
@@ -26,27 +26,29 @@ const CourseDetails = () => {
     });
   }, []);
 
+  const enrollNowRef = useRef(null);
+
   return (
     <div className="w-full relative overflow-hidden">
-      <TopSection data={data} />
+      <TopSection data={data?.course} />
       <div className="w-full flex flex-col lg:flex-row items-start justify-between gap-10 custom-container relative">
         <div className="lg:hidden w-full lg:!w-[35%]">
           <CourseHighLights data={data} />
         </div>
         <div className="w-full lg:w-[65%] space-y-10">
-          <CourseOverview data={data} />
+          <CourseOverview data={data?.course} />
           <LecturesOverview
-            data={data?.courseContent}
+            data={data?.course?.courseContent}
             id={data?.course?._id}
           />
           <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
-            <CommentForm id={data?._id} data={data?.totalReviews} />
+            <CommentForm id={data?.course?._id} data={data?.totalReviews} />
           )}
           <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
-          <CourseHighLights data={data} />
+          <CourseHighLights data={data} enrollNowRef={enrollNowRef} />
         </div>
       </div>
       {!enrolledCourses?.some((item) => item === data?._id) && (
@@ -62,7 +64,10 @@ const CourseDetails = () => {
                   <span>50% off</span>
                 </p>
               </div>
-              <button className="px-4 py-2 md:w-[40%] lg:w-[20%] bg-secondary hover:bg-black transition-custom w-full text-white rounded-full">
+              <button
+                onClick={() => enrollNowRef.current?.click()}
+                className="px-4 py-2 md:w-[40%] lg:w-[20%] bg-secondary hover:bg-black transition-custom w-full text-white rounded-full"
+              >
                 Enroll Now
               </button>
             </div>

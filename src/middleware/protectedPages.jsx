@@ -21,15 +21,6 @@ function protectedPages(Component) {
     useEffect(() => {
       const handleAuth = async () => {
         try {
-          console.log("Protected Pages Debug:", {
-            pathname: router.pathname,
-            isAuthenticated,
-            authUser,
-            userStatus: authUser?.userStatus,
-            userRole: authUser?.role,
-            initialCheckDone
-          });
-
           // On first render, skip the check until we're sure about auth state
           if (!initialCheckDone) {
             setInitialCheckDone(true);
@@ -65,17 +56,20 @@ function protectedPages(Component) {
               allowedRoutes,
               currentPath: router.pathname,
               isAuthorized,
-              userRole: authUser.role
+              userRole: authUser.role,
             });
 
             if (!isAuthorized) {
-              console.log("Debug: User not authorized for this route, redirecting to home");
+              console.log(
+                "Debug: User not authorized for this route, redirecting to home"
+              );
               await router.replace("/");
             }
-          } else if (authUser !== null) { // Only log if we actually have a user object
+          } else if (authUser !== null) {
+            // Only log if we actually have a user object
             console.log("Debug: User status check failed:", {
               hasAuthUser: !!authUser,
-              userStatus: authUser?.userStatus
+              userStatus: authUser?.userStatus,
             });
           }
         } catch (error) {

@@ -1,27 +1,20 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { BiPlayCircle, BiSolidLockAlt } from "react-icons/bi";
 import { FaRegFilePdf } from "react-icons/fa";
 
 const LectureItem = ({ lecture, index, i, isAccessible }) => {
-  const [showAttachments, setShowAttachments] = useState(false);
-  const [height, setHeight] = useState(0);
-  const attachmentsRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const contentRefs = useRef({});
 
-  // Calculate dynamic height when toggling
-  useEffect(() => {
-    if (showAttachments && attachmentsRef.current) {
-      setHeight(attachmentsRef.current.scrollHeight);
-    } else {
-      setHeight(0);
-    }
-  }, [showAttachments]);
+  const toggleSection = (idx) => {
+    setActiveIndex((prev) => (prev === idx ? null : idx));
+  };
 
   return (
     <div className="w-full">
-      {/* Lecture Title Clickable */}
       <h6
         className="flex items-start gap-1 w-full cursor-pointer"
-        onClick={() => setShowAttachments(!showAttachments)}
+        onClick={() => toggleSection(i)}
       >
         {isAccessible ? (
           <BiPlayCircle className="text-secondary text-lg" />
@@ -36,7 +29,7 @@ const LectureItem = ({ lecture, index, i, isAccessible }) => {
           Lecture {index + 1}.{i + 1} {lecture?.lessonTitle}
           <svg
             className={`transition-transform ${
-              showAttachments ? "-rotate-0" : "-rotate-90"
+              activeIndex === i ? "-rotate-0" : "-rotate-90"
             }`}
             fill="none"
             height={20}
@@ -53,29 +46,32 @@ const LectureItem = ({ lecture, index, i, isAccessible }) => {
       </h6>
 
       <div
-        ref={attachmentsRef}
+        ref={(el) => (contentRefs.current[i] = el)}
         style={{
-          height: `${height}px`,
+          maxHeight:
+            activeIndex === i
+              ? `${contentRefs.current[i]?.scrollHeight}px`
+              : "0px",
           overflow: "hidden",
-          transition: "height 0.3s ease-in-out",
+          transition: "max-height 0.3s ease-in-out",
         }}
         className="mt-2 w-full text-sm pl-4"
       >
         {lecture?.attachements?.length > 0 && (
           <ul className="space-y-2 w-full">
-            {lecture.attachements.map((attachment) => (
+            {lecture?.attachements?.map((attachment) => (
               <li
-                key={attachment._id}
+                key={attachment?._id}
                 className="flex items-center gap-5 justify-between w-full"
               >
                 <div className="flex items-center gap-2 text-gray-800">
                   <FaRegFilePdf className="text-red-500 text-lg" />
-                  <span>{attachment.name}</span>
+                  <span>{attachment?.name}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <a
-                    href={`https://docs.google.com/gview?url=${attachment.url}&embedded=true`}
+                    href={`https://docs.google.com/gview?url=${attachment?.url}&embedded=true`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`text-secondary hover:underline ${
@@ -86,8 +82,8 @@ const LectureItem = ({ lecture, index, i, isAccessible }) => {
                   </a>
 
                   <a
-                    href={attachment.url}
-                    download={attachment.name}
+                    href={attachment?.url}
+                    download={attachment?.name}
                     className={`text-green-600 hover:underline ${
                       !isAccessible ? "pointer-events-none opacity-50" : ""
                     }`}

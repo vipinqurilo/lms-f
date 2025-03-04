@@ -28,7 +28,6 @@ export default function ScheduleView({
       .reduce((sum, char) => sum + char.charCodeAt(0), 0);
     return colors[charSum % colors.length];
   };
-  console.log(startDate, "startDate");
   // Get the start of the week from the startDate
   const weekStart = startOfWeek(startDate);
   // Generate array of dates for the current week

@@ -36,7 +36,7 @@ const AboutInstructor = ({ data }) => {
 
   const { languages } = useSelector((state) => state.languages);
   const { categories } = useSelector((state) => state.category);
-  const course = data;
+  const course = data?.course;
   const teacherProfile = course?.courseInstructor?.teacherProfile;
 
   useEffect(() => {
