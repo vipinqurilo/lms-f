@@ -41,10 +41,13 @@ function protectedPages(Component) {
           }
 
           if (authUser && authUser?.userStatus === "active") {
-            if (authUser?.role === "admin") {
-              localStorage.setItem("isAdmin", JSON.stringify(true)); // Fix: Store correctly
-            } else {
+            if (
+              router.pathname.startsWith("/instructor-dashboard") ||
+              router.pathname.startsWith("/student-dashboard")
+            ) {
               localStorage.setItem("isAdmin", JSON.stringify(false));
+            } else {
+              localStorage.setItem("isAdmin", JSON.stringify(true));
             }
 
             const allowedRoutes = roleBasedRoutes[authUser.role] || [];

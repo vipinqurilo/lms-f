@@ -34,12 +34,12 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
           localStorage.removeItem("adminToken");
           if (type !== "model" && res?.data?.userStatus === "active") {
             router.push("/instructor-dashboard");
-          }else{
+          } else {
             router.push("/");
           }
         } else if (res?.data?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);
-          localStorage.setItem("isAdmin", true);
+          localStorage.setItem("isAdmin", JSON.stringify(true));
           localStorage.removeItem("token");
           if (type !== "model") {
             router.push("/admin-dashboard");

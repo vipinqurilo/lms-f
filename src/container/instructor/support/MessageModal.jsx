@@ -10,7 +10,7 @@ import {
   Minimize2,
   SendHorizontal,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { VscTriangleUp } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,8 @@ import dateFormat from "dateformat";
 const MessageModal = ({ ticket, setMessages }) => {
   const { authUser } = useSelector((state) => state.user);
   const [newMessage, setNewMessage] = useState("");
-  const [isMaximized, setIsMaximized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(true);
+  const [isDropDown, setisDropDown] = useState(false);
   const toggleIsDropDown = () => setisDropDown(!isDropDown);
   const toggleMaximize = () => setIsMaximized(!isMaximized);
   const dispatch = useDispatch();
@@ -88,29 +89,33 @@ const MessageModal = ({ ticket, setMessages }) => {
     return dateFormat(past, "dS mmm yyyy");
   };
 
+  useEffect(() => {
+    toggleMaximize();
+  }, [ticket]);
+
   return (
     <div
       className={`w-80 fixed flex flex-col border border-black/10 rounded-lg drop-shadow bg-white ${
         isMaximized
           ? "lg:w-[25%] h-[calc(100vh-160px)] top-24 z-[12] right-10"
-          : "lg:w-[30%] h-fit !bottom-20 !rounded-lg overflow-hidden z-[12] right-10"
+          : "lg:w-[25%] h-fit !bottom-20 !rounded-lg overflow-hidden z-[12] right-10"
       }`}
     >
-      <div className="bg-secondary text-white p-3 font-semibold rounded-t-lg flex items-center justify-between">
+      <div className="bg-gray-200 text-black p-3 font-semibold rounded-t-lg flex items-center justify-between">
         <h2>Conversations</h2>
 
         <div className="flex items-center gap-1">
           <button
             onClick={toggleMaximize}
-            className="text-white hover:text-gray-200"
+            className="text-light hover:text-gray-600"
           >
             {isMaximized ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
           </button>
           <button
             onClick={() => setMessages(null)}
-            className="border border-black/10 rounded-full p-1 bg-secondary hover:bg-background text-white transition-custom "
+            className="text-light hover:text-gray-600"
           >
-            <IoClose size={18} />
+            <IoClose size={24} />
           </button>
 
           {Object?.keys(authUser).length > 0 && authUser?.role === "admin" && (
@@ -149,15 +154,17 @@ const MessageModal = ({ ticket, setMessages }) => {
           )}
         </div>
       </div>
-      <div className="bg-background text-white px-3 py-2 text-sm font-medium">
-        <span>Subject</span>: {ticket?.subject}
-      </div>
+      {isMaximized && (
+        <div className="bg-gray-100 text-black px-3 py-2 text-sm font-medium">
+          <span>Subject</span>: {ticket?.subject}
+        </div>
+      )}
 
       {/* Messages List */}
       {isMaximized && (
         <>
           <div
-            className="flex-1 overflow-y-auto p-3 space-y-4 bg-gradient-to-b from-gray-100 via-white to-gray-50"
+            className="flex-1 overflow-y-auto p-3 space-y-4 bg-white"
             style={{
               scrollbarWidth: "thin",
               scrollbarColor: "#888 #f1f1f1",
