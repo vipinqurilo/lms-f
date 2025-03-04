@@ -55,7 +55,7 @@ const ResetPassword = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 mt-14">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-5/12">
+      <div className="bg-white shadow-lg rounded-2xl p-8  w-full lg:w-5/12">
         <h2 className="text-2xl font-semibold mt-12 text-gray-900">New Password</h2>
         <p className="text-gray-500 mt-2">Set a new password for your account.</p>
 
@@ -120,7 +120,7 @@ const ResetPassword = () => {
 
       {isExpired && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white shadow-lg rounded-2xl p-8 w-5/12 text-center">
+          <div className="bg-white shadow-lg rounded-2xl p-8 lg:w-5/12 text-center">
             <h2 className="text-2xl font-semibold text-gray-900 mt-12">
             The link you provided is either invalid or has expired. Please check and try again.
             </h2>
