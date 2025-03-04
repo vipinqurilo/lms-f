@@ -14,6 +14,7 @@ const ProfileDropDown = () => {
   const path = usePathname();
   const { authUser } = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isUserToken = !!localStorage.getItem("token");
 
   const studentProfileLinks = [
     {
@@ -51,14 +52,18 @@ const ProfileDropDown = () => {
       title: "Dashboard",
       href: "/admin-dashboard",
     },
-    {
-      title: "Student Dashboard",
-      href: "/student-dashboard",
-    },
-    {
-      title: "Instrcutor Dashboard",
-      href: "/instructor-dashboard",
-    },
+    ...(isUserToken
+      ? [
+          {
+            title: "Student Dashboard",
+            href: "/student-dashboard",
+          },
+          {
+            title: "Instructor Dashboard",
+            href: "/instructor-dashboard",
+          },
+        ]
+      : []),
     {
       title: "Courses",
       href: "/admin-dashboard/approvals/courses",
