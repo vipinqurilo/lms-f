@@ -52,6 +52,14 @@ const ProfileDropDown = () => {
       href: "/admin-dashboard",
     },
     {
+      title: "Student Dashboard",
+      href: "/student-dashboard",
+    },
+    {
+      title: "Instrcutor Dashboard",
+      href: "/instructor-dashboard",
+    },
+    {
       title: "Courses",
       href: "/admin-dashboard/approvals/courses",
     },
@@ -134,14 +142,20 @@ const ProfileDropDown = () => {
               : studentProfileLinks
             )?.map((subLink, i) => (
               <Link
-                href={subLink?.href}
-                onClick={(e) =>
-                  authUser?.userStatus !== "active" && e.preventDefault()
-                }
-                className={`text-black bg-gray-200 group !w-full`}
+                href={authUser?.userStatus === "active" ? subLink?.href : "#"}
+                onClick={(e) => {
+                  if (authUser?.userStatus !== "active") {
+                    e.preventDefault();
+                  }
+                }}
+                className={`text-black bg-gray-200 group !w-full ${
+                  authUser?.userStatus !== "active"
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }`}
               >
                 <li
-                  className=" text-light group-hover:!text-secondary transition-custom w-full h-auto text-base border-b border-black/10 px-6 py-3"
+                  className="text-light group-hover:!text-secondary transition-custom w-full h-auto text-base border-b border-black/10 px-6 py-3"
                   key={i}
                 >
                   {subLink?.title}

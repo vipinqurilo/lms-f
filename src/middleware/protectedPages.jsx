@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Loader from "@/components/common/Loader";
 
 // Define role-based access rules
 const roleBasedRoutes = {
-  admin: ["/admin-dashboard"],
+  admin: ["/admin-dashboard", "/instructor-dashboard", "/student-dashboard"],
   teacher: ["/instructor-dashboard"],
   student: ["/student-dashboard"],
 };
@@ -21,15 +21,6 @@ function protectedPages(Component) {
     useEffect(() => {
       const handleAuth = async () => {
         try {
-          console.log("Protected Pages Debug:", {
-            pathname: router.pathname,
-            isAuthenticated,
-            authUser,
-            userStatus: authUser?.userStatus,
-            userRole: authUser?.role,
-            initialCheckDone
-          });
-
           // On first render, skip the check until we're sure about auth state
           if (!initialCheckDone) {
             setInitialCheckDone(true);
@@ -49,8 +40,16 @@ function protectedPages(Component) {
             return;
           }
 
-          // Only proceed with route checking if we have a user
           if (authUser && authUser?.userStatus === "active") {
+            if (
+              router.pathname.startsWith("/instructor-dashboard") ||
+              router.pathname.startsWith("/student-dashboard")
+            ) {
+              localStorage.setItem("isAdmin", JSON.stringify(false));
+            } else {
+              localStorage.setItem("isAdmin", JSON.stringify(true));
+            }
+
             const allowedRoutes = roleBasedRoutes[authUser.role] || [];
             const isAuthorized = allowedRoutes.some((route) =>
               router.pathname.startsWith(route)
@@ -60,17 +59,20 @@ function protectedPages(Component) {
               allowedRoutes,
               currentPath: router.pathname,
               isAuthorized,
-              userRole: authUser.role
+              userRole: authUser.role,
             });
 
             if (!isAuthorized) {
-              console.log("Debug: User not authorized for this route, redirecting to home");
+              console.log(
+                "Debug: User not authorized for this route, redirecting to home"
+              );
               await router.replace("/");
             }
-          } else if (authUser !== null) { // Only log if we actually have a user object
+          } else if (authUser !== null) {
+            // Only log if we actually have a user object
             console.log("Debug: User status check failed:", {
               hasAuthUser: !!authUser,
-              userStatus: authUser?.userStatus
+              userStatus: authUser?.userStatus,
             });
           }
         } catch (error) {
@@ -89,7 +91,7 @@ function protectedPages(Component) {
     if (loading)
       return (
         <div className="h-screen w-full flex items-center justify-center">
-          <FaSpinner className="text-primary animate-spin" size={25} />
+          <Loader isBig={true} color={"text-secondary"} />
         </div>
       );
 

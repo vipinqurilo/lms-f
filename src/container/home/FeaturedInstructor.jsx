@@ -11,6 +11,7 @@ import "swiper/css/pagination";
 
 import { Pagination } from "swiper/modules";
 import Heading from "@/components/common/Heading";
+import NavigationLink from "@/components/home/NavigationLink";
 
 export default function FeaturedInstructor() {
   const data = {
@@ -64,7 +65,7 @@ export default function FeaturedInstructor() {
 
   return (
     <div
-      className="bg-no-repeat py-10 md:px-20"
+      className="bg-no-repeat bg-cover bg-center custom-container"
       style={{
         backgroundImage:
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",
@@ -74,15 +75,18 @@ export default function FeaturedInstructor() {
         <h2 className="text-4xl font-bold">{data.heading}</h2>
         <p className="mt-4 font-semibold text-gray-500">{data.desc}</p>
       </div> */}
-      <div data-aos="fade-up">
+      <div data-aos="fade-up" className="flex justify-between md:mt-4">
         <Heading
-          heading={data.heading}
-          desc={data.desc}
-          position={"!text-center"}
-          paddingX={"md:!w-[60%] mx-auto"}
+          heading={data?.heading}
+          position={"text-left"}
+          desc={data?.desc}
+          descWidth={"md:!w-2/3"}
         />
+        <div className="md:block hidden">
+          <NavigationLink path={"/tutors"} text={"View All"} />
+        </div>
       </div>
-      <div data-aos="fade-up" className="mt-8 px-4 ">
+      <div data-aos="fade-up" className="mt-8">
         <Swiper
           modules={[Pagination]}
           spaceBetween={30}

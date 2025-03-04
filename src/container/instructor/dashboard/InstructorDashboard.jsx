@@ -69,7 +69,7 @@ const InstructorDashboard = () => {
   const { courses } = useSelector((state) => state.instructor.course);
   const { bookings, isLoading } = useSelector((state) => state.instructor.booking);
   const { tickets } = useSelector((state) => state.support);
-  const filteredData = courses?.slice(0, 6)?.map((course) => ({
+  const filteredData = courses?.slice(0, 5)?.map((course) => ({
     image: course?.courseImage,
     title: course?.courseTitle,
     des: course?.courseDescription,
@@ -92,9 +92,9 @@ const InstructorDashboard = () => {
   }, [startDate])
   
   return (
-    <div className="w-full h-full p-10 pb-10">
+    <div className="w-full p-10">
       {loading ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-[calc(100vh-200px)] flex items-center justify-center">
           <Loader color={"text-secondary"} text={"Loader..."} isBig={true} />
         </div>
       ) : (
@@ -113,7 +113,7 @@ const InstructorDashboard = () => {
                   />
                 ))}
               </div>
-              <div className="rounded-lg">
+              <div className="rounded-lg overflow-hidden">
                 <CreatedCourses
                   headingsData={headingsData}
                   data={filteredData}

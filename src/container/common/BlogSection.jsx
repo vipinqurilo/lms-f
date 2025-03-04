@@ -60,7 +60,7 @@ export default function BlogSection() {
 
   return (
     <div
-      className="bg-no-repeat md:py-16 py-6 mt-8 md:px-20 px-4"
+      className="bg-no-repeat bg-center bg-cover custom-container"
       style={{
         backgroundImage:
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",

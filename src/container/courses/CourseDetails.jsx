@@ -6,7 +6,7 @@ import CourseOverview from "@/components/course-main-page/CourseOverview";
 import CourseReview from "@/components/course-main-page/CourseReview";
 import LecturesOverview from "@/components/course-main-page/LecturesOverview";
 import TopSection from "@/components/course-main-page/TopSection";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 const CourseDetails = () => {
@@ -25,6 +25,8 @@ const CourseDetails = () => {
       }
     });
   }, []);
+
+  const enrollNowRef = useRef(null);
 
   return (
     <div className="w-full relative overflow-hidden">
@@ -46,10 +48,10 @@ const CourseDetails = () => {
           <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
-          <CourseHighLights data={data} />
+          <CourseHighLights data={data} enrollNowRef={enrollNowRef} />
         </div>
       </div>
-      {!enrolledCourses?.some((item) => item === data?.course?._id) && (
+      {!enrolledCourses?.some((item) => item === data?._id) && (
         <div className={`block ${isScrolled ? "lg:block" : "lg:hidden"}`}>
           <div className="w-full bg-white border-t border-black/10 fixed bottom-0 shadow-lg">
             <div className=" px-8 md:px-10 lg:px-20 py-4 flex items-center justify-between gap-5">
@@ -62,7 +64,10 @@ const CourseDetails = () => {
                   <span>50% off</span>
                 </p>
               </div>
-              <button className="px-4 py-2 md:w-[40%] lg:w-[20%] bg-secondary hover:bg-black transition-custom w-full text-white rounded-full">
+              <button
+                onClick={() => enrollNowRef.current?.click()}
+                className="px-4 py-2 md:w-[40%] lg:w-[20%] bg-secondary hover:bg-black transition-custom w-full text-white rounded-full"
+              >
                 Enroll Now
               </button>
             </div>

@@ -15,8 +15,6 @@ const CreatedCourses = ({
     (state) => state.user?.authUser?.role === "admin" || null
   );
 
-  console.log(isAdmin, "role");
-
   const getStatusCss = (status) => {
     return status === "unpublished"
       ? "bg-red-200 text-red-800"

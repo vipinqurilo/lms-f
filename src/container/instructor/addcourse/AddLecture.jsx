@@ -5,6 +5,7 @@ import ModalHeading from "@/components/common/ModalHeading";
 import BackgroundModal from "@/components/instructor/BackgroundModal";
 import { uploadDocument } from "@/store/slices/uploadSlice";
 import React from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 const AddLecture = ({
@@ -22,18 +23,23 @@ const AddLecture = ({
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
+    if (files.length > 5) {
+      toast.error("You can only upload up to 5 files.");
+      e.target.value = ""; // Clear selected files
+      return;
+    }
     const validFiles = files
       .filter((file) => {
         const isValidType = ["application/pdf"].includes(file.type);
         const isValidSize = file.size <= 4 * 1024 * 1024; // 4MB limit
 
         if (!isValidType) {
-          alert(
+          toast.error(
             `${file.name} is not a valid file type (Only PDF and DOC allowed)`
           );
         }
         if (!isValidSize) {
-          alert(`${file.name} exceeds the 4MB size limit`);
+          toast.error(`${file.name} exceeds the 4MB size limit`);
         }
         return isValidType && isValidSize;
       })
@@ -135,6 +141,7 @@ const AddLecture = ({
               onChange={handleFileUpload}
               className="border px-4 py-2 rounded-lg text-sm"
               multiple
+              disabled={lecture?.attachements?.length === 5}
             />
 
             {/* Display Uploaded Files */}
@@ -152,7 +159,7 @@ const AddLecture = ({
                         onChange={(e) =>
                           handleFileNameChange(index, e.target.value)
                         }
-                        className="w-full text-sm focus:outline-none"
+                        className="w-full text-sm focus:outline-none border border-black/10 rounded-lg p-1"
                         disabled={typeof attachment.url === "string"}
                       />
 
