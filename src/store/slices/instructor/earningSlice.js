@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const fetchAllCourseEarning = CreateApiAsyncThunk(
-  "earning/fetchAllCourseEarning",
+  "GET/earning/fetchAllCourseEarning",
   (formData) => {
     const query = Object?.keys(formData)
       ?.map((key) => `${key}=${formData[key]}`)
@@ -19,7 +19,7 @@ export const fetchAllCourseEarning = CreateApiAsyncThunk(
   }
 );
 export const fetchAllTutionEarning = CreateApiAsyncThunk(
-  "earning/fetchAllTutionEarning",
+  "GET/earning/fetchAllTutionEarning",
   (formData) => {
     const query = Object?.keys(formData)
       ?.map((key) => `${key}=${formData[key]}`)

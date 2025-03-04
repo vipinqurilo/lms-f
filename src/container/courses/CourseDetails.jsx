@@ -51,7 +51,7 @@ const CourseDetails = () => {
           <CourseHighLights data={data} enrollNowRef={enrollNowRef} />
         </div>
       </div>
-      {!enrolledCourses?.some((item) => item === data?._id) && (
+      {!enrolledCourses?.some((item) => item === data?.course?._id) && (
         <div className={`block ${isScrolled ? "lg:block" : "lg:hidden"}`}>
           <div className="w-full bg-white border-t border-black/10 fixed bottom-0 shadow-lg">
             <div className=" px-8 md:px-10 lg:px-20 py-4 flex items-center justify-between gap-5">

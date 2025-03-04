@@ -8,7 +8,7 @@ const toastMiddleware = (store) => (next) => (action) => {
   }
   if (action.type.endsWith("/fulfilled")) {
     const { payload } = action;
-    if (payload?.message && payload?.status !== "error") {
+    if (payload?.message && payload?.status !== "error" && payload.status !== "failed") {
       toast.success(payload.message);
     } else {
       toast.error(payload?.message);

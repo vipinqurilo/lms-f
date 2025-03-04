@@ -1,20 +1,24 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BiPlayCircle, BiSolidLockAlt } from "react-icons/bi";
 import { FaRegFilePdf } from "react-icons/fa";
 
 const LectureItem = ({ lecture, index, i, isAccessible }) => {
   const [activeIndex, setActiveIndex] = useState(null);
-  const contentRefs = useRef({});
+  const [attachmentsHeight, setAttachmentsHeight] = useState(0);
 
-  const toggleSection = (idx) => {
-    setActiveIndex((prev) => (prev === idx ? null : idx));
-  };
+  const attachmentsRef = useRef(null);
+
+  useEffect(() => {
+    if (attachmentsRef.current) {
+      setAttachmentsHeight(attachmentsRef.current.scrollHeight);
+    }
+  }, [lecture.attachements, activeIndex]);
 
   return (
     <div className="w-full">
       <h6
         className="flex items-start gap-1 w-full cursor-pointer"
-        onClick={() => toggleSection(i)}
+        onClick={() => (activeIndex === i ? setActiveIndex(null) : setActiveIndex(i))}
       >
         {isAccessible ? (
           <BiPlayCircle className="text-secondary text-lg" />
@@ -46,19 +50,16 @@ const LectureItem = ({ lecture, index, i, isAccessible }) => {
       </h6>
 
       <div
-        ref={(el) => (contentRefs.current[i] = el)}
-        style={{
-          maxHeight:
-            activeIndex === i
-              ? `${contentRefs.current[i]?.scrollHeight}px`
-              : "0px",
-          overflow: "hidden",
-          transition: "max-height 0.3s ease-in-out",
-        }}
-        className="mt-2 w-full text-sm pl-4"
+        className={`mt-2 w-full text-sm pl-4 ${
+          activeIndex === i ? "block" : "hidden"
+        }`}
+        style={{ height: attachmentsHeight }}
       >
         {lecture?.attachements?.length > 0 && (
-          <ul className="space-y-2 w-full">
+          <ul
+            ref={attachmentsRef}
+            className="space-y-2 w-full"
+          >
             {lecture?.attachements?.map((attachment) => (
               <li
                 key={attachment?._id}

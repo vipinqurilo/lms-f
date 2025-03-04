@@ -23,20 +23,16 @@ const GetLoggedInUser = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (
-        authUser &&
-        authUser?.role === "teacher" &&
-        authUser?.userStatus === "active"
-      ) {
-        localStorage.setItem("isAdmin", JSON.stringify(false)); // Store as a boolean
+    if (isAuthenticated && authUser) {
+      if (authUser.role === "teacher" && authUser.userStatus === "active") {
+        localStorage.setItem("isAdmin", JSON.stringify(false));
         dispatch(getWallet());
-      } else if (authUser?.role === "student") {
+      } else if (authUser.role === "student") {
         localStorage.setItem("isAdmin", JSON.stringify(false));
         dispatch(fetchWishlistAsync());
         dispatch(getAllEnrolledCourses());
-      } else if (authUser?.role === "admin") {
-        localStorage.setItem("isAdmin", JSON.stringify(true)); // Fix: Set admin correctly
+      } else if (authUser.role === "admin") {
+        localStorage.setItem("isAdmin", JSON.stringify(true));
       }
     }
   }, [dispatch, authUser, isAuthenticated]);
