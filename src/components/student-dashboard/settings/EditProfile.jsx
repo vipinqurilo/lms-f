@@ -96,7 +96,7 @@ export function EditProfile({ isInstructorRequest = null }) {
   }, [profile, instructorProfile]);
 
   useEffect(() => {
-    if (!isInstructorRequest) {
+    if (!isInstructorRequest && !path.startsWith("/instructor-request")) {
       dispatch(fetchProfileAsync());
     }
   }, [dispatch]);

@@ -8,8 +8,10 @@ import {
 } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import CommonButton from "../common/CommonButton";
+import { useRouter } from "next/navigation";
 
 export default function PaymentStatus({ status }) {
+  const router = useRouter();
   const { perchasedCourse, error } = useSelector((state) => state.courses);
   const loading = useSelector((state) => state.courses?.isLoading?.createOrder);
   
@@ -61,10 +63,9 @@ export default function PaymentStatus({ status }) {
             )}
 
             <a
-              href="/student-dashboard/courses"
               onClick={(e) => {
                 e.preventDefault();
-                window.opener.location.href = "/student-dashboard/enrolled-courses";
+                window.opener.location.href = "/";
                 window.close();
               }}
             >

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { GoCheck } from "react-icons/go";
 
 const SubjectSelection = ({ setSelectedSubjects, selectedSubjects, data }) => {
-  // console.log(selectedSubjects,data, "selectedSubjects and data");
   
   // Helper function to check if all chapters are selected
   const areAllChaptersSelected = (subject) => {

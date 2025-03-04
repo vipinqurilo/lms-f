@@ -34,8 +34,10 @@ const TeacherRegisterForm = () => {
     dispatch(instructorRegister(formData))
       .unwrap()
       .then((res) => {
-        localStorage.setItem("token", res?.token);
-        router.push("/instructor-request");
+        if (res?.status !== "error") {
+          localStorage.setItem("token", res?.token);
+          router.push("/instructor-request");
+        }
       });
   };
 

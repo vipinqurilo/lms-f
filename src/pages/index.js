@@ -30,7 +30,6 @@ const Home = () => {
     <>
       <main className=" font-nunito custom-margin-top !overflow-visible">
         <HeroSection />
-        <div className="md:mt-0 mt-8"></div>
         <FeaturedCourses cardData={courses} />
         <FeaturedInstructor />
         <LogoSlider />
@@ -38,7 +37,7 @@ const Home = () => {
         <MasterSkill />
         <UserLove />
         <Become />
-        <BlogSection />
+        {/* <BlogSection /> */}
         <UnlimitedAccess />
       </main>
     </>

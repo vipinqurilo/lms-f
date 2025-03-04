@@ -21,6 +21,11 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
   api.post(`/auth/logout`)
 );
 
+export const userLoginForAdmin = CreateApiAsyncThunk(
+  "user/userLoginForAdmin",
+  (userId) => api.get(`/auth/admin-usertoken?userId=${userId}`)
+);
+
 const initialState = {
   authUser: null,
   isAuthenticated: false,
@@ -54,6 +59,7 @@ const userSlice = createSlice({
   reducers: {
     logoutUser: (state) => {
       state.authUser = null;
+      localStorage.setItem("isAdmin", JSON.stringify(false));
       localStorage.removeItem("token");
       localStorage.removeItem("adminToken");
     },
@@ -73,7 +79,7 @@ const userSlice = createSlice({
       .addCase(userRegisterAsync.rejected, (state, action) => {
         state.isLoading["userRegisterAsync"] = false;
         state.authUser = action.payload?.data;
-        
+
         state.isAuthenticated =
           action.payload?.status === "error" ? false : true;
       })
@@ -83,7 +89,7 @@ const userSlice = createSlice({
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.isLoading["userLoginAsync"] = false;
         state.authUser = action.payload?.data;
-        console.log()
+        console.log();
         state.isAuthenticated =
           action.payload?.status === "error" ? false : true;
       })
@@ -132,7 +138,7 @@ const userSlice = createSlice({
         state.isLoading["logout"] = false;
         state.isAuthenticated = false;
       })
-      .addCase(forgotPasswordAsync.pending, (state) => {
+       .addCase(forgotPasswordAsync.pending, (state) => {
         state.isLoading["forgotPasswordAsync"] = true;
         state.error["forgotPasswordAsync"] = null;
         state.successMessage = null;
@@ -156,7 +162,17 @@ const userSlice = createSlice({
       .addCase(resetPasswordAsync.rejected, (state, action) => {
         state.isLoading["resetPasswordAsync"] = false;
         state.error["resetPasswordAsync"] = action.payload?.message || "Something went wrong";
-      });
+       // user login for admin access
+      .addCase(userLoginForAdmin.pending, (state) => {
+        state.isLoading["userLoginForAdmin"] = true;
+      })
+      .addCase(userLoginForAdmin.fulfilled, (state, action) => {
+        state.isLoading["userLoginForAdmin"] = false;
+      })
+      .addCase(userLoginForAdmin.rejected, (state) => {
+        state.isLoading["userLoginForAdmin"] = false;
+        state.isAuthenticated = false;
+       });
   },
 });
 

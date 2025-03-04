@@ -12,10 +12,8 @@ const CreatedCourses = ({
   isCols = false,
 }) => {
   const isAdmin = useSelector(
-    (state) => state.user?.authUser?.role === "admin" || {}
+    (state) => state.user?.authUser?.role === "admin" || null
   );
-
-  console.log(isAdmin, "role");
 
   const getStatusCss = (status) => {
     return status === "unpublished"
@@ -32,7 +30,7 @@ const CreatedCourses = ({
       {title !== "" && (
         <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
       )}
-      <div className="bg-white rounded-b-lg shadow-md p-4 ">
+      <div className="bg-white !rounded-b-lg shadow-md ">
         <div className="overflow-x-auto">
           <table className="w-full rounded-lg bg-gray-100">
             <TableHeader headingsData={headingsData} />

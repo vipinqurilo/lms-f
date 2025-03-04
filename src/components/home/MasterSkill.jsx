@@ -1,11 +1,12 @@
 import React from "react";
+import Image from "next/image";
 import Heading from "../common/Heading";
 
 export default function MasterSkill() {
   const masterskillData = {
     heading: "Master the skills to drive your career",
     desc: `Get certified, master modern tech skills, and level up your career — whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.`,
-    img: `https://dreamslms.dreamstechnologies.com/html/assets/img/join.png`,
+    img: `/assets/home/IMAGE01.png`,
     features: [
       {
         id: 1,
@@ -31,47 +32,55 @@ export default function MasterSkill() {
   };
 
   return (
-    <div className="bg-white py-16 md:px-20 px-4">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-start gap-8">
-        {/* Left Content */}
-        <div>
-          <h2 className="text-red-500 text-base font-extrabold  mb-2">
+    <div className="bg-white custom-container !pb-0 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+        <div data-aos="fade-up" className="!pb-10 lg:pb-16">
+          <h2 className="text-red-500 text-base font-extrabold mb-2">
             What's New
           </h2>
-          {/* <h1 className="text-4xl font-bold text-black mb-4">
-            {masterskillData.heading}
-          </h1>
-          <p className="text-gray-600 text-lg mb-8 leading-6">{masterskillData.desc}</p> */}
-          <div data-aos="fade-up">
-            <Heading
-              heading={masterskillData.heading}
-              desc={masterskillData.desc}
-              position={"left"}
-            />
-          </div>
-          <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:gap-6 gap-2 ">
-            {/* Features */}
+          <Heading
+            heading={masterskillData.heading}
+            desc={masterskillData.desc}
+            position="left"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:gap-6 gap-2 mt-4">
             {masterskillData.features.map((feature) => (
-              <div className="flex items-start space-x-3 mt-4 border rounded-xl border-gray-300 py-8 px-6">
-                <div className="">
-                  <img src={feature.img} alt={feature.text} />
-                </div>
-                <div>
-                  <h4 className="text-[14px] font-medium  md:pt-0 pt-3 text-[#685f78]">
-                    {feature.text}
-                  </h4>
-                </div>
+              <div
+                key={feature.id}
+                className="flex items-start space-x-3 border rounded-xl border-gray-300 py-8 px-6"
+              >
+                <Image
+                  src={feature.img}
+                  alt={feature.text}
+                  width={40}
+                  height={40}
+                />
+                <h4 className="text-[14px] font-medium text-[#685f78]">
+                  {feature.text}
+                </h4>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right Image */}
-        <div data-aos="fade-up" className="flex justify-center">
-          <img
-            src="https://dreamslms.dreamstechnologies.com/html/assets/img/join.png"
+        <div data-aos="fade-up" className="flex justify-center lg:hidden">
+          <Image
+            src={masterskillData.img}
             alt="Master Skills"
+            width={600}
+            height={400}
             className="max-w-full h-auto"
+            priority
+          />
+        </div>
+        <div data-aos="fade-up" className="relative h-full w-full lg:block hidden">
+          <Image
+            src={masterskillData.img}
+            alt="Master Skills"
+            fill={true}
+            className="object-center object-contain"
+            priority
           />
         </div>
       </div>
