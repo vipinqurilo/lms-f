@@ -30,7 +30,7 @@ const initialState = {
   authUser: null,
   isAuthenticated: false,
   isLoading: {},
-  successMessage:null,
+  successMessage: null,
   error: {},
 };
 
@@ -39,19 +39,16 @@ export const instructorRegister = CreateApiAsyncThunk(
   (data) => api.post(`/auth/register`, data)
 );
 
-
 export const forgotPasswordAsync = CreateApiAsyncThunk(
   "user/forgotPasswordAsync",
   (email) => api.post(`/forgotpassword`, { email })
 );
-
 
 export const resetPasswordAsync = CreateApiAsyncThunk(
   "user/resetPasswordAsync",
   ({ token, newPassword, confirmPassword }) =>
     api.post(`/forgotpassword/${token}`, { newPassword, confirmPassword })
 );
-
 
 const userSlice = createSlice({
   name: "user",
@@ -138,7 +135,7 @@ const userSlice = createSlice({
         state.isLoading["logout"] = false;
         state.isAuthenticated = false;
       })
-       .addCase(forgotPasswordAsync.pending, (state) => {
+      .addCase(forgotPasswordAsync.pending, (state) => {
         state.isLoading["forgotPasswordAsync"] = true;
         state.error["forgotPasswordAsync"] = null;
         state.successMessage = null;
@@ -149,7 +146,8 @@ const userSlice = createSlice({
       })
       .addCase(forgotPasswordAsync.rejected, (state, action) => {
         state.isLoading["forgotPasswordAsync"] = false;
-        state.error["forgotPasswordAsync"] = action.payload?.message || "Something went wrong";
+        state.error["forgotPasswordAsync"] =
+          action.payload?.message || "Something went wrong";
       })
       .addCase(resetPasswordAsync.pending, (state) => {
         state.isLoading["resetPasswordAsync"] = true;
@@ -161,8 +159,10 @@ const userSlice = createSlice({
       })
       .addCase(resetPasswordAsync.rejected, (state, action) => {
         state.isLoading["resetPasswordAsync"] = false;
-        state.error["resetPasswordAsync"] = action.payload?.message || "Something went wrong";
-       // user login for admin access
+        state.error["resetPasswordAsync"] =
+          action.payload?.message || "Something went wrong";
+      })
+      // user login for admin access
       .addCase(userLoginForAdmin.pending, (state) => {
         state.isLoading["userLoginForAdmin"] = true;
       })
@@ -172,7 +172,7 @@ const userSlice = createSlice({
       .addCase(userLoginForAdmin.rejected, (state) => {
         state.isLoading["userLoginForAdmin"] = false;
         state.isAuthenticated = false;
-       });
+      });
   },
 });
 
