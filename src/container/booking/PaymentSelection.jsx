@@ -62,7 +62,7 @@ export function PaymentSelection({
       </div>
 
       <div>
-        <h2 className="text-sm  mb-4 text-[#040404]">HAVE A COUPON?</h2>
+        {/* <h2 className="text-sm  mb-4 text-[#040404]">HAVE A COUPON?</h2>
         <div className="flex gap-2 relative">
           <FaTag className="absolute top-[50%] text-gray-300 -translate-y-[50%] left-5" />
           <input
@@ -73,7 +73,7 @@ export function PaymentSelection({
           <div className="px-4 flex justify-center rounded-lg cursor-pointer items-center absolute right-5  h-[32px] text-sm top-[50%] -translate-y-[50%]  bg-black text-white hover:bg-secondary">
             Apply
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-8">
           <h2 className="text-sm mb-4">SUMMARY</h2>

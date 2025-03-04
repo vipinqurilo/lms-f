@@ -1,48 +1,59 @@
-import React from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { createBookingAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
-export default function Index() {
-  const handleGoBack = () => {
-    if (window.opener) {
-      window.opener.location.href = "/student-dashboard/bookings";
-      window.close();
-    } else {
-      window.location.href = "/student-dashboard/bookings";
-    }
-  };
+const PaymentSuccessPage = () => {
+    const dispatch = useDispatch();
+    const searchParams = useSearchParams();
+    const sessionId = searchParams.get("session_id");
+    const [bookingDetails, setBookingDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  return (
-    <>
-      <div className="bg-white h-screen flex justify-center items-center">
-        <div className="bg-white p-6 md:mx-auto">
-          <svg
-            viewBox="0 0 24 24"
-            className="text-green-600 w-16 h-16 mx-auto my-6"
-          >
-            <path
-              fill="currentColor"
-              d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z"
-            ></path>
-          </svg>
-          <div className="text-center">
-            <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
-              Payment Done!
-            </h3>
-            <p className="text-gray-600 my-2">
-              Thank you for completing your secure online payment.
-            </p>
-            <p> Have a great day!</p>
-            <div className="py-10 text-center">
-              <button
-                onClick={handleGoBack}
-                className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
-              >
-                GO BACK
-              </button>
-            </div>
-          </div>
+    useEffect(() => {
+        if (sessionId) {
+            dispatch(createBookingAsync({ sessionId }))
+                .unwrap()
+                .then(res => {
+                    if(res.success){
+                        setBookingDetails(res.data);
+                        setLoading(false);
+                        setError("");
+                    } else {
+                        setError("Booking failed. Please contact support.");
+                        setLoading(false);
+                    }
+                })
+                .catch(() => {
+                    setError("Booking failed. Please contact support.");
+                    setLoading(false);
+                });
+        }
+    }, [sessionId, dispatch]);
+
+    return (
+        <div style={{ padding: "20px", textAlign: "center" }}>
+            <h1 style={{ color: "green" }}>Payment Successful! 🎉</h1>
+
+            {loading && <p>Processing your booking...</p>}
+
+            {error && <p style={{ color: "red" }}>{error}</p>}
+
+            {bookingDetails && (
+                <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ccc", borderRadius: "8px" }}>
+                    <h2>📅 Booking Confirmed!</h2>
+                    <p><strong>Teacher:</strong> {bookingDetails?.teacherName}</p>
+                    <p><strong>Session:</strong> {bookingDetails?.sessionTitle}</p>
+                    <p><strong>Date:</strong> {bookingDetails?.sessionDate}</p>
+                    <p><strong>Time:</strong> {bookingDetails?.sessionStartTime}</p>
+                    <p><strong>Transaction ID:</strong> {bookingDetails?.transactionId}</p>
+                    <p style={{ color: "blue" }}>An email confirmation has been sent to you.</p>
+                </div>
+            )}
         </div>
-      </div>
-    </>
-  );
-}
+    );
+};
+
+export default PaymentSuccessPage;

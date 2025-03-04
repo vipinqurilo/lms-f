@@ -25,13 +25,15 @@ export function BookingModal({ onClose, tutor }) {
   const { profile } = useSelector((state) => state.student.profile);
   const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
   const [duration, setDuration] = useState(
-    tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : 30
+    tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : null
   );
   const { bookingsByTutorId } = useSelector((state) => state.student.booking);
-  const [paymentMethod, setPaymentMethod] = useState("wallet");
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionEndTime, setSessionEndTime] = useState(null);
+  console.log(scheduledDate, sessionStartTime, sessionEndTime, duration, "scheduledDate, sessionStartTime, sessionEndTime, duration");
+  
   const titles = {
     1: "Select subject and duration",
     2: "Select number of slots",
@@ -109,17 +111,7 @@ export function BookingModal({ onClose, tutor }) {
     });
   };
 
-  const handlePayment = () => {
-    dispatch(createPaymentIntent())
-      .unwrap()
-      .then((res) => {
-        setCheckoutUrl(res.url);
-        setPaymentModal(true);
-      })
-      .catch((error) => {
-        toast.error("Failed to initialize payment. Please try again.");
-      });
-  };
+  
 
   // Add useEffect to handle scroll locking
   useEffect(() => {
@@ -169,10 +161,10 @@ export function BookingModal({ onClose, tutor }) {
               <ScheduleCalendar
                 rawBookings={bookingsByTutorId}
                 scheduledDate={scheduledDate}
-                setScheduledDate={setScheduledDate}
                 sessionStartTime={sessionStartTime}
-                setSessionStartTime={setSessionStartTime}
                 sessionEndTime={sessionEndTime}
+                setSessionStartTime={setSessionStartTime}
+                setScheduledDate={setScheduledDate}
                 setSessionEndTime={setSessionEndTime}
                 calendar={tutor.calendar}
                 duration={duration}
@@ -195,7 +187,7 @@ export function BookingModal({ onClose, tutor }) {
 
           {step < 4 && (
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t flex justify-end">
-              <button
+              <button disabled={subject ===null && step === 1 || duration === null && step === 2 || scheduledDate === null && step === 3 || sessionStartTime === null && step === 3 || sessionEndTime === null && step === 3}
                 onClick={handleNext}
                 className="w-fit px-8 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
               >
