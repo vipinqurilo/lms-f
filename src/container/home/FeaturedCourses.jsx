@@ -3,7 +3,6 @@ import FeaturedCard from "@/components/common/FeaturedCard";
 import Heading from "@/components/common/Heading";
 import { useSelector } from "react-redux";
 import Loader from "@/components/common/Loader";
-import Link from "next/link";
 import NavigationLink from "@/components/home/NavigationLink";
 
 export default function FeaturedCourses({ cardData = [] }) {
@@ -46,8 +45,8 @@ export default function FeaturedCourses({ cardData = [] }) {
             >
               {cardData?.length > 0 ? (
                 cardData
-                  ?.slice(0, 6)
-                  ?.map((card, index) => (
+                  ?.slice(cardData?.length - 6, cardData?.length)
+                  ?.reverse()?.map((card, index) => (
                     <FeaturedCard data={card} isFull={true} key={index} />
                   ))
               ) : (

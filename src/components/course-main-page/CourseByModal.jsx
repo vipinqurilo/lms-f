@@ -9,7 +9,17 @@ import BackgroundModal from "../instructor/BackgroundModal";
 import CheckoutForm from "../payment/CheckoutForm";
 import { useSelector } from "react-redux";
 
-const CourseByModal = ({ isPaymentModal, setisModalOpen, checkoutUrl, setisPaymentModal, isModalOpen, handlePayment, data, selectedMethod, setselectedMethod }) => {
+const CourseByModal = ({
+  isPaymentModal,
+  setisModalOpen,
+  checkoutUrl,
+  setisPaymentModal,
+  isModalOpen,
+  handlePayment,
+  data,
+  selectedMethod,
+  setselectedMethod,
+}) => {
   const { authUser } = useSelector((state) => state.user);
   return (
     <>
