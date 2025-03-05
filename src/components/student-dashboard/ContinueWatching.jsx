@@ -9,6 +9,8 @@ import { Navigation } from "swiper/modules"
 // Import Swiper styles
 import "swiper/css"
 import "swiper/css/navigation"
+import Link from "next/link"
+import { useRouter } from "next/router"
 
 const courses = [
   {
@@ -71,11 +73,19 @@ const courses = [
 
 export default function ContinueWatching() {
   const swiperRef = useRef(null)
-
+  const router = useRouter()
   return (
     <div className="w-full py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Continue Watching</h2>
+      <div className="flex items-end justify-between mb-6">
+        <div className="flex items-center justify-between gap-6">
+          <h2 className="text-xl font-semibold text-gray-900">Continue Watching</h2>
+          <button
+            className="text-sm font-medium text-secondary hover:text-primary underline"
+            onClick={() => router.push("/student-dashboard/enrolled-courses")}
+          >
+            Go to all courses
+          </button>
+        </div>
         <div className="flex gap-2">
           <button
             className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 hover:bg-secondary text-gray-400 hover:text-white "

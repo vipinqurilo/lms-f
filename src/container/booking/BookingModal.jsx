@@ -32,7 +32,6 @@ export function BookingModal({ onClose, tutor }) {
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionEndTime, setSessionEndTime] = useState(null);
-  console.log(scheduledDate, sessionStartTime, sessionEndTime, duration, "scheduledDate, sessionStartTime, sessionEndTime, duration");
   
   const titles = {
     1: "Select subject and duration",
@@ -85,8 +84,22 @@ export function BookingModal({ onClose, tutor }) {
       return;
     }
     const price = ((subject?.pricePerHour * duration) / 60).toFixed(2);
+    if (price <= 0) {
+      toast.error("Session price cannot be zero or negative");
+      return;
+    }
     setPaymentModal(true);
-
+    console.log({
+      sessionTitle: `${duration} Minute Session on ${subject?.name}`,
+      subjectId: subject?._id,
+      teacherId: tutor?.user?._id,
+      studentId: profile?._id,
+      sessionDate: scheduledDate,
+      sessionStartTime,
+      sessionEndTime,
+      sessionDuration: duration,
+      amount: price,
+    });
     // If all validations pass, proceed with booking
     dispatch(
       createBookingPayment({
