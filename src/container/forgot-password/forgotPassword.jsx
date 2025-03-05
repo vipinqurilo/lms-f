@@ -69,7 +69,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 mt-12">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-5/12 text-center">
+      <div className="bg-white p-8 rounded-2xl shadow-lg lg:w-5/12  text-center">
         <img
           src="/images/PHOTO-2025-01-23-10-17-50__1_-removebg-preview 1.svg"
           alt="Logo"
