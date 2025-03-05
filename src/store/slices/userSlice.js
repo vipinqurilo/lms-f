@@ -162,6 +162,7 @@ const userSlice = createSlice({
         state.error["resetPasswordAsync"] =
           action.payload?.message || "Something went wrong";
       })
+      // user login for admin access
       .addCase(userLoginForAdmin.pending, (state) => {
         state.isLoading["userLoginForAdmin"] = true;
       })
