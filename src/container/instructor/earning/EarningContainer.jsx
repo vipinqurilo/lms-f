@@ -2,123 +2,134 @@
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EarningsChart from "./EarningsChart";
-import EarningTable from "./EarningTable";
-import { Pagination } from "@/components/student-dashboard/Pagination";
-import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import TitleComp from "@/components/instructor/TitleComp";
-import { fetchAllEarning } from "@/store/slices/instructor/earningSlice";
+import {
+  fetchAllCourseEarning,
+  fetchAllTutionEarning,
+} from "@/store/slices/instructor/earningSlice";
 import Loader from "@/components/common/Loader";
+import dateFormat from "dateformat";
+import { StatsCard } from "@/components/student-dashboard/StatsCard";
+import { DollarSign, BookOpen } from "lucide-react";
+import EarningCourseTable from "./EarningCourseTable";
+import EarningTutionTable from "./EarningTutionTable";
 
 const EarningContainer = () => {
   const dispatch = useDispatch();
-  const { isLoading, earning, totalPages } = useSelector(
+  const { isLoading, courseEarning, tutionEarning } = useSelector(
     (state) => state.instructor.earning
   );
-  const [filters, setfilters] = useState({});
-  const [activeTab, setactiveTab] = useState("Courses");
-  const [currentPage, setcurrentPage] = useState(1);
+
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const formattedFirstDay = dateFormat(firstDayOfMonth, "yyyy-mm-dd");
+  const formattedLastDay = dateFormat(lastDayOfMonth, "yyyy-mm-dd");
+
+  const [startDate, setStartDate] = useState(formattedFirstDay);
+  const [endDate, setEndDate] = useState(formattedLastDay);
 
   useEffect(() => {
     const requestData = {
-      page: currentPage,
-      limit: 5,
+      startDate,
+      endDate,
     };
-    if (filters?.search) {
-      requestData.search = filters?.search;
-    }
-    if (filters?.startDate) {
-      requestData.startDate = filters?.startDate;
-    }
-    if (filters?.endDate) {
-      requestData.endDate = filters?.endDate;
-    }
-    dispatch(fetchAllEarning(requestData));
-  }, [dispatch, currentPage, filters]);
+
+    dispatch(fetchAllCourseEarning(requestData));
+    dispatch(fetchAllTutionEarning(requestData));
+  }, [dispatch, startDate, endDate]);
+
+  const formatNumber = (num) => {
+    if (num >= 1e9) return (num / 1e9).toFixed(1) + "B";
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + "K";
+    return num.toFixed(2);
+  };
+
+  const cardsData = [
+    {
+      title: "Course Earning",
+      earning: formatNumber(
+        courseEarning
+          ? courseEarning.reduce((acc, item) => acc + item.earnings, 0)
+          : 0
+      ),
+      icon: <BookOpen size={24} className="text-blue-800" />,
+      bgColor: "bg-blue-100",
+    },
+    {
+      title: "Tution Sessions Earning",
+      earning: formatNumber(
+        tutionEarning
+          ? tutionEarning.reduce((acc, item) => acc + item.earnings, 0)
+          : 0
+      ),
+      icon: <DollarSign size={24} className="text-green-800" />,
+      bgColor: "bg-green-100",
+    },
+  ];
 
   return (
-    <>
-      <main className=" p-10">
-        <div className="dashboard-container">
-          <TitleComp
-            heading={"Earnings"}
-            des={
-              "Track your income, view breakdowns, and monitor financial progress."
-            }
-          />
-          <div className="w-full flex flex-col gap-6 py-5">
-            <EarningsChart />
-            <div className="w-full !sticky !-top-0 bg-white px-5">
-              <UserFilter
-                isRole={false}
-                isStatus={false}
-                statusData={[]}
-                onApplyFilters={setfilters}
-              />
-              <div className="border-b">
-                <div className="flex gap-6">
-                  {["Courses", "Bookings"].map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setactiveTab(item)}
-                      className={`pb-4 relative ${
-                        activeTab === item
-                          ? "text-emerald-600"
-                          : "text-gray-600"
-                      }`}
-                    >
-                      {item}
-                      {activeTab === item && (
-                        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
-                      )}
-                    </button>
-                  ))}
-                </div>
+    <main className="p-10">
+      <div className="dashboard-container">
+        <TitleComp
+          heading={"Earnings"}
+          des={
+            "Track your income, view breakdowns, and monitor financial progress."
+          }
+        />
+        <div className="w-full flex flex-col gap-6 pt-5">
+          <div className="w-full flex items-center justify-between">
+            <div className="w-[60%] grid grid-cols-2 gap-5 px-5">
+              {cardsData?.map((card, index) => (
+                <StatsCard
+                  key={index}
+                  Icon={card?.icon}
+                  color={card?.bgColor}
+                  title={card?.title}
+                  isIcon={true}
+                  value={card?.earning}
+                />
+              ))}
+            </div>
+            <div className="px-5 flex items-center justify-end gap-5">
+              <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+                <span className="text-xs w-24">Start Date:</span>
+                <input
+                  type="date"
+                  className="bg-transparent outline-none w-full font-semibold"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </div>
+
+              <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
+                <span className="text-xs w-24">End Date:</span>
+                <input
+                  type="date"
+                  className="bg-transparent outline-none w-full font-semibold"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
               </div>
             </div>
-
-            {isLoading["fetchAllEarning"] ? (
-              <div className="w-full flex items-center justify-center py-10">
-                <Loader isBig={true} color={"text-secondary"} />
-              </div>
-            ) : (
-              <EarningTable
-                title={"Earnings Overview"}
-                headingsData={
-                  activeTab === "Courses"
-                    ? [
-                        "SNO.",
-                        "Type",
-                        "Name",
-                        "Price ($)",
-                        "Enrolled",
-                        "Revenue",
-                      ]
-                    : [
-                        "SNO.",
-                        "Type",
-                        "Name",
-                        "Price ($)",
-                        "Bookings",
-                        "Revenue",
-                      ]
-                }
-                data={
-                  activeTab === "Courses"
-                    ? earning?.filter((earn) => earn?.type === "course")
-                    : earning?.filter((earn) => earn?.type === "booking")
-                }
-              />
-            )}
           </div>
+
+          {isLoading["fetchAllCourseEarning"] ||
+          isLoading[fetchAllTutionEarning] ? (
+            <div className="w-full flex items-center justify-center py-10">
+              <Loader isBig={true} color={"text-secondary"} />
+            </div>
+          ) : (
+            <div className="w-full flex flex-col gap-8">
+              <EarningCourseTable />
+              <EarningTutionTable />
+            </div>
+          )}
         </div>
-      </main>
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={(val) => setcurrentPage(val)}
-      />
-    </>
+      </div>
+    </main>
   );
 };
 

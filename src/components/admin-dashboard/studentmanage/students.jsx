@@ -42,7 +42,7 @@ const StudentsTable = () => {
     <div className="p-10">
       <div className="dashboard-container">
         <TitleComp
-          heading={"Teachers List"}
+          heading={"Students List"}
           des={
             "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, ad!"
           }

@@ -28,7 +28,7 @@ export default function CourseDetailsPage() {
   return (
     <main className="font-nunito custom-margin-top">
       {isLoading["fetchSingleCourse"] ? (
-        <div className="font-nunito py-10">
+        <div className="w-full h-screen flex items-center justify-center">
           <Loader isBig={true} color={"text-secondary"} />
         </div>
       ) : (

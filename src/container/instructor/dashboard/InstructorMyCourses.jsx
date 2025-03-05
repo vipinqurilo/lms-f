@@ -3,7 +3,7 @@ import InstructorButton from "@/components/instructor/InstructorButton";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import React, { useEffect, useMemo, useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
-import { MdDeleteOutline } from "react-icons/md";
+import { CheckCircle, XCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BiBook,
@@ -43,10 +43,10 @@ const tabs = [
     icon: <BiXCircle size={20} />,
     tab: "Unpublished",
   },
-  // {
-  //   icon: <BiPauseCircle size={20} />,
-  //   tab: "Inactive",
-  // },
+  {
+    icon: <BiPauseCircle size={20} />,
+    tab: "Inactive",
+  },
 ];
 
 const InstructorMyCourses = () => {
@@ -77,15 +77,16 @@ const InstructorMyCourses = () => {
     const status =
       selecteStatus?.toLowerCase() === "all"
         ? undefined
-        : selecteStatus === "Inactive"
-        ? "inactive"
         : selecteStatus?.toLowerCase();
     const requestData = {
       page: currentPage,
       limit: 5,
     };
-    if (status) {
-      requestData.status = status.toLowerCase();
+    if (status !== "inactive" && status) {
+      requestData.status = status;
+    }
+    if (selecteStatus === "Inactive") {
+      requestData.activeStatus = true;
     }
     dispatch(getAllIntructorCourses(requestData));
   }, [selecteStatus, dispatch, currentPage]);
@@ -130,9 +131,17 @@ const InstructorMyCourses = () => {
           </button>
           <button
             onClick={() => setisDelete(course?._id)}
-            className="p-1.5 border border-black/10 rounded hover:border-red-200 transition-custom hover:text-red-500"
+            className={`p-1.5 !text-sm border rounded transition-custom ${
+              course?.inActive
+                ? "border-green-400 text-green-600 hover:border-green-500 hover:text-green-700"
+                : "border-red-400 text-red-600 hover:border-red-500 hover:text-red-700"
+            }`}
           >
-            <MdDeleteOutline size={16} />
+            {course?.inActive ? (
+              <CheckCircle size={16} />
+            ) : (
+              <XCircle size={16} />
+            )}
           </button>
           {course?.status === "unpublished" && (
             <button

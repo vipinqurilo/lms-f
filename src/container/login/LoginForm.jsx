@@ -34,9 +34,12 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
           localStorage.removeItem("adminToken");
           if (type !== "model" && res?.data?.userStatus === "active") {
             router.push("/instructor-dashboard");
+          } else {
+            router.push("/");
           }
         } else if (res?.data?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);
+          localStorage.setItem("isAdmin", JSON.stringify(true));
           localStorage.removeItem("token");
           if (type !== "model") {
             router.push("/admin-dashboard");
@@ -87,6 +90,7 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
             <button
               type="button"
               className="text-sm font-medium hover:text-secondary text-light transition-custom"
+              onClick={() => router.push("/forgot-password")}
             >
               Forgot Password?
             </button>

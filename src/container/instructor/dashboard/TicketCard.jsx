@@ -17,7 +17,7 @@ const TicketCard = ({ ticket }) => {
           {ticket?.status?.toUpperCase()}
         </span>
       </div>
-      <p className="text-gray-600 text-sm mb-3">{ticket?.description}</p>
+      <p className="text-gray-600 text-sm mb-3 line-clamp-2">{ticket?.description}</p>
       <div className="flex justify-between text-sm text-gray-500">
         <span>Category: {ticket?.category}</span>
         <span>{new Date(ticket?.createdAt).toLocaleDateString()}</span>
