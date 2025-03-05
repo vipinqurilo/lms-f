@@ -19,6 +19,7 @@ import { TbMoneybag } from "react-icons/tb";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";
 import dateFormat from "dateformat";
+import TicketsContainer from "./TicketsContainer";
 
 const stats = [
   {
@@ -67,7 +68,9 @@ const InstructorDashboard = () => {
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
   const { courses } = useSelector((state) => state.instructor.course);
-  const { bookings, isLoading } = useSelector((state) => state.instructor.booking);
+  const { bookings, isLoading } = useSelector(
+    (state) => state.instructor.booking
+  );
   const { tickets } = useSelector((state) => state.support);
   const filteredData = courses?.slice(0, 5)?.map((course) => ({
     image: course?.courseImage,
@@ -76,7 +79,7 @@ const InstructorDashboard = () => {
     value2: course?.status,
     value1: 100,
   }));
-  const [startDate, setstartDate] = useState(new Date()) 
+  const [startDate, setstartDate] = useState(new Date());
 
   useEffect(() => {
     const requestData = {
@@ -86,11 +89,11 @@ const InstructorDashboard = () => {
     dispatch(getAllIntructorCourses(requestData));
     dispatch(getInstructorTickets(requestData));
   }, [dispatch]);
-  
+
   useEffect(() => {
-    dispatch(getBookings({ startDate: dateFormat(startDate, "yyyy-mm-dd") }))
-  }, [startDate])
-  
+    dispatch(getBookings({ startDate: dateFormat(startDate, "yyyy-mm-dd") }));
+  }, [startDate]);
+
   return (
     <div className="w-full p-10">
       {loading ? (
@@ -122,37 +125,17 @@ const InstructorDashboard = () => {
               </div>
             </div>
             <div className="w-[30%] sticky top-0 z-[0] space-y-5">
-              <ScheduleView bookingLoading={isLoading["getBookings"]} startDate={startDate} setStartDate={setstartDate} bookings={bookings} link={"/instructor-dashboard/bookings"} />
-              <div className="w-full bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                {/* Header Section */}
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    🎟️ Tickets
-                  </h2>
-                  <Link
-                    href={"/instructor-dashboard/support"}
-                    prefetch={false}
-                    className="hover:text-secondary font-medium text-xs transition-custom"
-                  >
-                    View All →
-                  </Link>
-                </div>
-
-                {/* Ticket List */}
-                <div className="mt-4 space-y-4">
-                  {tickets?.length === 0 ? (
-                    <div className="text-center text-gray-500 text-sm py-4">
-                      🚫 No tickets available
-                    </div>
-                  ) : (
-                    tickets
-                      ?.slice(0, 2)
-                      .map((ticket, index) => (
-                        <TicketCard ticket={ticket} key={index} />
-                      ))
-                  )}
-                </div>
-              </div>
+              <ScheduleView
+                bookingLoading={isLoading["getBookings"]}
+                startDate={startDate}
+                setStartDate={setstartDate}
+                bookings={bookings}
+                link={"/instructor-dashboard/bookings"}
+              />
+              <TicketsContainer
+                link={"/instructor-dashboard/support"}
+                tickets={tickets}
+              />
             </div>
           </div>
         </div>
