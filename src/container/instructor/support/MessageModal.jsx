@@ -19,7 +19,7 @@ import dateFormat from "dateformat";
 const MessageModal = ({ ticket, setMessages }) => {
   const { authUser } = useSelector((state) => state.user);
   const [newMessage, setNewMessage] = useState("");
-  const [isMaximized, setIsMaximized] = useState(true);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [isDropDown, setisDropDown] = useState(false);
   const toggleIsDropDown = () => setisDropDown(!isDropDown);
   const toggleMaximize = () => setIsMaximized(!isMaximized);
@@ -90,7 +90,7 @@ const MessageModal = ({ ticket, setMessages }) => {
   };
 
   useEffect(() => {
-    toggleMaximize();
+    setIsMaximized(true);
   }, [ticket]);
 
   return (

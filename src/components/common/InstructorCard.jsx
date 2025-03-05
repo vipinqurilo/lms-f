@@ -6,7 +6,7 @@ export default function InstructorCard({ data }) {
   return (
     <div className="relative flex flex-col rounded-xl bg-white shadow-md overflow-hidden">
       {/* Image Container with Background */}
-      <div className="relative flex items-center justify-center h-80 bg-gray-200">
+      <div className="relative flex items-center justify-center h-60 bg-gray-200">
         <Image
           src={data?.user?.profilePhoto || "/default-profile.png"}
           alt="profile-picture"
@@ -17,7 +17,7 @@ export default function InstructorCard({ data }) {
       </div>
 
       {/* Content Section */}
-      <div className="p-6 text-center">
+      <div className="p-4 text-center">
         <h4 className="mb-1 text-2xl font-semibold text-blue-gray-900">
           {data?.user?.firstName} {data?.user?.lastName}
         </h4>

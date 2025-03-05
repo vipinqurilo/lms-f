@@ -3,6 +3,8 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "../api/api";
 
 const initialState = {
+  ticketStatsData: [],
+  allTickets: [],
   tickets: [],
   totalPages: null,
   isLoading: {},
@@ -18,6 +20,7 @@ export const getInstructorTickets = CreateApiAsyncThunk(
     return api.get(`/ticket?${query}`);
   }
 );
+
 export const getAdminTickets = CreateApiAsyncThunk(
   "GET/support/getAdminTickets",
   (formData) => {
@@ -25,6 +28,13 @@ export const getAdminTickets = CreateApiAsyncThunk(
       .map((key) => `${key}=${formData[key]}`)
       .join("&");
     return api.get(`/ticket/admin/get?${query}`);
+  }
+);
+
+export const getAllTickets = CreateApiAsyncThunk(
+  "GET/support/getAllTickets",
+  (isAdmin) => {
+    return api.get(!isAdmin ? `/ticket` : `/ticket/admin/get`);
   }
 );
 
@@ -43,7 +53,26 @@ export const updateAdminConversation = CreateApiAsyncThunk(
 const supportSlice = createSlice({
   name: "support",
   initialState,
-  reducers: {},
+  reducers: {
+    makeStatsData: (state, action) => {
+      const tickets = state.allTickets;
+      const data = [
+        {
+          name: "tatal",
+          value: tickets?.length,
+        },
+        {
+          name: "open",
+          value: tickets?.filter((tic) => tic?.status === "open")?.length,
+        },
+        {
+          name: "closed",
+          value: tickets?.filter((tic) => tic?.status === "completed")?.length,
+        },
+      ];
+      state.ticketStatsData = data;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getInstructorTickets.pending, (state) => {
@@ -107,8 +136,21 @@ const supportSlice = createSlice({
       .addCase(updateAdminConversation.rejected, (state, action) => {
         state.isLoading["updateAdminConversation"] = false;
         state.isLoading["updateAdminConversation"] = action.payload;
+      })
+      // gets all tickets
+      .addCase(getAllTickets.pending, (state) => {
+        state.isLoading["getAllTickets"] = true;
+      })
+      .addCase(getAllTickets.fulfilled, (state, action) => {
+        state.isLoading["getAllTickets"] = false;
+        state.allTickets = action.payload.data;
+      })
+      .addCase(getAllTickets.rejected, (state, action) => {
+        state.isLoading["getAllTickets"] = false;
+        state.isLoading["getAllTickets"] = action.payload;
       });
   },
 });
 
+export const { makeStatsData } = supportSlice.actions;
 export default supportSlice.reducer;

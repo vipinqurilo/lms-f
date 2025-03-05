@@ -8,7 +8,9 @@ import { Pagination } from "@/components/student-dashboard/Pagination";
 import { StatsCard } from "@/components/student-dashboard/StatsCard";
 import {
   getAdminTickets,
+  getAllTickets,
   getInstructorTickets,
+  makeStatsData,
 } from "@/store/slices/supportSlice";
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaRegHourglass, FaTicketAlt } from "react-icons/fa";
@@ -21,10 +23,13 @@ const SupportDashboard = () => {
   const getInstrcutorLoading = useSelector(
     (state) => state.support.isLoading.getInstructorTickets
   );
-  const getInstrcutorFilterLoading = useSelector(
-    (state) => state.support.isLoading.getFilteredInstructorTickets
+  const getAdminLoading = useSelector(
+    (state) => state.support.isLoading.getAdminTickets
   );
-  const { tickets, totalPages } = useSelector((state) => state.support);
+
+  const { tickets, totalPages, ticketStatsData } = useSelector(
+    (state) => state.support
+  );
   const { authUser } = useSelector((state) => state.user);
   const [filter, setFilter] = useState("All");
   const [isAdd, setisAdd] = useState(false);
@@ -32,27 +37,6 @@ const SupportDashboard = () => {
   const [messages, setMessages] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-
-  const stats = [
-    {
-      title: "Total Tickets",
-      value: 50,
-      icon: <FaTicketAlt size={22} className="text-blue-500" />,
-      color: "bg-blue-100",
-    },
-    {
-      title: "Opened Tickets",
-      value: 30,
-      icon: <FaRegHourglass size={22} className="text-yellow-500" />,
-      color: "bg-yellow-100",
-    },
-    {
-      title: "Closed Tickets",
-      value: 10,
-      icon: <FaCheckCircle size={22} className="text-green-500" />,
-      color: "bg-green-100",
-    },
-  ];
 
   const filters = [
     { label: "All", value: "All" },
@@ -77,6 +61,37 @@ const SupportDashboard = () => {
       dispatch(getInstructorTickets(requestData));
     }
   }, [dispatch, currentPage, filter]);
+
+  useEffect(() => {
+    dispatch(getAllTickets(authUser?.role === "admin"));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (filter?.toLowerCase() === "all") {
+      dispatch(makeStatsData());
+    }
+  }, [tickets]);
+
+  const stats = [
+    {
+      title: "Total Tickets",
+      value: ticketStatsData?.[0]?.value || 0,
+      icon: <FaTicketAlt size={22} className="text-blue-500" />,
+      color: "bg-blue-100",
+    },
+    {
+      title: "Opened Tickets",
+      value: ticketStatsData?.[1]?.value || 0,
+      icon: <FaRegHourglass size={22} className="text-yellow-500" />,
+      color: "bg-yellow-100",
+    },
+    {
+      title: "Closed Tickets",
+      value: ticketStatsData?.[2]?.value || 0,
+      icon: <FaCheckCircle size={22} className="text-green-500" />,
+      color: "bg-green-100",
+    },
+  ];
 
   return (
     <div className="">
@@ -137,7 +152,7 @@ const SupportDashboard = () => {
               </div>
             </div>
 
-            {getInstrcutorLoading || getInstrcutorFilterLoading ? (
+            {getInstrcutorLoading || getAdminLoading ? (
               <div className="w-full flex items-center justify-center py-16">
                 <Loader color={"text-secondary"} isBig={true} />
               </div>
