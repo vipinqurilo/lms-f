@@ -51,6 +51,7 @@ export default function DashboardPage() {
     dispatch(fetchEnrolledCoursesAsync());
     dispatch(
       fetchBookingsAsync({
+        status:"confirmed",
         startDate: startDate.toISOString(),
         page: 1,
         limit: 3,
@@ -88,7 +89,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recently Enrolled Courses */}
-        <div className="py-8">
+        {/* <div className="py-8">
           <h2 className="text-2xl font-bold text-dark mb-6">
             Recently Enrolled Courses
           </h2>
@@ -117,7 +118,7 @@ export default function DashboardPage() {
                 />
               ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </StudentDashboardLayout>
   );
