@@ -17,6 +17,11 @@ export const uploadVideo = CreateApiAsyncThunk("upload/uploadVideo", (data) =>
   api.post(`/course/singlevideo`, data)
 );
 
+export const uploadDocument = CreateApiAsyncThunk(
+  "upload/uploadDocument",
+  (data) => api.post(`/course/upload/pdf`, data)
+);
+
 const uploadSlice = createSlice({
   name: "upload",
   initialState,
@@ -44,6 +49,16 @@ const uploadSlice = createSlice({
       .addCase(uploadVideo.rejected, (state, action) => {
         state.isLoading["uploadVideo"] = false;
         state.error["uploadVideo"] = action.payload;
+      })
+      .addCase(uploadDocument.pending, (state) => {
+        state.isLoading["uploadDocument"] = true;
+      })
+      .addCase(uploadDocument.fulfilled, (state, action) => {
+        state.isLoading["uploadDocument"] = false;
+      })
+      .addCase(uploadDocument.rejected, (state, action) => {
+        state.isLoading["uploadDocument"] = false;
+        state.error["uploadDocument"] = action.payload;
       });
   },
 });

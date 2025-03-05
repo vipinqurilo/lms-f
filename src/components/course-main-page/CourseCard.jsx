@@ -15,16 +15,18 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../common/Loader";
+import { createPaymentCourse } from "@/store/slices/paymentSlice";
+import CourseByModal from "./CourseByModal";
 
-const CourseCard = ({ data }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const CourseCard = ({ data, enrollNowRef }) => {
+  const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { isLoading, enrolledCourses } = useSelector((state) => state.courses);
   const { wishlist } = useSelector((state) => state.student.wishlist);
   const dispatch = useDispatch();
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = () => setisVideoModalOpen(true);
+  const closeModal = () => setisVideoModalOpen(false);
   const toggleIsShareModalOpen = () => setIsShareModalOpen(!isShareModalOpen);
 
   const courseLink = `https://yourwebsite.com/course/${data?._id}`;
@@ -36,6 +38,31 @@ const CourseCard = ({ data }) => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(courseLink);
     alert("Course link copied!");
+  };
+
+  const [isModalOpen, setisModalOpen] = useState(false);
+  const [selectedMethod, setselectedMethod] = useState("stripe");
+  const [checkoutUrl, setCheckoutUrl] = useState(null);
+  const [isPaymentModal, setisPaymentModal] = useState(false);
+
+  const handlePayment = () => {
+    if (!selectedMethod) {
+      toast.error("Select Payment Method");
+      return;
+    }
+
+    if (authUser?.role !== "teacher" && data) {
+      const paymentData = {
+        amount: data?.coursePrice,
+        courseId: data?._id,
+      };
+      dispatch(createPaymentCourse(paymentData))
+        .unwrap()
+        .then((res) => {
+          setCheckoutUrl(res?.url);
+          setisPaymentModal(true);
+        });
+    }
   };
 
   return (
@@ -93,13 +120,17 @@ const CourseCard = ({ data }) => {
           </button>
         </div>
         {!enrolledCourses?.some((item) => item === data?._id) && (
-          <button className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4">
+          <button
+            ref={enrollNowRef}
+            onClick={() => setisModalOpen(!isModalOpen)}
+            className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4"
+          >
             Enroll Now
           </button>
         )}
       </div>
 
-      {isModalOpen && (
+      {isVideoModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
           <div className="relative w-[90%] max-w-2xl bg-black p-4 rounded-lg">
             {/* Close Button */}
@@ -183,6 +214,18 @@ const CourseCard = ({ data }) => {
           </div>
         </div>
       )}
+
+      <CourseByModal
+        checkoutUrl={checkoutUrl}
+        data={data}
+        handlePayment={handlePayment}
+        isModalOpen={isModalOpen}
+        isPaymentModal={isPaymentModal}
+        selectedMethod={selectedMethod}
+        setisModalOpen={setisModalOpen}
+        setisPaymentModal={setisPaymentModal}
+        setselectedMethod={setselectedMethod}
+      />
     </div>
   );
 };

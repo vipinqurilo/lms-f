@@ -83,7 +83,7 @@ const SupportDashboard = () => {
       <div className="w-full flex items-start justify-between gap-10">
         <div
           className={`w-full flex flex-col items-start gap-8 dashboard-container !rounded-none pb-20 p-10 ${
-            messages ? "!w-[70%]" : "w-full"
+            messages ? "!w-[100%]" : "w-full"
           }`}
         >
           <div className="flex items-center justify-between w-full">

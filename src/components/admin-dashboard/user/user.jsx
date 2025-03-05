@@ -10,6 +10,8 @@ import { MdLogin } from "react-icons/md";
 import UserFilter from "./UserFilter";
 import TitleComp from "@/components/instructor/TitleComp";
 import Loader from "@/components/common/Loader";
+import { userLoginForAdmin } from "@/store/slices/userSlice";
+import { useRouter } from "next/navigation";
 
 const columns = [
   "S.No",
@@ -25,6 +27,7 @@ const columns = [
 
 const UsersHistory = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { users, totalPages, isLoading } = useSelector(
     (state) => state.admin.user
   );
@@ -57,6 +60,7 @@ const UsersHistory = () => {
   }, [users]);
 
   const [statusLoading, setstatusLoading] = useState(null);
+  const [loginLoading, setloginLoading] = useState(null);
 
   const toggleStatus = (user) => {
     const newStatus = user.userStatus === "active" ? "inactive" : "active";
@@ -70,10 +74,26 @@ const UsersHistory = () => {
     setFilters(filters); // Set filters and trigger re-fetch
   };
 
+  const handleUserLoginForAdmin = (userId) => {
+    setloginLoading(userId);
+    localStorage.setItem("isAdmin", JSON.stringify(true));
+    dispatch(userLoginForAdmin(userId))
+      .unwrap()
+      .then((res) => {
+        localStorage.setItem("token", res?.token);
+        if (res?.data?.role === "teacher") {
+          router.push("/instructor-dashboard");
+        } else {
+          router.push("/student-dashboard");
+        }
+      })
+      .finally(() => setloginLoading(null));
+  };
+
   return (
     <>
       <div className="p-10">
-        <div className="dashboard-container">
+        <div className="dashboard-container w-full overflow-x-hidden">
           <TitleComp
             heading={"Manage Users"}
             des={"Reset filtered users when users from Redux store change"}
@@ -81,20 +101,20 @@ const UsersHistory = () => {
           <div className="w-full sticky top-0 py-4 bg-white px-5">
             <UserFilter onApplyFilters={handleApplyFilters} />
           </div>
-          <div className="rounded-b-lg">
+          <div className="rounded-b-lg w-full overflow-x-scroll  ">
             {isLoading["getAllUsers"] ? (
               <div className="w-full py-10 flex items-center justify-center">
                 <Loader color={"text-secondary"} isBig={true} />
               </div>
             ) : (
-              <table className="w-full border border-black/10">
+              <table className=" border border-black/10">
                 <TableHeader headingsData={columns} />
                 <tbody className="text-center">
                   {filteredUsers?.length === 0 ? (
                     <tr>
                       <td
                         colSpan="9"
-                        className="py-4 text-center text-gray-500"
+                        className="py-4 text-center text-gray-500 "
                       >
                         Data not found
                       </td>
@@ -139,7 +159,7 @@ const UsersHistory = () => {
                             ? "Verified"
                             : "Not Verified"}
                         </td>
-                        <td className="py-4 px-4 text-gray-700 text-sm flex items-center justify-center">
+                        <td className="py-4 px-4 text-gray-700 text-sm flex items-center h-[96px] justify-center">
                           {statusLoading === user?._id ? (
                             <Loader color={"text-secondary"} />
                           ) : (
@@ -164,8 +184,15 @@ const UsersHistory = () => {
 
                         <td className="py-4 px-4 text-center text-sm">
                           <div className="flex items-center justify-center space-x-3">
-                            <button className="text-gray-700 hover:text-blue-500">
-                              <MdLogin size={23} />
+                            <button
+                              onClick={() => handleUserLoginForAdmin(user?._id)}
+                              className="text-gray-700 hover:text-blue-500"
+                            >
+                              {loginLoading === user?._id ? (
+                                <Loader color={"text-secondary"} />
+                              ) : (
+                                <MdLogin size={23} />
+                              )}
                             </button>
                           </div>
                         </td>

@@ -10,6 +10,7 @@ import {
 import SubmitButtonsComp from "../instructor/addcourse/SubmitButtonsComp";
 import { uploadImage } from "@/store/slices/uploadSlice";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 export default function IndentityForm({ isInstructorRequest = null }) {
   const { authUser } = useSelector((state) => state.user);
@@ -94,13 +95,14 @@ export default function IndentityForm({ isInstructorRequest = null }) {
             Profile Picture*
           </label>
           <div className="flex items-start space-x-4 mt-2">
-            <div className="w-24 h-24 lg:h-24 rounded-lg bg-gray-200 flex items-center justify-center">
+            <div className="w-24 h-24 lg:h-24 rounded-lg bg-gray-200 flex items-center justify-center relative">
               {loading ? (
                 <span className="text-gray-500 text-sm">Uploading...</span>
               ) : profilePreview ? (
-                <img
+                <Image
                   src={profilePreview}
                   alt="Profile preview"
+                  fill={true}
                   className="w-full h-full object-cover rounded-lg"
                 />
               ) : (
@@ -138,9 +140,7 @@ export default function IndentityForm({ isInstructorRequest = null }) {
             disabled={isInstructorRequest && authUser?.role === "admin"}
           />
           {errors?.introVideo && (
-            <p className="text-xs text-red-500">
-              *{errors.introVideo.message}
-            </p>
+            <p className="text-xs text-red-500">*{errors.introVideo.message}</p>
           )}
         </div>
 

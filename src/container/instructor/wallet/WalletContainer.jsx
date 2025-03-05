@@ -30,7 +30,7 @@ const WalletContainer = () => {
   }, [filtersData, page]);
 
   return (
-    <>
+    <div className="p-10">
       <div className="dashboard-container space-y-6">
         <TitleComp
           heading="Wallet Overview"
@@ -40,7 +40,9 @@ const WalletContainer = () => {
           {["Opening Balance", "closing Balance"].map((type, index) => (
             <div className="" key={index}>
               <h3 className="capitalize font-semibold">{type}</h3>
-              <p className="text-sm text-light">{index === 0 ? "₹1000" : "₹5000"}</p>
+              <p className="text-sm text-light">
+                {index === 0 ? "₹1000" : "₹5000"}
+              </p>
             </div>
           ))}
         </div>
@@ -71,13 +73,13 @@ const WalletContainer = () => {
             )}
           </div>
         )}
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={(value) => setPage(value)}
-        />
       </div>
-    </>
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={(value) => setPage(value)}
+      />
+    </div>
   );
 };
 

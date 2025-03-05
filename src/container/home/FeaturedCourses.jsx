@@ -3,7 +3,7 @@ import FeaturedCard from "@/components/common/FeaturedCard";
 import Heading from "@/components/common/Heading";
 import { useSelector } from "react-redux";
 import Loader from "@/components/common/Loader";
-import Link from "next/link";
+import NavigationLink from "@/components/home/NavigationLink";
 
 export default function FeaturedCourses({ cardData = [] }) {
   const isLoading = useSelector(
@@ -12,18 +12,15 @@ export default function FeaturedCourses({ cardData = [] }) {
 
   return (
     <>
-      <div id="courses"
-        className="bg-no-repeat h-full md:px-20 px-4 "
-        style={{
-          backgroundImage: `url('https://dreamslms.dreamstechnologies.com/html/assets/img/banner.png')`,
-        }}
+      <div
+        className="bg-no-repeat custom-container bg-cover bg-center bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10"
       >
         {isLoading ? (
           <div className="w-full py-24 pt-32 flex items-center justify-center">
             <Loader isBig={true} />
           </div>
         ) : (
-          <div className="md:py-20">
+          <div className="">
             <div data-aos="fade-up" className="pt-8">
               <p className="text-xl font-bold text-orange-600">What's New</p>
             </div>
@@ -37,19 +34,19 @@ export default function FeaturedCourses({ cardData = [] }) {
                 descWidth={"md:!w-2/3"}
               />
               <div className="md:block hidden">
-                <Link href={"/courses"} className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md">All Courses</Link>
+                <NavigationLink path={"/courses"} text={"All Courses"} />
               </div>
             </div>
 
             {/* Render Paginated Courses */}
             <div
               data-aos="fade-up"
-              className="grid md:grid-cols-3 grid-cols-1 gap-2 lg:gap-16 md:mt-8"
+              className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5 md:gap-10 lg:gap-16 md:mt-8"
             >
               {cardData?.length > 0 ? (
                 cardData
-                  ?.slice(0, 6)
-                  ?.map((card, index) => (
+                  ?.slice(cardData?.length - 6, cardData?.length)
+                  ?.reverse()?.map((card, index) => (
                     <FeaturedCard data={card} isFull={true} key={index} />
                   ))
               ) : (

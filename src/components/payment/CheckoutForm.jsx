@@ -6,7 +6,7 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
 
   React.useEffect(() => {
     if (checkoutUrl) {
-      // Open in a new window with specific dimensions
+ 
       const stripeWindow = window.open(
         checkoutUrl,
         "Stripe Checkout",
@@ -21,7 +21,7 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
 
       // Monitor for window close
       const timer = setInterval(() => {
-        try {
+     try {
           if (stripeWindow.closed) {
             clearInterval(timer);
             setPaymentModal(false);
@@ -30,6 +30,7 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
         } catch (error) {
           // Handle any potential errors when checking window.closed
           clearInterval(timer);
+
         }
       }, 500);
 
