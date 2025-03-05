@@ -28,8 +28,11 @@ const BookingReminder = ({ bookings }) => {
         </div>
         <div className="flex flex-col items-end gap-2">
           <span className="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-sm">
-            Available at{" "}
-            {new Date(bookings[0]?.sessionStartTime)?.toLocaleTimeString([], {
+            Available on{" "}
+            {new Date(bookings[0]?.sessionStartTime)?.toLocaleString([], {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
               hour: "2-digit",
               minute: "2-digit",
             })}

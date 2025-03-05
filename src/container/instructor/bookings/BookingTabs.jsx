@@ -18,7 +18,7 @@ const BookingTabs = ({ activeTab, setActiveTab }) => {
           "All lessons",
           "scheduled",
           "confirmed",
-          "canceled",
+          "cancelled",
           "rescheduled",
           "reschedule_in_progress",
           "completed",

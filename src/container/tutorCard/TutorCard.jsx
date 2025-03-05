@@ -10,7 +10,8 @@ import {
 } from "../../store/slices/uiSlice";
 import { useRouter } from "next/router";
 import Rating from "./Rating";
-import { setTutorId, setUserID } from "@/store/slices/tutorsSlice";
+import { fetchReviewAsyncById, setTutorId, setUserID } from "@/store/slices/tutorsSlice";
+import { fetchBookingsByTutorIdAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
   const router = useRouter();
@@ -86,6 +87,7 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
               <button
                 disabled={!tutor}
                 onClick={() => {
+                  dispatch(fetchBookingsByTutorIdAsync(tutor?.user?._id));
                   setShowBooking(true);
                   setTutor(tutor);
                 }}
