@@ -9,8 +9,8 @@ const initialState = {
   error: {},
 };
 
-export const getCardStats = CreateApiAsyncThunk("dashboard/getCardStats", () =>
-  api.get(``)
+export const getCardStats = CreateApiAsyncThunk("GET/dashboard/getCardStats", () =>
+  api.get(`/tutors/dashboard`)
 );
 
 const dashboardSlice = createSlice({
@@ -26,8 +26,9 @@ const dashboardSlice = createSlice({
       .addCase(getCardStats.pending, (state) => {
         state.isLoading["getCardStats"] = true;
       })
-      .addCase(getCardStats.fulfilled, (state) => {
+      .addCase(getCardStats.fulfilled, (state, action) => {
         state.isLoading["getCardStats"] = false;
+        state.data = action.payload.data;
       })
       .addCase(getCardStats.rejected, (state) => {
         state.isLoading["getCardStats"] = false;
