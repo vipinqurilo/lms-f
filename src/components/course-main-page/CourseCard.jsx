@@ -119,13 +119,17 @@ const CourseCard = ({ data, enrollNowRef }) => {
             Share
           </button>
         </div>
-        {!enrolledCourses?.some((item) => item === data?._id) && (
+        {!enrolledCourses?.some((item) => item === data?._id) ? (
           <button
             ref={enrollNowRef}
             onClick={() => setisModalOpen(!isModalOpen)}
             className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4"
           >
             Enroll Now
+          </button>
+        ) : (
+          <button className="bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4">
+            Generate Certificate
           </button>
         )}
       </div>

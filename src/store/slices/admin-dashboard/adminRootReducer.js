@@ -8,6 +8,7 @@ import teachersSlice from "./teachersSlice";
 import studentSlice from "./studentSlice";
 import orderSlice from "./orderSlice";
 import bookingReducer from "./bookingSlice";
+import adminEarningSlice from "./adminEarningSlice";
 
 const adminRootReducer = combineReducers({
   course: adminCourseReducer,
@@ -19,6 +20,7 @@ const adminRootReducer = combineReducers({
   student: studentSlice,
   order: orderSlice,
   booking: bookingReducer,
+  adminEarning: adminEarningSlice,
 });
 
 export default adminRootReducer;

@@ -165,6 +165,11 @@ const adminSidebarLinks = [
     href: "/admin-dashboard/orders",
   },
   {
+    title: "Earnings",
+    icon: DollarSign,
+    href: "/admin-dashboard/earning",
+  },
+  {
     title: "Category",
     icon: MdCategory,
     subLinks: [

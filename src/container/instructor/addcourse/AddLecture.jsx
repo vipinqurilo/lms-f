@@ -4,7 +4,7 @@ import CommonButton from "@/components/common/CommonButton";
 import ModalHeading from "@/components/common/ModalHeading";
 import BackgroundModal from "@/components/instructor/BackgroundModal";
 import { uploadDocument } from "@/store/slices/uploadSlice";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,7 +18,7 @@ const AddLecture = ({
   isEdit,
   setisEditLecture,
 }) => {
-  const { isLoading } = useSelector((state) => state.upload);
+  const [loading, setloading] = useState(null);
   const dispatch = useDispatch();
 
   const handleFileUpload = (e) => {
@@ -81,8 +81,7 @@ const AddLecture = ({
   };
 
   const handleUploadDocument = (document, index) => {
-    console.log("document", document);
-
+    setloading(index);
     const formData = new FormData();
     formData.append("pdf", document);
     dispatch(uploadDocument(formData))
@@ -99,7 +98,8 @@ const AddLecture = ({
             }),
           }));
         }
-      });
+      })
+      .finally(() => setloading(null));
   };
 
   console.log("lecture", lecture);
@@ -176,7 +176,7 @@ const AddLecture = ({
                           onClick={() =>
                             handleUploadDocument(attachment?.url, index)
                           }
-                          loading={isLoading["uploadDocument"]}
+                          loading={loading === index}
                         />
                       )}
                     </div>

@@ -13,8 +13,6 @@ import {
   FaCalendarCheck,
 } from "react-icons/fa";
 import { getInstructorTickets } from "@/store/slices/supportSlice";
-import Link from "next/link";
-import TicketCard from "./TicketCard";
 import { TbMoneybag } from "react-icons/tb";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";

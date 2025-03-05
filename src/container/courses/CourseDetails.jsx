@@ -6,15 +6,18 @@ import CourseOverview from "@/components/course-main-page/CourseOverview";
 import CourseReview from "@/components/course-main-page/CourseReview";
 import LecturesOverview from "@/components/course-main-page/LecturesOverview";
 import TopSection from "@/components/course-main-page/TopSection";
+import { makeCategorySubCategoryArray } from "@/store/slices/categorySlice";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CourseDetails = () => {
   const [isScrolled, setisScrolled] = useState(false);
   const { courseData: data, enrolledCourses } = useSelector(
     (state) => state.courses
   );
+  const { subjects, subSubjects } = useSelector((state) => state.category);
   const { authUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -25,6 +28,10 @@ const CourseDetails = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    dispatch(makeCategorySubCategoryArray());
+  }, [subjects, subSubjects]);
 
   const enrollNowRef = useRef(null);
 

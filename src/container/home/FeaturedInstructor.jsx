@@ -8,15 +8,17 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-
-import { Pagination } from "swiper/modules";
+import "swiper/css/autoplay";
+import { Pagination, Autoplay } from "swiper/modules";
 import Heading from "@/components/common/Heading";
 import NavigationLink from "@/components/home/NavigationLink";
+import { useSelector } from "react-redux";
 
 export default function FeaturedInstructor() {
+  const { allTutorProfile } = useSelector((state) => state.tutors);
   const data = {
     heading: "Featured Instructor",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse imperdiet.",
+    desc: "Learn from experienced instructors who bring real-world expertise and industry knowledge. Gain valuable insights, practical skills, and hands-on experience to advance your learning journey.",
     cardData: [
       {
         id: 1,
@@ -88,7 +90,8 @@ export default function FeaturedInstructor() {
       </div>
       <div data-aos="fade-up" className="mt-8">
         <Swiper
-          modules={[Pagination]}
+          modules={[Pagination, Autoplay]}
+          autoplay={{ delay: 3000 }}
           spaceBetween={30}
           loop={true}
           slidesPerView={1}
@@ -102,14 +105,18 @@ export default function FeaturedInstructor() {
           breakpoints={{
             640: { slidesPerView: 1 },
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            1024: { slidesPerView: 3, spaceBetween: 90 },
           }}
         >
-          {data.cardData.map((item) => (
-            <SwiperSlide key={item.id} className="pb-12">
-              <InstructorCard data={item} />
-            </SwiperSlide>
-          ))}
+          {allTutorProfile?.length > 0 ? (
+            allTutorProfile?.map((item, index) => (
+              <SwiperSlide key={index} className="pb-12">
+                <InstructorCard data={item} />
+              </SwiperSlide>
+            ))
+          ) : (
+            <p className="text-center col-span-3">No courses available</p>
+          )}
         </Swiper>
       </div>
     </div>
