@@ -1,49 +1,68 @@
+import { StatsCard } from "@/components/student-dashboard/StatsCard";
 import React from "react";
 import {
-  FaChartBar,
-  FaUsers,
+  FaBook,
   FaShoppingCart,
-  FaMoneyBillWave,
+  FaChalkboardTeacher,
+  FaUserGraduate,
+  FaUsers,
+  FaDollarSign,
 } from "react-icons/fa";
-
-const statsData = [
-  {
-    value: "1,20,000",
-    description: "Total Revenue",
-    icon: FaMoneyBillWave,
-    iconColor: "#4CAF50",
-  },
-  {
-    value: "5,000",
-    description: "Total Users",
-    icon: FaUsers,
-    iconColor: "#2196F3",
-  },
-];
+import { useSelector } from "react-redux";
 
 export default function StatesCard() {
+  const { data } = useSelector((state) => state.admin.adminDashboard);
+
+  const stats = [
+    {
+      title: "Total Courses",
+      value: data?.totalCourses || 0,
+      icon: <FaBook size={30} className="text-blue-600" />,
+      color: "bg-blue-100",
+    },
+    {
+      title: "Total Bookings",
+      value: data?.totalBooking || 0,
+      icon: <FaShoppingCart size={30} className="text-red-500" />,
+      color: "bg-red-100",
+    },
+    {
+      title: "Total Instructors",
+      value: data?.totalTeachers || 0,
+      icon: <FaChalkboardTeacher size={30} className="text-yellow-600" />,
+      color: "bg-yellow-100",
+    },
+    {
+      title: "Total Students",
+      value: data?.totalStudents || 0,
+      icon: <FaUserGraduate size={30} className="text-purple-600" />,
+      color: "bg-purple-100",
+    },
+    {
+      title: "Total Categories",
+      value: data?.totalCategory || 0,
+      icon: <FaDollarSign size={30} className="text-green-600" />,
+      color: "bg-green-100",
+    },
+    {
+      title: "Total Sub Categories",
+      value: data?.totalSubCategory || 0,
+      icon: <FaDollarSign size={30} className="text-green-600" />,
+      color: "bg-green-100",
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-      {statsData.map((stat, index) => (
-        <div
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+      {stats.map((stat, index) => (
+        <StatsCard
           key={index}
-          className="w-full h-full bg-white border border-gray-300 rounded-md px-5 py-5"
-        >
-          <div className="font-inter flex flex-col gap-5">
-            <div className="flex justify-between items-center">
-              <div className="flex flex-col gap-1">
-                <h1 className="text-xl font-bold">
-                  {index === 0 && "₹"}
-                  {stat.value}
-                </h1>
-                <p className="text-sm font-normal text-[#454545]">
-                  {stat.description}
-                </p>
-              </div>
-              <stat.icon size={30} style={{ color: stat.iconColor }} />
-            </div>
-          </div>
-        </div>
+          title={stat.title}
+          value={stat.value}
+          isIcon={true}
+          Icon={stat.icon}
+          color={stat.color}
+        />
       ))}
     </div>
   );

@@ -16,54 +16,6 @@ import { useSelector } from "react-redux";
 
 export default function FeaturedInstructor() {
   const { allTutorProfile } = useSelector((state) => state.tutors);
-  const data = {
-    heading: "Featured Instructor",
-    desc: "Learn from experienced instructors who bring real-world expertise and industry knowledge. Gain valuable insights, practical skills, and hands-on experience to advance your learning journey.",
-    cardData: [
-      {
-        id: 1,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user9.jpg",
-        name: "Skyler Whites",
-        designation: "UI Designer",
-        numOfStudents: "50",
-      },
-      {
-        id: 2,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user10.jpg",
-        name: "Walter White",
-        designation: "Web Developer",
-        numOfStudents: "75",
-      },
-      {
-        id: 3,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user7.jpg",
-        name: "Jesse Pinkman",
-        designation: "Backend Engineer",
-        numOfStudents: "60",
-      },
-      {
-        id: 4,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg",
-        name: "Hank Schrader",
-        designation: "Project Manager",
-        numOfStudents: "80",
-      },
-      {
-        id: 5,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg",
-        name: "Hank Schrader",
-        designation: "Project Manager",
-        numOfStudents: "80",
-      },
-      {
-        id: 6,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user8.jpg",
-        name: "Hank Schrader",
-        designation: "Project Manager",
-        numOfStudents: "80",
-      },
-    ],
-  };
 
   return (
     <div
@@ -73,15 +25,13 @@ export default function FeaturedInstructor() {
           "url('https://dreamslms.dreamstechnologies.com/html/assets/img/bg-banner.png')",
       }}
     >
-      {/* <div className="text-center">
-        <h2 className="text-4xl font-bold">{data.heading}</h2>
-        <p className="mt-4 font-semibold text-gray-500">{data.desc}</p>
-      </div> */}
       <div data-aos="fade-up" className="flex justify-between md:mt-4">
         <Heading
-          heading={data?.heading}
+          heading={"Featured Instructor"}
           position={"text-left"}
-          desc={data?.desc}
+          desc={
+            "Learn from experienced instructors who bring real-world expertise and industry knowledge. Gain valuable insights, practical skills, and hands-on experience to advance your learning journey."
+          }
           descWidth={"md:!w-2/3"}
         />
         <div className="md:block hidden">
@@ -115,7 +65,7 @@ export default function FeaturedInstructor() {
               </SwiperSlide>
             ))
           ) : (
-            <p className="text-center col-span-3">No courses available</p>
+            <p className="text-center col-span-3">No Instructor available</p>
           )}
         </Swiper>
       </div>

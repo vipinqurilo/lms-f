@@ -5,7 +5,7 @@ import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const AdminTutorsSalesEarning = ({  }) => {
+const AdminTutorsSalesEarning = ({}) => {
   const { adminTutionEarning } = useSelector(
     (state) => state.admin.adminEarning
   );
@@ -14,8 +14,8 @@ const AdminTutorsSalesEarning = ({  }) => {
   const headingsData = [
     "SNO.",
     "Teacher Details",
-    "Total Courses",
-    "Total Enrollments",
+    "Total Subjects",
+    "Total Sessions",
     "Total Sales Amount",
   ];
 
@@ -34,7 +34,7 @@ const AdminTutorsSalesEarning = ({  }) => {
               </td>
             </tr>
           ) : (
-            adminTutionEarning?.map((course, index) => (
+            adminTutionEarning?.map((tution, index) => (
               <React.Fragment key={index}>
                 {/* Main Row */}
                 <tr
@@ -50,29 +50,29 @@ const AdminTutorsSalesEarning = ({  }) => {
                   <td className="py-4 px-6 pl-8 flex items-center gap-2 w-full">
                     <div className="relative w-12 h-12">
                       <Image
-                        src={course?.teacherProfilePhoto}
-                        alt={course?.teacherName}
+                        src={tution?.teacherProfilePhoto}
+                        alt={tution?.teacherName}
                         layout="fill"
                         objectFit="cover"
                         className="rounded"
                       />
                     </div>
-                    <span>{course?.teacherName}</span>
+                    <span>{tution?.teacherName}</span>
                   </td>
 
                   {/* Total Courses */}
                   <td className="py-4 px-6 pl-8 text-start">
-                    {course?.courses?.length || 0}
+                    {tution?.subjects?.length || 0}
                   </td>
 
                   {/* Total Enrollments */}
                   <td className="py-4 px-6 pl-8 text-start">
-                    {course?.totalEnrollments || 0}
+                    {tution?.totalSessions || 0}
                   </td>
 
                   {/* Total Sales Amount */}
                   <td className="py-4 px-6 pl-8 text-start text-green-500">
-                    ${course?.totalSalesAmount || 0}
+                    ${tution?.totalSalesAmount || 0}
                   </td>
                 </tr>
 
@@ -81,28 +81,31 @@ const AdminTutorsSalesEarning = ({  }) => {
                   <tr className="bg-white">
                     <td colSpan={5} className="p-4">
                       <h3 className="text-lg font-semibold text-gray-700">
-                        Course Details:
+                        Subjects Tought:
                       </h3>
                       <div className="mt-2 grid grid-cols-3 gap-5">
-                        {course?.courses?.map((c, idx) => (
+                        {tution?.subjects?.map((c, idx) => (
                           <div
                             key={idx}
                             className="grid grid-cols-4 gap-4 px-4 py-2 h-full border rounded-md shadow-sm bg-white"
                           >
                             <div className="w-full h-full col-span-2 relative">
                               <Image
-                                src={c?.courseImage}
-                                alt={c?.courseName}
+                                src={
+                                  c?.subjectImage ||
+                                  "/assets/common/profile.png"
+                                }
+                                alt={c?.subjectName}
                                 fill={true}
                                 className="rounded object-center object-cover"
                               />
                             </div>
                             <div className="col-span-2 text-sm">
                               <p className="font-semibold text-sm  line-clamp-2">
-                                {c?.courseName}
+                                {c?.subjectName}
                               </p>
                               <p className="text-gray-600">
-                                Enrollments: {c?.enrollments || 0}
+                                Sessions: {c?.sessions || 0}
                               </p>
                               <p className="text-gray-600">
                                 Total Sales: ${c?.totalSales || 0}

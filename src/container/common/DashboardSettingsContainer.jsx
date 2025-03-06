@@ -14,12 +14,26 @@ import { getProfile } from "@/store/slices/instructor/settingsSlice";
 import { uploadImage } from "@/store/slices/uploadSlice";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const DashboardSettingsContainer = () => {
   const [activeTab, setActiveTab] = useState("edit-profile");
   const [avatarUrl, setAvatarUrl] = useState("/assets/tutor/Marlenereilly.jpg");
   const dispatch = useDispatch();
+  const profileState = useSelector((state) => state.student?.profile);
+  const { profile: instructorProfile } = useSelector(
+    (state) => state.instructor.setting
+  );
+
+  const profile = profileState?.profile;
+
+  useEffect(() => {
+    if (instructorProfile) {
+      setAvatarUrl(instructorProfile?.profilePhoto);
+    } else {
+      setAvatarUrl(profile?.profilePhoto);
+    }
+  }, [profile, instructorProfile]);
 
   const handleImageValidation = (imageFile) => {
     const formData = new FormData();

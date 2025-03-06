@@ -9,8 +9,10 @@ import studentSlice from "./studentSlice";
 import orderSlice from "./orderSlice";
 import bookingReducer from "./bookingSlice";
 import adminEarningSlice from "./adminEarningSlice";
+import adminDashboardSlice from "./adminDashboardSlice";
 
 const adminRootReducer = combineReducers({
+  adminDashboard: adminDashboardSlice,
   course: adminCourseReducer,
   teacher: teacherRequestSlice,
   managesubjects: manageSubjectsSlice,

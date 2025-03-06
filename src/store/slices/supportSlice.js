@@ -45,9 +45,15 @@ export const updateConversation = CreateApiAsyncThunk(
   "support/updateConversation",
   ({ id, data }) => api.post(`/ticket/addMessage/${id}`, data)
 );
+
 export const updateAdminConversation = CreateApiAsyncThunk(
   "support/updateAdminConversation",
   (data) => api.post(`/ticket/admin`, data)
+);
+
+export const updateTicketStatus = CreateApiAsyncThunk(
+  "support/updateTicketStatus",
+  (data) => api.post(`/ticket/admin/status?id=${data.id}&status=${data.status}`)
 );
 
 const supportSlice = createSlice({
@@ -67,7 +73,7 @@ const supportSlice = createSlice({
         },
         {
           name: "closed",
-          value: tickets?.filter((tic) => tic?.status === "completed")?.length,
+          value: tickets?.filter((tic) => tic?.status === "close")?.length,
         },
       ];
       state.ticketStatsData = data;
@@ -148,6 +154,20 @@ const supportSlice = createSlice({
       .addCase(getAllTickets.rejected, (state, action) => {
         state.isLoading["getAllTickets"] = false;
         state.isLoading["getAllTickets"] = action.payload;
+      })
+      // Update Ticket Status
+      .addCase(updateTicketStatus.pending, (state) => {
+        state.isLoading["updateTicketStatus"] = true;
+      })
+      .addCase(updateTicketStatus.fulfilled, (state, action) => {
+        state.isLoading["updateTicketStatus"] = false;
+        state.tickets = state.tickets.map((ticket) =>
+          ticket?._id === action.payload?.data?._id ? action.payload?.data : ticket
+        );
+      })
+      .addCase(updateTicketStatus.rejected, (state, action) => {
+        state.isLoading["updateTicketStatus"] = false;
+        state.isLoading["updateTicketStatus"] = action.payload;
       });
   },
 });

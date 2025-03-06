@@ -41,8 +41,8 @@ const SupportDashboard = () => {
   const filters = [
     { label: "All", value: "All" },
     { label: "Open", value: "open" },
-    { label: "Inprogress", value: "processing" },
-    { label: "Completed", value: "completed" },
+    // { label: "Inprogress", value: "processing" },
+    { label: "Closed", value: "close" },
   ];
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const SupportDashboard = () => {
     <div className="">
       <div className="w-full flex items-start justify-between gap-10">
         <div
-          className={`w-full flex flex-col items-start gap-8 dashboard-container !rounded-none pb-20 p-10 ${
+          className={`w-full flex flex-col items-start gap-8 !border-0 !rounded-none pb-20 p-10 ${
             messages ? "!w-[100%]" : "w-full"
           }`}
         >
@@ -133,7 +133,7 @@ const SupportDashboard = () => {
           </div>
 
           <div className="bg-white rounded-lg w-full">
-            <div className=" my-4 sticky top-0 bg-white z-10">
+            <div className=" my-4 px-5 sticky top-0 bg-white z-10">
               <div className="flex gap-3">
                 {filters.map((filterItem, index) => (
                   <>

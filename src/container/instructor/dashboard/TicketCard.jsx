@@ -1,26 +1,28 @@
 import React from "react";
+import dateFormat from "dateformat";
 
 const TicketCard = ({ ticket }) => {
   return (
     <div className="p-4 bg-white rounded-lg border border-black/10">
-      <div className="flex justify-between items-center mb-1">
+      <div className="flex justify-between items-start mb-1">
         <h3 className="text-lg font-semibold text-gray-800">
           {ticket.subject}
         </h3>
         <span
-          className={`px-2 text-xs font-semibold rounded ${
+          className={`px-2 mt-2 text-xs font-semibold rounded ${
             ticket.status === "open"
-              ? "bg-green-100 text-green-600"
-              : "bg-red-100 text-red-600"
+              ? "bg-yellow-100 text-yellow-600"
+              : "bg-green-100 text-green-600"
           }`}
         >
           {ticket?.status?.toUpperCase()}
         </span>
       </div>
-      <p className="text-gray-600 text-sm mb-3 line-clamp-2">{ticket?.description}</p>
+      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        {ticket?.description}
+      </p>
       <div className="flex justify-between text-sm text-gray-500">
-        <span>Category: {ticket?.category}</span>
-        <span>{new Date(ticket?.createdAt).toLocaleDateString()}</span>
+        <span>{dateFormat(ticket.createdAt, "mmmm dS, yyyy")}</span>
       </div>
     </div>
   );

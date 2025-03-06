@@ -1,7 +1,6 @@
-import { api } from "@/store/api/api";
+import { api } from "../../api/api";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { createSlice } from "@reduxjs/toolkit";
-
 
 const initialState = {
   adminCourseEarning: [],
