@@ -1,4 +1,4 @@
-import { api } from "../../api/api";
+import { api } from "@/store/api/api";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -9,6 +9,8 @@ const initialState = {
   isLoading: {},
   error: {},
 };
+
+console.log(api, "api", CreateApiAsyncThunk, "CreateApiAsyncThunk");
 
 export const fetchAllCourseEarningForAdmin = CreateApiAsyncThunk(
   "GET/earning/fetchAllCourseEarningForAdmin",
@@ -36,25 +38,25 @@ const adminEarningSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Add the fetchAllCoursesEarning reducer here
-      .addCase(fetchAllCourseEarningForAdmin.pending, (state, action) => {
+      .addCase(fetchAllCourseEarningForAdmin.pending, (state) => {
         state.isLoading["fetchAllCourseEarningForAdmin"] = true;
       })
       .addCase(fetchAllCourseEarningForAdmin.fulfilled, (state, action) => {
         state.isLoading["fetchAllCourseEarningForAdmin"] = false;
-        state.adminCourseEarning = action.payload.data;
-        state.totalPages = action.payload.totalPages;
+        state.adminCourseEarning = action.payload?.data || []; // Ensure it's always an array
+        state.totalPages = action.payload?.totalPages || 0;
       })
       .addCase(fetchAllCourseEarningForAdmin.rejected, (state, action) => {
         state.isLoading["fetchAllCourseEarningForAdmin"] = false;
         state.error["fetchAllCourseEarningForAdmin"] = action.payload;
       })
       // Add the fetchAllTutionEarningForAdmin reducer here
-      .addCase(fetchAllTutionEarningForAdmin.pending, (state, action) => {
+      .addCase(fetchAllTutionEarningForAdmin.pending, (state) => {
         state.isLoading["fetchAllTutionEarningForAdmin"] = true;
       })
       .addCase(fetchAllTutionEarningForAdmin.fulfilled, (state, action) => {
         state.isLoading["fetchAllTutionEarningForAdmin"] = false;
-        state.adminTutionEarning = action.payload.data;
+        state.adminTutionEarning = action.payload?.data || [];
       })
       .addCase(fetchAllTutionEarningForAdmin.rejected, (state, action) => {
         state.isLoading["fetchAllTutionEarningForAdmin"] = false;

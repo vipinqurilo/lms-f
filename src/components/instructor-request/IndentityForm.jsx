@@ -39,16 +39,16 @@ export default function IndentityForm({ isInstructorRequest = null }) {
   }, [processData]);
 
   const handleNext = (data) => {
-    // if (profilePreview) {
-    const formData = {
-      ...data,
-      profile: profilePreview,
-    };
-    dispatch(updateProcessStep(3));
-    dispatch(updateProcessData({ field: "indentity", data: formData }));
-    // } else {
-    //   toast.error("Profile Photos is required");
-    // }
+    if (profilePreview) {
+      const formData = {
+        ...data,
+        profile: profilePreview,
+      };
+      dispatch(updateProcessStep(3));
+      dispatch(updateProcessData({ field: "indentity", data: formData }));
+    } else {
+      toast.error("Profile Photos is required");
+    }
   };
 
   const handleImageValidation = (e) => {

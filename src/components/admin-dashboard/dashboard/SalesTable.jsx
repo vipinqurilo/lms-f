@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import dateFormat from "dateformat";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 const tableHeadings = [
+  "SNO.",
   "Course Name",
   "Instructor Name",
   "Amount",
@@ -24,7 +26,8 @@ const salesData = [
   },
   {
     name: "John Dey",
-    course: "Spanish Language Basics",
+    course:
+      "Spanish Language BasicsSpanish Language BasicsSpanish Language Basics",
     instructor: "Carlos Martinez",
     amount: "5000",
     category: "Languages",
@@ -43,7 +46,7 @@ const salesData = [
 ];
 
 const SalesTable = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -65,7 +68,7 @@ const SalesTable = () => {
 
   return (
     <div
-      className="overflow-x-auto font-inter w-full"
+      className="overflow-x-auto w-full"
       style={{
         scrollbarWidth: "thin",
       }}
@@ -74,27 +77,13 @@ const SalesTable = () => {
         <div>
           <h2 className="font-bold text-xl">Course Performance</h2>
         </div>
-        <div className="px-5 flex items-center justify-end gap-5">
-          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
-            <span className="text-xs w-24">Start Date:</span>
-            <input
-              type="date"
-              className="bg-transparent outline-none w-full font-semibold"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
-
-          <div className="flex items-center border rounded-full px-4 py-1 text-gray-500 text-sm w-56 bg-white h-10">
-            <span className="text-xs w-24">End Date:</span>
-            <input
-              type="date"
-              className="bg-transparent outline-none w-full font-semibold"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
-        </div>
+        <Link
+          href={"/admin-dashboard/manage-courses"}
+          prefetch={false}
+          className="hover:text-secondary font-medium text-xs transition-custom"
+        >
+          View All →
+        </Link>
       </div>
 
       <div>
@@ -104,7 +93,9 @@ const SalesTable = () => {
               {tableHeadings.map((heading, index) => (
                 <th
                   key={index}
-                  className="px-6 py-4 font-medium text-sm text-textColor"
+                  className={`px-6 py-4 font-medium text-sm text-textColor ${
+                    heading === "Course Name" ? "min-w-[24rem]" : ""
+                  }`}
                 >
                   {heading}
                 </th>
@@ -115,9 +106,12 @@ const SalesTable = () => {
             {salesData.map((sale, index) => (
               <tr
                 key={index}
-                className="hover:bg-gray-50 text-textColor text-sm border-b text-nowrap"
+                className="hover:bg-gray-100 bg-white text-textColor text-sm border-b text-nowrap"
               >
-                <td className="px-6 py-4">{sale.course}</td>
+                <td className="px-6 py-4">{index + 1}</td>
+                <td className="px-6 py-4 text-wrap">
+                  {sale.course}
+                </td>
                 <td className="px-6 py-4">{sale.instructor}</td>
                 <td className="px-6 py-4">{sale.amount}</td>
                 <td className="px-6 py-4">{sale.category}</td>

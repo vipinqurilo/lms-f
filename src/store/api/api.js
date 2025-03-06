@@ -7,8 +7,8 @@ const verceUrl = "https://lms-backend-rho-pink.vercel.app/api";
 let baseUrlKd = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
 
 export const api = axios.create({
-  baseURL: baseUrlKd, // Change this as needed
-  // baseURL: verceUrl, // Change this as needed
+  // baseURL: baseUrlKd, // Change this as needed
+  baseURL: verceUrl, // Change this as needed
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
