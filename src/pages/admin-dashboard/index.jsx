@@ -33,7 +33,7 @@ const index = () => {
 
   return (
     <StudentDashboardLayout>
-      <div className="flex gap-4 p-10">
+      <div className="flex gap-8 p-10">
         <div className="w-[70%]">
           <StatesCard />
           <EarningSummary />

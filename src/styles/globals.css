@@ -54,15 +54,28 @@
     transform: translateY(0);
   }
 }
- 
 
 .animate-fadeDown {
   animation: fadeDown 0.3s ease-in-out forwards;
 }
- :root {
+:root {
   --primary: #e36760;
   --secondary: #f79902;
   --dark: #392b3c;
   --light: #ede8ec;
   --background: #0f2138;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #aaaaaa; /* Gray color */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #eeeeee; /* Light gray background */
 }
