@@ -15,9 +15,10 @@ import {
 } from "@/store/slices/student-dashboard/profileSlice";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import Loader from "@/components/common/Loader";
 
-export function EditProfile({ isInstructorRequest = null }) {
-  const { authUser } = useSelector(state => state.user);
+export function EditProfile({ isInstructorRequest = null, profilePhoto }) {
+  const { authUser } = useSelector((state) => state.user);
   const { processData } = useSelector((state) => state.tutors);
   const dispatch = useDispatch();
   const profileState = useSelector((state) => state.student?.profile);
@@ -125,6 +126,7 @@ export function EditProfile({ isInstructorRequest = null }) {
       gender: localProfile.gender,
       country: localProfile.country,
       bio: localProfile.bio,
+      profilePhoto,
     };
     dispatch(updatePersonalInfoAsync(updatedProfile));
   };
@@ -239,7 +241,6 @@ export function EditProfile({ isInstructorRequest = null }) {
                 setLocalProfile({ ...localProfile, gender: e.target.value })
               }
               disabled={isInstructorRequest && authUser?.role === "admin"}
-
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -306,7 +307,6 @@ export function EditProfile({ isInstructorRequest = null }) {
               onChange={(e) =>
                 setLocalProfile({ ...localProfile, gender: e.target.value })
               }
-
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -348,7 +348,6 @@ export function EditProfile({ isInstructorRequest = null }) {
             value={idProof}
             onChange={(e) => setIdProof(e.target.value)}
             disabled={isInstructorRequest && authUser?.role === "admin"}
-
           />
         </div>
       )}
@@ -386,9 +385,10 @@ export function EditProfile({ isInstructorRequest = null }) {
         <>
           <button
             type="submit"
-            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={isLoading["updatePersonalInfoAsync"]}
           >
-            Update Profile
+            {isLoading["updatePersonalInfoAsync"] ? <Loader color={"text-white"} /> : "Update Profile"}
           </button>
           {error?.updatePersonalInfoAsync && (
             <div className="text-red-500 mt-4">

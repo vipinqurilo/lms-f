@@ -4,23 +4,19 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   data: {},
-  isCollapsed: false,
   isLoading: {},
   error: {},
 };
 
-export const getCardStats = CreateApiAsyncThunk("GET/dashboard/getCardStats", () =>
-  api.get(`/tutors/dashboard`)
+export const getCardStats = CreateApiAsyncThunk(
+  "GET/dashboard/getCardStats",
+  () => api.get(`/admin/dashboard`)
 );
 
-const dashboardSlice = createSlice({
-  name: "dashboard",
+const adminDashboardSlice = createSlice({
+  name: "adminDashboard",
   initialState,
-  reducers: {
-    toggleIsCollapsed: (state) => {
-      state.isCollapsed = !state.isCollapsed;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getCardStats.pending, (state) => {
@@ -30,11 +26,11 @@ const dashboardSlice = createSlice({
         state.isLoading["getCardStats"] = false;
         state.data = action.payload.data;
       })
-      .addCase(getCardStats.rejected, (state) => {
+      .addCase(getCardStats.rejected, (state, action) => {
         state.isLoading["getCardStats"] = false;
+        state.error["getCardStats"] = action.payload;
       });
   },
 });
 
-export const { toggleIsCollapsed } = dashboardSlice.actions;
-export default dashboardSlice.reducer;
+export default adminDashboardSlice.reducer;

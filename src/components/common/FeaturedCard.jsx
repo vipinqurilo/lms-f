@@ -164,9 +164,13 @@ export default function FeaturedCard({ data, isFull = false }) {
 
             <div className="flex items-center justify-between mt-2 border-t pt-2 border-gray-300">
               <div className="flex items-center">
-                <span className="flex text-yellow-500">⭐⭐⭐⭐</span>
+                {Array.from(
+                  { length: Math.floor(data?.averageRating) },
+                  (_, index) => "⭐"
+                )}
                 <span className="ml-1 text-sm text-gray-500">
-                  <span>4.</span> (15)
+                  <span>{Math.floor(data?.averageRating)}</span> (
+                  {data?.totalReviews})
                 </span>
               </div>
 
