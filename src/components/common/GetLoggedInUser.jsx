@@ -13,9 +13,13 @@ import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
   const { authUser, isAuthenticated } = useSelector((state) => state.user);
+  const userToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const adminToken = typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
 
   useEffect(() => {
-    dispatch(verifyLoggedInUser());
+    if (userToken || adminToken) {
+      dispatch(verifyLoggedInUser());
+    }
     dispatch(getSubjects());
     dispatch(getSubSubjects());
     dispatch(getLanguages());
