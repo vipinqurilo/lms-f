@@ -22,7 +22,7 @@ const CourseSalesTable = () => {
   return (
     <div className="overflow-x-auto rounded-b-lg">
       <h2 className="text-2xl font-bold text-dark mb-6 px-5">
-        Earning By Courses
+        Sales By Courses
       </h2>
       <table className="w-full border-collapse border border-gray-300">
         <TableHeader headingsData={headingsData} />

@@ -69,7 +69,7 @@ const EarningContainer = () => {
 
   const cardsData = [
     {
-      title: "Course Earning",
+      title: "Course Sales",
       earning:
         authUser?.role === "admin"
           ? formatNumber(
@@ -89,7 +89,7 @@ const EarningContainer = () => {
       bgColor: "bg-blue-100",
     },
     {
-      title: "Tution Sessions Earning",
+      title: "Tution Sessions Sales",
       earning: formatNumber(
         tutionEarning
           ? tutionEarning.reduce((acc, item) => acc + item.earnings, 0)
@@ -111,9 +111,9 @@ const EarningContainer = () => {
       <main className="p-10">
         <div className="dashboard-container">
           <TitleComp
-            heading={"Earnings"}
+            heading={"Sales"}
             des={
-              "Track your income, view breakdowns, and monitor financial progress."
+              "View and manage student bookings, schedules, and session details."
             }
           />
           <div className="w-full flex flex-col gap-6 pt-5">

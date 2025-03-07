@@ -11,6 +11,7 @@ import {
   LogOut,
   Settings,
   ListOrdered,
+  Globe2,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -165,9 +166,9 @@ const adminSidebarLinks = [
     href: "/admin-dashboard/orders",
   },
   {
-    title: "Earnings",
+    title: "Sales",
     icon: DollarSign,
-    href: "/admin-dashboard/earning",
+    href: "/admin-dashboard/sales",
   },
   {
     title: "Category",
@@ -182,6 +183,11 @@ const adminSidebarLinks = [
         href: "/admin-dashboard/managesubjects/categories",
       },
     ],
+  },
+  {
+    title: "Languages",
+    icon: Globe2,
+    href: "/admin-dashboard/languages",
   },
 ];
 
