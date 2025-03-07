@@ -41,6 +41,7 @@ const Confirmation = () => {
       return {
         title: "Your application has been rejected by Admin.",
         description:
+          processData?.reason ||
           "The teacher's request has been rejected by the admin due to incomplete documentation and failure to meet the eligibility criteria required for approval.",
         imageSrc: "/assets/common/rejected.png",
         imageAlt: "Rejected",

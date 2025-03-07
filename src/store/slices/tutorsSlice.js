@@ -18,25 +18,25 @@ const initialState = {
 
 export const instructorRequest = CreateApiAsyncThunk(
   "tutors/instructorRequest",
-  (data) => api.post(`/requests/teacher`, data)
+  (data) => api.post(`/teachers/request`, data)
 );
 
 // from the admin side
 export const getTutorRequestData = CreateApiAsyncThunk(
   "GET/tutors/getTutorRequestData",
-  (id) => api.get(`/requests/teacher/${id}`)
+  (id) => api.get(`/teachers/request/${id}`)
 );
 
 // from the admin side
 export const editTutorRequestData = CreateApiAsyncThunk(
   "tutors/editTutorRequestData",
-  ({ id, data }) => api.put(`/requests/teacher/${id}`, data)
+  ({ id, data }) => api.put(`/teachers/request/${id}`, data)
 );
 
 // from me
 export const GetLoggedInTutorRequestData = CreateApiAsyncThunk(
   "GET/tutors/GetLoggedInTutorRequestData",
-  () => api.get(`/requests/teacher/me`)
+  () => api.get(`/teachers/request/me`)
 );
 
 // Async thunk for fetching tutor profile
@@ -47,7 +47,7 @@ export const fetchTutorProfileAsync = CreateApiAsyncThunk(
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
   "GET/tutors/fetchAllTutorProfileAsync",
   ({ search, timeRanges, subjects }) => {
-    let url = `/tutors?search=${search || ''}`;
+    let url = `/tutors?search=${search || ""}`;
     if (timeRanges) {
       url += `&timeRanges=${timeRanges}`;
     }
@@ -59,7 +59,7 @@ export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
 );
 export const fetchReviewAsyncById = CreateApiAsyncThunk(
   "GET/review/fetchReviewAsyncById",
-  ({id}) => api.get(`/tutorReview/${id}`)
+  ({ id }) => api.get(`/tutorReview/${id}`)
 );
 export const fetchTutorReviewAsync = CreateApiAsyncThunk(
   "GET/review/fetchTutorReviewAsync",
@@ -71,7 +71,7 @@ export const deleteReviewAsync = CreateApiAsyncThunk(
 );
 export const editReviewAsync = CreateApiAsyncThunk(
   "review/editReviewAsync",
-  ({tab,id,data}) => api.patch(`/${tab}/${id}`, data)
+  ({ tab, id, data }) => api.patch(`/${tab}/${id}`, data)
 );
 const tutorsSlice = createSlice({
   name: "tutors",
@@ -217,6 +217,7 @@ const tutorsSlice = createSlice({
             education,
             experience,
             id: _id,
+            reason: action.payload.data?.reason || "",
           };
         }
       })
@@ -250,11 +251,16 @@ const tutorsSlice = createSlice({
       .addCase(fetchReviewAsyncById.rejected, (state, action) => {
         state.isLoading["fetchReviewAsyncById"] = false;
         state.error["fetchReviewAsyncById"] = action.error?.message;
-      })
-
+      });
   },
 });
 
-export const { setTutorId, clearError, updateProcessData, updateProcessStep, updateRequestStatus, setUserID } =
-  tutorsSlice.actions;
+export const {
+  setTutorId,
+  clearError,
+  updateProcessData,
+  updateProcessStep,
+  updateRequestStatus,
+  setUserID,
+} = tutorsSlice.actions;
 export default tutorsSlice.reducer;

@@ -49,11 +49,11 @@ const LanguageContainer = () => {
                 </tr>
               ) : (
                 languages?.map((language, i) => (
-                  <tr key={i} className="text-sm">
-                    <td className="py-2 px-6">{i + 1}</td>
-                    <td className="py-2 px-6">{language?._id}</td>
-                    <td className="py-2 px-6">{language?.name}</td>
-                    <td className="py-2 px-4  space-x-4">
+                  <tr key={i} className="text-base border-b last:border-b-0">
+                    <td className="py-3 px-6">{i + 1}</td>
+                    <td className="py-3 px-6">{language?._id}</td>
+                    <td className="py-3 px-6">{language?.name}</td>
+                    <td className="py-3 px-4  space-x-4">
                       <button
                         className="text-gray-600 hover:text-yellow-500"
                         onClick={() => setisEditLanguage(language?._id)}
