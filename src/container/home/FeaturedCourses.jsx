@@ -12,9 +12,7 @@ export default function FeaturedCourses({ cardData = [] }) {
 
   return (
     <>
-      <div
-        className="bg-no-repeat custom-container bg-cover bg-center bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10"
-      >
+      <div className="bg-no-repeat custom-container bg-cover bg-center bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10">
         {isLoading ? (
           <div className="w-full py-24 pt-32 flex items-center justify-center">
             <Loader isBig={true} />
@@ -28,9 +26,7 @@ export default function FeaturedCourses({ cardData = [] }) {
               <Heading
                 heading={"Featured Courses"}
                 position={"text-left"}
-                desc={` Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aenean
-        accumsan bibendum gravida maecenas augue elementum et neque. Suspendisse
-        imperdiet.`}
+                desc={` Explore our expertly curated courses designed to enhance your skills and knowledge. Gain practical experience and industry insights through interactive lessons and real-world applications.`}
                 descWidth={"md:!w-2/3"}
               />
               <div className="md:block hidden">
@@ -46,7 +42,8 @@ export default function FeaturedCourses({ cardData = [] }) {
               {cardData?.length > 0 ? (
                 cardData
                   ?.slice(cardData?.length - 6, cardData?.length)
-                  ?.reverse()?.map((card, index) => (
+                  ?.reverse()
+                  ?.map((card, index) => (
                     <FeaturedCard data={card} isFull={true} key={index} />
                   ))
               ) : (

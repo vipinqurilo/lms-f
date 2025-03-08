@@ -213,8 +213,8 @@ export default function HeroSection() {
         </div>
       </div>
       <div className="absolute hidden -bottom-10 lg:grid grid-cols-4 md:gap-16 gap-4 w-full px-20">
-        {data.box.map((item) => (
-          <div className="text-center shadow-md rounded-2xl w-full">
+        {data.box.map((item, index) => (
+          <div key={index} className="text-center shadow-md rounded-2xl w-full">
             <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
               <div className="bg-white rounded-md">
                 <span className="text-xl font-bold text-orange-500">

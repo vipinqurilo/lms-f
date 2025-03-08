@@ -24,19 +24,23 @@ const CourseReview = ({ data }) => {
     <div className="course-sub-container !border-none !shadow-none">
       <Heading data={"Students Reviews"} />
       <div className="space-y-6">
-        {data?.map((review, index) => (
-          <div key={index} className="space-y-2 pb-4 border-b border-black/10">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center justify-between w-full">
-                <h6 className="text-dark font-semibold">
-                  {`${review?.student?.firstName} ${review?.student?.lastName}`}
-                </h6>
-                {review?.rating && <RatingStars rating={review?.rating} />}
+        {Array.isArray(data) &&
+          data?.map((review, index) => (
+            <div
+              key={index}
+              className="space-y-2 pb-4 border-b border-black/10"
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between w-full">
+                  <h6 className="text-dark font-semibold">
+                    {`${review?.student?.firstName} ${review?.student?.lastName}`}
+                  </h6>
+                  {review?.rating && <RatingStars rating={review?.rating} />}
+                </div>
               </div>
-            </div>
-            <p className="text-light">{review?.review}</p>
-            <p className="text-light text-sm">{review?.message}</p>
-            {/* <div className="flex items-center gap-4 w-full justify-between">
+              <p className="text-light">{review?.review}</p>
+              <p className="text-light text-sm">{review?.message}</p>
+              {/* <div className="flex items-center gap-4 w-full justify-between">
               <button
                 onClick={() => toggleISLikes(index)}
                 className="flex items-center gap-1 text-light"
@@ -61,25 +65,25 @@ const CourseReview = ({ data }) => {
                 </button>
               )}
             </div> */}
-            {isReply === index && (
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={replyValue}
-                  onChange={(e) => setReplyValue(e.target.value)}
-                  placeholder="Write a reply..."
-                  className="w-full p-1 px-2 text-sm border rounded"
-                />
-                <button
-                  onClick={handleReply}
-                  className="px-2 text-sm py-1 bg-secondary hover:bg-black transition-custom rounded text-white"
-                >
-                  Reply
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
+              {isReply === index && (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={replyValue}
+                    onChange={(e) => setReplyValue(e.target.value)}
+                    placeholder="Write a reply..."
+                    className="w-full p-1 px-2 text-sm border rounded"
+                  />
+                  <button
+                    onClick={handleReply}
+                    className="px-2 text-sm py-1 bg-secondary hover:bg-black transition-custom rounded text-white"
+                  >
+                    Reply
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );

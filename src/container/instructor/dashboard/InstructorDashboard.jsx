@@ -13,52 +13,12 @@ import {
   FaCalendarCheck,
 } from "react-icons/fa";
 import { getInstructorTickets } from "@/store/slices/supportSlice";
-import Link from "next/link";
-import TicketCard from "./TicketCard";
 import { TbMoneybag } from "react-icons/tb";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { getBookings } from "@/store/slices/instructor/bookingsSlice";
 import dateFormat from "dateformat";
 import TicketsContainer from "./TicketsContainer";
-
-const stats = [
-  {
-    title: "Total Courses",
-    value: 20,
-    icon: <FaBook size={25} className="text-blue-600" />,
-    color: "bg-blue-100/60",
-  },
-  {
-    title: "Published Courses",
-    value: 3,
-    icon: <FaPlay size={25} className="text-green-500" />,
-    color: "bg-green-100/60",
-  },
-  {
-    title: "Inactive Courses",
-    value: 13,
-    icon: <FaCheckCircle size={25} className="text-yellow-500" />,
-    color: "bg-yellow-100/60",
-  },
-  {
-    title: "Total Students",
-    value: 20,
-    icon: <FaUsers size={25} className="text-purple-500" />,
-    color: "bg-purple-100/60",
-  },
-  {
-    title: "Total Bookings",
-    value: 12,
-    icon: <FaCalendarCheck size={25} className="text-orange-500" />,
-    color: "bg-orange-100/60",
-  },
-  {
-    title: "Total Earnings",
-    value: 456,
-    icon: <TbMoneybag size={25} className="text-green-600" />,
-    color: "bg-green-100/60",
-  },
-];
+import { getCardStats } from "@/store/slices/instructor/dashboardSlice";
 
 const headingsData = ["Courses", "Enrolled", "Status"];
 
@@ -68,6 +28,7 @@ const InstructorDashboard = () => {
     (state) => state.instructor.course.isLoading.getAllIntructorCourses
   );
   const { courses } = useSelector((state) => state.instructor.course);
+  const { data } = useSelector((state) => state.instructor.dashboard);
   const { bookings, isLoading } = useSelector(
     (state) => state.instructor.booking
   );
@@ -93,6 +54,49 @@ const InstructorDashboard = () => {
   useEffect(() => {
     dispatch(getBookings({ startDate: dateFormat(startDate, "yyyy-mm-dd") }));
   }, [startDate]);
+
+  useEffect(() => {
+    dispatch(getCardStats());
+  }, []);
+
+  const stats = [
+    {
+      title: "Total Courses",
+      value: data?.totalCourses || 0,
+      icon: <FaBook size={25} className="text-blue-600" />,
+      color: "bg-blue-100/60",
+    },
+    {
+      title: "Published Courses",
+      value: data?.publishedCourses || 0,
+      icon: <FaPlay size={25} className="text-green-500" />,
+      color: "bg-green-100/60",
+    },
+    {
+      title: "Inactive Courses",
+      value: data?.inactiveCourses || 0,
+      icon: <FaCheckCircle size={25} className="text-yellow-500" />,
+      color: "bg-yellow-100/60",
+    },
+    {
+      title: "Total Students",
+      value: data?.students || 0,
+      icon: <FaUsers size={25} className="text-purple-500" />,
+      color: "bg-purple-100/60",
+    },
+    {
+      title: "Total Bookings",
+      value: data?.totalBookings || 0,
+      icon: <FaCalendarCheck size={25} className="text-orange-500" />,
+      color: "bg-orange-100/60",
+    },
+    {
+      title: "Total Earnings",
+      value: data?.totalEearnings || 0,
+      icon: <TbMoneybag size={25} className="text-green-600" />,
+      color: "bg-green-100/60",
+    },
+  ];
 
   return (
     <div className="w-full p-10">

@@ -3,6 +3,7 @@ import CommonButton from "@/components/common/CommonButton";
 import {
   updateAdminConversation,
   updateConversation,
+  updateTicketStatus,
 } from "@/store/slices/supportSlice";
 import {
   EllipsisVertical,
@@ -15,11 +16,12 @@ import { IoClose } from "react-icons/io5";
 import { VscTriangleUp } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import dateFormat from "dateformat";
+import Loader from "@/components/common/Loader";
 
 const MessageModal = ({ ticket, setMessages }) => {
   const { authUser } = useSelector((state) => state.user);
   const [newMessage, setNewMessage] = useState("");
-  const [isMaximized, setIsMaximized] = useState(true);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [isDropDown, setisDropDown] = useState(false);
   const toggleIsDropDown = () => setisDropDown(!isDropDown);
   const toggleMaximize = () => setIsMaximized(!isMaximized);
@@ -29,6 +31,9 @@ const MessageModal = ({ ticket, setMessages }) => {
   );
   const adminLoading = useSelector(
     (state) => state.support.isLoading.updateAdminConversation
+  );
+  const statusUpdateLoading = useSelector(
+    (state) => state.support.isLoading.updateTicketStatus
   );
 
   const handleSubmit = () => {
@@ -90,8 +95,17 @@ const MessageModal = ({ ticket, setMessages }) => {
   };
 
   useEffect(() => {
-    toggleMaximize();
+    setIsMaximized(true);
   }, [ticket]);
+
+  const handleMarkAsRead = (id) => {
+    const data = { id, status: "close" };
+    dispatch(updateTicketStatus(data))
+      .unwrap()
+      .then(() => {
+        toggleIsDropDown();
+      });
+  };
 
   return (
     <div
@@ -134,17 +148,11 @@ const MessageModal = ({ ticket, setMessages }) => {
                   <ul className=" bg-white text-nowrap rounded border border-t-0 shadow">
                     <li className=" text-light group w-full text-base border-b border-black/10 px-6 py-3">
                       <button
-                        onClick={() => {
-                          setMessages((prev) => ({
-                            ...prev,
-                            status: "Resolved",
-                          }));
-                          toggleIsDropDown();
-                        }}
+                        onClick={() => handleMarkAsRead(ticket?._id)}
                         className={`text-black group-hover:!text-secondary transition-custom w-full text-sm md:w-fit disabled:opacity-60 disabled:cursor-not-allowed`}
-                        disabled={ticket?.status === "Resolved"}
+                        disabled={ticket?.status === "close"}
                       >
-                        Mark AS Resolved
+                        {statusUpdateLoading ? <Loader /> : "Mark AS Resolved"}
                       </button>
                     </li>
                   </ul>
@@ -203,7 +211,7 @@ const MessageModal = ({ ticket, setMessages }) => {
             })}
           </div>
 
-          {ticket?.status === "Resolved" ? (
+          {ticket?.status === "close" ? (
             <div className="p-3 border-t flex items-center justify-between bg-green-100 text-green-800 rounded-b-lg">
               <span className="flex items-center gap-2">
                 <svg

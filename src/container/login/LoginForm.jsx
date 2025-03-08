@@ -2,7 +2,7 @@ import InputField from "@/components/login/InputField";
 import LoginOptions from "@/components/login/LoginOptions";
 import LogoHeader from "@/components/login/LogoHeader";
 import SubmitButton from "@/components/login/SubmitButton";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
@@ -17,9 +17,32 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
 
+  const [isRememberMe, setisRememberMe] = useState(false);
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    const savedPassword = localStorage.getItem("rememberedPassword");
+
+    if (savedEmail && savedPassword) {
+      reset({
+        email: savedEmail,
+        password: savedPassword,
+      });
+      setisRememberMe(true);
+    }
+  }, []);
+
   const submitHandler = (data) => {
+    if (isRememberMe) {
+      localStorage.setItem("rememberedEmail", data?.email);
+      localStorage.setItem("rememberedPassword", data?.password);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+      localStorage.removeItem("rememberedPassword");
+    }
     dispatch(userLoginAsync(data))
       .unwrap()
       .then((res) => {
@@ -82,6 +105,8 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
               <input
                 type="checkbox"
                 className="form-checkbox checked:accent-secondary checked:text-white transition-all ease-in-out duration-500 w-4 h-4"
+                checked={isRememberMe}
+                onChange={() => setisRememberMe(!isRememberMe)}
               />
               <span className="ml-2 text-light text-sm cursor-pointer">
                 Remember me
@@ -102,8 +127,8 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
             />
           }
         </form>
+        <LoginOptions type={"login"} />
       </div>
-      <LoginOptions type={"login"} />
     </div>
   );
 };

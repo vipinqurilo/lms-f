@@ -80,7 +80,14 @@ const CommentForm = ({ id, data }) => {
       .then(() => reset());
   };
 
-  if (data?.some((review) => `${review?.student?.firstName}${review?.student?.lastName}` === authUser?.name)) {
+  if (
+    Array.isArray(data) &&
+    data.some(
+      (review) =>
+        `${review?.student?.firstName}${review?.student?.lastName}` ===
+        authUser?.name
+    )
+  ) {
     return (
       <div className="course-sub-container">
         <Heading data={"Write Review and Ratings"} />
