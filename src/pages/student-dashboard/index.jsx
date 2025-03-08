@@ -7,6 +7,7 @@ import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashb
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
 import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
 import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
 
 export default function DashboardPage() {
   const dispatch = useDispatch();
@@ -18,11 +19,11 @@ export default function DashboardPage() {
   const { bookings, isLoading: bookingLoading } = useSelector(
     (state) => state.student.booking
   );
+  const { tickets } = useSelector((state) => state.support);
 
   const stats = [
     {
       title: "Enrolled Courses",
-
       value: enrolledCourses?.length || 0,
       iconSrc: "assets/student-dashboard/icons/EnrolledCourses.svg",
       bgColor: "bg-[#EBEAFC]",
@@ -77,7 +78,7 @@ export default function DashboardPage() {
             </div>
             <ContinueWatching />
           </div>
-          <div className="w-2/3">
+          <div className="w-2/3 sticky top-0 z-[0] space-y-5">
             <ScheduleView
               bookingLoading={bookingLoading?.["fetchBookingsAsync"]}
               startDate={startDate}
@@ -85,6 +86,10 @@ export default function DashboardPage() {
               bookings={bookings}
               link={"/student-dashboard/booking"}
             />
+            <TicketsContainer
+                link={"/student-dashboard/support"}
+                tickets={tickets}
+              />
           </div>
         </div>
 

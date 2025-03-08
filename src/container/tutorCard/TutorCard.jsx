@@ -57,8 +57,14 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                     <SlLocationPin className="mr-1" />
                     {tutor.user.country || "Unknown Location"}
                   </div>
-                  {tutor.rating && (
-                    <Rating rating={tutor.rating} reviews={tutor.reviews} />
+                  {tutor?.reviews?.length > 0 && (
+                    <Rating
+                      rating={
+                        tutor.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+                        tutor.reviews.length
+                      }
+                      reviews={tutor.reviews.length}
+                    />
                   )}
                 </div>
               </div>

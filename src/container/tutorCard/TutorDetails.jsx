@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import { IoHeartOutline } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { useRouter } from "next/router";
 import Rating from "./Rating";
@@ -33,9 +32,15 @@ const TutorDetails = ({ tutor }) => {
           <SlLocationPin className="mr-1" />
           {tutor.user.country || "Unknown Location"}
         </div>
-        {tutor.rating && (
-          <Rating rating={tutor.rating} reviews={tutor.reviews} />
-        )}
+        {tutor?.reviews?.length > 0 && (
+                    <Rating
+                      rating={
+                        tutor.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+                        tutor.reviews.length
+                      }
+                      reviews={tutor.reviews.length}
+                    />
+                  )}
         {/* Learners and Sessions */}
         <div className="text-sm text-gray-500">
           <span className="font-bold">{tutor.learners || 0}</span> Learners ·{" "}

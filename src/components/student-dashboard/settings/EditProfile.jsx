@@ -26,6 +26,7 @@ export function EditProfile({ isInstructorRequest = null }) {
   );
 
   const profile = profileState?.profile;
+
   const isLoading = profileState?.isLoading;
   const error = profileState?.error;
 
@@ -41,6 +42,8 @@ export function EditProfile({ isInstructorRequest = null }) {
     country: "",
     bio: "",
   });
+  // console.log(profile,localProfile,'localProfile------>')
+
 
   const [phoneNumberError, setPhoneNumberError] = useState("");
   const [idProof, setIdProof] = useState("");
@@ -77,23 +80,24 @@ export function EditProfile({ isInstructorRequest = null }) {
           country: instructorProfile?.country || "",
           bio: instructorProfile?.bio || "",
         });
-      }
+      }  
     } else {
+      console.log(profile,'profile')
       if (profile) {
         setLocalProfile({
-          firstName: profile.firstName || "",
-          lastName: profile.lastName || "",
-          userName: profile.userName || "",
-          email: profile.email || "",
-          phoneNumber: profile.phone?.number || "",
-          countryCode: profile.phone?.countryCode || "",
-          gender: profile.gender || "",
-          country: profile.country || "",
-          bio: profile.bio || "",
+          firstName: profile?.firstName || "",
+          lastName: profile?.lastName || "",
+          userName: profile?.userName || "",
+          email: profile?.email || "",
+          phoneNumber: profile?.phone?.number || "",
+          countryCode: profile?.phone?.countryCode || "",
+          gender: profile?.gender || "",
+          country: profile?.country || "",
+          bio: profile?.bio || "",
         });
       }
     }
-  }, [profile, instructorProfile]);
+  }, [profileState, instructorProfile,path]);
 
   useEffect(() => {
     if (!isInstructorRequest && !path.startsWith("/instructor-request")) {
