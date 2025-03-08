@@ -63,9 +63,9 @@ const TopBanner = () => {
 
       <div className="flex items-center gap-4 relative">
         {authUser?.role === "teacher" && <WalletBalanceBadge />}
-        <button className="w-10 h-10 bg-white flex items-center justify-center rounded-full border border-black/10">
+        {/* <button className="w-10 h-10 bg-white flex items-center justify-center rounded-full border border-black/10">
           <RiNotification3Line size={20} />
-        </button>
+        </button> */}
         <ProfileDropDown />
       </div>
     </div>

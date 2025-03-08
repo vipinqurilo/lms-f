@@ -82,7 +82,11 @@ const ProfileDropDown = () => {
     },
     {
       title: "Sales",
-      href: "/admin-dashboard/earning",
+      href: "/admin-dashboard/sales",
+    },
+    {
+      title: "Languages",
+      href: "/admin-dashboard/languages",
     },
     {
       title: "Settings",
@@ -151,6 +155,7 @@ const ProfileDropDown = () => {
               : studentProfileLinks
             )?.map((subLink, i) => (
               <Link
+                key={i}
                 href={authUser?.userStatus === "active" ? subLink?.href : "#"}
                 onClick={(e) => {
                   if (authUser?.userStatus !== "active") {

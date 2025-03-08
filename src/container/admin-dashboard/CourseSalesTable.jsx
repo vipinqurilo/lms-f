@@ -4,6 +4,7 @@ import Image from "next/image";
 import TableHeader from "@/components/instructor/TableHeader";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import SubCourseTableForEarning from "@/components/instructor/earning/SubCourseTableForEarning";
 
 const CourseSalesTable = () => {
   const { adminCourseEarning } = useSelector(
@@ -22,7 +23,7 @@ const CourseSalesTable = () => {
   return (
     <div className="overflow-x-auto rounded-b-lg">
       <h2 className="text-2xl font-bold text-dark mb-6 px-5">
-        Earning By Courses
+        Sales By Courses
       </h2>
       <table className="w-full border-collapse border border-gray-300">
         <TableHeader headingsData={headingsData} />
@@ -78,44 +79,7 @@ const CourseSalesTable = () => {
 
                 {/* Expanded Row for Course Details */}
                 {viewMore === index && (
-                  <tr className="bg-white">
-                    <td colSpan={5} className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-700">
-                        Course Details:
-                      </h3>
-                      <div className="mt-2 grid grid-cols-3 gap-5">
-                        {course?.courses?.map((c, idx) => (
-                          <div
-                            key={idx}
-                            className="grid grid-cols-4 gap-4 px-4 py-2 h-full border rounded-md shadow-sm bg-white"
-                          >
-                            <div className="w-full h-full col-span-2 relative">
-                              <Image
-                                src={c?.courseImage}
-                                alt={c?.courseName}
-                                fill={true}
-                                className="rounded object-center object-cover"
-                              />
-                            </div>
-                            <div className="col-span-2 text-sm">
-                              <p className="font-semibold text-sm  line-clamp-2">
-                                {c?.courseName}
-                              </p>
-                              <p className="text-gray-600">
-                                Enrollments: {c?.enrollments || 0}
-                              </p>
-                              <p className="text-gray-600">
-                                Total Sales: ${c?.totalSales || 0}
-                              </p>
-                              <p className="text-gray-600">
-                                Avg Price: ${c?.avgPrice || 0}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
+                  <SubCourseTableForEarning course={course} />
                 )}
               </React.Fragment>
             ))
