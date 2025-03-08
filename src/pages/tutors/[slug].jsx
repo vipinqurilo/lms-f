@@ -44,7 +44,6 @@ export default function TeacherProfile() {
     if (tutorId && userID) {
       dispatch(fetchBookingsByTutorIdAsync(userID));
       dispatch(fetchTutorProfileAsync(tutorId));
-      dispatch(fetchReviewAsyncById({id:userID}));
     } else {
       router.push("/tutors");
       toast.error("Tutor not found");

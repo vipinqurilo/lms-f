@@ -73,26 +73,15 @@ const ProfileHeader = () => {
                 <SlLocationPin className="mr-1" />
                 {tutorProfile?.user?.country || "United Kingdom"}{" "}
                 {/* Dynamic location */}
-                {tutorReviews.length > 0 && (
-                  <Rating
-                    rating={
-                      tutorReviews.length > 0
-                        ? Number(
-                            (
-                              tutorReviews.reduce(
-                                (acc, curr) => acc + curr.rating,
-                                0
-                              ) / tutorReviews.length
-                            ).toFixed(2)
-                          ).toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : 0.0
-                    }
-                    reviews={tutorReviews.length}
-                  />
-                )}
+                {tutorProfile?.reviews?.length > 0 && (
+                    <Rating
+                      rating={
+                        tutorProfile?.reviews?.reduce((acc, curr) => acc + curr.rating, 0) /
+                        tutorProfile?.reviews?.length
+                      }
+                      reviews={tutorProfile?.reviews?.length}
+                    />
+                  )}
               </div>
 
               {/* Rating */}
@@ -132,26 +121,15 @@ const ProfileHeader = () => {
               </span>{" "}
               {/* Dynamic location */}
             </div>
-            {tutorReviews.length > 0 && (
-              <Rating
-                rating={
-                  tutorReviews.length > 0
-                    ? Number(
-                        (
-                          tutorReviews.reduce(
-                            (acc, curr) => acc + curr.rating,
-                            0
-                          ) / tutorReviews.length
-                        ).toFixed(2)
-                      ).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
-                    : 0.0
-                }
-                reviews={tutorReviews.length}
-              />
-            )}
+            {tutorProfile?.reviews?.length > 0 && (
+                    <Rating
+                      rating={
+                        tutorProfile?.reviews?.reduce((acc, curr) => acc + curr.rating, 0) /
+                        tutorProfile?.reviews?.length
+                      }
+                      reviews={tutorProfile?.reviews?.length}
+                    />
+                  )}
             <div className="flex items-center gap-6">
               <span>{tutorProfile?.learnersCount || 0} Learners</span>
               <span>{tutorProfile?.sessionsCount || 0} Sessions</span>

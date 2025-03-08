@@ -59,7 +59,6 @@ const index = () => {
         setApplySubjects(false);
       });
     } else {
-
       dispatch(fetchAllTutorProfileAsync({ search: searchTerm }));
     }
   }, 1000);
