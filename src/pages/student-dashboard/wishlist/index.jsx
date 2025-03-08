@@ -11,6 +11,7 @@ import {
 } from "@/store/slices/student-dashboard/wishlistSlice";
 import TitleComp from "@/components/instructor/TitleComp";
 import Loader from "@/components/common/Loader";
+import FeaturedCard from "@/components/common/FeaturedCard";
 
 export default function WishlistPage() {
   const dispatch = useDispatch();
@@ -26,16 +27,12 @@ export default function WishlistPage() {
   const handleRemoveFromWishlist = (courseId) => {
     dispatch(removeFromWishlistAsync(courseId));
   };
-  
 
   return (
     <StudentDashboardLayout>
       <div className="p-10">
         <div className="dashboard-container">
-          <TitleComp
-            heading={"Wishlist"}
-            
-          />
+          <TitleComp heading={"Wishlist"} />
 
           {/* Loading State */}
           {isLoading["fetchWishlistAsync"] ? (
@@ -47,24 +44,25 @@ export default function WishlistPage() {
               {/* Course Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-4 mx-8">
                 {wishlist?.map((item) => (
-                  <CourseCard
-                    key={item._id}
-                    course={{
-                      id: item.course._id,
-                      title: item.course.courseTitle,
-                      instructor: {
-                        name: item.course?.courseInstructor?.name,
-                        image: item.course.courseImage,
-                      },
-                      thumbnail: item.course.courseImage,
-                      lessons: item.course.courseContent.length,
-                      duration: "70hr 30min",
-                      rating: 4.0,
-                      price: item.course.coursePrice,
-                    }}
-                    onWishlist={true}
-                    onWishlistClick={() => dispatch(addToWishlistAsync({course:item.course._id}))}
-                  />
+                  // <CourseCard
+                  //   key={item._id}
+                  //   course={{
+                  //     id: item.course._id,
+                  //     title: item.course.courseTitle,
+                  //     instructor: {
+                  //       name: item.course?.courseInstructor?.name,
+                  //       image: item.course.courseImage,
+                  //     },
+                  //     thumbnail: item.course.courseImage,
+                  //     lessons: item.course.courseContent.length,
+                  //     duration: "70hr 30min",
+                  //     rating: 4.0,
+                  //     price: item.course.coursePrice,
+                  //   }}
+                  //   onWishlist={true}
+                  //   onWishlistClick={() => dispatch(addToWishlistAsync({course:item.course._id}))}
+                  // />
+                  <FeaturedCard data={item?.course} isFull={true} />
                 ))}
               </div>
               {/* Empty State */}
@@ -82,7 +80,6 @@ export default function WishlistPage() {
           )}
         </div>
       </div>
-      
     </StudentDashboardLayout>
   );
 }

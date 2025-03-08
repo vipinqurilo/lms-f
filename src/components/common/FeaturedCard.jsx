@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,11 +14,20 @@ import CourseByModal from "../course-main-page/CourseByModal";
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
   const { enrolledCourses, isLoading } = useSelector((state) => state.courses);
-  const { wishlist } = useSelector((state) => state.student.wishlist);
+  const { wishlist, isLoading: wishlistLoading } = useSelector(
+    (state) => state.student.wishlist
+  );
 
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
   }
+
+  const isEnrolled = enrolledCourses && enrolledCourses.some(
+    (item) => item?.courseId === data?._id
+  );
+  const enrolledCourseData = enrolledCourses && enrolledCourses.find(
+    (item) => item?.courseId === data?._id
+  );
 
   const dispatch = useDispatch();
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -63,18 +72,29 @@ export default function FeaturedCard({ data, isFull = false }) {
             isFull ? "w-full min-h-96" : "w-96"
           } cursor-pointer group-hover:scale-105 bg-white transition-all duration-300 rounded-lg shadow-lg overflow-hidden relative p-2 lg:p-4`}
         >
-          {/* IMAGE SECTION */}
-          <div className="relative overflow-hidden w-full h-60 rounded-lg">
-            <Image
-              src={data?.courseImage || "/assets/common/courseImage.jpg"}
-              alt="Course Image"
-              layout="fill"
-              objectFit="cover"
-              className="transform transition-transform duration-300 group-hover:!scale-110"
-            />
+          <div className="w-full flex flex-col">
+            <div
+              className={`relative overflow-hidden w-full h-60 rounded-lg`}
+            >
+              <Image
+                src={data?.courseImage || "/assets/common/courseImage.jpg"}
+                alt="Course Image"
+                layout="fill"
+                objectFit="cover"
+                className="transform transition-transform duration-300 group-hover:!scale-110"
+              />
+            </div>
+            {isEnrolled && (
+              <div className="w-[95%] mx-auto bg-blue-200 rounded-b-lg">
+                <div
+                  className="bg-blue-600 h-1 rounded-lg transition-all duration-1000"
+                  style={{ width: `0%` }}
+                  // style={{ width: `${enrolledCourseData?.progress}%` }}
+                ></div>
+              </div>
+            )}
           </div>
 
-          {/* DETAILS SECTION */}
           <div className="pt-4 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <div className="flex ">
@@ -112,7 +132,7 @@ export default function FeaturedCard({ data, isFull = false }) {
                 }
                 className="text-red-500"
               >
-                {isLoading["wishlistAsync"] ? (
+                {wishlistLoading["addToWishlistAsync"] ? (
                   <Loader />
                 ) : wishlist?.some(
                     (item) => item?.course?._id === data?._id
@@ -174,7 +194,7 @@ export default function FeaturedCard({ data, isFull = false }) {
                 </span>
               </div>
 
-              {enrolledCourses?.some((item) => item === data?._id) ? (
+              {isEnrolled ? (
                 <Link
                   href={`/courses/${data?._id}`}
                   className="px-8 py-2 text-background bg-white group-hover:bg-back group-hover:bg-transparent rounded-full border-2 border-secondary hover:bg-secborder-secondary hover:!text-secondary"
@@ -191,6 +211,12 @@ export default function FeaturedCard({ data, isFull = false }) {
               )}
             </div>
           </div>
+
+          {isEnrolled && (
+            <div className="absolute top-6 right-6 bg-blue-600 text-white rounded-full flex items-center justify-center w-10 h-10 shadow-lg">
+              <span className="text-xs font-bold">{enrolledCourseData?.progress}%</span>
+            </div>
+          )}
         </div>
       </div>
 

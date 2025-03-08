@@ -60,7 +60,11 @@ const coursesSlice = createSlice({
     isLoading: {},
     error: {},
   },
-  reducers: {},
+  reducers: {
+    markModuleAsCompleted: (state, action) => {
+      state.enrolledCourses?.completedModule?.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle category fetch actions
@@ -172,4 +176,5 @@ const coursesSlice = createSlice({
   },
 });
 
+export const { markModuleAsCompleted } = coursesSlice.actions;
 export default coursesSlice.reducer;

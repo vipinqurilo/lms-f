@@ -13,7 +13,7 @@ const TopSection = ({ data }) => {
       <div className="w-full backdrop-blur-sm">
         <div
           data-aos="fade-up"
-          className="w-full lg:max-w-[60%] h-full custom-container space-y-5"
+          className="w-full lg:max-w-[60%] h-full custom-container space-y-4"
         >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 border-4 border-black/10 relative flex items-center justify-center bg-gray-300 rounded-full overflow-hidden">
@@ -31,13 +31,18 @@ const TopSection = ({ data }) => {
                     .map((n) => n[0])
                     .join("")
                     .toUpperCase() || "?"}
+                  {data?.courseInstructor?.lastName
+                    ?.split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase() || "?"}
                 </span>
               )}
             </div>
 
             <div className="">
               <p className="text-lg font-bold">{data?.courseInstructor?.firstName} {data?.courseInstructor?.lastName}</p>
-              <p className="">{data?.courseInstructor?.role || "Instructor"}</p>
+              <p className="">{data?.courseInstructor?.role || "Teacher"}</p>
             </div>
           </div>
           <div className="flex items-center text-xl gap-1">

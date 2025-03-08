@@ -12,17 +12,19 @@ import {
   FaWhatsapp,
   FaLinkedin,
   FaCopy,
+  FaRegHeart,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../common/Loader";
 import { createPaymentCourse } from "@/store/slices/paymentSlice";
 import CourseByModal from "./CourseByModal";
+import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 
 const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { isLoading } = useSelector((state) => state.courses);
-  const { wishlist } = useSelector((state) => state.student.wishlist);
+  const { wishlist, isLoading: wishlistLoading } = useSelector((state) => state.student.wishlist);
   const dispatch = useDispatch();
 
   const openModal = () => setisVideoModalOpen(true);
@@ -30,10 +32,6 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
   const toggleIsShareModalOpen = () => setIsShareModalOpen(!isShareModalOpen);
 
   const courseLink = `https://yourwebsite.com/course/${data?._id}`;
-
-  const handleAddToWishList = () => {
-    dispatch(wishlistAsync({ course: data?._id }));
-  };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(courseLink);
@@ -99,16 +97,18 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
         </div>
         <div className="flex justify-between mt-4">
           <button
-            onClick={handleAddToWishList}
+            onClick={() => dispatch(addToWishlistAsync({ course: data?._id }))}
             className={`flex items-center text-red-500 hover:text-white hover:bg-red-500 transition-custom border border-red-500 rounded-lg px-4 py-1 ${
               wishlist?.some((item) => item?._id === data?._id) &&
               "!bg-red-500 !text-white hover:!bg-white hover:!text-red-500"
             }`}
           >
-            {isLoading["wishlistAsync"] ? (
-              <Loader color={"text-secondary"} />
+            {wishlistLoading["addToWishlistAsync"] ? (
+              <Loader />
+            ) : wishlist?.some((item) => item?.course?._id === data?._id) ? (
+              <FaHeart className="text-xl" />
             ) : (
-              <FaHeart className="" />
+              <FaRegHeart className="text-xl" />
             )}
           </button>
           <button

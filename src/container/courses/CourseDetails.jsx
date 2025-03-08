@@ -19,7 +19,11 @@ const CourseDetails = () => {
   const { authUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const isEnrolled = enrolledCourses.some(
+  const isEnrolled = enrolledCourses && enrolledCourses.some(
+    (item) => item?.courseId === data?.course?._id
+  );
+
+  const enrolledCourseData = enrolledCourses && enrolledCourses.find(
     (item) => item?.courseId === data?.course?._id
   );
 
@@ -52,6 +56,7 @@ const CourseDetails = () => {
             data={data?.course?.courseContent}
             id={data?.course?._id}
             isEnrolled={isEnrolled}
+            enrolledCourseData={enrolledCourseData}
           />
           <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
