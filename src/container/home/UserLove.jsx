@@ -13,12 +13,13 @@ export default function UserLove() {
         // }}
       >
         <Heading
-          heading={"Check out these real reviews"}
+          heading={"What Our Customers Say"}
           desc={
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus laudantium vero placeat ad dolor illo! Ad doloribus beatae iste asperiores."
+            "Discover how our services have made a difference. See what our happy customers have to say about their experience with us."
           }
           position={"lg:w-[60%]"}
         />
+
         <div className="w-full">
           <Testimonial />
         </div>

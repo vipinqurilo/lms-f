@@ -4,21 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Heading from "./Heading";
 import { BiPlayCircle, BiSolidLockAlt } from "react-icons/bi";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDuration } from "@/utils/TimeFormat";
 import LectureItem from "./LectureItem";
+import { FaCheck, FaDownload } from "react-icons/fa";
+import { markAsCompletedModule } from "@/store/slices/coursesSlice";
+import Loader from "../common/Loader";
 
-const LecturesOverview = ({ data, id }) => {
-  const { enrolledCourses } = useSelector((state) => state.courses);
-  // const totalSeconds = data?.reduce((total, module) => {
-  //   return (
-  //     total +
-  //     module.lessons.reduce((sum, lesson) => {
-  //       return sum + parseInt(lesson?.duration);
-  //     }, 0)
-  //   );
-  // }, 0);
-
+const LecturesOverview = ({ data, id, isEnrolled }) => {
+  const { isLoading } = useSelector((state) => state.courses);
   const details = [
     {
       name: "Total Lectures",
@@ -37,10 +31,6 @@ const LecturesOverview = ({ data, id }) => {
         0
       ),
     },
-    // {
-    //   name: "Duration",
-    //   value: formatDuration(totalSeconds),
-    // },
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -51,20 +41,28 @@ const LecturesOverview = ({ data, id }) => {
   const toggleSection = (index) => {
     if (activeIndex === index) {
       setActiveIndex(null);
-      setHeight(0);
+      // setHeight(0);
     } else {
       setActiveIndex(index);
-      setTimeout(() => {
-        if (contentRefs.current[index]) {
-          setHeight(contentRefs.current[index].scrollHeight);
-        }
-      }, 50);
+      // setTimeout(() => {
+      //   if (contentRefs.current[index]) {
+      //     setHeight(contentRefs.current[index].scrollHeight);
+      //   }
+      // }, 50);
     }
   };
 
   useEffect(() => {
     toggleSection(0);
   }, []);
+
+  // mark as complete functionality
+
+  const [isMarkAsComplete, setisMarkAsComplete] = useState([]);
+  const dispatch = useDispatch();
+  const markAsComplete = (data) => {
+    dispatch(markAsCompletedModule(data));
+  };
 
   return (
     <div className="course-sub-container">
@@ -78,13 +76,24 @@ const LecturesOverview = ({ data, id }) => {
       </div>
       <div className="w-full space-y-4">
         {data?.map((section, index) => (
-          <div className="w-full">
+          <div key={index} className="w-full">
             <button
               onClick={() => toggleSection(index)}
-              className="flex justify-between items-center w-full font-medium text-lg text-left bg-secondary/5 p-2 px-4 rounded border border-black/10"
+              className={`flex justify-between items-center w-full font-medium text-lg text-left bg-secondary/5 p-2 px-4 rounded border border-black/10 ${
+                isMarkAsComplete?.some(
+                  (item) => item?.moduleId === section?._id
+                ) && "!bg-green-100 !text-green-500"
+              }`}
             >
-              <span className="font-[700] text-base">
-                {index + 1}. {section?.moduleTitle}
+              <span className="font-[700] text-base flex items-center gap-2">
+                {isMarkAsComplete?.some(
+                  (item) => item?.moduleId === section?._id
+                ) ? (
+                  <FaCheck className="text-green-500" />
+                ) : (
+                  `${index + 1}.`
+                )}
+                {section?.moduleTitle}
               </span>
               <svg
                 className={`transition-transform ${
@@ -103,16 +112,16 @@ const LecturesOverview = ({ data, id }) => {
               </svg>
             </button>
             <div
-              className="transition-all ease-in-out duration-500 overflow-hidden"
-              style={{
-                maxHeight: activeIndex === index ? `${height}px` : "0px",
-              }}
-              ref={(el) => (contentRefs.current[index] = el)}
+              className={`transition-all ease-in-out duration-500 overflow-hidden ${
+                activeIndex === index ? "min-h-[0px]" : "max-h-0"
+              }`}
+              // style={{
+              //   maxHeight: activeIndex === index ? `${height}px` : "0px",
+              // }}
+              // ref={(el) => (contentRefs.current[index] = el)}
             >
               {section?.lessons?.map((lecture, i) => {
-                const isAccessible =
-                  enrolledCourses?.some((item) => item === id) ||
-                  (i === 0 && index === 0);
+                const isAccessible = isEnrolled || (i === 0 && index === 0);
 
                 return (
                   <div
@@ -135,6 +144,29 @@ const LecturesOverview = ({ data, id }) => {
                   </div>
                 );
               })}
+
+              {!section?.isCompleted && isEnrolled && (
+                <div className="w-full flex justify-end">
+                  <button
+                    onClick={() =>
+                      markAsComplete({
+                        courseId: id,
+                        moduleId: section?._id,
+                      })
+                    }
+                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 bg-secondary text-white hover:bg-background`}
+                  >
+                    {isLoading["markAsCompletedModule"] ? (
+                      <Loader />
+                    ) : (
+                      <>
+                        <BiPlayCircle className="text-lg" />
+                        <span>Mark as Complete</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}

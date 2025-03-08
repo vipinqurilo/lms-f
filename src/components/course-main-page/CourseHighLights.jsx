@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 // import { formatDuration } from "@/utils/TimeFormat";
 
-const CourseHighLights = ({ data, enrollNowRef }) => {
+const CourseHighLights = ({ data, enrollNowRef, isEnrolled }) => {
   // const totalSeconds = data?.course?.courseContent?.reduce((total, module) => {
   //   return (
   //     total +
@@ -54,24 +54,24 @@ const CourseHighLights = ({ data, enrollNowRef }) => {
         0
       ),
     },
-    {
-      Icon: FaPlay,
-      text: "Video",
-      value: data?.course?.courseContent?.reduce(
-        (acc, item) => acc + (item?.lessons?.length || 0),
-        0
-      ),
-    },
-    {
-      Icon: FaChartBar,
-      text: "Level",
-      value: "Beginner",
-    },
+    // {
+    //   Icon: FaPlay,
+    //   text: "Video",
+    //   value: data?.course?.courseContent?.reduce(
+    //     (acc, item) => acc + (item?.lessons?.length || 0),
+    //     0
+    //   ),
+    // },
+    // {
+    //   Icon: FaChartBar,
+    //   text: "Level",
+    //   value: "Beginner",
+    // },
   ];
 
   return (
     <div className="w-full space-y-5 font-nunito">
-      <CourseCard enrollNowRef={enrollNowRef} data={data?.course} />
+      <CourseCard enrollNowRef={enrollNowRef} data={data?.course} isEnrolled={isEnrolled} />
       <IncludesListRed
         list={data?.course?.courseFeatures}
         type="red"

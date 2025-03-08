@@ -1,58 +1,101 @@
 "use client";
-import React, { useState } from "react";
-import { LuCalendarDays } from "react-icons/lu";
-import { CiSearch } from "react-icons/ci";
+import React, { useEffect, useState } from "react";
+import dateFormat from "dateformat";
+import { useDispatch } from "react-redux";
+import Link from "next/link";
 
-const tableHeadings = ["Customer Name", "Course Name", "Amount", "Rating"];
+const tableHeadings = [
+  "SNO.",
+  "Course Name",
+  "Instructor Name",
+  "Amount",
+  "Category",
+  "Status",
+  "Ratings",
+];
 
-const staticSales = [
+const salesData = [
   {
-    name: "Khurshid idrees",
-    course: "Spanish Language Basics",
-    amount: "5000",
-    rating: "4.5",
+    name: "Khurshid Idrees",
+    course: "LMS System",
+    instructor: "Unknown Instructor", // Needs to be fetched from instructor ID
+    amount: "2999",
+    category: "jadus k",
+    status: "Published",
+    rating: "4.8", // Best Selling
   },
-  { 
+  {
     name: "John Dey",
-    course: "French Language Basics",
+    course:
+      "Spanish Language BasicsSpanish Language BasicsSpanish Language Basics",
+    instructor: "Carlos Martinez",
     amount: "5000",
-    rating: "4.5",
+    category: "Languages",
+    status: "Published",
+    rating: "3.5", // Worst Selling
+  },
+  {
+    name: "Ava Smith",
+    course: "French Language Basics",
+    instructor: "Sophie Laurent",
+    amount: "5000",
+    category: "Languages",
+    status: "Published",
+    rating: "4.5", // Best Selling
   },
 ];
 
 const SalesTable = () => {
+  const dispatch = useDispatch();
+
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const formattedFirstDay = dateFormat(firstDayOfMonth, "yyyy-mm-dd");
+  const formattedLastDay = dateFormat(lastDayOfMonth, "yyyy-mm-dd");
+
+  const [startDate, setStartDate] = useState(formattedFirstDay);
+  const [endDate, setEndDate] = useState(formattedLastDay);
+
+  useEffect(() => {
+    const requestData = {
+      startDate,
+      endDate,
+    };
+    console.log(requestData);
+  }, [dispatch, startDate, endDate]);
+
   return (
-    <div className="overflow-x-auto font-inter max-w-full custom-scrollbar">
-      <div className="flex justify-between  p-2 bg-white">
+    <div
+      className="overflow-x-auto w-full"
+      style={{
+        scrollbarWidth: "thin",
+      }}
+    >
+      <div className="flex justify-between items-center pb-4 w-full sticky left-0">
         <div>
-          <h2 className="font-bold font-xl">Sale</h2>
+          <h2 className="font-bold text-xl">Course Performance</h2>
         </div>
-        <div className="flex">
-          <span className="mt-[1px] bg-gray-50 p-[6px] text-xl mx-3 rounded-sm">
-            <CiSearch />
-          </span>
-          <div className="bg-gray-50 flex p-2 rounded-sm">
-            <span className="mt-[3px] mx-2">
-              <LuCalendarDays />
-            </span>
-            <select name="" id="" className="bg-gray-50">
-              <option value="">17 September - 24 September</option>
-              <option value="">17 September - 24 September</option>
-              <option value="">17 September - 24 September</option>
-              <option value="">17 September - 24 September</option>
-            </select>
-          </div>
-        </div>
+        <Link
+          href={"/admin-dashboard/manage-courses"}
+          prefetch={false}
+          className="hover:text-secondary font-medium text-xs transition-custom"
+        >
+          View All →
+        </Link>
       </div>
 
       <div>
-        <table className="min-w-full border-collapse text-left text-sm text-gray-500">
-          <thead className="bg-[#ECF5FA] text-textColor text-nowrap">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead className="bg-blue-100 text-textColor text-nowrap">
             <tr>
               {tableHeadings.map((heading, index) => (
                 <th
                   key={index}
-                  className="px-6 py-4 font-medium text-sm text-textColor"
+                  className={`px-6 py-4 font-medium text-sm text-textColor ${
+                    heading === "Course Name" ? "min-w-[24rem]" : ""
+                  }`}
                 >
                   {heading}
                 </th>
@@ -60,17 +103,31 @@ const SalesTable = () => {
             </tr>
           </thead>
           <tbody>
-            {staticSales.map((sale, index) => (
+            {salesData.map((sale, index) => (
               <tr
                 key={index}
-                className="hover:bg-gray-50 text-textColor text-sm border-b text-nowrap"
+                className="hover:bg-gray-100 bg-white text-textColor text-sm border-b text-nowrap"
               >
-                <td className="px-6 py-4 font-medium text-black text-sm">
-                  {sale.name}
+                <td className="px-6 py-4">{index + 1}</td>
+                <td className="px-6 py-4 text-wrap">
+                  {sale.course}
                 </td>
-                <td className="px-6 py-4">{sale.course}</td>
+                <td className="px-6 py-4">{sale.instructor}</td>
                 <td className="px-6 py-4">{sale.amount}</td>
-                <td className="px-6 py-4">{sale.rating}</td>
+                <td className="px-6 py-4">{sale.category}</td>
+                <td className="px-6 py-4">{sale.status}</td>
+                <td
+                  className={`px-6 py-4 font-bold ${
+                    parseFloat(sale.rating) >= 4.5
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {sale.rating}{" "}
+                  {parseFloat(sale.rating) >= 4.5
+                    ? "🔥 Best Selling"
+                    : "🔻 Worst Selling"}
+                </td>
               </tr>
             ))}
           </tbody>

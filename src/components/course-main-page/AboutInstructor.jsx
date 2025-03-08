@@ -32,16 +32,11 @@ const AboutInstructor = ({ data }) => {
       color: "text-red-500", // Add a Tailwind class for red color
     },
   ];
-  const dispatch = useDispatch();
 
   const { languages } = useSelector((state) => state.languages);
   const { categories } = useSelector((state) => state.category);
   const course = data?.course;
   const teacherProfile = course?.courseInstructor?.teacherProfile;
-
-  useEffect(() => {
-    dispatch(makeCategorySubCategoryArray());
-  }, []);
 
   return (
     <div className="course-sub-container">
@@ -129,9 +124,10 @@ const AboutInstructor = ({ data }) => {
         <p className="pb-2">Subjects Taught:</p>
         {teacherProfile?.subjectsTaught?.map((sub, i) => (
           <span key={i} className="text-base text-light">
-            {categories?.map(
-              (cat) => cat?.subCategories?.find((s) => s?.id === sub)?.name
-            )}
+            {categories &&
+              categories?.map(
+                (cat) => cat?.subCategories?.find((s) => s?.id === sub)?.name
+              )}
             {i !== teacherProfile?.subjectsTaught.length - 1 ? ", " : ""}
           </span>
         ))}

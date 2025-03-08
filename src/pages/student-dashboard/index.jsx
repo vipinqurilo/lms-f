@@ -9,11 +9,16 @@ import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enro
 import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
 
+import { getInstructorTickets } from "@/store/slices/supportSlice";
+
+
 export default function DashboardPage() {
   const dispatch = useDispatch();
   const { data: enrolledCourses, isLoading } = useSelector(
     (state) => state.student.enrolledCourses
   );
+  const { tickets } = useSelector((state) => state.support);
+
   const [startDate, setStartDate] = useState(new Date());
 
   const { bookings, isLoading: bookingLoading } = useSelector(
@@ -52,13 +57,22 @@ export default function DashboardPage() {
     dispatch(fetchEnrolledCoursesAsync());
     dispatch(
       fetchBookingsAsync({
-        status:"confirmed",
+        status: "confirmed",
         startDate: startDate.toISOString(),
         page: 1,
         limit: 3,
       })
     );
   }, [dispatch, startDate]);
+
+  useEffect(() => {
+    dispatch(
+      getInstructorTickets({
+        page: 1,
+        limit: 10,
+      })
+    );
+  }, []);
 
   return (
     <StudentDashboardLayout>
@@ -78,7 +92,9 @@ export default function DashboardPage() {
             </div>
             <ContinueWatching />
           </div>
-          <div className="w-2/3 sticky top-0 z-[0] space-y-5">
+
+          <div className="w-[30%] sticky top-0 z-[0] space-y-5">
+
             <ScheduleView
               bookingLoading={bookingLoading?.["fetchBookingsAsync"]}
               startDate={startDate}
@@ -87,9 +103,11 @@ export default function DashboardPage() {
               link={"/student-dashboard/booking"}
             />
             <TicketsContainer
-                link={"/student-dashboard/support"}
-                tickets={tickets}
-              />
+
+              link={"/student-dashboard/support"}
+              tickets={tickets}
+            />
+
           </div>
         </div>
 

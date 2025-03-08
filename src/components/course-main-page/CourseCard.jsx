@@ -18,10 +18,10 @@ import Loader from "../common/Loader";
 import { createPaymentCourse } from "@/store/slices/paymentSlice";
 import CourseByModal from "./CourseByModal";
 
-const CourseCard = ({ data, enrollNowRef }) => {
+const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const { isLoading, enrolledCourses } = useSelector((state) => state.courses);
+  const { isLoading } = useSelector((state) => state.courses);
   const { wishlist } = useSelector((state) => state.student.wishlist);
   const dispatch = useDispatch();
 
@@ -119,13 +119,17 @@ const CourseCard = ({ data, enrollNowRef }) => {
             Share
           </button>
         </div>
-        {!enrolledCourses?.some((item) => item === data?._id) && (
+        {!isEnrolled ? (
           <button
             ref={enrollNowRef}
             onClick={() => setisModalOpen(!isModalOpen)}
             className="bg-secondary hover:bg-black transition-custom text-white rounded-full w-full py-2 mt-4"
           >
             Enroll Now
+          </button>
+        ) : (
+          <button className="bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4">
+            Generate Certificate
           </button>
         )}
       </div>

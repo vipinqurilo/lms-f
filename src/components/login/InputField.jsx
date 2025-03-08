@@ -11,6 +11,16 @@ const InputField = ({ register, name, label, placeHolder, errors, type }) => {
 
   const toggleType = () => (showPassword ? "text" : "password");
 
+  const validationRules = {
+    required: `*${name} is required`,
+    ...(type === "email" && {
+      pattern: {
+        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: "*Invalid email format",
+      },
+    }),
+  };
+
   return (
     <div className="">
       <label htmlFor={name} className="text-light mb-2 block font-medium">
@@ -20,7 +30,7 @@ const InputField = ({ register, name, label, placeHolder, errors, type }) => {
         <input
           type={type === "password" ? toggleType() : type}
           id={name}
-          {...register(name, { required: `*${name} is required` })}
+          {...register(name, validationRules)}
           className="w-full border border-black/10 p-3 rounded px-4 focus:outline-secondary transition-custom"
           placeholder={placeHolder}
         />

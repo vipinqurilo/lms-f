@@ -6,15 +6,22 @@ import CourseOverview from "@/components/course-main-page/CourseOverview";
 import CourseReview from "@/components/course-main-page/CourseReview";
 import LecturesOverview from "@/components/course-main-page/LecturesOverview";
 import TopSection from "@/components/course-main-page/TopSection";
+import { makeCategorySubCategoryArray } from "@/store/slices/categorySlice";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CourseDetails = () => {
   const [isScrolled, setisScrolled] = useState(false);
   const { courseData: data, enrolledCourses } = useSelector(
     (state) => state.courses
   );
+  const { subjects, subSubjects } = useSelector((state) => state.category);
   const { authUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const isEnrolled = enrolledCourses.some(
+    (item) => item?.courseId === data?.course?._id
+  );
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -25,6 +32,10 @@ const CourseDetails = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    dispatch(makeCategorySubCategoryArray());
+  }, [subjects, subSubjects]);
 
   const enrollNowRef = useRef(null);
 
@@ -40,6 +51,7 @@ const CourseDetails = () => {
           <LecturesOverview
             data={data?.course?.courseContent}
             id={data?.course?._id}
+            isEnrolled={isEnrolled}
           />
           <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
@@ -48,10 +60,10 @@ const CourseDetails = () => {
           <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
-          <CourseHighLights data={data} enrollNowRef={enrollNowRef} />
+          <CourseHighLights data={data} isEnrolled={isEnrolled} enrollNowRef={enrollNowRef} />
         </div>
       </div>
-      {!enrolledCourses?.some((item) => item === data?.course?._id) && (
+      {!isEnrolled && (
         <div className={`block ${isScrolled ? "lg:block" : "lg:hidden"}`}>
           <div className="w-full bg-white border-t border-black/10 fixed bottom-0 shadow-lg">
             <div className=" px-8 md:px-10 lg:px-20 py-4 flex items-center justify-between gap-5">

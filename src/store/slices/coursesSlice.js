@@ -42,6 +42,11 @@ export const getAllEnrolledCourses = CreateApiAsyncThunk(
   () => api.get(`/students/enrolled-course-ids`)
 );
 
+export const markAsCompletedModule = CreateApiAsyncThunk(
+  "courses/markAsCompletedModule",
+  (data) => api.post(`/course/module-status`, data)
+);
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
@@ -141,6 +146,28 @@ const coursesSlice = createSlice({
       .addCase(getAllEnrolledCourses.rejected, (state, action) => {
         state.isLoading["getAllEnrolledCourses"] = false;
         state.error["getAllEnrolledCourses"] = action.payload;
+      })
+      // mark as complete the module
+      .addCase(markAsCompletedModule.pending, (state, action) => {
+        state.isLoading["markAsCompletedModule"] = true;
+      })
+      .addCase(markAsCompletedModule.fulfilled, (state, action) => {
+        state.isLoading["markAsCompletedModule"] = false;
+        const moduleId = action.meta?.arg?.moduleId;
+        console.log("moduleId", moduleId);
+
+        const content = state.courseData?.course?.courseContent;
+        if (content) {
+          content.forEach((item) => {
+            if (item._id === moduleId) {
+              item.isCompleted = true;
+            }
+          });
+        }
+      })
+      .addCase(markAsCompletedModule.rejected, (state, action) => {
+        state.isLoading["markAsCompletedModule"] = false;
+        state.error["markAsCompletedModule"] = action.payload;
       });
   },
 });

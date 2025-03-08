@@ -26,16 +26,18 @@ const RegisterForm = () => {
 
   const submitHandler = (data) => {
     const formData = {
-      name: data?.name,
-      email: data?.email,
-      password: data?.password,
+      ...data,
       role: "student",
     };
+    delete formData?.terms;
     dispatch(userRegisterAsync(formData))
       .unwrap()
       .then((res) => {
-        localStorage.setItem("token", res?.token);
-        router.push("/student-dashboard");
+        if (res?.data?.role === "student") {
+          localStorage.setItem("token", res?.token);
+          localStorage.removeItem("adminToken");
+          router.push("/student-dashboard");
+        }
       });
   };
   return (
@@ -93,11 +95,11 @@ const RegisterForm = () => {
               />
               <span className="ml-2 text-light text-sm cursor-pointer">
                 I agree to the{" "}
-                <Link href={"/"} className="text-primary font-bold">
+                <Link href={"/terms-of-service"} className="text-primary font-bold">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link href={"/"} className="text-primary font-bold">
+                <Link href={"/privacy-policy"} className="text-primary font-bold">
                   Privacy Policy.
                 </Link>
               </span>
@@ -114,8 +116,8 @@ const RegisterForm = () => {
             loading={loading}
           />
         </form>
+        <LoginOptions type={"register"} />
       </div>
-      <LoginOptions type={"register"} />
     </div>
   );
 };
