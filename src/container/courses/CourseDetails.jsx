@@ -19,6 +19,10 @@ const CourseDetails = () => {
   const { authUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  const isEnrolled = enrolledCourses.some(
+    (item) => item?.courseId === data?.course?._id
+  );
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (scrollY > 200) {
@@ -47,6 +51,7 @@ const CourseDetails = () => {
           <LecturesOverview
             data={data?.course?.courseContent}
             id={data?.course?._id}
+            isEnrolled={isEnrolled}
           />
           <AboutInstructor data={data} />
           {authUser && authUser?.role === "student" && (
@@ -55,10 +60,10 @@ const CourseDetails = () => {
           <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
-          <CourseHighLights data={data} enrollNowRef={enrollNowRef} />
+          <CourseHighLights data={data} isEnrolled={isEnrolled} enrollNowRef={enrollNowRef} />
         </div>
       </div>
-      {!enrolledCourses?.some((item) => item === data?.course?._id) && (
+      {!isEnrolled && (
         <div className={`block ${isScrolled ? "lg:block" : "lg:hidden"}`}>
           <div className="w-full bg-white border-t border-black/10 fixed bottom-0 shadow-lg">
             <div className=" px-8 md:px-10 lg:px-20 py-4 flex items-center justify-between gap-5">

@@ -11,8 +11,8 @@ import { FaCheck, FaDownload } from "react-icons/fa";
 import { markAsCompletedModule } from "@/store/slices/coursesSlice";
 import Loader from "../common/Loader";
 
-const LecturesOverview = ({ data, id }) => {
-  const { enrolledCourses, isLoading } = useSelector((state) => state.courses);
+const LecturesOverview = ({ data, id, isEnrolled }) => {
+  const { isLoading } = useSelector((state) => state.courses);
   const details = [
     {
       name: "Total Lectures",
@@ -121,9 +121,7 @@ const LecturesOverview = ({ data, id }) => {
               // ref={(el) => (contentRefs.current[index] = el)}
             >
               {section?.lessons?.map((lecture, i) => {
-                const isAccessible =
-                  enrolledCourses?.some((item) => item === id) ||
-                  (i === 0 && index === 0);
+                const isAccessible = isEnrolled || (i === 0 && index === 0);
 
                 return (
                   <div
@@ -147,29 +145,28 @@ const LecturesOverview = ({ data, id }) => {
                 );
               })}
 
-              {!section?.isCompleted &&
-                enrolledCourses?.some((item) => item === id) && (
-                  <div className="w-full flex justify-end">
-                    <button
-                      onClick={() =>
-                        markAsComplete({
-                          courseId: id,
-                          moduleId: section?._id,
-                        })
-                      }
-                      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 bg-secondary text-white hover:bg-background`}
-                    >
-                      {isLoading["markAsCompletedModule"] ? (
-                        <Loader />
-                      ) : (
-                        <>
-                          <BiPlayCircle className="text-lg" />
-                          <span>Mark as Complete</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                )}
+              {!section?.isCompleted && isEnrolled && (
+                <div className="w-full flex justify-end">
+                  <button
+                    onClick={() =>
+                      markAsComplete({
+                        courseId: id,
+                        moduleId: section?._id,
+                      })
+                    }
+                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 bg-secondary text-white hover:bg-background`}
+                  >
+                    {isLoading["markAsCompletedModule"] ? (
+                      <Loader />
+                    ) : (
+                      <>
+                        <BiPlayCircle className="text-lg" />
+                        <span>Mark as Complete</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}

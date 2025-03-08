@@ -81,41 +81,61 @@ const AdminTutorsSalesEarning = ({}) => {
                   <tr className="bg-white">
                     <td colSpan={5} className="p-4">
                       <h3 className="text-lg font-semibold text-gray-700">
-                        Subjects Tought:
+                        Subjects Taught:
                       </h3>
-                      <div className="mt-2 grid grid-cols-3 gap-5">
-                        {tution?.subjects?.map((c, idx) => (
-                          <div
-                            key={idx}
-                            className="grid grid-cols-4 gap-4 px-4 py-2 h-full border rounded-md shadow-sm bg-white"
-                          >
-                            <div className="w-full h-full col-span-2 relative">
-                              <Image
-                                src={
-                                  c?.subjectImage ||
-                                  "/assets/common/profile.png"
-                                }
-                                alt={c?.subjectName}
-                                fill={true}
-                                className="rounded object-center object-cover"
-                              />
-                            </div>
-                            <div className="col-span-2 text-sm">
-                              <p className="font-semibold text-sm  line-clamp-2">
-                                {c?.subjectName}
-                              </p>
-                              <p className="text-gray-600">
-                                Sessions: {c?.sessions || 0}
-                              </p>
-                              <p className="text-gray-600">
-                                Total Sales: ${c?.totalSales || 0}
-                              </p>
-                              <p className="text-gray-600">
-                                Avg Price: ${c?.avgPrice || 0}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="mt-2 overflow-x-auto">
+                        <table className="w-full border-collapse border border-gray-300">
+                          <thead className="bg-gray-100">
+                            <tr className="border border-gray-300">
+                              <th className="p-2 text-left border border-gray-300">
+                                Image
+                              </th>
+                              <th className="p-2 text-left border border-gray-300">
+                                Subject Name
+                              </th>
+                              <th className="p-2 text-left border border-gray-300">
+                                Sessions
+                              </th>
+                              <th className="p-2 text-left border border-gray-300">
+                                Total Sales
+                              </th>
+                              <th className="p-2 text-left border border-gray-300">
+                                Avg Price
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {tution?.subjects?.map((c, idx) => (
+                              <tr key={idx} className="border border-gray-300">
+                                <td className="p-2 border border-gray-300">
+                                  <div className="w-16 h-16 relative">
+                                    <Image
+                                      src={
+                                        c?.subjectImage ||
+                                        "/assets/common/profile.png"
+                                      }
+                                      alt={c?.subjectName}
+                                      fill={true}
+                                      className="rounded object-cover"
+                                    />
+                                  </div>
+                                </td>
+                                <td className="p-2 border border-gray-300 font-semibold">
+                                  {c?.subjectName}
+                                </td>
+                                <td className="p-2 border border-gray-300 text-gray-600">
+                                  {c?.sessions || 0}
+                                </td>
+                                <td className="p-2 border border-gray-300 text-gray-600">
+                                  ${c?.totalSales || 0}
+                                </td>
+                                <td className="p-2 border border-gray-300 text-gray-600">
+                                  ${c?.avgPrice || 0}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </td>
                   </tr>
