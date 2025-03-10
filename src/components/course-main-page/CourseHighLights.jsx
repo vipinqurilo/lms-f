@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 // import { formatDuration } from "@/utils/TimeFormat";
 
-const CourseHighLights = ({ data, enrollNowRef, isEnrolled }) => {
+const CourseHighLights = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   // const totalSeconds = data?.course?.courseContent?.reduce((total, module) => {
   //   return (
   //     total +
@@ -71,7 +71,7 @@ const CourseHighLights = ({ data, enrollNowRef, isEnrolled }) => {
 
   return (
     <div className="w-full space-y-5 font-nunito">
-      <CourseCard enrollNowRef={enrollNowRef} data={data?.course} isEnrolled={isEnrolled} />
+      <CourseCard enrollNowRef={enrollNowRef} data={data?.course} isEnrolled={isEnrolled} enrolledCourseData={enrolledCourseData} />
       <IncludesListRed
         list={data?.course?.courseFeatures}
         type="red"

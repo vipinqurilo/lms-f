@@ -20,11 +20,13 @@ import { createPaymentCourse } from "@/store/slices/paymentSlice";
 import CourseByModal from "./CourseByModal";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 
-const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
+const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { isLoading } = useSelector((state) => state.courses);
-  const { wishlist, isLoading: wishlistLoading } = useSelector((state) => state.student.wishlist);
+  const { wishlist, isLoading: wishlistLoading } = useSelector(
+    (state) => state.student.wishlist
+  );
   const dispatch = useDispatch();
 
   const openModal = () => setisVideoModalOpen(true);
@@ -62,6 +64,8 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
         });
     }
   };
+
+  console.log(enrolledCourseData, "enrolledCourseData");
 
   return (
     <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
@@ -128,7 +132,13 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled }) => {
             Enroll Now
           </button>
         ) : (
-          <button className="bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4">
+          <button
+            disabled={
+              !enrolledCourseData?.isCompleted &&
+              enrolledCourseData?.progress !== 100
+            }
+            className="bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4 disabled:cursor-not-allowed disabled:opacity-60"
+          >
             Generate Certificate
           </button>
         )}

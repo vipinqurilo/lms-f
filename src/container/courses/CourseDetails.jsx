@@ -65,7 +65,7 @@ const CourseDetails = () => {
           <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
-          <CourseHighLights data={data} isEnrolled={isEnrolled} enrollNowRef={enrollNowRef} />
+          <CourseHighLights data={data} isEnrolled={isEnrolled} enrollNowRef={enrollNowRef} enrolledCourseData={enrolledCourseData} />
         </div>
       </div>
       {!isEnrolled && (

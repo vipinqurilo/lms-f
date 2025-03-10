@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Loader from "./Loader";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import CourseByModal from "../course-main-page/CourseByModal";
+import { SlBadge } from "react-icons/sl";
 
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
@@ -22,12 +23,12 @@ export default function FeaturedCard({ data, isFull = false }) {
     return <p>Invalid course data</p>;
   }
 
-  const isEnrolled = enrolledCourses && enrolledCourses.some(
-    (item) => item?.courseId === data?._id
-  );
-  const enrolledCourseData = enrolledCourses && enrolledCourses.find(
-    (item) => item?.courseId === data?._id
-  );
+  const isEnrolled =
+    enrolledCourses &&
+    enrolledCourses.some((item) => item?.courseId === data?._id);
+  const enrolledCourseData =
+    enrolledCourses &&
+    enrolledCourses.find((item) => item?.courseId === data?._id);
 
   const dispatch = useDispatch();
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -73,9 +74,7 @@ export default function FeaturedCard({ data, isFull = false }) {
           } cursor-pointer group-hover:scale-105 bg-white transition-all duration-300 rounded-lg shadow-lg overflow-hidden relative p-2 lg:p-4`}
         >
           <div className="w-full flex flex-col">
-            <div
-              className={`relative overflow-hidden w-full h-60 rounded-lg`}
-            >
+            <div className={`relative overflow-hidden w-full h-60 rounded-lg`}>
               <Image
                 src={data?.courseImage || "/assets/common/courseImage.jpg"}
                 alt="Course Image"
@@ -87,9 +86,10 @@ export default function FeaturedCard({ data, isFull = false }) {
             {isEnrolled && (
               <div className="w-[95%] mx-auto bg-blue-200 rounded-b-lg">
                 <div
-                  className="bg-blue-600 h-1 rounded-lg transition-all duration-1000"
-                  style={{ width: `0%` }}
-                  // style={{ width: `${enrolledCourseData?.progress}%` }}
+                  className={`bg-blue-600 h-1 rounded-lg transition-all duration-1000 ${
+                    enrolledCourseData?.progress === 100 && "!bg-green-600"
+                  }`}
+                  style={{ width: `${enrolledCourseData?.progress}%` }}
                 ></div>
               </div>
             )}
@@ -150,10 +150,7 @@ export default function FeaturedCard({ data, isFull = false }) {
             >
               {data?.courseTitle}
             </Link>
-            <p
-              href={`/courses/${data?._id}`}
-              className="!mt-2 text-sm text-gray-500 line-clamp-2"
-            >
+            <p className="!mt-2 text-sm text-gray-500 line-clamp-2">
               {data?.courseDescription}
             </p>
 
@@ -213,9 +210,20 @@ export default function FeaturedCard({ data, isFull = false }) {
           </div>
 
           {isEnrolled && (
-            <div className="absolute top-6 right-6 bg-blue-600 text-white rounded-full flex items-center justify-center w-10 h-10 shadow-lg">
-              <span className="text-xs font-bold">{enrolledCourseData?.progress}%</span>
-            </div>
+            <>
+              <div
+                className={`absolute top-6 right-6 rounded-full flex items-center justify-center w-10 h-10 shadow-lg bg-blue-600 text-white
+                    ${
+                      enrolledCourseData?.progress === 100 &&
+                      "!bg-green-600 !border-2 !border-green-800"
+                    }
+              `}
+              >
+                <span className="text-xs font-bold">
+                  {enrolledCourseData?.progress}%
+                </span>
+              </div>
+            </>
           )}
         </div>
       </div>

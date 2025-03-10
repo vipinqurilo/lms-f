@@ -9,8 +9,8 @@ import { formatDuration } from "@/utils/TimeFormat";
 import LectureItem from "./LectureItem";
 import { FaCheck, FaDownload } from "react-icons/fa";
 import {
+  getAllEnrolledCourses,
   markAsCompletedModule,
-  markModuleAsCompleted,
 } from "@/store/slices/coursesSlice";
 import Loader from "../common/Loader";
 
@@ -64,12 +64,9 @@ const LecturesOverview = ({ data, id, isEnrolled, enrolledCourseData }) => {
     dispatch(markAsCompletedModule(data))
       .unwrap()
       .then(() => {
-        dispatch(markModuleAsCompleted(data?.moduleId));
+        dispatch(getAllEnrolledCourses());
       });
   };
-
-  console.log(data, "data");
-  
 
   return (
     <div className="course-sub-container">

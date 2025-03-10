@@ -1,22 +1,20 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
-import { CourseCard } from "../../components/student-dashboard/CourseCard";
 import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
-import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enrolledCoursesSlice";
 import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
 
 import { getInstructorTickets } from "@/store/slices/supportSlice";
-
+import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
 
 export default function DashboardPage() {
   const dispatch = useDispatch();
-  const { data: enrolledCourses, isLoading } = useSelector(
-    (state) => state.student.enrolledCourses
-  );
+  const { enrolledCourses } = useSelector((state) => state.courses);
   const { tickets } = useSelector((state) => state.support);
 
   const [startDate, setStartDate] = useState(new Date());
@@ -24,29 +22,34 @@ export default function DashboardPage() {
   const { bookings, isLoading: bookingLoading } = useSelector(
     (state) => state.student.booking
   );
-  const { tickets } = useSelector((state) => state.support);
 
   const stats = [
     {
       title: "Enrolled Courses",
-      value: enrolledCourses?.length || 0,
+      value: (enrolledCourses && enrolledCourses?.length) || 0,
       iconSrc: "assets/student-dashboard/icons/EnrolledCourses.svg",
       bgColor: "bg-[#EBEAFC]",
     },
     {
       title: "Active Courses",
-      value: "03",
+      value:
+        (enrolledCourses &&
+          enrolledCourses?.filter((item) => item?.progress !== 100)?.length) ||
+        0,
       iconSrc: "assets/student-dashboard/icons/ActiveCourses.svg",
       bgColor: "bg-[#DBFCDF]",
     },
     {
       title: "Completed Courses",
-      value: "13",
+      value:
+        (enrolledCourses &&
+          enrolledCourses?.filter((item) => item?.progress === 100)?.length) ||
+        0,
       iconSrc: "assets/student-dashboard/icons/CompletedCourses.svg",
       bgColor: "bg-[#F8E9FC]",
     },
     {
-      title: "Booked Courses",
+      title: "Booked Lessons",
       value: bookings?.length || 0,
       iconSrc: "assets/student-dashboard/icons/BookedCourses.svg",
       bgColor: "bg-[#E9F6FA]",
@@ -54,7 +57,7 @@ export default function DashboardPage() {
   ];
 
   useEffect(() => {
-    dispatch(fetchEnrolledCoursesAsync());
+    dispatch(getAllEnrolledCourses());
     dispatch(
       fetchBookingsAsync({
         status: "confirmed",
@@ -94,7 +97,6 @@ export default function DashboardPage() {
           </div>
 
           <div className="w-[30%] sticky top-0 z-[0] space-y-5">
-
             <ScheduleView
               bookingLoading={bookingLoading?.["fetchBookingsAsync"]}
               startDate={startDate}
@@ -103,46 +105,12 @@ export default function DashboardPage() {
               link={"/student-dashboard/booking"}
             />
             <TicketsContainer
-
               link={"/student-dashboard/support"}
               tickets={tickets}
             />
-
           </div>
         </div>
-
-        {/* Recently Enrolled Courses */}
-        {/* <div className="py-8">
-          <h2 className="text-2xl font-bold text-dark mb-6">
-            Recently Enrolled Courses
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {!isLoading["fetchEnrolledCoursesAsync"] &&
-              enrolledCourses?.map((enrollment) => (
-                <CourseCard
-                  key={enrollment?._id}
-                  course={{
-                    id: enrollment?.course?._id,
-                    title: enrollment?.course?.courseTitle,
-                    instructor: {
-                      name: enrollment?.course?.courseInstructor || "N/A",
-                      image: enrollment?.course?.courseImage,
-                    },
-                    thumbnail: enrollment?.course?.courseImage,
-                    lessons: enrollment?.course?.courseContent.reduce(
-                      (acc, module) => acc + module.lessons.length,
-                      0
-                    ),
-                    duration: "N/A", // Replace if duration data is available
-                    price: enrollment?.course?.coursePrice,
-                  }}
-                  onWishlist={false}
-                  onWishlistClick={() => {}}
-                />
-              ))}
-          </div>
-        </div> */}
-      </div>
+    </div>
     </StudentDashboardLayout>
   );
 }

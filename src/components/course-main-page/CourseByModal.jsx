@@ -21,9 +21,10 @@ const CourseByModal = ({
   setselectedMethod,
 }) => {
   const { authUser } = useSelector((state) => state.user);
+  
   return (
     <>
-      {isPaymentModal ? (
+      {isPaymentModal && authUser !== null ? (
         <CheckoutForm
           checkoutUrl={checkoutUrl}
           setPaymentModal={setisPaymentModal}
@@ -35,7 +36,7 @@ const CourseByModal = ({
             <BackgroundModal
               PropComponent={
                 <>
-                  {authUser && Object.keys(authUser)?.length === 0 ? (
+                  {authUser === null ? (
                     <div
                       className="w-[90%] lg:w-[70vw] flex items-center font-nunito !h-[90vh] bg-white rounded-lg overflow-hidden relative"
                       style={{
