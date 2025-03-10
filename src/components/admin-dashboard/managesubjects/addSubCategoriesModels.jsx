@@ -4,7 +4,7 @@ import { getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubje
 import { addSubCategory } from "@/store/slices/admin-dashboard/manageSubjectsSubCategorySlice";
 import Loader from "@/components/common/Loader";
 
-const AddSubCategories = ({ isOpen, onClose, setIsModalOpen }) => {
+const AddSubCategories = ({ isOpen, onClose, setIsModalOpen, loading }) => {
   const dispatch = useDispatch();
   const { subjects: categories, isLoading } = useSelector(
     (state) => state.admin.managesubjects
@@ -55,8 +55,6 @@ const AddSubCategories = ({ isOpen, onClose, setIsModalOpen }) => {
         console.error("Error adding subcategory:", error);
       });
   };
-
- 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -120,10 +118,11 @@ const AddSubCategories = ({ isOpen, onClose, setIsModalOpen }) => {
             Cancel
           </button>
           <button
-            className="bg-orange-500 text-white px-4 py-2 rounded"
+            className="bg-orange-500 text-white px-4 py-2 rounded disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
             onClick={handleSave}
           >
-            Save
+            {loading ? <Loader /> : "Save"}
           </button>
         </div>
       </div>

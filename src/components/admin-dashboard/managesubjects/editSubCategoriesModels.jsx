@@ -1,11 +1,14 @@
+import Loader from "@/components/common/Loader";
 import { getAllManageSubjects } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
+const EditSubCategories = ({ isOpen, onClose, category, onSave, loading }) => {
   console.log(category, "subcategory");
   const dispatch = useDispatch();
-  const { subjects: categories, isLoading } = useSelector((state) => state.admin.managesubjects);
+  const { subjects: categories, isLoading } = useSelector(
+    (state) => state.admin.managesubjects
+  );
 
   const [name, setName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -38,10 +41,14 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
           ✖
         </button>
 
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Edit Subcategory</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+          Edit Subcategory
+        </h2>
 
         {/* Subcategory Name Input */}
-        <label className="block text-gray-700 font-medium mb-1">Subcategory Name</label>
+        <label className="block text-gray-700 font-medium mb-1">
+          Subcategory Name
+        </label>
         <input
           type="text"
           className="w-full border p-2 rounded-lg"
@@ -51,7 +58,9 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
         />
 
         {/* Category Dropdown */}
-        <label className="block text-gray-700 font-medium mb-1 mt-4">Category</label>
+        <label className="block text-gray-700 font-medium mb-1 mt-4">
+          Category
+        </label>
         <select
           className="w-full border p-2 rounded-lg"
           value={selectedCategory}
@@ -79,14 +88,20 @@ const EditSubCategories = ({ isOpen, onClose, category, onSave }) => {
         />
 
         <div className="flex justify-end mt-4 space-x-2">
-          <button className="px-4 py-2 bg-gray-500 text-white rounded" onClick={onClose}>
+          <button
+            className="px-4 py-2 bg-gray-500 text-white rounded"
+            onClick={onClose}
+          >
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-orange-500 text-white rounded"
-            onClick={() => onSave({ name, courseCategory: selectedCategory, pricePerHour })}
+            className="px-4 py-2 bg-orange-500 text-white rounded disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
+            onClick={() =>
+              onSave({ name, courseCategory: selectedCategory, pricePerHour })
+            }
           >
-            Save Changes
+            {loading ? <Loader /> : "Save Changes"}
           </button>
         </div>
       </div>

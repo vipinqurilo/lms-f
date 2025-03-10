@@ -82,11 +82,7 @@ const CommentForm = ({ id, data }) => {
 
   if (
     Array.isArray(data) &&
-    data.some(
-      (review) =>
-        `${review?.student?.firstName}${review?.student?.lastName}` ===
-        authUser?.name
-    )
+    data.some((review) => review?.student?._id === authUser?._id)
   ) {
     return (
       <div className="course-sub-container">

@@ -1,6 +1,9 @@
 "use client";
 
-import { wishlistAsync } from "@/store/slices/coursesSlice";
+import {
+  generateCertificate,
+  getAllEnrolledCourses,
+} from "@/store/slices/coursesSlice";
 import Image from "next/image";
 import React, { useState } from "react";
 import {
@@ -65,7 +68,13 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
     }
   };
 
-  console.log(enrolledCourseData, "enrolledCourseData");
+  const handlegenerateCertificate = () => {
+    dispatch(generateCertificate(data?._id))
+      .unwrap()
+      .then(() => {
+        dispatch(getAllEnrolledCourses());
+      });
+  };
 
   return (
     <div className="w-full bg-white mx-auto border rounded-xl shadow p-4 relative">
@@ -93,11 +102,11 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
         </h3>
         <div className="w-full flex justify-between items-center">
           <h3 className="text-green-500 text-2xl font-bold">
-            {data?.coursePrice || "--"}
+            {data?.coursePrice || "--"} Zar
           </h3>
-          <p className="text-gray-500">
+          {/* <p className="text-gray-500">
             <span className="line-through">₹1999.00</span> <span>50% off</span>
-          </p>
+          </p> */}
         </div>
         <div className="flex justify-between mt-4">
           <button
@@ -132,15 +141,38 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
             Enroll Now
           </button>
         ) : (
-          <button
-            disabled={
-              !enrolledCourseData?.isCompleted &&
-              enrolledCourseData?.progress !== 100
-            }
-            className="bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Generate Certificate
-          </button>
+          <>
+            {enrolledCourseData?.certificate &&
+            enrolledCourseData?.certificate?.certificateUrl ? (
+              <button
+                className={`bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4 disabled:cursor-not-allowed disabled:opacity-60`}
+              >
+                <a
+                  href={enrolledCourseData?.certificate?.certificateUrl}
+                  download={enrolledCourseData?.certificate?.studentName}
+                  className="w-full"
+                >
+                  Download
+                </a>
+              </button>
+            ) : (
+              <button
+                disabled={
+                  (!enrolledCourseData?.isCompleted &&
+                    enrolledCourseData?.progress !== 100) ||
+                  isLoading["generateCertificate"]
+                }
+                className="bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 mt-4 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={handlegenerateCertificate}
+              >
+                {isLoading["generateCertificate"] ? (
+                  <Loader />
+                ) : (
+                  "Generate Certificate"
+                )}
+              </button>
+            )}
+          </>
         )}
       </div>
 

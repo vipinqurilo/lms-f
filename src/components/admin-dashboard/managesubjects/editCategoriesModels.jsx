@@ -1,6 +1,7 @@
+import Loader from "@/components/common/Loader";
 import React, { useState, useEffect } from "react";
 
-const EditCategories = ({ isOpen, onClose, category, onSave }) => {
+const EditCategories = ({ isOpen, onClose, category, onSave, loading }) => {
   if (!isOpen) return null;
 
   const [name, setName] = useState(category?.name || "Null");
@@ -23,7 +24,9 @@ const EditCategories = ({ isOpen, onClose, category, onSave }) => {
           ✖
         </button>
 
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Edit Category</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+          Edit Category
+        </h2>
 
         <label className="block text-gray-700 font-medium mb-1">Name</label>
         <input
@@ -35,14 +38,18 @@ const EditCategories = ({ isOpen, onClose, category, onSave }) => {
         />
 
         <div className="flex justify-end mt-4 space-x-2">
-          <button className="px-4 py-2 bg-gray-500 text-white rounded" onClick={onClose}>
+          <button
+            className="px-4 py-2 bg-gray-500 text-white rounded"
+            onClick={onClose}
+          >
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-orange-500 text-white rounded"
+            className="px-4 py-2 bg-orange-500 text-white rounded disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
             onClick={() => onSave({ name })}
           >
-            Save Changes
+            {loading ? <Loader /> : "Save Changes"}
           </button>
         </div>
       </div>

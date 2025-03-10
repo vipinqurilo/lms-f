@@ -17,8 +17,6 @@ export const getAllTeachers = CreateApiAsyncThunk(
   }
 );
 
-
-
 // Update teacher status
 export const updateTeacherStatus = CreateApiAsyncThunk(
   "PATCH/teachers/updateTeacherStatus",
@@ -48,20 +46,31 @@ export const teachersSlice = createSlice({
         state.currentPage = action.payload.currentPage;
         state.totalPages = action.payload.totalPages;
       })
-      
+
       .addCase(getAllTeachers.rejected, (state, action) => {
         state.isLoading["getAllTeachers"] = false;
         state.error["getAllTeachers"] = action.payload;
       })
+
+      .addCase(updateTeacherStatus.pending, (state) => {
+        state.isLoading["updateTeacherStatus"] = true;
+      })
       .addCase(updateTeacherStatus.fulfilled, (state, action) => {
+        state.isLoading["updateTeacherStatus"] = false;
         if (!action.payload) return;
 
         const { teacherId, status } = action.payload;
-        const teacherIndex = state.teachers.findIndex((teacher) => teacher._id === teacherId);
+        const teacherIndex = state.teachers.findIndex(
+          (teacher) => teacher._id === teacherId
+        );
 
         if (teacherIndex !== -1) {
           state.teachers[teacherIndex].teacherStatus = status; // Update teacher status
         }
+      })
+      .addCase(updateTeacherStatus.rejected, (state, action) => {
+        state.isLoading["updateTeacherStatus"] = false;
+        state.error["updateTeacherStatus"] = action.payload;
       });
   },
 });
