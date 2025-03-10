@@ -22,7 +22,8 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
       // Monitor for window close
       const timer = setInterval(() => {
 
-        try {
+     try {
+
           if (stripeWindow.closed) {
             clearInterval(timer);
             setPaymentModal(false);
