@@ -34,6 +34,7 @@ const InstructorDashboard = () => {
   );
   const { tickets } = useSelector((state) => state.support);
   const filteredData = courses?.slice(0, 5)?.map((course) => ({
+    id: course?._id,
     image: course?.courseImage,
     title: course?.courseTitle,
     des: course?.courseDescription,
@@ -125,6 +126,7 @@ const InstructorDashboard = () => {
                   headingsData={headingsData}
                   data={filteredData}
                   isCols={true}
+                  link={"/instructor-dashboard/my-courses"}
                 />
               </div>
             </div>

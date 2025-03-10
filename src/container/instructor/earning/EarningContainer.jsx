@@ -90,11 +90,21 @@ const EarningContainer = () => {
     },
     {
       title: "Tution Sessions Sales",
-      earning: formatNumber(
-        tutionEarning
-          ? tutionEarning.reduce((acc, item) => acc + item.earnings, 0)
-          : 0
-      ),
+      earning:
+        authUser?.role === "admin"
+          ? formatNumber(
+              adminTutionEarning
+                ? adminTutionEarning.reduce(
+                    (acc, item) => acc + item?.totalSalesAmount,
+                    0
+                  )
+                : 0
+            )
+          : formatNumber(
+              tutionEarning
+                ? tutionEarning.reduce((acc, item) => acc + item.earnings, 0)
+                : 0
+            ),
       icon: <DollarSign size={24} className="text-green-800" />,
       bgColor: "bg-green-100",
     },

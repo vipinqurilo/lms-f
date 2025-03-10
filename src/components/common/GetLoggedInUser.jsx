@@ -8,13 +8,15 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { fetchAllTutorProfileAsync } from "@/store/slices/tutorsSlice";
-import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
+import { fetchCoursesAsync, getAllEnrolledCourses } from "@/store/slices/coursesSlice";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
   const { authUser, isAuthenticated } = useSelector((state) => state.user);
-  const userToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const adminToken = typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
+  const userToken =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const adminToken =
+    typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
 
   useEffect(() => {
     if (userToken || adminToken) {
@@ -24,6 +26,11 @@ const GetLoggedInUser = () => {
     dispatch(getSubSubjects());
     dispatch(getLanguages());
     dispatch(fetchAllTutorProfileAsync({ search: "" }));
+    const requestData = {
+      page: 1,
+      status: "published",
+    };
+    dispatch(fetchCoursesAsync(requestData));
   }, [dispatch]);
 
   useEffect(() => {

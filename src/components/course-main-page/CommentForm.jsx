@@ -129,7 +129,9 @@ const CommentForm = ({ id, data }) => {
               {...register("message", {
                 required: `*${"Message"} is required`,
               })}
-              className="w-full h-20 resize-none border border-black/10 p-3 rounded px-4 focus:outline-secondary transition-custom"
+              maxlength="250"
+              rows={4}
+              className="w-full resize-none border border-black/10 p-3 rounded px-4 focus:outline-secondary transition-custom"
               placeholder={"Enter message Here"}
             />
           </div>

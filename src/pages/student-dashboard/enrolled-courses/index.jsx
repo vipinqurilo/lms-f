@@ -9,6 +9,7 @@ import TitleComp from "@/components/instructor/TitleComp";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
+import FeaturedCard from "@/components/common/FeaturedCard";
 
 const TabButton = ({ active, onClick, children }) => (
   <button
@@ -21,7 +22,7 @@ const TabButton = ({ active, onClick, children }) => (
       }`}
   >
     {children}
-  </button> 
+  </button>
 );
 
 export default function EnrolledCoursesPage() {
@@ -30,7 +31,7 @@ export default function EnrolledCoursesPage() {
     data: enrolledCourses,
     isLoading,
     totalPages,
-    currentPage:storedCurrentPage
+    currentPage: storedCurrentPage,
   } = useSelector((state) => state.student.enrolledCourses);
   const [filters, setfilters] = useState({});
   const [currentPage, setCurrentPage] = useState(storedCurrentPage || 1);
@@ -58,10 +59,7 @@ export default function EnrolledCoursesPage() {
     <StudentDashboardLayout className="space-y-8 ">
       <div className="p-10">
         <div className="dashboard-container">
-          <TitleComp
-            heading={"Enrolled Courses"}
-            
-          />
+          <TitleComp heading={"Enrolled Courses"} />
 
           <div className="w-full !sticky !-top-0 bg-white px-5 !z-[5]">
             <UserFilter
@@ -86,29 +84,30 @@ export default function EnrolledCoursesPage() {
               </div>
             ) : (
               enrolledCourses?.map((enrollment) => (
-                <CourseCard
-                  key={enrollment?._id}
-                  type="course"
-                  course={{
-                    id: enrollment?.courseId?._id,
-                    title: enrollment?.courseId?.courseTitle,
-                    instructor: {
-                      name:
-                        enrollment?.courseId?.courseInstructor?.email || "N/A",
-                      image: enrollment?.courseId?.courseImage,
-                    },
-                    thumbnail: enrollment?.courseId?.courseImage,
-                    lessons: enrollment?.courseId?.courseContent.reduce(
-                      (acc, module) => acc + module.lessons.length,
-                      0
-                    ),
-                    duration: "N/A", // Replace if duration data is available
-                    
-                    originalPrice: "N/A", // Replace if original price is available
-                  }}
-                  onWishlist={false}
-                  onWishlistClick={() => {}}
-                />
+                // <CourseCard
+                //   key={enrollment?._id}
+                //   type="course"
+                //   course={{
+                //     id: enrollment?.courseId?._id,
+                //     title: enrollment?.courseId?.courseTitle,
+                //     instructor: {
+                //       name:
+                //         enrollment?.courseId?.courseInstructor?.email || "N/A",
+                //       image: enrollment?.courseId?.courseImage,
+                //     },
+                //     thumbnail: enrollment?.courseId?.courseImage,
+                //     lessons: enrollment?.courseId?.courseContent.reduce(
+                //       (acc, module) => acc + module.lessons.length,
+                //       0
+                //     ),
+                //     duration: "N/A", // Replace if duration data is available
+
+                //     originalPrice: "N/A", // Replace if original price is available
+                //   }}
+                //   onWishlist={false}
+                //   onWishlistClick={() => {}}
+                // />
+                <FeaturedCard data={enrollment?.courseId} isFull={true} />
                 // <p>Hello</p>
               ))
             )}
