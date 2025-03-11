@@ -2,13 +2,13 @@ import axios from "axios";
 
 const baseUrlAshokSir = "https://6g2n7ff0-8000.inc1.devtunnels.ms/api";
 const baseUrlAbhiSir = "https://q1ztd2hs-8000.inc1.devtunnels.ms/api";
-const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
+const baseURLVipin = "  ";
 const verceUrl="https://lms-backend-rho-pink.vercel.app/api"
 const baseUrlKD = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
 
 export const api = axios.create({
-  baseURL: baseUrlKD,
-  // baseURL: baseUrlAbhiSir,
+  // baseURL: baseUrlKD,
+  baseURL: baseURLVipin,
   headers: {
     "Cache-Control": "no-store, no-cache,   must-revalidate, proxy-revalidate",
     Pragma: "no-cache",
