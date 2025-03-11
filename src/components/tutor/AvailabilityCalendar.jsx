@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { FaCaretRight } from "react-icons/fa";
 import { LiaAngleLeftSolid, LiaAngleRightSolid } from "react-icons/lia";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setEndDate, setStartDate } from "@/store/slices/uiSlice";
 
 const AvailabilityCalendar = ({ calendar, rawBookings }) => {
   const [currentWeek, setCurrentWeek] = useState(0);
+  const { tutorId, startDate, endDate } = useSelector((state) => state.ui);
+  const dispatch = useDispatch();
+
+  const updateDateRange = (baseDate) => {
+    const newStartDate = new Date(baseDate);
+    newStartDate.setHours(0, 0, 0, 0);
+    dispatch(setStartDate(newStartDate.getTime()));
+
+    const newEndDate = new Date(newStartDate);
+    newEndDate.setDate(newStartDate.getDate() + 6);
+    newEndDate.setHours(23, 59, 59, 999);
+    dispatch(setEndDate(newEndDate.getTime()));
+  };
 
   const bookings = rawBookings?.map((session) => {
     const startTime = new Date(session.sessionStartTime);
     const endTime = new Date(session.sessionEndTime);
     startTime.setMinutes(startTime.getMinutes() + 330); // Add 5:30
     endTime.setMinutes(endTime.getMinutes() + 330); // Add 5:30
-
     return {
       date: startTime.toISOString().split("T")[0], // Extract YYYY-MM-DD
       startTime: startTime.toISOString().split("T")[1].slice(0, 5),
@@ -31,24 +44,29 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
 
   useEffect(() => {
     const calculateDays = () => {
-      const today = new Date();
-      const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() + currentWeek * 7);
+      const startDateObj = new Date(startDate);
+      const weekOffset = Math.floor(currentWeek * 7);
+      startDateObj.setDate(startDateObj.getDate() + weekOffset);
 
       const weekDays = Array.from({ length: 7 }, (_, i) => {
-        const day = new Date(startOfWeek);
-        day.setDate(startOfWeek.getDate() + i);
+        const day = new Date(startDateObj);
+        day.setDate(startDateObj.getDate() + i);
 
-        const weekday = day.toLocaleDateString("en-US", { weekday: "short" }); // Short weekday name (e.g., "Mon")
-        const date = day.getDate(); // Day of the month (e.g., 26)
-        const month = day.toLocaleDateString("en-US", { month: "short" }); // Short month name (e.g., "Jan")
-        const year = day.getFullYear(); // Full year (e.g., 2025)
+        const weekday = day.toLocaleDateString("en-US", { weekday: "short" });
+        const date = day.getDate();
+        const month = day.toLocaleDateString("en-US", { month: "short" });
+        const year = day.getFullYear();
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dayDate = new Date(day);
+        dayDate.setHours(0, 0, 0, 0);
 
         return {
-          label: `${weekday} ${date}`, // Label with only weekday and date
-          month: month, // Month (e.g., "Jan")
-          year: year, // Year (e.g., 2025)
-          isToday: today.toDateString() === day.toDateString(), // Check if it's today
+          label: `${weekday} ${date}`,
+          month: month,
+          year: year,
+          isToday: today.getTime() === dayDate.getTime(),
         };
       });
 
@@ -56,12 +74,12 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
     };
 
     const calculateDateRange = () => {
-      const startOfWeek = new Date();
-      startOfWeek.setDate(startOfWeek.getDate() + currentWeek * 7);
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
+      const startDateObj = new Date(startDate);
+      startDateObj.setDate(startDateObj.getDate() + currentWeek * 7);
+      const endOfWeek = new Date(startDateObj);
+      endOfWeek.setDate(startDateObj.getDate() + 6);
       setFormattedDateRange(
-        `${startOfWeek.toLocaleDateString("en-US", {
+        `${startDateObj.toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
         })} – ${endOfWeek.toLocaleDateString("en-US", {
@@ -74,7 +92,7 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
 
     calculateDays();
     calculateDateRange();
-  }, [currentWeek]);
+  }, [currentWeek, startDate]);
 
   const times = Array.from({ length: 96 }, (_, index) => {
     const hours = Math.floor(index / 4)
@@ -87,7 +105,7 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
   const isBooked = (dayIndex, timeIndex) => {
     if (!days[dayIndex]) return false;
 
-    const selectedDate = new Date();
+    const selectedDate = new Date(startDate);
     selectedDate.setDate(selectedDate.getDate() + currentWeek * 7 + dayIndex);
     selectedDate.setHours(0, 0, 0, 0);
 
@@ -230,20 +248,33 @@ const AvailabilityCalendar = ({ calendar, rawBookings }) => {
             </div>
 
             <button
-              onClick={() => setCurrentWeek(currentWeek - 1)}
+              onClick={() => {
+                setCurrentWeek(currentWeek - 1);
+                const newDate = new Date(startDate);
+                newDate.setDate(newDate.getDate() - 7);
+                updateDateRange(newDate);
+              }}
               className="px-2 py-2"
             >
               <LiaAngleLeftSolid size={20} />
             </button>
 
             <button
-              onClick={() => setCurrentWeek(currentWeek + 1)}
+              onClick={() => {
+                setCurrentWeek(currentWeek + 1);
+                const newDate = new Date(startDate);
+                newDate.setDate(newDate.getDate() + 7);
+                updateDateRange(newDate);
+              }}
               className="px-2 py-2"
             >
               <LiaAngleRightSolid size={20} />
             </button>
             <button
-              onClick={() => setCurrentWeek(0)}
+              onClick={() => {
+                setCurrentWeek(0);
+                updateDateRange(new Date());
+              }}
               className="px-4 py-2 text-[14px] font-semibold"
             >
               TODAY

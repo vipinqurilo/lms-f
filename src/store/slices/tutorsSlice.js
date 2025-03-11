@@ -5,8 +5,12 @@ import { api } from "@/store/api/api";
 
 const initialState = {
   tutorReviews: [],
+  minPrice: 10,
+  maxPrice: 10000,
+  gender: "Any",
+  sortByRating: "relevance",
   userID: "",
-  tutorId: "",
+  tutorId: "",  
   processStep: 1,
   processData: {},
   requestStatus: "",
@@ -46,13 +50,25 @@ export const fetchTutorProfileAsync = CreateApiAsyncThunk(
 );
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
   "GET/tutors/fetchAllTutorProfileAsync",
-  ({ search, timeRanges, subjects }) => {
+  ({ search, timeRanges, subjects, gender, sortByRating, minPrice, maxPrice }) => {
     let url = `/tutors?search=${search || ""}`;
     if (timeRanges) {
       url += `&timeRanges=${timeRanges}`;
     }
     if (subjects) {
       url += `&subjects=${subjects}`;
+    }
+    if (gender) {
+      url += `&gender=${gender}`;
+    }
+    if (sortByRating) {
+      url += `&sortByRating=${sortByRating}`;
+    }
+    if (minPrice) {
+      url += `&minPrice=${minPrice}`;
+    }
+    if (maxPrice) {
+      url += `&maxPrice=${maxPrice}`;
     }
     return api.get(url);
   }
@@ -77,6 +93,18 @@ const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
   reducers: {
+    setGender: (state, action) => {
+      state.gender = action.payload;
+    },
+    setSortByRating: (state, action) => {
+      state.sortByRating = action.payload;
+    },
+    setMinPrice: (state, action) => {
+      state.minPrice = action.payload;
+    },
+    setMaxPrice: (state, action) => {
+      state.maxPrice = action.payload;
+    },
     setTutorId: (state, action) => {
       state.tutorId = action.payload;
     },
@@ -262,5 +290,9 @@ export const {
   updateProcessStep,
   updateRequestStatus,
   setUserID,
+  setGender,
+  setMinPrice,
+  setMaxPrice,
+  setSortByRating
 } = tutorsSlice.actions;
 export default tutorsSlice.reducer;

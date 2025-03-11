@@ -15,7 +15,7 @@ export const updateAvailabilityAsync = CreateApiAsyncThunk(
       availability: availabilityData,
     })
 );
-// Initial state for bookings
+// Initial state for bookings 
 const initialState = {
   availability: [],
   isLoading: {},

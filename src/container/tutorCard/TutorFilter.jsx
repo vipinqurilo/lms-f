@@ -9,11 +9,10 @@ import SortBy from "./SortBy";
 import GenderSelector from "./GenderSelector";
 import { useSelector } from "react-redux";
 
-const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects, setSelectedSubjects }) => {
-  const [gender, setGender] = useState("Any");
-  const [sortBy, setSortBy] = useState("By popularity");
+const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects, setSelectedSubjects, disabled }) => {
   const [filterOpened, setfilterOpened] = useState("");
   const { timeRanges } = useSelector((state) => state.ui);
+  const {gender, sortByRating, minPrice, maxPrice}=useSelector((state)=>state.tutors);
   // Add useEffect to handle body scroll
   useEffect(() => {
     if (filterOpened) {
@@ -32,7 +31,6 @@ const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects,
     if (filterOpened === "subject") {
       setfilterOpened("");
     } else {
-      ``;
       setfilterOpened("subject");
     }
   };
@@ -90,15 +88,15 @@ const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects,
       )}
       {/* Top Section */}
       <div
-        className={`hidden lg:flex items-center w-full   divide-x-2 relative  ${
+        className={`hidden lg:flex items-center w-full divide-x-2 relative ${
           filterOpened === "subject" ||
           filterOpened === "price" ||
           filterOpened === "availability"
             ? "z-20"
             : ""
-        }`}
+        } ${disabled ? "opacity-60 pointer-events-none" : ""}`}
       >
-        <div className="flex flex-col cursor-pointer justify-center px-4 py-2 w-full md:w-1/4 h-[72px] rounded-l-lg bg-white   ">
+        <div className="flex flex-col cursor-pointer justify-center px-4 py-2 w-full md:w-1/4 h-[72px] rounded-l-lg bg-white">
           <div className="text-[13px] leading-3 text-[#a6a6a6]">Search</div>
           <input
             value={search}
@@ -106,11 +104,14 @@ const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects,
             type="text"
             placeholder="By tutor name"
             className="text-black placeholder:text-black text-[16px] outline-none"
+            disabled={disabled}
           />
         </div>
         <div
-          onClick={() => hancleSubjectClick()}
-          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/4 h-[72px]  bg-white   "
+          onClick={() => !disabled && hancleSubjectClick()}
+          className={`flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/4 h-[72px] bg-white ${
+            disabled ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           <div className="text-[13px] leading-3 text-[#a6a6a6]">
             Teach subject
@@ -119,22 +120,26 @@ const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects,
             All Subjects
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "subject" && <SubjectFilterDropdown setfilterOpened={setfilterOpened} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} handleApplySubjects={handleApplySubjects} />}
+          {!disabled && filterOpened === "subject" && <SubjectFilterDropdown setfilterOpened={setfilterOpened} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} handleApplySubjects={handleApplySubjects} />}
         </div>
         <div
-          onClick={() => handlePriceClick()}
-          className="flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/4 h-[72px]  bg-white   "
+          onClick={() => !disabled && handlePriceClick()}
+          className={`flex relative flex-col cursor-pointer text-[16px] justify-center px-4 py-2 w-full md:w-1/4 h-[72px] bg-white ${
+            disabled ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           <div className="text-[13px] leading-3 text-[#a6a6a6]">Price</div>
           <div className="flex justify-between items-center">
-            All Prices
+            {minPrice} - {maxPrice}
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "price" && <PriceFilterDropdown />}
+          {!disabled && filterOpened === "price" && <PriceFilterDropdown onClose={() => setfilterOpened("")}/>}
         </div>
         <div
-          onClick={() => handleAvailabilityClick()}
-          className="flex relative flex-col cursor-pointer text-[16px] justify-center rounded-r-lg px-4 py-2 w-full md:w-1/4 h-[72px]  bg-white   "
+          onClick={() => !disabled && handleAvailabilityClick()}
+          className={`flex relative flex-col cursor-pointer text-[16px] justify-center rounded-r-lg px-4 py-2 w-full md:w-1/4 h-[72px] bg-white ${
+            disabled ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           <div className="text-[13px] leading-3 text-[#a6a6a6]">
             Availability
@@ -147,17 +152,19 @@ const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects,
               : "Select timing"}
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "availability" && (
+          {!disabled && filterOpened === "availability" && (
             <TimeFilterDropdown onClose={() => setfilterOpened("")} />
           )}
         </div>
       </div>
 
       {/* Bottom Section */}
-      <div className="flex text-nowrap flex-wrap items-center gap-4 mt-4 justify-end w-full">
+      <div className={`flex text-nowrap flex-wrap items-center gap-4 mt-4 justify-end w-full ${disabled ? "opacity-60 pointer-events-none" : ""}`}>
         <div
-          onClick={() => handleGenderSet()}
-          className="flex relative flex-col cursor-pointer text-sm  min-w-[174px] text-[16px] justify-center px-4 py-2   h-[40px] rounded-lg bg-white   "
+          onClick={() => !disabled && handleGenderSet()}
+          className={`flex relative flex-col cursor-pointer text-sm min-w-[174px] text-[16px] justify-center px-4 py-2 h-[40px] rounded-lg bg-white ${
+            disabled ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           <div className="flex justify-between items-center gap-4">
             <span className="">
@@ -165,23 +172,25 @@ const TutorFilter = ({ handleApplySubjects, search, setSearch, selectedSubjects,
             </span>
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "gender" && (
-            <GenderSelector setGender={setGender} selectedGender={gender} />
+          {!disabled && filterOpened === "gender" && (
+            <GenderSelector />
           )}
         </div>
 
         <div
-          onClick={() => handleSortBy()}
-          className="flex relative flex-col cursor-pointer text-sm  min-w-[174px] text-[16px] justify-center px-4 py-2   h-[40px] rounded-lg bg-white   "
+          onClick={() => !disabled && handleSortBy()}
+          className={`flex relative flex-col cursor-pointer text-sm min-w-[174px] text-[16px] justify-center px-4 py-2 h-[40px] rounded-lg bg-white ${
+            disabled ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           <div className="flex justify-between items-center gap-4">
-            <span className="">
-              <span className="font-semibold">Sort :</span> {sortBy}
+            <span className="capitalize">
+              <span className="font-semibold">Sort by :</span> {sortByRating}
             </span>
             <LiaAngleDownSolid />
           </div>
-          {filterOpened === "sort" && (
-            <SortBy setSortBy={setSortBy} sortBy={sortBy} />
+          {!disabled && filterOpened === "sort" && (
+            <SortBy onClose={() => setfilterOpened("")} />
           )}
         </div>
       </div>

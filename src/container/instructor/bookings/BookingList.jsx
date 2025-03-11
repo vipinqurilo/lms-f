@@ -3,19 +3,14 @@ import {
   Clock,
   Calendar,
   Video,
-  Cross,
-  Ban,
   CircleX,
   CircleCheckBig,
   ListRestart,
   FilePenLine,
 } from "lucide-react";
 import Image from "next/image";
-import { Pagination } from "@/components/student-dashboard/Pagination";
 import Loader from "@/components/common/Loader";
-
 import { useRouter } from "next/router";
-
 import { useState, useEffect } from "react";
 import BookingConfirmationModel from "@/components/common/BookingConfirmationModel";
 import BackgroundModal from "@/components/instructor/BackgroundModal";
@@ -46,12 +41,15 @@ const BookingList = ({ bookings, isLoading }) => {
   // New function to group bookings by date
   const groupBookingsByDate = (bookings) => {
     const grouped = bookings.reduce((acc, booking) => {
-      const date = new Date(booking.sessionStartTime).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
-      
+      const date = new Date(booking.sessionStartTime).toLocaleDateString(
+        "en-GB",
+        {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }
+      );
+
       if (!acc[date]) {
         acc[date] = [];
       }
@@ -60,8 +58,8 @@ const BookingList = ({ bookings, isLoading }) => {
     }, {});
 
     // Sort dates in ascending order
-    return Object.entries(grouped).sort((a, b) => 
-      new Date(a[0]) - new Date(b[0])
+    return Object.entries(grouped).sort(
+      (a, b) => new Date(a[0]) - new Date(b[0])
     );
   };
 
@@ -77,9 +75,10 @@ const BookingList = ({ bookings, isLoading }) => {
             {groupBookingsByDate(bookings).map(([date, dateBookings]) => (
               <div key={date} className="space-y-4">
                 <div className="sticky top-[125px] z-10 bg-gray-50 p-3 ">
-                  <h3 className="text-lg font-semibold text-gray-700">{date}</h3>
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    {date}
+                  </h3>
                 </div>
-                
                 {dateBookings.map((booking) => {
                   const sessionStartTime = new Date(booking.sessionStartTime);
                   const sessionEndTime = new Date(booking.sessionEndTime);
@@ -91,7 +90,9 @@ const BookingList = ({ bookings, isLoading }) => {
                   const hours = Math.floor(
                     (timeUntilStart / (1000 * 60 * 60)) % 24
                   );
-                  const minutes = Math.floor((timeUntilStart / (1000 * 60)) % 60);
+                  const minutes = Math.floor(
+                    (timeUntilStart / (1000 * 60)) % 60
+                  );
                   const seconds = Math.floor((timeUntilStart / 1000) % 60);
 
                   return (
@@ -104,7 +105,9 @@ const BookingList = ({ bookings, isLoading }) => {
                           <div className="flex items-center gap-2 justify-between">
                             <h2 className="text-lg font-semibold  ">
                               {booking?.sessionDuration
-                                ? `${booking.sessionDuration} minutes Lesson on ${
+                                ? `${
+                                    booking.sessionDuration
+                                  } minutes Lesson on ${
                                     booking?.subject?.name || "Course Title"
                                   }`
                                 : booking?.subject?.name || "Course Title"}
@@ -118,7 +121,11 @@ const BookingList = ({ bookings, isLoading }) => {
                             } gap-6 relative`}
                           >
                             {/* Instructor */}
-                            <div className={` ${isAdmin ? "col-span-2" : "col-span-2"}`}>
+                            <div
+                              className={` ${
+                                isAdmin ? "col-span-2" : "col-span-2"
+                              }`}
+                            >
                               {authUser.role === "teacher" ? (
                                 <>
                                   <p className="mb-1 font-semibold">{`${booking?.student?.firstName} ${booking?.student?.lastName}`}</p>
@@ -176,11 +183,21 @@ const BookingList = ({ bookings, isLoading }) => {
                             ) : null}
 
                             {/* Custom divider */}
-                            <div className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${isAdmin ? "left-[33.33%]" : "left-[20%]"}`}></div>
+                            <div
+                              className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${
+                                isAdmin ? "left-[33.33%]" : "left-[20%]"
+                              }`}
+                            ></div>
 
                             {/* Session Timing */}
-                            <div className={`col-span-2 ${isAdmin ? "pl-2" : "pl-8"}`}>
-                              <p className="mb-1 font-semibold">Session Timing</p>
+                            <div
+                              className={`col-span-2 ${
+                                isAdmin ? "pl-2" : "pl-8"
+                              }`}
+                            >
+                              <p className="mb-1 font-semibold">
+                                Session Timing
+                              </p>
                               <div className="flex items-center gap-2">
                                 <Clock className="h-4 w-4 text-orange-500" />
                                 <span className="text-sm text-nowrap">
@@ -200,10 +217,18 @@ const BookingList = ({ bookings, isLoading }) => {
                             </div>
 
                             {/* Custom divider */}
-                            <div className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${isAdmin ? "left-[50%]" : "left-[40%]"}`}></div>
+                            <div
+                              className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${
+                                isAdmin ? "left-[50%]" : "left-[40%]"
+                              }`}
+                            ></div>
 
                             {/* Booking Date */}
-                            <div className={`col-span-2 ${isAdmin ? "pl-2" : "pl-8"}`}>
+                            <div
+                              className={`col-span-2 ${
+                                isAdmin ? "pl-2" : "pl-8"
+                              }`}
+                            >
                               <p className="mb-1 font-semibold">Booking Date</p>
                               <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4 text-red-500" />
@@ -220,10 +245,18 @@ const BookingList = ({ bookings, isLoading }) => {
                             </div>
 
                             {/* Custom divider */}
-                            <div className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${isAdmin ? "left-[66.66%]" : "left-[60%]"}`}></div>
+                            <div
+                              className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${
+                                isAdmin ? "left-[66.66%]" : "left-[60%]"
+                              }`}
+                            ></div>
 
                             {/* Status */}
-                            <div className={`col-span-2 ${isAdmin ? "pl-2" : "pl-8"}`}>
+                            <div
+                              className={`col-span-2 ${
+                                isAdmin ? "pl-2" : "pl-8"
+                              }`}
+                            >
                               <p className="mb-1 font-semibold">Status</p>
                               <div>
                                 {timeUntilEnd < 0 ? (
@@ -232,8 +265,8 @@ const BookingList = ({ bookings, isLoading }) => {
                                   </span>
                                 ) : timeUntilStart > 0 ? (
                                   <span className="text-orange-500 text-sm">
-                                    Starts in: {daysUntilStart}d {hours}h {minutes}m{" "}
-                                    {seconds}s
+                                    Starts in: {daysUntilStart}d {hours}h{" "}
+                                    {minutes}m {seconds}s
                                   </span>
                                 ) : (
                                   <span className="text-green-500 text-sm">
@@ -244,62 +277,127 @@ const BookingList = ({ bookings, isLoading }) => {
                             </div>
 
                             {/* Custom divider */}
-                            <div className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${isAdmin ? "left-[83.33%]" : "left-[80%]"}`}></div>
+                            <div
+                              className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${
+                                isAdmin ? "left-[83.33%]" : "left-[80%]"
+                              }`}
+                            ></div>
 
-                            {/* Video Icon */}
+                            {/* Buttons */}
                             <div className="col-span-2 flex  items-center justify-center gap-4">
                               <button
-                                disabled={booking?.status === "cancelled"}
+                                disabled={
+                                  booking?.status === "cancelled" ||
+                                  (timeUntilStart <= 3600000 &&
+                                    timeUntilStart > 0)
+                                }
+                                className={`h-5 w-5 ${
+                                  booking?.status === "cancelled" ||
+                                  (timeUntilStart <= 3600000 &&
+                                    timeUntilStart > 0)
+                                    ? "text-gray-200"
+                                    : "text-gray-600"
+                                } cursor-pointer`}
                                 onClick={() => {
                                   if (booking?.meetingLink) {
                                     window.open(booking.meetingLink, "_blank");
                                   }
                                 }}
                               >
-                                <Video className="h-5 w-5 text-gray-600 cursor-pointer" />
+                                <Video />
                               </button>
 
                               <button
-                                disabled={booking?.status !== "scheduled"}
+                                disabled={
+                                  booking?.status !== "scheduled" ||
+                                  (timeUntilStart <= 3600000 &&
+                                    timeUntilStart > 0)
+                                }
+                                className={`h-5 w-5 ${
+                                  booking?.status !== "scheduled" ||
+                                  (timeUntilStart <= 3600000 &&
+                                    timeUntilStart > 0)
+                                    ? "text-gray-200"
+                                    : "text-gray-600"
+                                }  cursor-pointer`}
                                 onClick={() => {
                                   setBooking(booking);
                                   setIsOpen("reschedule");
                                 }}
                               >
-                                <ListRestart className="h-5 w-5 text-gray-600  cursor-pointer" />
+                                <ListRestart />
                               </button>
 
                               <button
-                                disabled={booking?.status === "cancelled"}
+                                disabled={
+                                  booking?.status === "cancelled" ||
+                                  booking?.status === "rescheduled" ||
+                                  (timeUntilStart <= 3600000 &&
+                                    timeUntilStart > 0)
+                                }
+                                className={`h-5 w-5 ${
+                                  booking?.status === "cancelled" ||
+                                  booking?.status === "rescheduled" ||
+                                  (timeUntilStart <= 3600000 &&
+                                    timeUntilStart > 0)
+                                    ? "text-gray-200"
+                                    : "text-gray-600"
+                                } cursor-pointer`}
                                 onClick={() => {
                                   setBooking(booking);
                                   setIsOpen("cancelation");
                                 }}
                               >
-                                <CircleX className="h-5 w-5 text-gray-600 cursor-pointer" />
+                                <CircleX />
                               </button>
-
-                              {booking?.status === "Confirmed" ? (
-                                <button
-                                  disabled={booking?.status === "cancelled"}
-                                  onClick={() => {
-                                    setBooking(booking);
-                                    setIsOpen("edit");
-                                  }}
-                                >
-                                  <FilePenLine className="h-5 w-5 text-gray-600 cursor-pointer" />
-                                </button>
-                              ) : (
-                                <button
-                                  disabled={booking?.status === "cancelled"}
-                                  onClick={() => {
-                                    setBooking(booking);
-                                    setIsOpen("confiramation");
-                                  }}
-                                >
-                                  <CircleCheckBig className="h-5 w-5 text-gray-600 cursor-pointer" />
-                                </button>
-                              )}
+                              {authUser.role === "teacher" ||
+                              authUser.role === "admin" ? (
+                                <>
+                                  {booking?.status === "confirmed" ? (
+                                    <button
+                                      disabled={
+                                        booking?.status === "cancelled" ||
+                                        (timeUntilStart <= 3600000 &&
+                                          timeUntilStart > 0)
+                                      }
+                                      onClick={() => {
+                                        setBooking(booking);
+                                        setIsOpen("edit");
+                                      }}
+                                      className={`h-5 w-5 ${
+                                        booking?.status === "cancelled" ||
+                                        (timeUntilStart <= 3600000 &&
+                                          timeUntilStart > 0)
+                                          ? "text-gray-200"
+                                          : "text-gray-600"
+                                      } cursor-pointer`}
+                                    >
+                                      <FilePenLine />
+                                    </button>
+                                  ) : (
+                                    <button
+                                      disabled={
+                                        booking?.status === "cancelled" ||
+                                        (timeUntilStart <= 3600000 &&
+                                          timeUntilStart > 0)
+                                      }
+                                      onClick={() => {
+                                        setBooking(booking);
+                                        setIsOpen("confiramation");
+                                      }}
+                                      className={`h-5 w-5 ${
+                                        booking?.status === "cancelled" ||
+                                        (timeUntilStart <= 3600000 &&
+                                          timeUntilStart > 0)
+                                          ? "text-gray-200"
+                                          : "text-gray-600"
+                                      } cursor-pointer`}
+                                    >
+                                      <CircleCheckBig />
+                                    </button>
+                                  )}
+                                </>
+                              ) : null}
                             </div>
                           </div>
                         </div>

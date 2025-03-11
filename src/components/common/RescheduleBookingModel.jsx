@@ -14,7 +14,7 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionEndTime, setSessionEndTime] = useState(null);
-  const { availability } = useSelector(
+  const  availability  = useSelector(
     (state) => state.instructor.availability
   );
   const [reason, setReason] = useState("");

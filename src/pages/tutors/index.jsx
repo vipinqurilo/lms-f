@@ -30,13 +30,14 @@ const index = () => {
     bookings: rawBookings,
     isLoading: bookingLoading,
     totalPages,
+    bookingsByTutorId
   } = useSelector((state) => state.student.booking);
   const { timeRanges } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const { isAvailableModelOpen, isContactModelOpen } = useSelector(
     (state) => state.ui
   );
-  const { allTutorProfile, isLoading } = useSelector((state) => state.tutors);
+  const { allTutorProfile, minPrice, maxPrice, gender, sortByRating, isLoading } = useSelector((state) => state.tutors);
   const [showBooking, setShowBooking] = useState(false);
   const [tutor, setTutor] = useState(null);
 
@@ -51,6 +52,10 @@ const index = () => {
           search: searchTerm,
           timeRanges: timeRangesString,
           subjects: selectedSubjectsString,
+          minPrice,
+          maxPrice,
+          gender,
+          sortByRating
         })
       ).unwrap().then(() => {
       }).catch((error) => {
@@ -66,7 +71,7 @@ const index = () => {
   useEffect(() => {
     debouncedFetch(search, timeRanges, applySubjects);
     return () => debouncedFetch.cancel();
-  }, [search, timeRanges, applySubjects]);
+  }, [search, timeRanges, applySubjects,minPrice,maxPrice,gender,sortByRating]);
 
   useEffect(() => {
     if (isAvailableModelOpen) {
@@ -126,10 +131,10 @@ const index = () => {
               <h2 className="text-lg font-semibold">Availability Calendar</h2>
               <RxCross2 />
             </div>
-            <AvailabilityCalendar
+            {bookingLoading["fetchBookingsByTutorIdAsync"] ? <Loader isBig={true} color={"text-secondary"} /> : <AvailabilityCalendar
               calendar={tutor?.calendar}
-              rawBookings={rawBookings}
-            />
+              rawBookings={bookingsByTutorId}
+            />}
           </div>
         </div>
       )}

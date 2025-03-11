@@ -9,9 +9,6 @@ import { fetchEnrolledCoursesAsync } from "@/store/slices/student-dashboard/enro
 import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
 import { getInstructorTickets } from "@/store/slices/supportSlice";
-import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
-
-
 
 export default function DashboardPage() {
   const dispatch = useDispatch();
