@@ -71,7 +71,7 @@ const TimeFilterDropdown = ({ onClose }) => {
         <div className="w-0 h-0 absolute top-0 right-10 -translate-y-[96%] border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[13px] border-b-white"></div>
 
         {/* Days of the Week */}
-        <div className="px-4 py-2 relative flex gap-4">Days of the Week</div>
+        {/* <div className="px-4 py-2 relative flex gap-4">Days of the Week</div>
         <div className="px-4 py-2 flex justify-center items-center ">
           {daysOfWeek.map((day, index) => (
             <button
@@ -85,10 +85,10 @@ const TimeFilterDropdown = ({ onClose }) => {
                   : " text-gray-400"
               }`}
             >
-              {day.substring(0, 3)} {/* Display first 3 letters */}
+              {day.substring(0, 3)} 
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Time Selection */}
         <div className="px-4 py-2 relative flex gap-4">

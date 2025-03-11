@@ -39,10 +39,10 @@ export default function TeacherProfile() {
   const { bookingsByTutorId, isLoading: bookingsLoading } = useSelector(
     (state) => state.student.booking
   );
-  const { isContactModelOpen } = useSelector((state) => state.ui);
+  const { startDate, endDate,isContactModelOpen } = useSelector((state) => state.ui);
   useEffect(() => {
     if (tutorId && userID) {
-      dispatch(fetchBookingsByTutorIdAsync(userID));
+      dispatch(fetchBookingsByTutorIdAsync({teacherId:userID,startDate,endDate}));
       dispatch(fetchTutorProfileAsync(tutorId));
     } else {
       router.push("/tutors");

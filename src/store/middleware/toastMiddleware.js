@@ -18,7 +18,11 @@ const toastMiddleware = (store) => (next) => (action) => {
     const errorMessage = payload || error?.message || "An error occurred";
     toast.error(errorMessage);
   }
+
   return next(action);
 };
 
 export default toastMiddleware;
+
+
+
