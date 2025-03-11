@@ -88,7 +88,7 @@ const CourseSalesTable = () => {
                           <thead className="bg-gray-100">
                             <tr className="border border-gray-300">
                               <th className="p-2 text-left border border-gray-300">
-                                Image
+                                SNO.
                               </th>
                               <th className="p-2 text-left border border-gray-300">
                                 Course Name
@@ -108,16 +108,17 @@ const CourseSalesTable = () => {
                             {course?.courses?.map((c, idx) => (
                               <tr key={idx} className="border border-gray-300">
                                 <td className="p-2 border border-gray-300">
-                                  <div className="w-16 h-16 relative">
+                                  {idx + 1}
+                                </td>
+                                <td className="p-2  font-semibold flex items-center justify-start gap-2">
+                                  <div className="w-8 h-8 relative">
                                     <Image
                                       src={c?.courseImage}
                                       alt={c?.courseName}
                                       fill={true}
-                                      className="rounded object-cover"
+                                      className="rounded-full object-cover"
                                     />
                                   </div>
-                                </td>
-                                <td className="p-2 border border-gray-300 font-semibold">
                                   {c?.courseName}
                                 </td>
                                 <td className="p-2 border border-gray-300 text-gray-600">

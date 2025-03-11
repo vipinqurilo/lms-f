@@ -8,23 +8,11 @@ import FeaturedCourses from "@/container/home/FeaturedCourses";
 import FeaturedInstructor from "@/container/home/FeaturedInstructor";
 import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
-import BlogSection from "@/container/common/BlogSection";
 import LogoSlider from "@/components/common/LogoSlider";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const dispatch = useDispatch();
   const courses = useSelector((state) => state?.courses?.courses);
-
-  useEffect(() => {
-    const requestData = {
-      page: 1,
-      status: "published",
-    };
-    dispatch(fetchCoursesAsync(requestData));
-  }, [dispatch]);
 
   return (
     <>
@@ -37,7 +25,6 @@ const Home = () => {
         <MasterSkill />
         <UserLove />
         <Become />
-        {/* <BlogSection /> */}
         <UnlimitedAccess />
       </main>
     </>

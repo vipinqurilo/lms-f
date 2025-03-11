@@ -1,6 +1,7 @@
 import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";
 import TableHeader from "@/components/instructor/TableHeader";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 
@@ -9,6 +10,7 @@ const CreatedCourses = ({
   headingsData,
   data,
   status,
+  link = null,
   isCols = false,
 }) => {
   const isAdmin = useSelector(
@@ -25,18 +27,32 @@ const CreatedCourses = ({
       : "bg-gray-200 text-gray-800";
   };
 
+  console.log(data, "data");
+  
+
   return (
     <div className="">
       {title !== "" && (
-        <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
+        <div className="w-full flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
+          {link !== null && (
+            <Link
+              href={link}
+              prefetch={false}
+              className="hover:text-secondary font-medium transition-custom"
+            >
+              View All →
+            </Link>
+          )}
+        </div>
       )}
       <div className="bg-white !rounded-b-lg shadow-md ">
         <div className="overflow-x-auto">
-          <table className="w-full rounded-lg bg-gray-100">
+          <table className="w-full rounded-lg">
             <TableHeader headingsData={headingsData} />
             <tbody className="divide-y divide-gray-100 bg-white">
               {data?.map((course, index) => (
-                <tr key={index} className="hover:bg-gray-50">
+                <tr key={index} className="">
                   <td className="px-6 py-4 w-[60%]">
                     <div className="w-full grid grid-cols-4 gap-5">
                       <div className="w-full h-full relative">
@@ -54,7 +70,9 @@ const CreatedCourses = ({
                           isCols ? "col-span-3" : "col-span-2"
                         }`}
                       >
-                        {course?.title}
+                        <Link href={`/courses/${course?.id}`}>
+                          {course?.title}
+                        </Link>
                         <p className="line-clamp-3 text-light/60 text-sm">
                           {course?.des}
                         </p>

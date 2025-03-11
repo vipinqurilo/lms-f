@@ -88,7 +88,7 @@ const AdminTutorsSalesEarning = ({}) => {
                           <thead className="bg-gray-100">
                             <tr className="border border-gray-300">
                               <th className="p-2 text-left border border-gray-300">
-                                Image
+                                SNo.
                               </th>
                               <th className="p-2 text-left border border-gray-300">
                                 Subject Name
@@ -108,17 +108,7 @@ const AdminTutorsSalesEarning = ({}) => {
                             {tution?.subjects?.map((c, idx) => (
                               <tr key={idx} className="border border-gray-300">
                                 <td className="p-2 border border-gray-300">
-                                  <div className="w-16 h-16 relative">
-                                    <Image
-                                      src={
-                                        c?.subjectImage ||
-                                        "/assets/common/profile.png"
-                                      }
-                                      alt={c?.subjectName}
-                                      fill={true}
-                                      className="rounded object-cover"
-                                    />
-                                  </div>
+                                  {idx + 1}
                                 </td>
                                 <td className="p-2 border border-gray-300 font-semibold">
                                   {c?.subjectName}
