@@ -50,21 +50,21 @@ const TeacherRegisterForm = () => {
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className="mb-4">Teach what you are passionate about</p>
         {isApproved && (
-          <p className="mb-4 text-green-200 font-semibold">
+          <p className="mb-4 ">
             Your application is approved! Start teaching what you are passionate
             about.
           </p>
         )}
 
         {isRejected && (
-          <p className="mb-4 text-red-200 font-semibold">
+          <p className="mb-4 ">
             Your application was rejected. Please review and resubmit your
             request.
           </p>
         )}
 
-        {!isRejected && !isApproved && (
-          <p className="mb-4 text-yellow-200 font-semibold">
+        {!isRejected && !isApproved && authUser !== null && (
+          <p className="mb-4 ">
             Your application is pending. We will review it soon.
           </p>
         )}
@@ -90,11 +90,7 @@ const TeacherRegisterForm = () => {
                         ? "Go To Instructor Dashboard"
                         : "View Your Application"
                     }
-                    color={
-                      isApproved
-                        ? "bg-green-800 text-white hover:bg-opacity-80"
-                        : "bg-background text-white hover:bg-secondary"
-                    }
+                    color={"bg-background text-white hover:bg-secondary"}
                   />
                 </>
               ) : (
@@ -107,11 +103,7 @@ const TeacherRegisterForm = () => {
                       ? "Go To Instructor Dashboard"
                       : "View Your Application"
                   }
-                  color={
-                    isApproved
-                      ? "bg-green-600 text-white hover:bg-opacity-80"
-                      : "bg-background text-white hover:bg-secondary"
-                  }
+                  color={"bg-background text-white hover:bg-secondary"}
                 />
               )
             ) : (

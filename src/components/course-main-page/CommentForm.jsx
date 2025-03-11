@@ -9,6 +9,7 @@ import SubmitButton from "../login/SubmitButton";
 import { useDispatch } from "react-redux";
 import { addReview } from "@/store/slices/coursesSlice";
 import { useSelector } from "react-redux";
+import Loader from "../common/Loader";
 
 const RatingInput = ({ initialRating = 0, onRatingChange }) => {
   const maxStars = 5;
@@ -137,7 +138,13 @@ const CommentForm = ({ id, data }) => {
             </span>
           )}
         </div>
-        <SubmitButton text={"Submit Review"} loading={isLoading["addReview"]} />
+        <button
+          className={`w-fit py-2 bg-secondary hover:bg-black transition-custom rounded text-lg text-white !border !border-secondary !bg-transparent hover:!text-white disabled:!cursor-not-allowed disabled:hover:bg-secondary disabled:opacity-60`}
+          disabled={isLoading["addReview"]}
+        >
+          {isLoading["addReview"] ? <Loader /> : "Submit Review"}
+        </button>
+        {/* <SubmitButton text={"Submit Review"} loading={isLoading["addReview"]} /> */}
       </form>
     </div>
   );

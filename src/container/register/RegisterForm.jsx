@@ -3,7 +3,7 @@ import InputField from "@/components/login/InputField";
 import LoginOptions from "@/components/login/LoginOptions";
 import LogoHeader from "@/components/login/LogoHeader";
 import SubmitButton from "@/components/login/SubmitButton";
-import { userRegisterAsync } from "@/store/slices/userSlice";
+import { userRegisterAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -34,8 +34,9 @@ const RegisterForm = () => {
       .unwrap()
       .then((res) => {
         if (res?.data?.role === "student") {
-          localStorage.setItem("token", res?.token);
-          localStorage.removeItem("adminToken");
+          dispatch(verifyLoggedInUser())
+          // localStorage.setItem("token", res?.token);
+          // localStorage.removeItem("adminToken");
           router.push("/student-dashboard");
         }
       });

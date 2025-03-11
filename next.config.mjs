@@ -6,6 +6,14 @@ const nextConfig = {
     disableStaticImages: false,
     domains: ["res.cloudinary.com"],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://wq1jbb9k-8000.inc1.devtunnels.ms/api/:path*", // Correctly forwards the path
+      },
+    ];
+  },
 };
 
 export default nextConfig;
