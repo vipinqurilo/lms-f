@@ -1,9 +1,8 @@
-import React, { useState } from "react";
 import FeaturedCard from "@/components/common/FeaturedCard";
 import Heading from "@/components/common/Heading";
 import { useSelector } from "react-redux";
-import Loader from "@/components/common/Loader";
 import NavigationLink from "@/components/home/NavigationLink";
+import CardSkeleton from "@/components/common/CardSkeleton";
 
 export default function FeaturedCourses({ cardData = [] }) {
   const isLoading = useSelector(
@@ -14,8 +13,10 @@ export default function FeaturedCourses({ cardData = [] }) {
     <>
       <div className="bg-no-repeat custom-container bg-cover bg-center bg-gradient-to-r from-primary/5 via-secondary/5 to-secondary/10">
         {isLoading ? (
-          <div className="w-full py-24 pt-32 flex items-center justify-center">
-            <Loader isBig={true} />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5 md:gap-10 lg:gap-16 mt-16 md:mt-8">
+            {[...Array(6)].map((_, index) => (
+              <CardSkeleton key={index} />
+            ))}
           </div>
         ) : (
           <div className="">

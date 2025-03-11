@@ -15,6 +15,9 @@ const TeacherRegisterForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { authUser, isLoading } = useSelector((state) => state.user);
+  const { requestStatus } = useSelector((state) => state.tutors);
+  const isRejected = requestStatus === "rejected";
+  const isApproved = requestStatus === "approved";
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
@@ -46,6 +49,25 @@ const TeacherRegisterForm = () => {
       <div className="bg-white/40 backdrop-blur-sm text-white p-8 md:w-full rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className="mb-4">Teach what you are passionate about</p>
+        {isApproved && (
+          <p className="mb-4 text-green-200 font-semibold">
+            Your application is approved! Start teaching what you are passionate
+            about.
+          </p>
+        )}
+
+        {isRejected && (
+          <p className="mb-4 text-red-200 font-semibold">
+            Your application was rejected. Please review and resubmit your
+            request.
+          </p>
+        )}
+
+        {!isRejected && !isApproved && (
+          <p className="mb-4 text-yellow-200 font-semibold">
+            Your application is pending. We will review it soon.
+          </p>
+        )}
 
         {authUser !== null ? (
           <>
@@ -56,14 +78,40 @@ const TeacherRegisterForm = () => {
               />
             ) : authUser.role === "teacher" ? (
               authUser.userStatus === "active" ? (
-                <RedirectButton
-                  href="/instructor-dashboard"
-                  text="Go To Instructor Dashboard"
-                />
+                <>
+                  <RedirectButton
+                    href={
+                      isApproved
+                        ? "/instructor-dashboard"
+                        : "/instructor-request"
+                    }
+                    text={
+                      isApproved
+                        ? "Go To Instructor Dashboard"
+                        : "View Your Application"
+                    }
+                    color={
+                      isApproved
+                        ? "bg-green-800 text-white hover:bg-opacity-80"
+                        : "bg-background text-white hover:bg-secondary"
+                    }
+                  />
+                </>
               ) : (
                 <RedirectButton
-                  href="/instructor-request"
-                  text="Become an Instructor"
+                  href={
+                    isApproved ? "/instructor-dashboard" : "/instructor-request"
+                  }
+                  text={
+                    isApproved
+                      ? "Go To Instructor Dashboard"
+                      : "View Your Application"
+                  }
+                  color={
+                    isApproved
+                      ? "bg-green-600 text-white hover:bg-opacity-80"
+                      : "bg-background text-white hover:bg-secondary"
+                  }
                 />
               )
             ) : (
@@ -85,11 +133,11 @@ const TeacherRegisterForm = () => {
 };
 
 // **Redirect Button Component**
-const RedirectButton = ({ href, text }) => (
-  <div className="py-10 lg:w-full flex items-center justify-center">
+const RedirectButton = ({ href, text, color }) => (
+  <div className="pb-10 lg:w-full flex items-center justify-center">
     <Link
       href={href}
-      className="w-full px-4 py-2 text-center rounded-md shadow font-semibold transition bg-background text-white hover:bg-secondary text-lg disabled:cursor-not-allowed disabled:opacity-95"
+      className={`w-full px-4 py-2 text-center rounded-md shadow font-semibold transition ${color} text-lg disabled:cursor-not-allowed disabled:opacity-95`}
     >
       {text}
     </Link>

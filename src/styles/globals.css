@@ -79,3 +79,22 @@
 .custom-scrollbar::-webkit-scrollbar-track {
   background: #eeeeee; /* Light gray background */
 }
+
+@keyframes progressAnimation {
+  0% {
+    width: 0%;
+    transform: translateX(100%);
+  }
+  50% {
+    width: 100%;
+    transform: translateX(0%);
+  }
+  100% {
+    width: 0%;
+    transform: translateX(0%);
+  }
+}
+
+.progress-bar {
+  animation: progressAnimation 4s ease-in-out infinite;
+}

@@ -84,13 +84,20 @@ export default function FeaturedCard({ data, isFull = false }) {
               />
             </div>
             {isEnrolled && (
-              <div className="w-[95%] mx-auto bg-blue-200 rounded-b-lg">
+              <div
+                className="w-[100%] bg-blue-200 rounded-b-lg mt-4 h-3.5 relative rounded-lg"
+                style={{
+                  display:
+                    enrolledCourseData?.progress === 100 ? "none" : "block",
+                }}
+              >
                 <div
-                  className={`bg-blue-600 h-1 rounded-lg transition-all duration-1000 ${
-                    enrolledCourseData?.progress === 100 && "!bg-green-600"
-                  }`}
+                  className={`bg-blue-600 h-full rounded-lg transition-all duration-1000`}
                   style={{ width: `${enrolledCourseData?.progress}%` }}
                 ></div>
+                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs">
+                  {enrolledCourseData?.progress}%
+                </span>
               </div>
             )}
           </div>
@@ -180,16 +187,18 @@ export default function FeaturedCard({ data, isFull = false }) {
             </div>
 
             <div className="flex items-center justify-between mt-2 border-t pt-2 border-gray-300">
+              {/* {data?.totalReviews > 0 && ( */}
               <div className="flex items-center">
                 {Array.from(
                   { length: Math.floor(data?.averageRating) },
                   (_, index) => "⭐"
                 )}
                 <span className="ml-1 text-sm text-gray-500">
-                  <span>{Math.floor(data?.averageRating)}</span> (
-                  {data?.totalReviews})
+                  <span>{Math.floor(data?.averageRating) || null}</span>
+                  {data?.totalReviews > 0 && ` (${data?.totalReviews})`}
                 </span>
               </div>
+              {/* )} */}
 
               {isEnrolled ? (
                 <Link
@@ -209,19 +218,26 @@ export default function FeaturedCard({ data, isFull = false }) {
             </div>
           </div>
 
-          {isEnrolled && (
+          {isEnrolled && enrolledCourseData?.progress === 100 && (
             <>
               <div
-                className={`absolute top-6 right-6 rounded-full flex items-center justify-center w-10 h-10 shadow-lg bg-blue-600 text-white
-                    ${
-                      enrolledCourseData?.progress === 100 &&
-                      "!bg-green-600 !border-2 !border-green-800"
-                    }
-              `}
+                className={`absolute top-6 right-6 w-16 h-16`}
+                //   className={`absolute top-6 right-6 rounded-full flex items-center justify-center w-10 h-10 shadow-lg bg-blue-600 text-white
+                //       ${
+                //         enrolledCourseData?.progress === 100 &&
+                //         "!bg-green-600 !border-2 !border-green-800"
+                //       }
+                // `}
               >
-                <span className="text-xs font-bold">
+                {/* <span className="text-xs font-bold">
                   {enrolledCourseData?.progress}%
-                </span>
+                </span> */}
+                <Image
+                  src={"/assets/common/badge.png"}
+                  alt={"Badge"}
+                  fill={true}
+                  className="w-full h-full object-center object-contain"
+                />
               </div>
             </>
           )}

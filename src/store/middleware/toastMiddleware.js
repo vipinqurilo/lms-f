@@ -15,8 +15,8 @@ const toastMiddleware = (store) => (next) => (action) => {
         payload.status !== "failed"
       ) {
         toast.success(payload.message);
-      } else {
-        toast.error(payload?.message);
+      } else if (payload?.message) {
+        toast.error(payload?.message || "an error");
       }
     } else if (action.type.endsWith("/rejected")) {
       const { payload, error } = action;

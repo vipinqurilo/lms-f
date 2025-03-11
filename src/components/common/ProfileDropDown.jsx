@@ -210,7 +210,7 @@ const ProfileAvatar = ({ authUser }) => {
 
       {/* Greeting Message */}
       <div className="text-gray-800 font-medium">
-        Hi {authUser?.name || "User"}
+        Hi {authUser?.name !== "undefined undefined" && authUser?.name || authUser?.role === "user" ? "User" : "Teacher"}
       </div>
     </div>
   );

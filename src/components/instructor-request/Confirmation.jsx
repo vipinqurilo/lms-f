@@ -96,6 +96,12 @@ const Confirmation = () => {
         />
       </div>
       {description && <p className={`max-w-2xl ${textColor}`}>{description}</p>}
+      {isRejected && (
+        <p className="max-w-3xl">
+          Please navigate to the Experience step and click "Save and Continue"
+          to resubmit your request.
+        </p>
+      )}
       {isRejected ? (
         <CommonButton label={buttonLabel} onClick={buttonAction} />
       ) : (

@@ -40,7 +40,7 @@ const PaginationComponent = ({ currentPage, setcurrentPage, totalPages }) => {
                 className={`${
                   currentPage === page
                     ? "w-8 h-8 flex items-center justify-center bg-secondary text-white rounded-md"
-                    : "text-black"
+                    : "text-black bg-gray-50 w-8 h-8 rounded-md"
                 }`}
                 onClick={() => handleCurrentPage(page)}
               >
@@ -57,7 +57,7 @@ const PaginationComponent = ({ currentPage, setcurrentPage, totalPages }) => {
                   className={`w-8 h-8 ${
                     currentPage === 1
                       ? " flex items-center justify-center bg-secondary text-white rounded-md"
-                      : "text-black"
+                      : "text-black bg-gray-50 w-8 h-8 rounded-md"
                   }`}
                   onClick={() => handleCurrentPage(1)}
                 >
@@ -75,7 +75,7 @@ const PaginationComponent = ({ currentPage, setcurrentPage, totalPages }) => {
                     className={`w-8 h-8 ${
                       currentPage === page
                         ? " flex items-center justify-center bg-secondary text-white rounded-md"
-                        : "text-black"
+                        : "text-black bg-gray-50 w-8 h-8 rounded-md"
                     }`}
                     onClick={() => handleCurrentPage(page)}
                   >
