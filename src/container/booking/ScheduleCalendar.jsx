@@ -393,7 +393,7 @@ const ScheduleCalendar = ({
               {day.label}
             </div>
           ))}
-
+          
           {times.map((time, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <div

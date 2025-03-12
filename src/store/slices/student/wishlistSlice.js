@@ -4,7 +4,7 @@ import { api } from "@/store/api/api";
 
 // Thunk to fetch wishlist
 export const fetchWishlistAsync = CreateApiAsyncThunk(
-  "wishlist/fetchWishlistAsync",
+  "GET/wishlist/fetchWishlistAsync",
   async () => {
     const response = await api.get(`/api/whishlist/student/get`);
     return response.data;

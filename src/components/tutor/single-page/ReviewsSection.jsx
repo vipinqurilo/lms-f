@@ -1,10 +1,13 @@
 import { Star } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import ReviewModal from "./ReviewModal";
+import BackgroundModal from "@/components/instructor/BackgroundModal";
 
 const ReviewsSection = ({ activeTab, setActiveTab }) => {
-  const { tutorProfile, isLoading, error } = useSelector(
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const { tutorProfile,canReview, isLoading, error } = useSelector(
     (state) => state.tutors
   );
 
@@ -13,16 +16,26 @@ const ReviewsSection = ({ activeTab, setActiveTab }) => {
       <section className="mb-12">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold">Reviews</h2>
-          {tutorProfile?.reviews?.length > 0 && (
-            <select
-              className="border rounded-lg px-4 py-2"
-              value={activeTab}
-              onChange={(e) => setActiveTab(e.target.value)}
-            >
-              <option value="newest">Sort by newest</option>
-              <option value="oldest">Sort by oldest</option>
-            </select>
-          )}
+          <div className="flex items-center gap-4">
+            {canReview && (
+              <button
+                onClick={() => setShowReviewModal(true)}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80"
+              >
+                Write a Review
+              </button>
+            )}
+            {tutorProfile?.reviews?.length > 0 && (
+              <select
+                className="border rounded-lg px-4 py-2"
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value)}
+              >
+                <option value="newest">Sort by newest</option>
+                <option value="oldest">Sort by oldest</option>
+              </select>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-8 mb-8">
@@ -101,6 +114,17 @@ const ReviewsSection = ({ activeTab, setActiveTab }) => {
           ))}
         </div>
       </section>
+
+      {showReviewModal && (
+        <BackgroundModal
+          PropComponent={() => (
+            <ReviewModal
+              onClose={() => setShowReviewModal(false)}
+              tutorId={tutorProfile?._id}
+            />
+          )}
+        />
+      )}
     </div>
   );
 };

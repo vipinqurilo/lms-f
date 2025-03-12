@@ -4,6 +4,7 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "@/store/api/api";
 
 const initialState = {
+  canReview: false,
   tutorReviews: [],
   minPrice: 10,
   maxPrice: 10000,
@@ -88,6 +89,14 @@ export const deleteReviewAsync = CreateApiAsyncThunk(
 export const editReviewAsync = CreateApiAsyncThunk(
   "review/editReviewAsync",
   ({ tab, id, data }) => api.patch(`/${tab}/${id}`, data)
+);
+export const addReviewAsync = CreateApiAsyncThunk(
+  "review/addReviewAsync",
+  ({ data }) => api.post(`/tutorReview`, data)
+);
+export const checkCompletedBooking = CreateApiAsyncThunk(
+  "GET/tutors/checkCompletedBooking",
+  (id) => api.get(`/tutorReview/check-completed-booking/${id}`)
 );
 const tutorsSlice = createSlice({
   name: "tutors",
@@ -279,6 +288,30 @@ const tutorsSlice = createSlice({
       .addCase(fetchReviewAsyncById.rejected, (state, action) => {
         state.isLoading["fetchReviewAsyncById"] = false;
         state.error["fetchReviewAsyncById"] = action.error?.message;
+      })
+      .addCase(addReviewAsync.pending, (state) => {
+        state.isLoading["addReviewAsync"] = true;
+      })
+      .addCase(addReviewAsync.fulfilled, (state, action) => {
+        state.isLoading["addReviewAsync"] = false;
+        state.tutorProfile.reviews = [...(state.tutorProfile.reviews || []), action.payload.data];
+        state.error["addReviewAsync"] = null;
+      })
+      .addCase(addReviewAsync.rejected, (state, action) => {
+        state.isLoading["addReviewAsync"] = false;
+        state.error["addReviewAsync"] = action.error?.message;
+      })
+      .addCase(checkCompletedBooking.pending, (state) => {
+        state.isLoading["checkCompletedBooking"] = true;
+      })
+      .addCase(checkCompletedBooking.fulfilled, (state, action) => {
+        state.isLoading["checkCompletedBooking"] = false;
+        console.log(action.payload, "action.payload");
+        state.canReview = action.payload?.canReview;
+      })
+      .addCase(checkCompletedBooking.rejected, (state, action) => {
+        state.isLoading["checkCompletedBooking"] = false;
+        state.error["checkCompletedBooking"] = action.error?.message;
       });
   },
 });
