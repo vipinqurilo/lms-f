@@ -8,9 +8,10 @@ import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashb
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
 import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
 import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
-
 import { getInstructorTickets } from "@/store/slices/supportSlice";
+
 import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
+
 
 export default function DashboardPage() {
   const dispatch = useDispatch();

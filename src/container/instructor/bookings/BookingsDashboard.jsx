@@ -18,7 +18,9 @@ const BookingsDashboard = () => {
   const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(
+    () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  );
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const { availability, isLoading: availabilityLoading } = useSelector(

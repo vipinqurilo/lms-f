@@ -14,6 +14,7 @@ const ScheduleCalendar = ({
   setSessionStartTime,
   setSessionEndTime,
 }) => {
+  console.log(calendar,'calendar')
   const data = calendar?.availability?.reduce((acc, { day, slots }) => {
     const dayName = day.charAt(0).toUpperCase() + day.slice(1, 3); // Capitalize first letter and take first three characters
     acc[dayName] = slots;
@@ -392,7 +393,7 @@ const ScheduleCalendar = ({
               {day.label}
             </div>
           ))}
-
+          
           {times.map((time, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <div

@@ -9,6 +9,8 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: "/api", // This will be forwarded by Next.js proxy
   withCredentials: true,
+  // baseURL: baseUrlKD,
+  // baseURL: baseURLVipin,
   headers: {
     "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
     Pragma: "no-cache",

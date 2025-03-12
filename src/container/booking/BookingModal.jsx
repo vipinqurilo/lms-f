@@ -11,9 +11,7 @@ import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice
 import { createBookingAsync, createBookingPayment } from "@/store/slices/student-dashboard/bookingSlice";
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
-import { createPaymentIntent } from "@/store/slices/paymentSlice";
-import { Router, useRouter } from "next/router";
-import stripePromise from "@/utils/stripe";
+import { useRouter } from "next/router";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();

@@ -4,9 +4,14 @@ import { CreateApiAsyncThunk } from "../CreateApiAsyncThunk/CreateApiAsyncThunk"
 import { api } from "@/store/api/api";
 
 const initialState = {
+  canReview: false,
   tutorReviews: [],
+  minPrice: 10,
+  maxPrice: 10000,
+  gender: "Any",
+  sortByRating: "relevance",
   userID: "",
-  tutorId: "",
+  tutorId: "",  
   processStep: 1,
   processData: {},
   requestStatus: "",
@@ -46,13 +51,25 @@ export const fetchTutorProfileAsync = CreateApiAsyncThunk(
 );
 export const fetchAllTutorProfileAsync = CreateApiAsyncThunk(
   "GET/tutors/fetchAllTutorProfileAsync",
-  ({ search, timeRanges, subjects }) => {
+  ({ search, timeRanges, subjects, gender, sortByRating, minPrice, maxPrice }) => {
     let url = `/tutors?search=${search || ""}`;
     if (timeRanges) {
       url += `&timeRanges=${timeRanges}`;
     }
     if (subjects) {
       url += `&subjects=${subjects}`;
+    }
+    if (gender) {
+      url += `&gender=${gender}`;
+    }
+    if (sortByRating) {
+      url += `&sortByRating=${sortByRating}`;
+    }
+    if (minPrice) {
+      url += `&minPrice=${minPrice}`;
+    }
+    if (maxPrice) {
+      url += `&maxPrice=${maxPrice}`;
     }
     return api.get(url);
   }
@@ -73,10 +90,30 @@ export const editReviewAsync = CreateApiAsyncThunk(
   "review/editReviewAsync",
   ({ tab, id, data }) => api.patch(`/${tab}/${id}`, data)
 );
+export const addReviewAsync = CreateApiAsyncThunk(
+  "review/addReviewAsync",
+  ({ data }) => api.post(`/tutorReview`, data)
+);
+export const checkCompletedBooking = CreateApiAsyncThunk(
+  "GET/tutors/checkCompletedBooking",
+  (id) => api.get(`/tutorReview/check-completed-booking/${id}`)
+);
 const tutorsSlice = createSlice({
   name: "tutors",
   initialState,
   reducers: {
+    setGender: (state, action) => {
+      state.gender = action.payload;
+    },
+    setSortByRating: (state, action) => {
+      state.sortByRating = action.payload;
+    },
+    setMinPrice: (state, action) => {
+      state.minPrice = action.payload;
+    },
+    setMaxPrice: (state, action) => {
+      state.maxPrice = action.payload;
+    },
     setTutorId: (state, action) => {
       state.tutorId = action.payload;
     },
@@ -251,6 +288,30 @@ const tutorsSlice = createSlice({
       .addCase(fetchReviewAsyncById.rejected, (state, action) => {
         state.isLoading["fetchReviewAsyncById"] = false;
         state.error["fetchReviewAsyncById"] = action.error?.message;
+      })
+      .addCase(addReviewAsync.pending, (state) => {
+        state.isLoading["addReviewAsync"] = true;
+      })
+      .addCase(addReviewAsync.fulfilled, (state, action) => {
+        state.isLoading["addReviewAsync"] = false;
+        state.tutorProfile.reviews = [...(state.tutorProfile.reviews || []), action.payload.data];
+        state.error["addReviewAsync"] = null;
+      })
+      .addCase(addReviewAsync.rejected, (state, action) => {
+        state.isLoading["addReviewAsync"] = false;
+        state.error["addReviewAsync"] = action.error?.message;
+      })
+      .addCase(checkCompletedBooking.pending, (state) => {
+        state.isLoading["checkCompletedBooking"] = true;
+      })
+      .addCase(checkCompletedBooking.fulfilled, (state, action) => {
+        state.isLoading["checkCompletedBooking"] = false;
+        console.log(action.payload, "action.payload");
+        state.canReview = action.payload?.canReview;
+      })
+      .addCase(checkCompletedBooking.rejected, (state, action) => {
+        state.isLoading["checkCompletedBooking"] = false;
+        state.error["checkCompletedBooking"] = action.error?.message;
       });
   },
 });
@@ -262,5 +323,9 @@ export const {
   updateProcessStep,
   updateRequestStatus,
   setUserID,
+  setGender,
+  setMinPrice,
+  setMaxPrice,
+  setSortByRating
 } = tutorsSlice.actions;
 export default tutorsSlice.reducer;

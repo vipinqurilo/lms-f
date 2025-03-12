@@ -18,7 +18,10 @@ export const fetchBookingsAsync = CreateApiAsyncThunk(
 
 export const fetchBookingsByTutorIdAsync = CreateApiAsyncThunk(
   "GET/booking/fetchBookingsByTutorIdAsync",
-  (teacherId) => api.get(`/bookings/`, { params: { teacherId } })
+  ({ teacherId, startDate, endDate }) =>
+    api.get(`/bookings/teacher/`, {
+      params: { teacherId, startDate, endDate },
+    })
 );
 
 export const createBookingAsync = CreateApiAsyncThunk(

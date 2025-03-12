@@ -12,9 +12,11 @@ import { useRouter } from "next/router";
 import Rating from "./Rating";
 import { fetchReviewAsyncById, setTutorId, setUserID } from "@/store/slices/tutorsSlice";
 import { fetchBookingsByTutorIdAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { useSelector } from "react-redux";
 
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
   const router = useRouter();
+  const { startDate, endDate } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   return (
     <div className="">
@@ -93,7 +95,7 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
               <button
                 disabled={!tutor}
                 onClick={() => {
-                  dispatch(fetchBookingsByTutorIdAsync(tutor?.user?._id));
+                  dispatch(fetchBookingsByTutorIdAsync({teacherId:tutor?.user?._id,startDate,endDate}));
                   setShowBooking(true);
                   setTutor(tutor);
                 }}
@@ -136,6 +138,7 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
             <button
               disabled={!tutor}
               onClick={() => {
+                dispatch(fetchBookingsByTutorIdAsync({teacherId:tutor?.user?._id,startDate,endDate}));
                 dispatch(setIsAvailableModelOpen(true));
                 setTutor(tutor);
               }}

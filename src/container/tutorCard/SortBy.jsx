@@ -1,7 +1,11 @@
+import { setSortByRating } from "@/store/slices/tutorsSlice";
 import React, { useEffect, useState } from "react";
 import { GoCheck } from "react-icons/go";
+import { useDispatch, useSelector } from "react-redux";
 
-const SortBy = ({ setSortBy, sortBy }) => {
+const SortBy = ({ onClose }) => {
+  const { sortByRating } = useSelector((state) => state.tutors);
+  const dispatch = useDispatch();
  
 
   return (
@@ -16,30 +20,39 @@ const SortBy = ({ setSortBy, sortBy }) => {
 
         {/* Days of the Week */}
         <div
-          onClick={() => setSortBy("By popularity")}
+          onClick={() =>{
+            dispatch(setSortByRating("relevance"))
+            onClose();
+          }}
           className={`flex justify-between px-3 items-center  ${
-            sortBy === "By popularity" ? "text-black" : "text-[#b3b3b3]"
+            sortByRating === "relevance" ? "text-black" : "text-[#b3b3b3]"
           }`}
         >
-          By popularity <GoCheck />
+          Relevance <GoCheck />
         </div>
         <hr />
         <div
-          onClick={() => setSortBy("By price low to high")}
+          onClick={() => {
+            dispatch(setSortByRating("low-to-high"))
+            onClose();
+          }}
           className={`flex justify-between px-3 items-center  ${
-            sortBy === "By price low to high" ? "text-black" : "text-[#b3b3b3]"
+            sortByRating === "low-to-high" ? "text-black" : "text-[#b3b3b3]"
           }`}
         >
-          By price low to high <GoCheck />
+          Low to High <GoCheck />
         </div>
         <hr />
         <div
-          onClick={() => setSortBy("By price high to low")}
+          onClick={() => {
+            dispatch(setSortByRating("high-to-low"))
+            onClose();
+          }}
           className={`flex justify-between px-3 items-center  ${
-            sortBy === "By price high to low" ? "text-black" : "text-[#b3b3b3]"
+            sortByRating === "high-to-low" ? "text-black" : "text-[#b3b3b3]"
           }`}
         >
-          By price high to low <GoCheck />
+          High to Low <GoCheck />
         </div>
       </div>
     </div>
