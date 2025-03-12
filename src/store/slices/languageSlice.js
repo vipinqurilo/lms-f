@@ -8,7 +8,7 @@ const initialState = {
   error: {},
 };
 
-export const getLanguages = CreateApiAsyncThunk("languages/getLanguages", () =>
+export const getLanguages = CreateApiAsyncThunk("GET/languages/getLanguages", () =>
   api.get(`/languages`)
 );
 

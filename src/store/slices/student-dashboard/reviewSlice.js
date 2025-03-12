@@ -18,8 +18,11 @@ export const editReviewAsync = CreateApiAsyncThunk(
   "review/editReviewAsync",
   ({tab,id,data}) => api.patch(`/${tab}/${id}`, data)
 );
+
+
 const initialState = {
   data: [],
+  canReview: null,
   totalPages: 0,
   currentPage: 1,
   isLoading: {},
@@ -91,7 +94,9 @@ const reviewSlice = createSlice({
       .addCase(editReviewAsync.rejected, (state, action) => {
         state.isLoading["editReviewAsync"] = false;
         state.error["editReviewAsync"] = action.error?.message;
-      });
+      })
+      
+      ;
   },
 });
 

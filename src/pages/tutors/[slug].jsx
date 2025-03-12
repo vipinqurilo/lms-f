@@ -15,12 +15,12 @@ import SidebarActions from "../../components/tutor/single-page/SidebarActions";
 import AvailabilityCalendar from "../../components/tutor/AvailabilityCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { fetchReviewAsyncById, fetchTutorProfileAsync } from "@/store/slices/tutorsSlice";
+import { checkCompletedBooking, fetchReviewAsyncById, fetchTutorProfileAsync } from "@/store/slices/tutorsSlice";
 import LoginModel from "@/container/login/LoginModel";
 import { BookingModal } from "@/container/booking/BookingModal";
 import { Loader } from "lucide-react";
 import { setIsContactModelOpen } from "@/store/slices/uiSlice";
-import ContactModal from "@/components/common/ContactModal";
+import ContactModal from "@/components/common/ContactModal"; 
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { fetchBookingsByTutorIdAsync } from "@/store/slices/student-dashboard/bookingSlice";
@@ -39,11 +39,13 @@ export default function TeacherProfile() {
   const { bookingsByTutorId, isLoading: bookingsLoading } = useSelector(
     (state) => state.student.booking
   );
-  const { isContactModelOpen } = useSelector((state) => state.ui);
+  const { startDate, endDate,isContactModelOpen } = useSelector((state) => state.ui);
   useEffect(() => {
     if (tutorId && userID) {
-      dispatch(fetchBookingsByTutorIdAsync(userID));
+      dispatch(fetchBookingsByTutorIdAsync({teacherId:userID,startDate,endDate}));
       dispatch(fetchTutorProfileAsync(tutorId));
+      dispatch(checkCompletedBooking(userID));  
+
     } else {
       router.push("/tutors");
       toast.error("Tutor not found");

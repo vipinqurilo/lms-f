@@ -93,7 +93,7 @@ const ProfileHeader = () => {
                     src={"/assets/icons/star-fill.svg"}
                     alt="Star"
                   />
-                  {tutorProfile?.rating || 3.5} {/* Dynamic rating */}
+                  {tutorProfile?.rating } {/* Dynamic rating */}
                 </span>
                 <span className="text-sm text-gray-500">
                   ({tutorProfile?.reviewsCount || 0}){" "}

@@ -1,7 +1,11 @@
+import { setGender } from "@/store/slices/tutorsSlice";
 import React, { useEffect, useState } from "react";
 import { GoCheck } from "react-icons/go";
+import { useSelector, useDispatch } from "react-redux";
 
-const GenderSelector = ({ setGender, selectedGender }) => {
+const GenderSelector = () => {
+  const {gender}=useSelector((state)=>state.tutors);
+  const dispatch=useDispatch();
   return (
     <div
       onClick={(e) => {
@@ -14,27 +18,27 @@ const GenderSelector = ({ setGender, selectedGender }) => {
         {/* Gender Options */}
 
         <div
-          onClick={() => setGender("Any")}
+          onClick={() => dispatch(setGender("Any"))}
           className={`flex justify-between px-3 items-center  ${
-            selectedGender === "Any" ? "text-black" : "text-[#b3b3b3]"
+            gender === "Any" ? "text-black" : "text-[#b3b3b3]"
           }`}
         >
           Any <GoCheck />
         </div>
         <hr />
         <div
-          onClick={() => setGender("Male")}
+          onClick={() => dispatch(setGender("Male"))}
           className={`flex justify-between px-3 items-center  ${
-            selectedGender === "Male" ? "text-black" : "text-[#b3b3b3]"
+            gender === "Male" ? "text-black" : "text-[#b3b3b3]"
           }`}
         >
           Male <GoCheck />
         </div>
         <hr />
         <div
-          onClick={() => setGender("Female")}
+          onClick={() => dispatch(setGender("Female"))}
           className={`flex justify-between px-3 items-center  ${
-            selectedGender === "Female" ? "text-black" : "text-[#b3b3b3]"
+            gender === "Female" ? "text-black" : "text-[#b3b3b3]"
           }`}
         >
           Female <GoCheck />

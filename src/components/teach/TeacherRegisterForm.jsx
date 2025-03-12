@@ -49,6 +49,7 @@ const TeacherRegisterForm = () => {
       <div className="bg-white/40 backdrop-blur-sm text-white p-8 md:w-full rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-2">Apply To Teach</h2>
         <p className="mb-4">Teach what you are passionate about</p>
+    
         {isApproved && (
           <p className="mb-4 ">
             Your application is approved! Start teaching what you are passionate

@@ -23,7 +23,7 @@ const ProfileDropDown = () => {
     },
     {
       title: "My Profile",
-      href: "/student-dashboard/profile",
+      href: "/student-dashboard/settings",
     },
     {
       title: "Enrolled Courses",
@@ -127,7 +127,7 @@ const ProfileDropDown = () => {
       <ProfileAvatar authUser={authUser} />
 
       {isModalOpen && (
-        <div className="absolute top-full right-0 pt-2 !z-[15]">
+        <div className="absolute top-full right-0 pt-2 !z-[65]">
           <div className="-mb-3.5 w-full flex items-center justify-end text-white ">
             <VscTriangleUp size={40} />
           </div>
