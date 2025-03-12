@@ -1,11 +1,11 @@
+import Loader from "@/components/common/Loader";
 import React from "react";
 
-const ApprovelModal = ({ isOpen, onClose, onConfirm }) => {
+const ApprovelModal = ({ isOpen, onClose, onConfirm, loading }) => {
   if (!isOpen) return null;
 
   const handleConfirm = () => {
     onConfirm(); // Execute the approve action
-    onClose(); // Close the modal
   };
 
   return (
@@ -16,10 +16,11 @@ const ApprovelModal = ({ isOpen, onClose, onConfirm }) => {
         </h2>
         <p className="text-gray-500 mb-4">This action cannot be undone.</p>
         <button
-          className="w-full py-2 bg-red-600 text-white font-semibold rounded-lg mb-3"
+          className="w-full py-2 bg-red-600 text-white font-semibold rounded-lg mb-3 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={loading}
           onClick={handleConfirm} // Ensure the modal closes on confirmation
         >
-          Confirm
+          {loading ? <Loader /> : "Confirm"}
         </button>
         <button
           className="w-full py-2 border border-gray-300 text-gray-700 rounded-lg"

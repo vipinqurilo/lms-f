@@ -8,6 +8,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { requestWithdrawal } from "@/store/slices/withdrawalSlice";
+import toast from "react-hot-toast";
 
 const RequestWithdrawal = ({ handleClose, balance }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,9 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
   } = useForm();
 
   const submitHandler = (data) => {
+    if (data?.amount < 100) {
+      return toast.error("Amount should be more than 100 ZAR")
+    }
     dispatch(requestWithdrawal(data))
       .unwrap()
       .then(() => {
@@ -45,7 +49,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
             <div className="grid grid-cols-2 mb-4 text-background">
               <div>
                 <p className="text-light text-sm">Withdrawal Balance</p>
-                <p className="text-lg font-semibold ">₹{balance}</p>
+                <p className="text-lg font-semibold ">{balance} ZAR</p>
               </div>
               <div>
                 <p className="text-light text-sm">Selected</p>
@@ -78,7 +82,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                     required: "Amount is required",
                     validate: (value) => {
                       if (parseFloat(value) > balance) {
-                        return `Amount cannot be greater than ₹${balance}`;
+                        return `Amount cannot be greater than ${balance} ZAR`;
                       }
                       return true;
                     },
@@ -93,7 +97,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                   {" "}
                   <CgCopyright size={20} />{" "}
                 </span>{" "}
-                Minimum withdrawal amount is <b className="ml-1"> ₹1000</b>
+                Minimum withdrawal amount is <b className="ml-1">100 ZAR</b>
               </p>
             </div>
 

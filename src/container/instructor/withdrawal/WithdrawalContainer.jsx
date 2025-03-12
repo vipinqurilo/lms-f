@@ -84,7 +84,7 @@ const WithdrawalContainer = () => {
                   <p className=" font-medium">
                     You have{" "}
                     <span className="font-semibold text-background">
-                      ₹{balance}
+                      {balance} ZAR
                     </span>{" "}
                     ready to withdraw now
                   </p>
