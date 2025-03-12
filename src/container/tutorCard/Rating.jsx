@@ -10,7 +10,7 @@ const Rating = ({ rating, reviews }) => {
           src={"/assets/icons/star-fill.svg"}
           alt="Star"
         />
-        {rating || "N/A"}
+        {typeof rating === "number" ? rating.toFixed(2) : "N/A"}
       </span>
       <span className="text-sm text-gray-500">
         ({reviews || 0} Review{reviews > 1 ? "s" : ""})

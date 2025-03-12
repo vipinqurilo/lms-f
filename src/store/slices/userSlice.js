@@ -22,7 +22,7 @@ export const logout = CreateApiAsyncThunk("user/logout", () =>
 );
 
 export const userLoginForAdmin = CreateApiAsyncThunk(
-  "user/userLoginForAdmin",
+  "GET/user/userLoginForAdmin",
   (userId) => api.get(`/auth/admin-usertoken?userId=${userId}`)
 );
 

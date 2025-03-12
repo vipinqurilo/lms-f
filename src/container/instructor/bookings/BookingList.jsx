@@ -126,7 +126,7 @@ const BookingList = ({ bookings, isLoading }) => {
                                 isAdmin ? "col-span-2" : "col-span-2"
                               }`}
                             >
-                              {authUser.role === "teacher" ? (
+                              {authUser?.role === "teacher" ? (
                                 <>
                                   <p className="mb-1 font-semibold">{`${booking?.student?.firstName} ${booking?.student?.lastName}`}</p>
                                   <div className="flex items-center gap-2">
