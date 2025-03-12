@@ -28,10 +28,9 @@ const CreatedCourses = ({
   };
 
   console.log(data, "data");
-  
 
   return (
-    <div className="">
+    <div className="w-full">
       {title !== "" && (
         <div className="w-full flex items-center justify-between">
           <h2 className="text-2xl font-bold text-dark mb-6">{title}</h2>
@@ -46,87 +45,98 @@ const CreatedCourses = ({
           )}
         </div>
       )}
-      <div className="bg-white !rounded-b-lg shadow-md ">
-        <div className="overflow-x-auto">
+      <div className="bg-white !rounded-b-lg shadow-md w-full">
+        <div className="overflow-x-auto w-full">
           <table className="w-full rounded-lg">
             <TableHeader headingsData={headingsData} />
-            <tbody className="divide-y divide-gray-100 bg-white">
-              {data?.map((course, index) => (
-                <tr key={index} className="">
-                  <td className="px-6 py-4 w-[60%]">
-                    <div className="w-full grid grid-cols-4 gap-5">
-                      <div className="w-full h-full relative">
-                        <Image
-                          src={course?.image}
-                          alt={course?.title}
-                          // width={1000}
-                          // height={1000}
-                          fill={true}
-                          className="rounded-lg object-cover"
-                        />
-                      </div>
-                      <div
-                        className={`hover:text-primary ${
-                          isCols ? "col-span-3" : "col-span-2"
-                        }`}
-                      >
-                        <Link href={`/courses/${course?.id}`}>
-                          {course?.title}
-                        </Link>
-                        <p className="line-clamp-3 text-light/60 text-sm">
-                          {course?.des}
-                        </p>
-                      </div>
-                    </div>
+            <tbody className="divide-y divide-gray-100 bg-white w-full">
+              {data?.length === 0 ? (
+                <tr>
+                  <td
+                    className="p-6 text-center"
+                    colSpan={headingsData?.length}
+                  >
+                    No Course Created
                   </td>
-                  <td className="px-6 py-4 ">
-                    <div className="text-light/60">
-                      {course?.value1 ? course?.value1 : "-"}
-                    </div>
-                  </td>
-                  {isAdmin && (
-                    <td className={`px-6 py-4 `}>
-                      <div className="text-light/60">
-                        {course?.firstName ? course?.firstName : "-"}
+                </tr>
+              ) : (
+                data?.map((course, index) => (
+                  <tr key={index} className="">
+                    <td className="px-6 py-4 w-[60%]">
+                      <div className="w-full grid grid-cols-4 gap-5">
+                        <div className="w-full h-full relative">
+                          <Image
+                            src={course?.image}
+                            alt={course?.title}
+                            // width={1000}
+                            // height={1000}
+                            fill={true}
+                            className="rounded-lg object-cover"
+                          />
+                        </div>
+                        <div
+                          className={`hover:text-primary ${
+                            isCols ? "col-span-3" : "col-span-2"
+                          }`}
+                        >
+                          <Link href={`/courses/${course?.id}`}>
+                            {course?.title}
+                          </Link>
+                          <p className="line-clamp-3 text-light/60 text-sm">
+                            {course?.des}
+                          </p>
+                        </div>
                       </div>
                     </td>
-                  )}
-                  {headingsData?.length > 3 && (
+                    <td className="px-6 py-4 ">
+                      <div className="text-light/60">
+                        {course?.value1 ? course?.value1 : "-"}
+                      </div>
+                    </td>
+                    {isAdmin && (
+                      <td className={`px-6 py-4 `}>
+                        <div className="text-light/60">
+                          {course?.firstName ? course?.firstName : "-"}
+                        </div>
+                      </td>
+                    )}
+                    {headingsData?.length > 3 && (
+                      <td className="px-6 py-4">
+                        <div
+                          className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
+                            headingsData[2] === "Status" &&
+                            `${getStatusCss(
+                              course?.value2
+                            )} w-fit capitalize flex items-center gap-2`
+                          }`}
+                        >
+                          {course?.value2}
+                          {/* {course?.value2 === "unpublished" && (
+                            <RejectReasonPopup data={course?.rejectionReason} />
+                          )} */}
+                        </div>
+                      </td>
+                    )}
                     <td className="px-6 py-4">
                       <div
                         className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
                           headingsData[2] === "Status" &&
+                          headingsData?.length < 4 &&
                           `${getStatusCss(
-                            course?.value2
-                          )} w-fit capitalize flex items-center gap-2`
+                            headingsData?.length > 3
+                              ? course?.value3
+                              : course?.value2
+                          )} w-fit capitalize`
                         }`}
                       >
-                        {course?.value2}
-                        {/* {course?.value2 === "unpublished" && (
-                          <RejectReasonPopup data={course?.rejectionReason} />
-                        )} */}
+                        {headingsData?.length > 3
+                          ? course?.value3
+                          : course?.value2}
                       </div>
                     </td>
-                  )}
-                  <td className="px-6 py-4">
-                    <div
-                      className={`text-light/60 px-4 py-2 font-semibold rounded-full text-sm !capitalize ${
-                        headingsData[2] === "Status" &&
-                        headingsData?.length < 4 &&
-                        `${getStatusCss(
-                          headingsData?.length > 3
-                            ? course?.value3
-                            : course?.value2
-                        )} w-fit capitalize`
-                      }`}
-                    >
-                      {headingsData?.length > 3
-                        ? course?.value3
-                        : course?.value2}
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

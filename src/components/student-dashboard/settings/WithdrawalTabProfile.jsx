@@ -28,11 +28,11 @@ const WithdrawalTabProfile = () => {
       // Reset the form with profile data based on the selected method
       if (selectedMethod === methods[0]) {
         reset({
-          name: profile?.paymentInfo?.accountHolderName || "",
-          accountnumber: profile?.paymentInfo?.accountNumber || "",
-          bankname: profile?.paymentInfo?.bankName || "",
+          accountHolderName: profile?.paymentInfo?.accountHolderName || "",
+          accountNumber: profile?.paymentInfo?.accountNumber || "",
+          bankName: profile?.paymentInfo?.bankName || "",
           ifscCode: profile?.paymentInfo?.ifscCode || "",
-          paypalemailaddress: profile?.paymentInfo?.paypalEmail || "",
+          paypalEmail: profile?.paymentInfo?.paypalEmail || "",
         });
       }
     }
@@ -80,21 +80,21 @@ const WithdrawalTabProfile = () => {
             <div className="w-full grid grid-cols-2 gap-8">
               <SettingsInputField
                 label={"Account Name"}
-                name={"name"}
+                name={"accountHolderName"}
                 placeholder={"Enter Account Name"}
                 register={register}
                 errors={errors}
               />
               <SettingsInputField
                 label={"Account Number"}
-                name={"accountnumber"}
+                name={"accountNumber"}
                 placeholder={"Enter Account Number"}
                 register={register}
                 errors={errors}
               />
               <SettingsInputField
                 label={"Bank Name"}
-                name={"bankname"}
+                name={"bankName"}
                 placeholder={"Enter Bank Name"}
                 register={register}
                 errors={errors}
@@ -118,7 +118,7 @@ const WithdrawalTabProfile = () => {
             <div>
               <SettingsInputField
                 label={"PayPal Email Address"}
-                name={"paypalemailaddress"}
+                name={"paypalEmail"}
                 placeholder={"Enter PayPal Email Address"}
                 register={register}
                 errors={errors}

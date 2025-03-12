@@ -15,9 +15,7 @@ import { SlBadge } from "react-icons/sl";
 export default function FeaturedCard({ data, isFull = false }) {
   const { authUser } = useSelector((state) => state.user);
   const { enrolledCourses, isLoading } = useSelector((state) => state.courses);
-  const { wishlist, isLoading: wishlistLoading } = useSelector(
-    (state) => state.student.wishlist
-  );
+  const { wishlist } = useSelector((state) => state.student.wishlist);
 
   if (!data || typeof data !== "object") {
     return <p>Invalid course data</p>;
@@ -35,6 +33,7 @@ export default function FeaturedCard({ data, isFull = false }) {
   const [selectedMethod, setselectedMethod] = useState("stripe");
   const [checkoutUrl, setCheckoutUrl] = useState(null);
   const [isPaymentModal, setisPaymentModal] = useState(false);
+  const [wishlistLoading, setwishlistLoading] = useState(null);
 
   const handlePayment = () => {
     if (!selectedMethod) {
@@ -134,12 +133,15 @@ export default function FeaturedCard({ data, isFull = false }) {
                 </div>
               </div>
               <button
-                onClick={() =>
+                onClick={() => {
+                  setwishlistLoading(data?._id);
                   dispatch(addToWishlistAsync({ course: data?._id }))
-                }
+                    .unwrap()
+                    .finally(() => setwishlistLoading(null));
+                }}
                 className="text-red-500"
               >
-                {wishlistLoading["addToWishlistAsync"] ? (
+                {wishlistLoading === data?._id ? (
                   <Loader />
                 ) : wishlist?.some(
                     (item) => item?.course?._id === data?._id

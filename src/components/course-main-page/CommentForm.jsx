@@ -138,13 +138,13 @@ const CommentForm = ({ id, data }) => {
             </span>
           )}
         </div>
-        <button
-          className={`w-fit py-2 bg-secondary hover:bg-black transition-custom rounded text-lg text-white !border !border-secondary !bg-transparent hover:!text-white disabled:!cursor-not-allowed disabled:hover:bg-secondary disabled:opacity-60`}
+        {/* <button
+          className={`w-fit py-1.5 px-3 rounded text-white bg-secondary hover:bg-background transition-custom  text-base  hover:!text-white disabled:!cursor-not-allowed disabled:hover:bg-secondary disabled:opacity-60`}
           disabled={isLoading["addReview"]}
         >
           {isLoading["addReview"] ? <Loader /> : "Submit Review"}
-        </button>
-        {/* <SubmitButton text={"Submit Review"} loading={isLoading["addReview"]} /> */}
+        </button> */}
+        <SubmitButton text={"Submit Review"} loading={isLoading["addReview"]} />
       </form>
     </div>
   );

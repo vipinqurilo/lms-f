@@ -9,10 +9,21 @@ import FeaturedInstructor from "@/container/home/FeaturedInstructor";
 import UserLove from "@/container/home/UserLove";
 import Become from "@/components/home/Become";
 import LogoSlider from "@/components/common/LogoSlider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
 
 const Home = () => {
   const courses = useSelector((state) => state?.courses?.courses);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const requestData = {
+      page: 1,
+      status: "published",
+    };
+    dispatch(fetchCoursesAsync(requestData));
+  }, [dispatch]);
 
   return (
     <>

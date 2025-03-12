@@ -1,7 +1,15 @@
+import Loader from "@/components/common/Loader";
 import React from "react";
 import { RxCross2 } from "react-icons/rx";
 
-const RejectModal = ({ isOpen, onClose, onReject, rejectionReason, setRejectionReason }) => {
+const RejectModal = ({
+  isOpen,
+  onClose,
+  onReject,
+  rejectionReason,
+  setRejectionReason,
+  loading,
+}) => {
   if (!isOpen) return null; // Don't render if the modal is not open
 
   return (
@@ -15,10 +23,14 @@ const RejectModal = ({ isOpen, onClose, onReject, rejectionReason, setRejectionR
           <RxCross2 size={22} />
         </button>
 
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Rejecting a Request</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          Rejecting a Request
+        </h2>
         <p className="text-gray-500 mb-4">
           Rejecting a Request for booking on{" "}
-          <span className="text-red-500 font-medium">4 February, 2025 12:00</span>
+          <span className="text-red-500 font-medium">
+            4 February, 2025 12:00
+          </span>
         </p>
 
         <label className="text-gray-700 font-medium">Reason</label>
@@ -31,13 +43,13 @@ const RejectModal = ({ isOpen, onClose, onReject, rejectionReason, setRejectionR
 
         <div className="flex justify-end mt-4">
           <button
-            className="px-5 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition"
+            className="px-5 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 transition disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
             onClick={() => {
               onReject(); // Invoke the reject function
-              onClose(); // Close modal after rejection
             }}
           >
-            Reject
+            {loading ? <Loader /> : "Reject"}
           </button>
         </div>
       </div>

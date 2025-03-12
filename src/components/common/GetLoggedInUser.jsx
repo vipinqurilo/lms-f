@@ -13,24 +13,19 @@ import { fetchCoursesAsync, getAllEnrolledCourses } from "@/store/slices/courses
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
   const { authUser, isAuthenticated } = useSelector((state) => state.user);
-  const userToken =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const adminToken =
-    typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
+  // const userToken =
+  //   typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  // const adminToken =
+  //   typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
 
   useEffect(() => {
-    if (userToken || adminToken) {
+    // if (userToken || adminToken) {
       dispatch(verifyLoggedInUser());
-    }
+    // }
     dispatch(getSubjects());
     dispatch(getSubSubjects());
     dispatch(getLanguages());
     dispatch(fetchAllTutorProfileAsync({ search: "" }));
-    const requestData = {
-      page: 1,
-      status: "published",
-    };
-    dispatch(fetchCoursesAsync(requestData));
   }, [dispatch]);
 
   useEffect(() => {
