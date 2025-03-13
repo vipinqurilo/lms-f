@@ -50,7 +50,7 @@ const WithdrawalTabProfile = () => {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
           Select a withdraw method{" "}
-          <span className="text-sm text-light">(Minimum withdraw ₹80)</span>
+          <span className="text-sm text-light">(Minimum withdraw 100 ZAR)</span>
         </h3>
 
         {/* <div className="w-full grid grid-cols-3 gap-5">
@@ -74,7 +74,7 @@ const WithdrawalTabProfile = () => {
 
         <form
           onSubmit={handleSubmit(submitHandler)}
-          className="w-full p-5 py-6 border border-black/10 space-y-8 !mt-10 rounded-lg"
+          className="w-full  space-y-8 !mt-5 rounded-lg"
         >
           {/* {selectedMethod === methods[0] ? ( */}
             <div className="w-full grid grid-cols-2 gap-8">

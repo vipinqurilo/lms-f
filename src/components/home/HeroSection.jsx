@@ -88,10 +88,8 @@ export default function HeroSection() {
           `${tutor?.user?.firstName} ${tutor?.user?.lastName}`
             ?.toLowerCase()
             ?.includes(debounceSearch?.toLowerCase()) ||
-          tutor?.subjectsTaught?.filter((subject) =>
-            subject?.name
-              ?.toLowerCase()
-              ?.includes(debounceSearch?.toLowerCase())
+          tutor?.subjectsTaught?.some((subject) =>
+            subject?.name?.toLowerCase().includes(debounceSearch?.toLowerCase())
           )
       );
     }
@@ -112,7 +110,7 @@ export default function HeroSection() {
 
       <div
         data-aos="fade-up"
-        className="relative max-w-5xl mx-auto flex flex-col items-center text-center"
+        className="relative max-w-5xl xl:max-w-3xl mx-auto flex flex-col items-center text-center"
       >
         <div className="flex items-start gap-2">
           <div className="w-10 md:w-7 h-8 md:h-7 lg:w-7 lg:h-7 flex items-center justify-center lg:text-base text-white bg-green-600 rounded md:text-lg">
@@ -159,8 +157,8 @@ export default function HeroSection() {
               onChange={(e) => setSearchText(e.target.value)}
               placeholder={
                 selectedOption === "course"
-                  ? "Search By Course Name"
-                  : "Search By Tutor Name"
+                  ? "Search By Course Name or Subject Name"
+                  : "Search By Tutor Name or Subject Name"
               }
               className="flex-grow outline-none text-gray-600 placeholder-gray-400 px-4 py-2"
             />
