@@ -9,7 +9,7 @@ import RejectModal from "./rejectModel";
 import ApprovelModal from "./approvel";
 import {
   approveTeacher,
-  fetchData,
+  fetchTeachers,
   rejectTeacher,
 } from "@/store/slices/admin-dashboard/teacherSlice";
 import Link from "next/link";
@@ -43,9 +43,7 @@ const TeacherRequests = () => {
     (state) => state.admin?.teacher
   );
 
-  // useEffect(() => {
-  //   dispatch(fetchData({ search: "", limit: 2, page }));
-  // }, [dispatch,page]);
+ 
 
   useEffect(() => {
     const data = {
@@ -61,7 +59,7 @@ const TeacherRequests = () => {
     if (filters?.endDate) {
       data.endDate = filters?.endDate;
     }
-    dispatch(fetchData(data));
+    dispatch(fetchTeachers(data));
   }, [dispatch, page, filters]);
 
   const handleOpenApproveModal = (teacherId) => {
@@ -80,7 +78,7 @@ const TeacherRequests = () => {
       await dispatch(approveTeacher(selectedTeacherId)).unwrap();
       console.log("Teacher successfully approved");
 
-      dispatch(fetchData());
+      dispatch(fetchTeachers());
       setIsApproveModalOpen(false);
     } catch (error) {
       console.error("Error approving teacher:", error);
@@ -105,7 +103,7 @@ const TeacherRequests = () => {
   //     await dispatch(rejectTeacher({ id: selectedTeacherId, reason: rejectionReason })).unwrap();
   //     setIsRejectModalOpen(false);
   //     setRejectionReason(""); // Clear the reason
-  //     dispatch(fetchData()); // Refresh data
+  //     dispatch(fetchTeachers()); // Refresh data
   //   } catch (error) {
   //     console.error("Error rejecting teacher:", error);
   //   }
@@ -131,7 +129,7 @@ const TeacherRequests = () => {
       // Close the modal and clear the rejection reason
       setIsRejectModalOpen(false);
       setRejectionReason(""); // Clear the reason
-      dispatch(fetchData()); // Refresh data
+      dispatch(fetchTeachers()); // Refresh data
     } catch (error) {
       console.error("Error rejecting teacher:", error);
     }
@@ -194,7 +192,7 @@ const TeacherRequests = () => {
                             {teacher.personalInfo?.firstName}
                           </td>
                           <td className="py-4 px-4 text-gray-700">
-                            {teacher.email}amankumar@gmail.com
+                            {teacher.userDetails?.email}
                           </td>
                           <td className="py-4 px-4 text-gray-700">
                             {teacher.personalInfo?.firstName}

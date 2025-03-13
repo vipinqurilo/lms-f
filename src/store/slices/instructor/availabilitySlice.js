@@ -8,6 +8,11 @@ export const fetchAvailabilityAsync = CreateApiAsyncThunk(
   () => api.get(`/profile/availability-calendar`)
 );
 
+export const fetchAvailabilityByIdAsync = CreateApiAsyncThunk(
+  "GET/availability/fetchAvailabilityByIdAsync",
+  (id) => api.get(`/tutors/availability-calendar/${id}`)
+);
+
 export const updateAvailabilityAsync = CreateApiAsyncThunk(
   "availability/updateAvailabilityAsync",
   (availabilityData) =>
@@ -15,9 +20,11 @@ export const updateAvailabilityAsync = CreateApiAsyncThunk(
       availability: availabilityData,
     })
 );
+
 // Initial state for bookings 
 const initialState = {
   availability: [],
+  currentAvailability: null,
   isLoading: {},
   error: {},
 };
@@ -58,6 +65,17 @@ const availabilitySlice = createSlice({
       .addCase(updateAvailabilityAsync.rejected, (state, action) => {
         state.isLoading["updateAvailabilityAsync"] = false;
         state.error["updateAvailabilityAsync"] = action.payload;
+      })
+      .addCase(fetchAvailabilityByIdAsync.pending, (state) => {
+        state.isLoading["fetchAvailabilityByIdAsync"] = true;
+      })
+      .addCase(fetchAvailabilityByIdAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchAvailabilityByIdAsync"] = false;
+        state.currentAvailability = action.payload?.data || null;
+      })
+      .addCase(fetchAvailabilityByIdAsync.rejected, (state, action) => {
+        state.isLoading["fetchAvailabilityByIdAsync"] = false;
+        state.error["fetchAvailabilityByIdAsync"] = action.payload;
       });
   },
 });
