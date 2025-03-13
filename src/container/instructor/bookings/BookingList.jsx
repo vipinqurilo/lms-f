@@ -321,6 +321,7 @@ const BookingList = ({ bookings, isLoading }) => {
                                     : "text-gray-600"
                                 }  cursor-pointer`}
                                 onClick={() => {
+
                                   setBooking(booking);
                                   setIsOpen("reschedule");
                                 }}
@@ -350,8 +351,8 @@ const BookingList = ({ bookings, isLoading }) => {
                               >
                                 <CircleX />
                               </button>
-                              {authUser.role === "teacher" ||
-                              authUser.role === "admin" ? (
+                              {authUser?.role === "teacher" ||
+                              authUser?.role === "admin" ? (
                                 <>
                                   {booking?.status === "confirmed" ? (
                                     <button
@@ -423,7 +424,7 @@ const BookingList = ({ bookings, isLoading }) => {
                       </div>
                       {/* buttons for reschedule and cancel */}
                       {booking?.status === "reschedule_in_progress" &&
-                        authUser?.role === "student" && (
+                       ( booking?.rescheduleRequest?.rescheduleByUser?.role !== authUser?.role) && (
                           <div className="flex items-center gap-2 w-full justify-between pt-4 ">
                             <div className="flex items-center gap-2">
                               <h2 className="text-lg font-semibold">

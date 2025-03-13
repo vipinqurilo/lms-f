@@ -21,6 +21,7 @@ export function BookingModal({ onClose, tutor }) {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const { profile } = useSelector((state) => state.student.profile);
+  const {authUser}=useSelector((state)=>state.user)
   const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
   const [duration, setDuration] = useState(
     tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : null
@@ -137,7 +138,7 @@ export function BookingModal({ onClose, tutor }) {
 
   useEffect(() => {
     dispatch(fetchProfileAsync());
-  }, []);
+  }, [authUser]);
 
   return (
     <>
