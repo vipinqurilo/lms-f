@@ -5,10 +5,11 @@ const baseUrlAbhiSir = "https://q1ztd2hs-8000.inc1.devtunnels.ms/api";
 const baseURLVipin = "https://rvdr9qkh-8000.inc1.devtunnels.ms/api";
 const verceUrl="https://lms-backend-rho-pink.vercel.app/api"
 const baseUrlKD = "https://wq1jbb9k-8000.inc1.devtunnels.ms/api";
+const amanUrl = "https://px8prgz6-8000.inc1.devtunnels.ms/api";
 
 export const api = axios.create({
   // baseURL: baseUrlKD,
-  baseURL: baseURLVipin,
+  baseURL: amanUrl,
   headers: {
     "Cache-Control": "no-store, no-cache,   must-revalidate, proxy-revalidate",
     Pragma: "no-cache",

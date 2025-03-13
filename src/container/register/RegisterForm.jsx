@@ -34,9 +34,10 @@ const RegisterForm = () => {
       .unwrap()
       .then((res) => {
         if (res?.data?.role === "student") {
-          localStorage.setItem("token", res?.token);
+          // localStorage.setItem("token", res?.token);
           localStorage.removeItem("adminToken");
-          router.push("/student-dashboard");
+          // router.push("/student-dashboard");
+          router.push("/alert-send-email");
         }
       });
   };
