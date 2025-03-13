@@ -20,8 +20,8 @@ export const getBookings = CreateApiAsyncThunk(
 
 export const confirmBooking = CreateApiAsyncThunk(
   "booking/confirmBooking",
-  ({ bookingId, link }) =>
-    api.put(`/bookings/${bookingId}/confirm`, { meetingLink: link })
+  ({ bookingId, link, meetingPlatform }) =>
+    api.put(`/bookings/${bookingId}/confirm`, { meetingLink: link, meetingPlatform })
 );
 export const updateBooking = CreateApiAsyncThunk(
   "booking/updateBooking",

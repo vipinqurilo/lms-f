@@ -19,7 +19,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
 
   const handleConfirmation=()=>{
     if(link!==""){
-      dispatch(confirmBooking({bookingId,link})).unwrap().then((res)=>{
+      dispatch(confirmBooking({bookingId,link,meetingPlatform:type})).unwrap().then((res)=>{
         onClose()
       })
   }
