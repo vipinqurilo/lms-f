@@ -2,9 +2,7 @@ import React from "react";
 
 const BookingTabs = ({ activeTab, setActiveTab }) => {
   const formatTabLabel = (label) => {
-    if (label === "reschedule_in_progress") {
-      return "Rescheduling";
-    }
+    
     return label
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -20,7 +18,6 @@ const BookingTabs = ({ activeTab, setActiveTab }) => {
           "confirmed",
           "cancelled",
           "rescheduled",
-          "reschedule_in_progress",
           "completed",
         ].map((item, index) => (
           <button

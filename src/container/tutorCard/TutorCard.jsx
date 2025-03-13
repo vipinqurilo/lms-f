@@ -91,6 +91,7 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
                   : `ZAR ${Math.min(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))} - ZAR ${Math.max(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))}`
               }
             </div>
+                  
             <div className="flex lg:flex-col gap-4">
               <button
                 disabled={!tutor}

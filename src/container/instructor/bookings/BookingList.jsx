@@ -289,18 +289,18 @@ const BookingList = ({ bookings, isLoading }) => {
                                 disabled={
                                   booking?.status === "cancelled" ||
                                   (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0)
+                                    timeUntilStart > 0) || booking?.meetingLink === null
                                 }
                                 className={`h-5 w-5 ${
                                   booking?.status === "cancelled" ||
                                   (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0)
+                                    timeUntilStart > 0) || booking?.meetingLink === null
                                     ? "text-gray-200"
                                     : "text-gray-600"
                                 } cursor-pointer`}
                                 onClick={() => {
                                   if (booking?.meetingLink) {
-                                    window.open(booking.meetingLink, "_blank");
+                                    window.open(booking.meetingLink, "_blank"); 
                                   }
                                 }}
                               >
@@ -310,18 +310,17 @@ const BookingList = ({ bookings, isLoading }) => {
                               <button
                                 disabled={
                                   booking?.status !== "scheduled" ||
-                                  (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0)
+                                  (timeUntilStart <= 3600000 &&  
+                                    timeUntilStart > 0) || booking?.rescheduleRequest?.status==="pending" ||booking?.rescheduleRequest?.status === "accepted"
                                 }
                                 className={`h-5 w-5 ${
                                   booking?.status !== "scheduled" ||
-                                  (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0)
+                                  (timeUntilStart <= 3600000 && 
+                                    timeUntilStart > 0) || booking?.rescheduleRequest?.status==="pending" ||booking?.rescheduleRequest?.status === "accepted"
                                     ? "text-gray-200"
                                     : "text-gray-600"
                                 }  cursor-pointer`}
                                 onClick={() => {
-
                                   setBooking(booking);
                                   setIsOpen("reschedule");
                                 }}
@@ -406,29 +405,34 @@ const BookingList = ({ bookings, isLoading }) => {
 
                       {/*  Status Tag */}
                       <div className="absolute top-4 right-4">
+                        {booking?.rescheduleRequest?.status === "pending" &&
+                        booking?.status !== "cancelled" && (
+                          <span className="px-3 py-1 text-sm rounded-full text-yellow-600 bg-yellow-50">
+                            Reschedule requested by{" "}
+                            {booking?.rescheduleRequest?.rescheduleByUser?.role}
+                          </span>
+                        )}
                         <span
                           className={`px-3 py-1 text-sm rounded-full ${
                             booking.status.toLowerCase() === "confirmed"
                               ? "text-green-600 bg-green-50"
                               : booking.status.toLowerCase() === "scheduled" ||
-                                booking.status === "reschedule_in_progress"
+                              booking?.rescheduleRequest?.status === "pending"
                               ? "text-yellow-600 bg-yellow-50"
                               : "text-red-600 bg-red-50"
                           }`}
                         >
-                          {booking.status === "reschedule_in_progress"
-                            ? "Rescheduling"
-                            : booking.status.charAt(0).toUpperCase() +
+                          { booking.status.charAt(0).toUpperCase() +
                               booking.status.slice(1)}
                         </span>
                       </div>
                       {/* buttons for reschedule and cancel */}
-                      {booking?.status === "reschedule_in_progress" &&
+                      {booking?.rescheduleRequest?.status === "pending" &&booking?.status !== "cancelled"&&
                        ( booking?.rescheduleRequest?.rescheduleByUser?.role !== authUser?.role) && (
                           <div className="flex items-center gap-2 w-full justify-between pt-4 ">
                             <div className="flex items-center gap-2">
                               <h2 className="text-lg font-semibold">
-                                Rescheduled to
+                                Reschedule to
                               </h2>
                               {new Date(
                                 booking?.rescheduleRequest?.newTime
