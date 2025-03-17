@@ -19,10 +19,11 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
 
   const handleConfirmation=()=>{
     if(link!==""){
-      dispatch(confirmBooking({bookingId,link,meetingPlatform:type})).unwrap().then((res)=>{
+      const meetingPlatform = showZoomDetails ? "Zoom" : "Google Meet";
+      dispatch(confirmBooking({bookingId, link, meetingPlatform})).unwrap().then((res)=>{
         onClose()
       })
-  }
+    }
   }
 
   return (
@@ -117,7 +118,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
         </div>
 
         {/* Confirm Button */}
-        <button className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+        <button onClick={()=>handleConfirmation()} disabled={link===''} className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
           Confirm
         </button>
       </div>
@@ -154,7 +155,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
               </div>
             </div>
 
-            <button disabled={link===''} onClick={()=>handleConfirmation()} className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+            <button onClick={()=>handleConfirmation()} disabled={link===''} className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
               Confirm
             </button>
           </div>
