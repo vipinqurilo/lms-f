@@ -306,15 +306,14 @@ const BookingList = ({ bookings, isLoading }) => {
                               >
                                 <Video />
                               </button>
-
-                              <button
+                              <button 
                                 disabled={
-                                  booking?.status !== "scheduled" ||
+                                 ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
                                   (timeUntilStart <= 3600000 &&  
                                     timeUntilStart > 0) || booking?.rescheduleRequest?.status==="pending" ||booking?.rescheduleRequest?.status === "accepted"
                                 }
                                 className={`h-5 w-5 ${
-                                  booking?.status !== "scheduled" ||
+                                  ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
                                   (timeUntilStart <= 3600000 && 
                                     timeUntilStart > 0) || booking?.rescheduleRequest?.status==="pending" ||booking?.rescheduleRequest?.status === "accepted"
                                     ? "text-gray-200"
