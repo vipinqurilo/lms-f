@@ -13,10 +13,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import RejectModal from "@/components/admin-dashboard/teacherrequests/rejectModel";
 import { FaRegCalendarCheck } from "react-icons/fa";
-import Link from "next/link";
-import { FiEye } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/ApprovalModal";
+import { BiSolidBank } from "react-icons/bi";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [isEdit, setIsEdited] = useState(null);
@@ -95,6 +94,9 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
     }
   };
 
+  console.log(withdrawals, "withdrawals");
+  
+
   return (
     <table className="w-full border-l border-r border-black/10 !rounded-lg">
       <TableHeader headingsData={headingsData} />
@@ -122,14 +124,14 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                     {row?.paymentMethod === "paypal" ? (
                       <IoLogoPaypal size={25} />
                     ) : (
-                      <span>{row?.paymentMethod?.split("")[0]}</span>
+                      <BiSolidBank size={25} />
                     )}
                   </div>
                   <div className="">
                     <h6 className="font-semibold capitalize">
                       {row?.paymentMethod}
                     </h6>
-                    <p className="text-light text-sm">{row?.paypalEmail}</p>
+                    <p className="text-light text-sm">{row?.paypalEmail || row?.bankDetails?.bankName}</p>
                   </div>
                 </div>
               </td>

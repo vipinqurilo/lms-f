@@ -32,7 +32,7 @@ const CourseReview = ({ data }) => {
               data?.map((review, index) => (
                 <div
                   key={index}
-                  className="space-y-2 pb-4 border-b border-black/10"
+                  className="space-y-2 pb-4 border-b last:border-b-0 border-black/10"
                 >
                   <div className="flex items-center gap-2">
                     <div className="flex items-center justify-between w-full">

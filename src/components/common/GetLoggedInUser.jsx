@@ -8,7 +8,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { fetchAllTutorProfileAsync } from "@/store/slices/tutorsSlice";
-import { fetchCoursesAsync, getAllEnrolledCourses } from "@/store/slices/coursesSlice";
+import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
+import { getCardStats } from "@/store/slices/admin-dashboard/adminDashboardSlice";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
@@ -20,12 +21,13 @@ const GetLoggedInUser = () => {
 
   useEffect(() => {
     // if (userToken || adminToken) {
-      dispatch(verifyLoggedInUser());
+    dispatch(verifyLoggedInUser());
     // }
     dispatch(getSubjects());
     dispatch(getSubSubjects());
     dispatch(getLanguages());
     dispatch(fetchAllTutorProfileAsync({ search: "" }));
+    dispatch(getCardStats());
   }, [dispatch]);
 
   useEffect(() => {

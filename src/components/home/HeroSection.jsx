@@ -8,40 +8,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
+import CountUp from "react-countup";
 
 export default function HeroSection() {
   const [searchText, setSearchText] = useState("");
   const [selectedOption, setselectedOption] = useState("course");
   const router = useRouter();
-
-  const data = {
-    box: [
-      {
-        id: 1,
-        img: `/assets/home/first_icon.png`,
-        heading: "3K",
-        desc: "Online Classes",
-      },
-      {
-        id: 2,
-        img: `/assets/home/second_icon.png`,
-        heading: "72+",
-        desc: "Expert Tutors",
-      },
-      {
-        id: 3,
-        img: `/assets/home/third_icon.png`,
-        heading: "2k+",
-        desc: "Certified Courses",
-      },
-      {
-        id: 4,
-        img: `/assets/home/fourth_icon.png`,
-        heading: "21k",
-        desc: "Online Students",
-      },
-    ],
-  };
 
   const getButtonCss = (value) =>
     `${
@@ -51,6 +23,10 @@ export default function HeroSection() {
     } px-6 py-2 rounded-full shadow-md transition-all ease-in-out duration-300`;
 
   const { courses } = useSelector((state) => state.courses);
+  const { data: statsData } = useSelector(
+    (state) => state.admin.adminDashboard
+  );
+
   const { allTutorProfile: tutors } = useSelector((state) => state.tutors);
 
   const [filteredResults, setFilteredResults] = useState([]);
@@ -99,6 +75,35 @@ export default function HeroSection() {
 
   const handleSearch = () => {
     router.push(`/search?query=${searchText}&type=${selectedOption}`);
+  };
+
+  const data = {
+    box: [
+      {
+        id: 1,
+        img: `/assets/home/first_icon.png`,
+        heading: statsData?.totalBooking || 3000, // 3K
+        desc: "Online Classes",
+      },
+      {
+        id: 2,
+        img: `/assets/home/second_icon.png`,
+        heading: statsData?.totalTeachers || 3000, // Just 72+
+        desc: "Expert Tutors",
+      },
+      {
+        id: 3,
+        img: `/assets/home/third_icon.png`,
+        heading: statsData?.totalCourses || 3000, // 2K+
+        desc: "Certified Courses",
+      },
+      {
+        id: 4,
+        img: `/assets/home/fourth_icon.png`,
+        heading: statsData?.totalStudents || 3000, // 21K
+        desc: "Online Students",
+      },
+    ],
   };
 
   return (
@@ -220,7 +225,16 @@ export default function HeroSection() {
                 </span>
               </div>
               <div>
-                <p className="text-xl font-bold text-black">{item.heading}</p>
+                <p className="text-xl font-bold text-black">
+                  <CountUp
+                    start={0}
+                    end={
+                      item.heading >= 1000 ? item.heading / 1000 : item.heading
+                    }
+                    duration={2.5}
+                    suffix={item.heading >= 1000 ? "K+" : ""}
+                  />
+                </p>
                 <p className="text-xs  text-black font-bold">{item.desc}</p>
               </div>
             </div>

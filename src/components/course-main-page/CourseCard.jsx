@@ -26,7 +26,7 @@ import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSli
 const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isCertificateDownload, setisCertificateDownload] = useState(false);
+  // const [isCertificateDownload, setisCertificateDownload] = useState(false);
   const { isLoading } = useSelector((state) => state.courses);
   const { wishlist, isLoading: wishlistLoading } = useSelector(
     (state) => state.student.wishlist
@@ -36,8 +36,8 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const openModal = () => setisVideoModalOpen(true);
   const closeModal = () => setisVideoModalOpen(false);
   const toggleIsShareModalOpen = () => setIsShareModalOpen(!isShareModalOpen);
-  const toggleisCertificateDowmnload = () =>
-    setisCertificateDownload(!isCertificateDownload);
+  // const toggleisCertificateDowmnload = () =>
+  //   setisCertificateDownload(!isCertificateDownload);
 
   const courseLink = `https://yourwebsite.com/course/${data?._id}`;
 
@@ -151,18 +151,16 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
           <>
             {enrolledCourseData?.certificate &&
             enrolledCourseData?.certificate?.certificateUrl ? (
-              <button
-                className={`bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 disabled:cursor-not-allowed disabled:opacity-60`}
-                onClick={toggleisCertificateDowmnload}
+              <a
+                href={enrolledCourseData?.certificate?.certificateUrl}
+                download={enrolledCourseData?.certificate?.studentName}
               >
-                {/* <a
-                  href={enrolledCourseData?.certificate?.certificateUrl}
-                  download={enrolledCourseData?.certificate?.studentName}
-                  className="w-full"
-                > */}
-                Download
-                {/* </a> */}
-              </button>
+                <p
+                  className={`bg-green-500 hover:bg-green-800 transition-custom text-white rounded-full w-full py-2 disabled:cursor-not-allowed disabled:opacity-60 mt-4 text-center`}
+                >
+                  Download
+                </p>
+              </a>
             ) : (
               <button
                 disabled={
@@ -269,7 +267,7 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
         </div>
       )}
 
-      {isCertificateDownload && (
+      {/* {isCertificateDownload && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
           <div className="relative w-[90%] max-w-md bg-white p-6 rounded-lg shadow-lg">
             <button
@@ -295,7 +293,7 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       <CourseByModal
         checkoutUrl={checkoutUrl}

@@ -109,7 +109,7 @@ export default function ScheduleView({
         <div className="space-y-3">
           {bookingLoading ? (
             <SkeletonLoader />
-          ) : bookings.length === 0 ? (
+          ) : bookings?.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-500">No booking for the day</p>
             </div>
