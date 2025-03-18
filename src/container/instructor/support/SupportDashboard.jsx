@@ -27,7 +27,7 @@ const SupportDashboard = () => {
     (state) => state.support.isLoading.getAdminTickets
   );
 
-  const { tickets, totalPages, ticketStatsData } = useSelector(
+  const { tickets, totalPages, ticketStatsData, allTickets } = useSelector(
     (state) => state.support
   );
   const { authUser } = useSelector((state) => state.user);
@@ -64,13 +64,13 @@ const SupportDashboard = () => {
 
   useEffect(() => {
     dispatch(getAllTickets(authUser?.role === "admin"));
-  }, [dispatch]);
+  }, [dispatch, tickets]);
 
   useEffect(() => {
     if (filter?.toLowerCase() === "all") {
       dispatch(makeStatsData());
     }
-  }, [tickets]);
+  }, [tickets, allTickets]);
 
   const stats = [
     {

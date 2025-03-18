@@ -79,9 +79,7 @@ const CreatedCourses = ({
                             isCols ? "col-span-3" : "col-span-2"
                           }`}
                         >
-                          <Link href={`/courses/${course?.id}`}>
-                            {course?.title}
-                          </Link>
+                          <Link href={`/courses/${course?.id}`} target="_blank">{course?.title}</Link>
                           <p className="line-clamp-3 text-light/60 text-sm">
                             {course?.des}
                           </p>

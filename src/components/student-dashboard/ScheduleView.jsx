@@ -122,20 +122,20 @@ export default function ScheduleView({
 
               return (
                 <div
-                  key={booking._id}
+                  key={booking?._id}
                   className="p-4 bg-white border rounded-xl flex items-center justify-between relative overflow-hidden"
                 >
                   <div
                     className={`absolute left-0 top-0 bottom-0 w-1 ${getBookingColor(
-                      booking._id
+                      booking?._id
                     )}`}
                   />
                   <div className="space-y-1">
                     <p className="text-sm text-gray-400">
-                      {booking.teacher.firstName} {booking.teacher.lastName}
+                      {booking?.teacher?.firstName} {booking?.teacher?.lastName}
                     </p>
                     <p className="font-medium text-gray-800">
-                      {booking.subject.name}
+                      {booking?.subject?.name}
                     </p>
                     <p className="text-sm text-gray-400">
                       {format(startTime, "hh:mm a")} -{" "}
@@ -144,10 +144,10 @@ export default function ScheduleView({
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex -space-x-2">
-                      {booking.teacher.profilePhoto ? (
+                      {booking?.teacher?.profilePhoto ? (
                         <img
-                          src={booking.teacher.profilePhoto}
-                          alt={`${booking.teacher.firstName} ${booking.teacher.lastName}`}
+                          src={booking?.teacher?.profilePhoto}
+                          alt={`${booking?.teacher?.firstName} ${booking?.teacher?.lastName}`}
                           className="w-8 h-8 rounded-full border-2 border-white object-cover"
                         />
                       ) : (

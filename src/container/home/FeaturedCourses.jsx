@@ -42,8 +42,7 @@ export default function FeaturedCourses({ cardData = [] }) {
             >
               {cardData?.length > 0 ? (
                 cardData
-                  ?.slice(cardData?.length - 6, cardData?.length)
-                  ?.reverse()
+                  ?.slice(0, 6)
                   ?.map((card, index) => (
                     <FeaturedCard data={card} isFull={true} key={index} />
                   ))

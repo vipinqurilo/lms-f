@@ -74,8 +74,9 @@ const ManageCourses = () => {
     image: course?.courseImage,
     title: course?.courseTitle,
     des: course?.courseDescription,
-    value1: course?.entrolled || 425,
-    firstName: course?.courseInstructor?.firstName,
+    id: course?._id,
+    value1: course?.studentsEnrolled || "0",
+    firstName: (<span className="font-semibold text-nowrap">{course?.courseInstructor?.firstName} {course?.courseInstructor?.lastName}</span>),
     value2: (
       <div
         className={`flex items-center gap-5  ${getStatusCss(
@@ -132,6 +133,7 @@ const ManageCourses = () => {
                   }
                   data={filteredData}
                   title=""
+                  isCols={true}
                 />
               </div>
             )}

@@ -116,13 +116,15 @@ const Course = () => {
             heading={"Courses Approval Requests"}
             des={"following are the approval requests for all the courses."}
           />
-          <div className="px-5">
-            <div className="overflow-x-auto py-4 rounded-lg">
-              <UserFilter
-                isRole={false}
-                isStatus={false}
-                onApplyFilters={handleApplyFilters}
-              />
+          <div className="">
+            <div className="overflow-x-auto pt-4 rounded-lg">
+              <div className="w-full px-5">
+                <UserFilter
+                  isRole={false}
+                  isStatus={false}
+                  onApplyFilters={handleApplyFilters}
+                />
+              </div>
               <table className="w-full border border-gray-200 rounded-lg">
                 <TableHeader headingsData={columns} />
                 <tbody>
@@ -136,15 +138,15 @@ const Course = () => {
                     (Array.isArray(courses) ? courses : []).map(
                       (course, index) => (
                         <tr key={index} className="border-t border-gray-200">
-                          <td className="py-4 px-4 text-gray-700 text-sm">
+                          <td className="py-4 px-6 text-gray-700 text-sm">
                             {index + 1}
                           </td>
-                          <td className="py-4 px-4 text-gray-700 text-sm">
+                          <td className="py-4 px-6 text-gray-700 text-sm">
                             <p className="font-medium text-sm">
                               {course?.courseTitle}
                             </p>
                           </td>
-                          <td className="py-4 px-4 text-gray-700 text-sm">
+                          <td className="py-4 px-6 text-gray-700 text-sm">
                             {(course?.courseContent?.length > 2
                               ? course.courseContent.slice(0, 2)
                               : course?.courseContent
@@ -157,8 +159,8 @@ const Course = () => {
                               `...${course?.courseContent?.length - 2} More`}
                           </td>
 
-                          <td className="py-4 px-4 text-gray-700 text-sm">
-                            {course?.coursePrice || "N/A"}
+                          <td className="py-4 px-6 text-gray-700 text-sm">
+                            R{course?.coursePrice || "N/A"}
                           </td>
 
                           <td className="py-4 px-4 text-center text-sm text-gray-700">

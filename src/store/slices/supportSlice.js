@@ -78,6 +78,13 @@ const supportSlice = createSlice({
       ];
       state.ticketStatsData = data;
     },
+    updateMessagesOfTicketLocally: (state, action) => {
+      const { id, message } = action.payload;
+      const ticket = state.tickets?.find((tic) => tic?._id === id);
+      if (ticket) {
+        ticket?.messages?.push(message);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -162,7 +169,9 @@ const supportSlice = createSlice({
       .addCase(updateTicketStatus.fulfilled, (state, action) => {
         state.isLoading["updateTicketStatus"] = false;
         state.tickets = state.tickets.map((ticket) =>
-          ticket?._id === action.payload?.data?._id ? action.payload?.data : ticket
+          ticket?._id === action.payload?.data?._id
+            ? action.payload?.data
+            : ticket
         );
       })
       .addCase(updateTicketStatus.rejected, (state, action) => {
@@ -172,5 +181,5 @@ const supportSlice = createSlice({
   },
 });
 
-export const { makeStatsData } = supportSlice.actions;
+export const { makeStatsData, updateMessagesOfTicketLocally } = supportSlice.actions;
 export default supportSlice.reducer;
