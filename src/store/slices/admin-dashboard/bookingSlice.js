@@ -113,6 +113,7 @@ const bookingSlice = createSlice({
             : booking
         );
       })
+      
       .addCase(rescheduleResponseAsync.rejected, (state, action) => {
         state.isLoading["rescheduleResponseAsync"] = false;
         state.error["rescheduleResponseAsync"] = action.payload;

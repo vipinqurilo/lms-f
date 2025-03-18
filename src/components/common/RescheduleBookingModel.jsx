@@ -1,23 +1,29 @@
 import ScheduleCalendar from "@/container/booking/ScheduleCalendar";
+import { fetchAvailabilityByIdAsync } from "@/store/slices/instructor/availabilitySlice";
 import {
   confirmBooking,
   rescheduleBooking,
 } from "@/store/slices/instructor/bookingsSlice";
 import { ArrowLeft, MoveLeft } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "./Loader";
 
-const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
+const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
   const dispatch = useDispatch();
   // console.log(booking,'booking bookingbookingbookingbookingbooking')
   const [isOpen, setIsOpen] = useState(false);
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionEndTime, setSessionEndTime] = useState(null);
-  const  availability  = useSelector(
-    (state) => state.instructor.availability
+  const  {currentAvailability, isLoading}  = useSelector(
+    (state) => state.instructor.availability  
   );
+  
+  
   const [reason, setReason] = useState("");
+  const hasFetchedRef = useRef(false);
+
   const handleReschedule = () => {
     if (!sessionStartTime) {
       alert("Please select a new time.");
@@ -44,6 +50,15 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
         onClose();
       });
   };
+  
+  useEffect(() => {
+    if (booking?.teacher?._id && !hasFetchedRef.current) {
+      dispatch(fetchAvailabilityByIdAsync(booking?.teacher?._id));
+      hasFetchedRef.current = true;
+    }
+  }, [dispatch, booking?.teacher?._id]);
+
+  
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -137,17 +152,24 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                 </div>
               </div>
               <div className="h-[65vh]">
-                <ScheduleCalendar
-                  rawBookings={rowBookings}
-                  scheduledDate={scheduledDate}
-                  setScheduledDate={setScheduledDate}
-                  sessionStartTime={sessionStartTime}
-                  setSessionStartTime={setSessionStartTime}
-                  sessionEndTime={sessionEndTime}
-                  setSessionEndTime={setSessionEndTime}
-                  calendar={availability}
-                  duration={booking.sessionDuration}
-                />
+                {isLoading?.[fetchAvailabilityByIdAsync] ? (
+                  <div className="flex justify-center items-center h-full">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-secondary"></div>
+                    <Loader isBig={true} color={"text-secondary"} />
+                  </div>
+                ) : (
+                  <ScheduleCalendar
+                    rawBookings={rowBookings}
+                    scheduledDate={scheduledDate}
+                    setScheduledDate={setScheduledDate}
+                    sessionStartTime={sessionStartTime}
+                    setSessionStartTime={setSessionStartTime}
+                    sessionEndTime={sessionEndTime}
+                    setSessionEndTime={setSessionEndTime}
+                    calendar={currentAvailability}
+                    duration={booking.sessionDuration}
+                  />
+                )}
               </div>
 
               <div className="flex justify-between items-start w-full px-10 py-4">

@@ -26,6 +26,14 @@ export const userLoginForAdmin = CreateApiAsyncThunk(
   (userId) => api.get(`/auth/admin-usertoken?userId=${userId}`)
 );
 
+
+
+export const resendVerificationEmailAsync = CreateApiAsyncThunk(
+  "user/resendVerificationEmailAsync",
+  (email) => api.post("/auth/resendverificationemail", { email })
+ );
+
+
 const initialState = {
   authUser: null,
   isAuthenticated: false,
@@ -49,6 +57,12 @@ export const resetPasswordAsync = CreateApiAsyncThunk(
   ({ token, newPassword, confirmPassword }) =>
     api.post(`/forgotpassword/${token}`, { newPassword, confirmPassword })
 );
+
+export const verifyEmailAsync = CreateApiAsyncThunk(
+  "user/verifyEmailAsync",
+  (token) => api.get(`/auth/verify-email/${token}`)
+);
+
 
 const userSlice = createSlice({
   name: "user",
@@ -172,7 +186,42 @@ const userSlice = createSlice({
       .addCase(userLoginForAdmin.rejected, (state) => {
         state.isLoading["userLoginForAdmin"] = false;
         state.isAuthenticated = false;
+      })
+
+      .addCase(verifyEmailAsync.pending, (state) => {
+        state.isLoading["verifyEmailAsync"] = true;
+        state.error["verifyEmailAsync"] = null;
+        state.successMessage = null;
+      })
+      .addCase(verifyEmailAsync.fulfilled, (state, action) => {
+        state.isLoading["verifyEmailAsync"] = false;
+        state.successMessage = action.payload?.message;
+      })
+      .addCase(verifyEmailAsync.rejected, (state, action) => {
+        state.isLoading["verifyEmailAsync"] = false;
+        state.error["verifyEmailAsync"] =
+          action.payload?.message || "Something went wrong";
+      })
+
+
+      .addCase(resendVerificationEmailAsync.pending, (state) => {
+        state.isLoading["resendVerificationEmailAsync"] = true;
+        state.error["resendVerificationEmailAsync"] = null;
+        state.successMessage = null;
+      })
+      .addCase(resendVerificationEmailAsync.fulfilled, (state, action) => {
+        state.isLoading["resendVerificationEmailAsync"] = false;
+        state.successMessage = action.payload?.message;
+      })
+      .addCase(resendVerificationEmailAsync.rejected, (state, action) => {
+        state.isLoading["resendVerificationEmailAsync"] = false;
+        state.error["resendVerificationEmailAsync"] =
+          action.payload?.message || "Something went wrong";
       });
+
+
+
+      
   },
 });
 

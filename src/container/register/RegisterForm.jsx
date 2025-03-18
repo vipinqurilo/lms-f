@@ -38,6 +38,10 @@ const RegisterForm = () => {
           // localStorage.setItem("token", res?.token);
           // localStorage.removeItem("adminToken");
           router.push("/student-dashboard");
+          // localStorage.setItem("token", res?.token);
+          // localStorage.removeItem("adminToken");
+          // router.push("/student-dashboard");
+          // router.push("/alert-send-email");
         }
       });
   };
