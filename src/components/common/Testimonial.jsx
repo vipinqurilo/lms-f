@@ -93,7 +93,7 @@ export default function Testimonial() {
 
   return (
     <div className="flex justify-center items-center w-full">
-      <div className="w-full lg:px-10 relative">
+      <div className="w-[80%] md:w-full lg:px-10 relative">
         <Swiper
           ref={swiperRef}
           modules={[Navigation]}

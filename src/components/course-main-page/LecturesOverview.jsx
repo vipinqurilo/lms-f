@@ -168,9 +168,14 @@ const LecturesOverview = ({ data, id, isEnrolled, enrolledCourseData }) => {
                           moduleId: section?._id,
                         })
                       }
-                      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 bg-secondary text-white hover:bg-background`}
+                      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 bg-secondary text-white hover:bg-background disabled:cursor-not-allowed disabled:opacity-95`}
+                      disabled={
+                        isLoading["markAsCompletedModule"] ||
+                        isLoading["getAllEnrolledCourses"]
+                      }
                     >
-                      {isLoading["markAsCompletedModule"] ? (
+                      {isLoading["markAsCompletedModule"] ||
+                      isLoading["getAllEnrolledCourses"] ? (
                         <Loader />
                       ) : (
                         <>

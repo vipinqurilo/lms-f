@@ -4,7 +4,7 @@ import { api } from "@/store/api/api";
 
 export const getAllAdminCourses = CreateApiAsyncThunk(
   "GET/course/getAllAdminCourses",
-  ({ startDate, endDate, search, page, limit } = {}) => {
+  ({ startDate, endDate, search, page, limit, status } = {}) => {
     const params = {};
 
     if (startDate) params.startDate = startDate;
@@ -12,6 +12,7 @@ export const getAllAdminCourses = CreateApiAsyncThunk(
     if (search) params.search = search;
     if (page) params.page = page;
     if (limit) params.limit = limit;
+    if (status) params.status = status;
 
     return api.get("/course/admin/get", { params: Object.keys(params).length ? params : undefined });
   }

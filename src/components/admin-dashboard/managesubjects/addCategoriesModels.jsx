@@ -1,8 +1,9 @@
+import Loader from "@/components/common/Loader";
 import { addCategory } from "@/store/slices/admin-dashboard/manageSubjectsCategorySlice";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-const AddCategories = ({ isOpen, onClose }) => {
+const AddCategories = ({ isOpen, onClose, loading }) => {
   if (!isOpen) return null;
 
   const dispatch = useDispatch();
@@ -64,10 +65,11 @@ const AddCategories = ({ isOpen, onClose }) => {
             Cancel
           </button>
           <button
-            className="bg-orange-500 text-white px-4 py-2 rounded"
+            className="bg-orange-500 text-white px-4 py-2 rounded disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
             onClick={handleSave}
           >
-            Save
+            {loading ? <Loader /> : "Save"}
           </button>
         </div>
       </div>

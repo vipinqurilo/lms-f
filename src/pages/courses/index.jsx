@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import FeaturedCard from "@/components/common/FeaturedCard";
 import { fetchCoursesAsync } from "@/store/slices/coursesSlice";
 import { useDispatch } from "react-redux";
-import Loader from "@/components/common/Loader";
 import PaginationComponent from "@/container/common/PaginationComponent";
+import CardSkeleton from "@/components/common/CardSkeleton";
 
 const Courses = () => {
   const { courses, totalPages } = useSelector((state) => state?.courses);
@@ -24,7 +24,7 @@ const Courses = () => {
     const requestData = {
       page: currentPage,
       limit: 6,
-      status: "published"
+      status: "published",
     };
     if (categoryId) {
       requestData.categoryId = categoryId;
@@ -75,8 +75,10 @@ const Courses = () => {
             </div>
 
             {loading ? (
-              <div className="w-full flex items-center justify-center pb-8">
-                <Loader color={"text-secondary"} isBig={true} />
+              <div className="mt-7 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-16">
+                {[...Array(6)].map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))}
               </div>
             ) : (
               <div className="mt-7 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-16">
@@ -93,13 +95,15 @@ const Courses = () => {
             )}
 
             {/* Pagination */}
-            <div className="pt-4">
-              <PaginationComponent
-                currentPage={currentPage}
-                totalPages={totalPages}
-                setcurrentPage={setcurrentPage}
-              />
-            </div>
+            {!loading && (
+              <div className="pt-4">
+                <PaginationComponent
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  setcurrentPage={setcurrentPage}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

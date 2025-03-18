@@ -3,6 +3,7 @@ import CommonButton from "@/components/common/CommonButton";
 import {
   updateAdminConversation,
   updateConversation,
+  updateMessagesOfTicketLocally,
   updateTicketStatus,
 } from "@/store/slices/supportSlice";
 import {
@@ -21,6 +22,7 @@ import Loader from "@/components/common/Loader";
 const MessageModal = ({ ticket, setMessages }) => {
   const { authUser } = useSelector((state) => state.user);
   const [newMessage, setNewMessage] = useState("");
+  const [conversation, setconversation] = useState([]);
   const [isMaximized, setIsMaximized] = useState(false);
   const [isDropDown, setisDropDown] = useState(false);
   const toggleIsDropDown = () => setisDropDown(!isDropDown);
@@ -36,41 +38,32 @@ const MessageModal = ({ ticket, setMessages }) => {
     (state) => state.support.isLoading.updateTicketStatus
   );
 
+  useEffect(() => {
+    setconversation(ticket?.messages);
+  }, [ticket]);
+
   const handleSubmit = () => {
     const data = { receiver: ticket?._id, message: newMessage };
+    const message = {
+      sender: { _id: authUser?._id },
+      message: newMessage,
+      receiver: null,
+    };
 
     if (authUser?.role === "admin") {
       dispatch(updateAdminConversation(data))
         .unwrap()
-        .then(
-          setMessages((prev) => ({
-            ...prev,
-            messages: [
-              ...prev?.messages,
-              {
-                sender: authUser?._id,
-                message: newMessage,
-                createdAt: new Date(),
-              },
-            ],
-          })),
-          setNewMessage("")
-        );
+        .then(() => {
+          dispatch(updateMessagesOfTicketLocally({ id: ticket?._id, message }));
+          setconversation((prev) => [...prev, message]);
+          setNewMessage("");
+        });
     } else {
       dispatch(updateConversation({ id: ticket?._id, data }))
         .unwrap()
         .then(() => {
-          setMessages((prev) => ({
-            ...prev,
-            messages: [
-              ...prev?.messages,
-              {
-                sender: authUser?._id,
-                message: newMessage,
-                createdAt: new Date(),
-              },
-            ],
-          }));
+          dispatch(updateMessagesOfTicketLocally({ id: ticket?._id, message }));
+          setconversation((prev) => [...prev, message]);
           setNewMessage("");
         });
     }
@@ -106,6 +99,8 @@ const MessageModal = ({ ticket, setMessages }) => {
         toggleIsDropDown();
       });
   };
+
+  console.log(ticket);
 
   return (
     <div
@@ -178,7 +173,7 @@ const MessageModal = ({ ticket, setMessages }) => {
               scrollbarColor: "#888 #f1f1f1",
             }}
           >
-            {ticket?.messages?.map((msg, index) => {
+            {conversation?.map((msg, index) => {
               const isSender = msg?.sender?._id === authUser?._id;
               return (
                 <div

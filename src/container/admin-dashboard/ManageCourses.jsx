@@ -2,14 +2,10 @@
 import InstructorButton from "@/components/instructor/InstructorButton";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import React, { useEffect, useState } from "react";
-import { FiEdit3 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { BiBook, BiCheckCircle, BiTime, BiXCircle } from "react-icons/bi";
+import { BiCheckCircle, BiTime, BiXCircle } from "react-icons/bi";
 import Loader from "@/components/common/Loader";
-import {
-  updateAdminCourseStatus,
-  getAllAdminCourses,
-} from "@/store/slices/admin-dashboard/courseSlice";
+import { getAllAdminCourses } from "@/store/slices/admin-dashboard/courseSlice";
 import CreatedCourses from "../instructor/dashboard/CreatedCourses";
 import TitleComp from "@/components/instructor/TitleComp";
 
@@ -43,7 +39,6 @@ const ManageCourses = () => {
     (state) => state.user?.authUser?.role === "admin" || {}
   );
 
-  const [editCourseId, setEditCourseId] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("pending");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -55,21 +50,10 @@ const ManageCourses = () => {
     if (selectedStatus) {
       requestData.status = selectedStatus.toLowerCase();
     }
+    console.log(requestData);
+
     dispatch(getAllAdminCourses(requestData));
   }, [dispatch, currentPage, selectedStatus]);
-
-  const handleEditClick = (courseId) => {
-    setEditCourseId(editCourseId === courseId ? null : courseId);
-  };
-
-  const handleStatusUpdate = (courseId, newStatus) => {
-    dispatch(updateAdminCourseStatus({ courseId, status: newStatus })).then(
-      () => {
-        setEditCourseId(null);
-        dispatch(getAllAdminCourses({ status: selectedStatus }));
-      }
-    );
-  };
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
@@ -90,8 +74,9 @@ const ManageCourses = () => {
     image: course?.courseImage,
     title: course?.courseTitle,
     des: course?.courseDescription,
-    value1: course?.entrolled || 425,
-    firstName: course?.courseInstructor?.firstName,
+    id: course?._id,
+    value1: course?.studentsEnrolled || "0",
+    firstName: (<span className="font-semibold text-nowrap">{course?.courseInstructor?.firstName} {course?.courseInstructor?.lastName}</span>),
     value2: (
       <div
         className={`flex items-center gap-5  ${getStatusCss(
@@ -117,8 +102,10 @@ const ManageCourses = () => {
             heading={"Manage Courses"}
             des={"Manage your courses and its updates"}
           />
-          <div className="">
-            <div className={`flex items-center gap-4 sticky top-0 py-6 px-5`}>
+          <div className="w-full">
+            <div
+              className={`flex items-center gap-4 sticky top-0 py-6 px-5 w-full bg-white z-[5]`}
+            >
               {tabs.map((tab, index) => (
                 <InstructorButton
                   key={index}
@@ -133,17 +120,22 @@ const ManageCourses = () => {
             </div>
 
             {isLoading ? (
-              <Loader color={"text-secondary"} isBig={true} />
+              <div className="w-full py-12 flex items-center justify-center">
+                <Loader color={"text-secondary"} isBig={true} />
+              </div>
             ) : (
-              <CreatedCourses
-                headingsData={
-                  isAdmin
-                    ? ["Courses", "Enrolled", "Teacher", "Status"]
-                    : ["Courses", "Enrolled", "Status"]
-                }
-                data={filteredData}
-                title=""
-              />
+              <div className="w-full">
+                <CreatedCourses
+                  headingsData={
+                    isAdmin
+                      ? ["Courses", "Enrolled", "Teacher", "Status"]
+                      : ["Courses", "Enrolled", "Status"]
+                  }
+                  data={filteredData}
+                  title=""
+                  isCols={true}
+                />
+              </div>
             )}
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteCategoriesModal = ({ isOpen, onClose, onConfirm }) => {
+const DeleteCategoriesModal = ({ isOpen, onClose, onConfirm, loading }) => {
   if (!isOpen) return null;
 
   const handleConfirm = () => {
@@ -15,13 +15,14 @@ const DeleteCategoriesModal = ({ isOpen, onClose, onConfirm }) => {
           Are you sure you want to delete this category?
         </h2>
         <p className="text-gray-500 mb-6">This action cannot be undone.</p>
-        
+
         <div className="flex justify-center space-x-4">
           <button
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
             onClick={handleConfirm} // Confirm action
           >
-            Confirm
+            {loading ? <Loader /> : "Confirm"}
           </button>
           <button
             className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100"
@@ -36,4 +37,3 @@ const DeleteCategoriesModal = ({ isOpen, onClose, onConfirm }) => {
 };
 
 export default DeleteCategoriesModal;
-

@@ -21,6 +21,7 @@ import {
 import TableComponent from "./TableComponent";
 import BackgroundModal from "../instructor/BackgroundModal";
 import ModalHeading from "../common/ModalHeading";
+import dateFormat from "dateformat";
 
 const Experience = ({ isInstructorRequest = null }) => {
   const { authUser } = useSelector((state) => state.user);
@@ -55,13 +56,15 @@ const Experience = ({ isInstructorRequest = null }) => {
 
   useEffect(() => {
     if (isEdit) {
+      console.log(isEdit, "isEdit");
+
       reset({
         title: isEdit?.title || "",
-        institution: isEdit?.institution || "",
+        institution: isEdit?.institute ? isEdit?.institute : isEdit?.company || "",
         location: isEdit?.location || "",
-        certificate: isEdit?.startyear || "",
-        startyear: isEdit?.startyear || "",
-        endyear: isEdit?.endyear || "",
+        certificate: isEdit?.certificate || "",
+        startyear: dateFormat(isEdit?.startDate, "yyyy") || "",
+        endyear: dateFormat(isEdit?.endDate, "yyyy") || "",
         des: isEdit?.des || "",
       });
     }

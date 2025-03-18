@@ -47,6 +47,11 @@ export const markAsCompletedModule = CreateApiAsyncThunk(
   (data) => api.post(`/course/module-status`, data)
 );
 
+export const generateCertificate = CreateApiAsyncThunk(
+  "courses/generateCertificate",
+  (id) => api.get(`/students/certificate/${id}`)
+);
+
 const coursesSlice = createSlice({
   name: "courses",
   initialState: {
@@ -168,6 +173,17 @@ const coursesSlice = createSlice({
       .addCase(markAsCompletedModule.rejected, (state, action) => {
         state.isLoading["markAsCompletedModule"] = false;
         state.error["markAsCompletedModule"] = action.payload;
+      })
+      // generate certificate
+      .addCase(generateCertificate.pending, (state, action) => {
+        state.isLoading["generateCertificate"] = true;
+      })
+      .addCase(generateCertificate.fulfilled, (state, action) => {
+        state.isLoading["generateCertificate"] = false;
+      })
+      .addCase(generateCertificate.rejected, (state, action) => {
+        state.isLoading["generateCertificate"] = false;
+        state.error["generateCertificate"] = action.payload;
       });
   },
 });

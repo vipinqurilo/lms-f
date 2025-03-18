@@ -10,22 +10,18 @@ export default {
   theme: {
     extend: {
       colors: {
-
         primary: "#e36760",
         secondary: "#F79902",
-      
-       
+
         background: "#0f2138",
 
-   
-        
-        dark:'#392b3c',
-        bg_green:'#BBF0D4',
-        light:'#ede8ec',
-        light_bg:'#F2F2F2',
-        dark_text:'#333333',
-        light_green:'#5ce49b',
-        
+        dark: "#392b3c",
+        bg_green: "#BBF0D4",
+        light: "#ede8ec",
+        light_bg: "#F2F2F2",
+        dark_text: "#333333",
+        light_green: "#5ce49b",
+
         foreground: "var(--foreground)",
       },
       fontFamily: {
@@ -37,6 +33,16 @@ export default {
       textColor: {
         light: "rgb(0 0 0 / 0.75)",
       },
+      // animation: {
+      //   loader: "loading 5s ease-in-out infinite",
+      // },
+      // keyframes: {
+      //   loading: {
+      //     "0%": { width: "0%", transform: "translateX(100%)" },
+      //     "50%": { width: "100%", transform: "translateX(0%)" },
+      //     "100%": { width: "0%", transform: "translateX(0%)" },
+      //   },
+      // },
     },
   },
   plugins: [],

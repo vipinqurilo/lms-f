@@ -13,6 +13,7 @@ import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { fetchBookingsAsync } from "@/store/slices/admin-dashboard/bookingSlice";
 import dateFormat from "dateformat";
 import { getCardStats } from "@/store/slices/admin-dashboard/adminDashboardSlice";
+import EarningsChart from "@/container/instructor/earning/EarningsChart";
 
 const index = () => {
   const dispatch = useDispatch();
@@ -34,12 +35,13 @@ const index = () => {
   return (
     <StudentDashboardLayout>
       <div className="flex gap-8 p-10">
-        <div className="w-[70%]">
+        <div className="w-[70%] flex flex-col gap-8">
           <StatesCard />
-          <EarningSummary />
+          {/* <EarningSummary /> */}
+          <EarningsChart />
           <BookingTable />
         </div>
-        <div className="w-[30%] sticky top-0 z-[0] space-y-5">
+        <div className="w-[30%] h-fit sticky top-0 z-[0] space-y-5">
           <ScheduleView
             bookingLoading={isLoading["fetchBookingsAsync"]}
             startDate={startDate}
