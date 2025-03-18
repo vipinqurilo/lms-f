@@ -13,30 +13,30 @@ export const api = axios.create({
   // baseURL: baseUrlKD,
   // baseURL: baseURLVipin,
   // baseURL: amanUrl,
-  headers: {
-    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
-    Pragma: "no-cache",
-    Expires: "0",
-  },
-  validateStatus: function (status) {
-    return status >= 200 && status < 300;
-  },
+  // headers: {
+  //   "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+  //   Pragma: "no-cache",
+  //   Expires: "0",
+  // },
+  // validateStatus: function (status) {
+  //   return status >= 200 && status < 300;
+  // },
 });
 
-// api.interceptors.request.use((config) => {
-//   const userToken = localStorage.getItem("token");
-//   const adminToken = localStorage.getItem("adminToken");
+api.interceptors.request.use((config) => {
+  const userToken = localStorage.getItem("token");
+  const adminToken = localStorage.getItem("adminToken");
 
-//   if (adminToken) {
-//     config.headers.Authorization = `Bearer ${adminToken}`; // Prioritize admin token
-//   } else if (userToken) {
-//     config.headers.Authorization = `Bearer ${userToken}`;
-//   }
+  if (adminToken) {
+    config.headers.Authorization = `Bearer ${adminToken}`; // Prioritize admin token
+  } else if (userToken) {
+    config.headers.Authorization = `Bearer ${userToken}`;
+  }
 
-//   // Ensure all requests disable caching
-//   config.headers["Cache-Control"] =
-//     "no-store, no-cache, must-revalidate, proxy-revalidate";
-//   config.headers["Pragma"] = "no-cache";
-//   config.headers["Expires"] = "0";
-//   return config;
-// });
+  // Ensure all requests disable caching
+  config.headers["Cache-Control"] =
+    "no-store, no-cache, must-revalidate, proxy-revalidate";
+  config.headers["Pragma"] = "no-cache";
+  config.headers["Expires"] = "0";
+  return config;
+});

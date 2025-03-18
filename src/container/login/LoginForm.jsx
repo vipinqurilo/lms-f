@@ -98,22 +98,22 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
       .unwrap()
       .then((res) => {
         if (res?.data?.role === "student") {
-          // localStorage.setItem("token", res?.token);
-          // localStorage.removeItem("adminToken");
+          localStorage.setItem("token", res?.token);
+          localStorage.removeItem("adminToken");
           if (type !== "model") {
             router.push("/");
           }
         } else if (res?.data?.role === "teacher") {
-          // localStorage.setItem("token", res?.token);
-          // localStorage.removeItem("adminToken");
+          localStorage.setItem("token", res?.token);
+          localStorage.removeItem("adminToken");
           if (type !== "model" && res?.data?.userStatus === "active") {
             router.push("/instructor-dashboard");
           } else {
             router.push("/");
           }
         } else if (res?.data?.role === "admin") {
-          // localStorage.setItem("adminToken", res?.token);
-          // localStorage.removeItem("token");
+          localStorage.setItem("adminToken", res?.token);
+          localStorage.removeItem("token");
           localStorage.setItem("isAdmin", JSON.stringify(true));
           if (type !== "model") {
             router.push("/admin-dashboard");
