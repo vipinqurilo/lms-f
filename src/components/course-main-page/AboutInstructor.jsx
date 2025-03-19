@@ -37,16 +37,23 @@ const AboutInstructor = ({ data }) => {
   const { categories } = useSelector((state) => state.category);
   const course = data?.course;
   const teacherProfile = course?.courseInstructor?.teacherProfile;
+  const { allTutorProfile: tutors } = useSelector((state) => state.tutors);
+  const ratings =
+    tutors &&
+    tutors?.find((t) => t?.user?._id === course?.courseInstructor?._id)?.reviews;
+  const averageRating =
+    ratings?.reduce((total, review) => total + review?.rating, 0) /
+      ratings?.length || 0;
 
   return (
     <div className="course-sub-container">
       <Heading data="About Instructor" />
-      <div className="space-y-2">
+      <div className="space-y-2 w-full flex items-start gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 border-4 border-black/10 relative flex items-center justify-center bg-gray-300 rounded-full overflow-hidden">
-            {course?.courseInstructor?.profileImage ? (
+          <div className="w-14 h-14 border-2 border-black/10 relative flex items-center justify-center bg-gray-300 rounded-full overflow-hidden">
+            {course?.courseInstructor?.profilePhoto ? (
               <Image
-                src={course?.courseInstructor?.profileImage}
+                src={course?.courseInstructor?.profilePhoto}
                 alt={course?.courseInstructor?.firstName}
                 fill={true}
                 className="object-cover rounded-full"
@@ -72,9 +79,9 @@ const AboutInstructor = ({ data }) => {
           </div>
         </div>
         <div className="flex items-center font-semibold gap-1">
-          {course?.ratings && (
+          {averageRating && (
             <>
-              <RatingStars rating={course?.rating} /> Instructor Rating
+              <RatingStars rating={averageRating} /> <span className="text-base">({ratings?.length || 0})</span>
             </>
           )}
         </div>

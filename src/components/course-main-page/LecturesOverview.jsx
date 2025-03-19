@@ -86,7 +86,7 @@ const LecturesOverview = ({ data, id, isEnrolled, enrolledCourseData }) => {
               className={`flex justify-between items-center w-full font-medium text-lg text-left bg-secondary/5 p-2 px-4 rounded border border-black/10 ${
                 enrolledCourseData?.completedModule?.some(
                   (item) => item === section?._id
-                ) && "!bg-green-100 !text-green-500"
+                ) && "!bg-green-50 !text-green-600 border-green-200"
               }`}
             >
               <span className="font-[700] text-base flex items-center gap-2">

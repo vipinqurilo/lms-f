@@ -11,10 +11,10 @@ export default function Mentor() {
     >
       <div className="relative h-full w-full">
         <Image
-          src="/assets/home/IMAGE01.png"
+          src="/assets/home/share.webp"
           alt="Mentor Illustration"
           fill={true}
-          className="object-center object-contain"
+          className="object-center object-cover"
           priority
         />
       </div>

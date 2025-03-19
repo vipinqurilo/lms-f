@@ -73,7 +73,15 @@ export default function FeaturedCard({ data, isFull = false }) {
           } cursor-pointer group-hover:scale-105 bg-white transition-all duration-300 rounded-lg shadow-lg overflow-hidden relative p-2 lg:p-4`}
         >
           <div className="w-full flex flex-col">
-            <div className={`relative overflow-hidden w-full h-60 rounded-lg`}>
+            <div
+              className={`relative overflow-hidden w-full h-60 
+              ${
+                isEnrolled && enrolledCourseData?.progress !== 100
+                  ? "!rounded-b-none rounded-t-lg !h-[14.625rem]"
+                  : "rounded-lg"
+              }
+              `}
+            >
               <Image
                 src={data?.courseImage || "/assets/common/courseImage.jpg"}
                 alt="Course Image"
@@ -81,22 +89,29 @@ export default function FeaturedCard({ data, isFull = false }) {
                 objectFit="cover"
                 className="transform transition-transform duration-300 group-hover:!scale-110"
               />
+              {isEnrolled && (
+                <span
+                  className="absolute top-5 -right-2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs bg-black/50 w-10 h-6 rounded flex items-center justify-center"
+                  style={{
+                    display: enrolledCourseData?.progress === 100 ? "none" : "",
+                  }}
+                >
+                  {enrolledCourseData?.progress}%
+                </span>
+              )}
             </div>
             {isEnrolled && (
               <div
-                className="w-[100%] bg-blue-200 rounded-b-lg mt-4 h-3.5 relative rounded-lg"
+                className="w-[100%] bg-blue-200 h-1.5 relative"
                 style={{
                   display:
                     enrolledCourseData?.progress === 100 ? "none" : "block",
                 }}
               >
                 <div
-                  className={`bg-blue-600 h-full rounded-lg transition-all duration-1000`}
+                  className={`bg-blue-600 h-full transition-all duration-1000`}
                   style={{ width: `${enrolledCourseData?.progress}%` }}
                 ></div>
-                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs">
-                  {enrolledCourseData?.progress}%
-                </span>
               </div>
             )}
           </div>
