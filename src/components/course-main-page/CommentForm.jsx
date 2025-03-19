@@ -9,6 +9,7 @@ import SubmitButton from "../login/SubmitButton";
 import { useDispatch } from "react-redux";
 import { addReview } from "@/store/slices/coursesSlice";
 import { useSelector } from "react-redux";
+import Loader from "../common/Loader";
 
 const RatingInput = ({ initialRating = 0, onRatingChange }) => {
   const maxStars = 5;
@@ -77,16 +78,15 @@ const CommentForm = ({ id, data }) => {
     };
     dispatch(addReview(formData))
       .unwrap()
-      .then(() => reset());
+      .then(() => {
+        reset();
+        window.location.reload();
+      });
   };
 
   if (
     Array.isArray(data) &&
-    data.some(
-      (review) =>
-        `${review?.student?.firstName}${review?.student?.lastName}` ===
-        authUser?.name
-    )
+    data.some((review) => review?.student?._id === authUser?._id)
   ) {
     return (
       <div className="course-sub-container">

@@ -27,7 +27,7 @@ const NavbarTopContactBanner = () => {
               className="hover:text-gray-300 cursor-pointer bg-white/20 p-1.5 rounded"
             >
               {link.icon === "Mail" && <FaEnvelope className="h-3.5 w-3.5" />}
-              {link.icon === "Phone" && <FaPhone className="h-3.5 w-3.5" />}
+              {link.icon === "Phone" && <FaPhone className="h-3.5 w-3.5 rotate-90" />}
               {link.icon === "Twitter" && <FaTwitter className="h-3.5 w-3.5" />}
               {link.icon === "Instagram" && (
                 <FaInstagram className="h-3.5 w-3.5" />

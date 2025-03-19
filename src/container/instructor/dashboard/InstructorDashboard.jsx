@@ -38,8 +38,9 @@ const InstructorDashboard = () => {
     image: course?.courseImage,
     title: course?.courseTitle,
     des: course?.courseDescription,
+    id: course?._id,
     value2: course?.status,
-    value1: 100,
+    value1: course?.studentsEnrolled || "0",
   }));
   const [startDate, setstartDate] = useState(new Date());
 

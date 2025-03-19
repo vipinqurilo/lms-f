@@ -25,7 +25,7 @@ const IncludesListRed = ({ list, type, heading }) => {
             )}
             <span className="font-medium">{Item?.text || Item}</span>
             {Item?.value && (
-              <p className="font-mono font-bold">: {Item?.value}</p>
+              <p className=" font-bold"> {Item?.value}</p>
             )}
           </li>
         ))}

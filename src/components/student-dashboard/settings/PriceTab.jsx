@@ -42,7 +42,7 @@ const PriceTab = () => {
       "45 minutes": 0.75,
       "60 minutes": 1,
     };
-    return `$${(hourlyRate * slotMultiplier[slot]).toFixed(2)}`;
+    return `R${(hourlyRate * slotMultiplier[slot]).toFixed(2)}`;
   };
 
   const updateTimeSlots = () => {
@@ -65,7 +65,7 @@ const PriceTab = () => {
       <div
         className={`text-white px-4 py-2 mt-4 rounded-lg font-medium bg-secondary`}
       >
-        Note: Prices Are Managed By Admin And In Base Currency [USD]
+        Note: Prices Are Managed By Admin And In Base Currency [ZAR]
       </div>
 
       {/* Pricing Table */}
@@ -107,7 +107,7 @@ const PriceTab = () => {
             {subSubjects?.map(({ name, pricePerHour:hourlyRate }) => (
               <tr key={name} className="bg-white hover:bg-gray-50">
                 <td className="border px-4 py-2">{name}</td>
-                <td className="border px-4 py-2 text-sm">${hourlyRate.toFixed(2)}</td>
+                <td className="border px-4 py-2 text-sm">R{hourlyRate.toFixed(2)}</td>
                 {timeSlots.map((slot) => (
                   <td
                     key={slot}

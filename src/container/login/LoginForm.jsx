@@ -5,7 +5,7 @@ import SubmitButton from "@/components/login/SubmitButton";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
+import { resendVerificationEmailAsync, userLoginAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/router";
 
@@ -18,7 +18,11 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
     formState: { errors },
     handleSubmit,
     reset,
+    watch
   } = useForm();
+
+  const reemail = watch("email");
+  console.log(reemail,"pppp")
 
   const [isRememberMe, setisRememberMe] = useState(false);
 
@@ -35,7 +39,53 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
     }
   }, []);
 
+  // const submitHandler = (data) => {
+  //   if (isRememberMe) {
+  //     localStorage.setItem("rememberedEmail", data?.email);
+  //     localStorage.setItem("rememberedPassword", data?.password);
+  //   } else {
+  //     localStorage.removeItem("rememberedEmail");
+  //     localStorage.removeItem("rememberedPassword");
+  //   }
+  //   dispatch(userLoginAsync(data))
+  //     .unwrap()
+  //     .then((res) => {
+  //       if (res?.data?.role === "student") {
+  //         localStorage.setItem("token", res?.token);
+  //         localStorage.removeItem("adminToken");
+  //         if (type !== "model") {
+  //           router.push("/");
+  //         }
+  //       } else if (res?.data?.role === "teacher") {
+  //         localStorage.setItem("token", res?.token);
+  //         localStorage.removeItem("adminToken");
+  //         if (type !== "model" && res?.data?.userStatus === "active") {
+  //           router.push("/instructor-dashboard");
+  //         } else {
+  //           router.push("/");
+  //         }
+  //       } else if (res?.data?.role === "admin") {
+  //         localStorage.setItem("adminToken", res?.token);
+  //         localStorage.setItem("isAdmin", JSON.stringify(true));
+  //         localStorage.removeItem("token");
+  //         if (type !== "model") {
+  //           router.push("/admin-dashboard");
+  //         }
+  //       }
+  //       if (isModal) {
+  //         setisModalOpen(false);
+  //       }
+  //       dispatch(verifyLoggedInUser());
+  //     })
+  //     .catch(() => {
+  //       router.push("/sendloginverify-email");
+  //     });
+  // };
+
+
   const submitHandler = (data) => {
+    console.log("User Email:", data?.email); // Proper console log
+  
     if (isRememberMe) {
       localStorage.setItem("rememberedEmail", data?.email);
       localStorage.setItem("rememberedPassword", data?.password);
@@ -43,6 +93,7 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
       localStorage.removeItem("rememberedEmail");
       localStorage.removeItem("rememberedPassword");
     }
+  
     dispatch(userLoginAsync(data))
       .unwrap()
       .then((res) => {
@@ -62,18 +113,38 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
           }
         } else if (res?.data?.role === "admin") {
           localStorage.setItem("adminToken", res?.token);
-          localStorage.setItem("isAdmin", JSON.stringify(true));
           localStorage.removeItem("token");
+          localStorage.setItem("isAdmin", JSON.stringify(true));
           if (type !== "model") {
             router.push("/admin-dashboard");
           }
         }
+  
         if (isModal) {
           setisModalOpen(false);
         }
+  
         dispatch(verifyLoggedInUser());
+      })
+      .catch((err) => {
+        console.log("Login Error:", err); // Log the full error response
+  
+        if (err === "User is not verified. Please verify your account before logging in.") {
+          dispatch(resendVerificationEmailAsync(data?.email))
+            .unwrap()
+            .then(() => {
+              // alert("Verification email sent! Please check your inbox.");
+              router.push("/sendloginverify-email");
+            })
+            .catch(() => {
+              // alert("Failed to resend verification email. Please try again.");
+            });
+        } else {
+          alert(err?.message || "Login failed. Please try again.");
+        }
       });
   };
+  
 
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">

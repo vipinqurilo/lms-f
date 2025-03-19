@@ -134,7 +134,7 @@ const AddLecture = ({
 
           {/* File Upload Input */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">attachements</label>
+            <label className="text-sm font-medium">Attachments</label>
             <input
               type="file"
               accept=".pdf"

@@ -6,18 +6,21 @@ import dateFormat from "dateformat";
 import TableHeader from "@/components/instructor/TableHeader";
 import Image from "next/image";
 import RejectReasonPopup from "@/components/instructor/RejectReasonPopup";
-import { updateWithdrawalStatus } from "@/store/slices/withdrawalSlice";
+import {
+  getWithDrawals,
+  updateWithdrawalStatus,
+} from "@/store/slices/withdrawalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RejectModal from "@/components/admin-dashboard/teacherrequests/rejectModel";
 import { FaRegCalendarCheck } from "react-icons/fa";
-import Link from "next/link";
-import { FiEye } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import ApprovelModal from "@/components/admin-dashboard/withdrawrequests/ApprovalModal";
+import { BiSolidBank } from "react-icons/bi";
 
 const WithdrawalsTable = ({ headingsData, withdrawals }) => {
   const [isEdit, setIsEdited] = useState(null);
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.withdrawal);
   const user = useSelector((state) => state.user?.authUser?.role);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
   const [approvingId, setApprovingId] = useState(null);
@@ -80,12 +83,19 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
           id: rejectingId,
           data: { action: "reject", rejectionReason },
         })
-      );
+      )
+        .unwrap()
+        .then(() => {
+          setIsRejectModalOpen(false);
+          setRejectingId(null);
+          setRejectionReason("");
+          dispatch(getWithDrawals());
+        });
     }
-    setIsRejectModalOpen(false);
-    setRejectingId(null);
-    setRejectionReason("");
   };
+
+  console.log(withdrawals, "withdrawals");
+  
 
   return (
     <table className="w-full border-l border-r border-black/10 !rounded-lg">
@@ -114,14 +124,14 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                     {row?.paymentMethod === "paypal" ? (
                       <IoLogoPaypal size={25} />
                     ) : (
-                      <span>{row?.paymentMethod?.split("")[0]}</span>
+                      <BiSolidBank size={25} />
                     )}
                   </div>
                   <div className="">
                     <h6 className="font-semibold capitalize">
                       {row?.paymentMethod}
                     </h6>
-                    <p className="text-light text-sm">{row?.paypalEmail}</p>
+                    <p className="text-light text-sm">{row?.paypalEmail || row?.bankDetails?.bankName}</p>
                   </div>
                 </div>
               </td>
@@ -157,7 +167,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   </p>
                 </div>
               </td>
-              <td className="px-6 py-4 font-medium">₹{row?.amount}</td>
+              <td className="px-6 py-4 font-medium">{row?.amount} ZAR</td>
               <td className={`px-6 py-4 font-medium`}>
                 <button
                   onClick={() => handleEdit(row?._id)}
@@ -213,11 +223,16 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                 id: approvingId,
                 data: { action: "approve" },
               })
-            );
+            )
+              .unwrap()
+              .then(() => {
+                setIsApproveModalOpen(false);
+                setApprovingId(null);
+                dispatch(getWithDrawals());
+              });
           }
-          setIsApproveModalOpen(false);
-          setApprovingId(null);
         }}
+        loading={isLoading["updateWithdrawalStatus"]}
       />
       <RejectModal
         isOpen={isRejectModalOpen}
@@ -225,6 +240,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
           setIsRejectModalOpen(false);
           setRejectingId(null);
         }}
+        loading={isLoading["updateWithdrawalStatus"]}
         onReject={handleReject}
         rejectionReason={rejectionReason}
         setRejectionReason={setRejectionReason}

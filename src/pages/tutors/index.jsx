@@ -85,7 +85,7 @@ const index = () => {
     dispatch(getSubjects());
   }, []);
   return (
-    <div className="text-lg bg-light_bg w-full min-h-screen  p-2 md:p-10 lg:px-20  custom-margin-top">
+    <div className="text-lg bg-light_bg w-full min-h-screen  p-2 md:p-10 lg:px-20  custom-margin-top font-nunito">
       <TutorFilter handleApplySubjects={handleApplySubjects} search={search} setSearch={setSearch} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} />
       {isLoading["fetchAllTutorProfileAsync"] ? (
         <div className="flex justify-center items-center ">

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
@@ -54,8 +56,11 @@ const SubCategories = () => {
 
   // Handle the deletion of a subcategory
   const handleDelete = (id) => {
-    dispatch(deleteSubCategoryById(id));
-    setIsDeleteModalOpen(false); // Close the delete modal after deletion
+    dispatch(deleteSubCategoryById(id))
+      .unwrap()
+      .then(() => {
+        setIsDeleteModalOpen(false);
+      });
   };
 
   // Handle the save for editing a subcategory
@@ -67,19 +72,16 @@ const SubCategories = () => {
           updatedData: updatedCategory,
         })
       ).then(() => {
-        dispatch(getAllSubCategories());
+        dispatch(
+          getAllSubCategories({
+            page: currentPage,
+            limit: 10,
+          })
+        );
+        setIsEditModalOpen(false);
       });
-      setIsEditModalOpen(false);
     }
   };
-
-  if (isLoading.length) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <Loader isBig={true} color={"text-secondary"} />
-      </div>
-    );
-  }
 
   return (
     <>
@@ -104,8 +106,7 @@ const SubCategories = () => {
           <table className="w-full border border-gray-200 rounded-lg">
             <TableHeader headingsData={columns} />
             <tbody className="">
-              {isLoading?.["getAllSubCategories"] ||
-              isLoading?.["editSubCategoryById"] ? (
+              {isLoading?.["getAllSubCategories"] ? (
                 <tr>
                   <td colSpan={columns?.length}>
                     <div className=" w-full py-10 flex justify-center items-center">
@@ -114,55 +115,67 @@ const SubCategories = () => {
                   </td>
                 </tr>
               ) : (
-                subcategories.map((cat, index) => (
-                  <tr key={cat?._id} className="border-t border-gray-200">
-                    <td className="py-3  px-8  text-sm">{index + 1}</td>
-                    {/* <td className="py-4 px-4 align-middle">
-                      <img
-                        src={
-                          cat.profilePhoto || "https://via.placeholder.com/40"
-                        }
-                        alt="User"
-                        className="w-10 h-10 rounded-full"
-                      />
-                    </td> */}
-                    <td className="py-3 px-4 text-sm">{cat?.name}</td>
-                    <td className="py-3 px-4 text-sm">
-                      {cat?.courseCategory?.name}
-                    </td>
-                    <td className="py-3 px-4 text-sm">
-                      {new Date(cat?.updatedAt).toLocaleString("en-US", {
-                        month: "short",
-                        day: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      })}
-                    </td>
-                    <td className="py-3  px-12 text-sm">{cat?.pricePerHour}</td>
-                    <td className="py-3 px-4    space-x-4">
-                      <button
-                        className="text-gray-600 hover:text-yellow-500"
-                        onClick={() => {
-                          setSelectedCategory(cat);
-                          setIsEditModalOpen(true);
-                        }}
-                      >
-                        <FiEdit2 size={18} />
-                      </button>
-                      <button
-                        className="text-gray-600 hover:text-red-500"
-                        onClick={() => {
-                          setSelectedCategory(cat);
-                          setIsDeleteModalOpen(true); // Open the delete modal
-                        }}
-                      >
-                        <FiTrash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                <>
+                  {subcategories?.length === 0 ? (
+                    <tr>
+                      <td className="py-4 text-center" colSpan={columns.length}>
+                        No Records Found
+                      </td>
+                    </tr>
+                  ) : (
+                    subcategories.map((cat, index) => (
+                      <tr key={cat?._id} className="border-t border-gray-200">
+                        <td className="py-3  px-8  text-sm">{index + 1}</td>
+                        {/* <td className="py-4 px-4 align-middle">
+                        <img
+                          src={
+                            cat.profilePhoto || "https://via.placeholder.com/40"
+                          }
+                          alt="User"
+                          className="w-10 h-10 rounded-full"
+                        />
+                      </td> */}
+                        <td className="py-3 px-4 text-sm">{cat?.name}</td>
+                        <td className="py-3 px-4 text-sm">
+                          {cat?.courseCategory?.name}
+                        </td>
+                        <td className="py-3 px-4 text-sm">
+                          {new Date(cat?.updatedAt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })}
+                        </td>
+                        <td className="py-3  px-12 text-sm">
+                          {cat?.pricePerHour}
+                        </td>
+                        <td className="py-3 px-4    space-x-4">
+                          <button
+                            className="text-gray-600 hover:text-yellow-500"
+                            onClick={() => {
+                              setSelectedCategory(cat);
+                              setIsEditModalOpen(true);
+                            }}
+                          >
+                            <FiEdit2 size={18} />
+                          </button>
+                          <button
+                            className="text-gray-600 hover:text-red-500"
+                            onClick={() => {
+                              setSelectedCategory(cat);
+                              setIsDeleteModalOpen(true); // Open the delete modal
+                            }}
+                          >
+                            <FiTrash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </>
               )}
             </tbody>
           </table>
@@ -172,6 +185,7 @@ const SubCategories = () => {
         <AddSubCategories
           isOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          loading={isLoading["addSubCategory"]}
         />
 
         <EditSubCategories
@@ -179,6 +193,7 @@ const SubCategories = () => {
           onClose={() => setIsEditModalOpen(false)}
           category={selectedCategory}
           onSave={handleSave}
+          loading={isLoading["editSubCategoryById"]}
         />
 
         {/* Delete Confirmation Modal */}
@@ -188,6 +203,7 @@ const SubCategories = () => {
           setIsDeleteModalOpen={setIsDeleteModalOpen}
           handleDelete={handleDelete}
           categoryId={selectedCategory?._id}
+          loading={isLoading["deleteSubCategoryById"]}
         />
       </div>
       <Pagination

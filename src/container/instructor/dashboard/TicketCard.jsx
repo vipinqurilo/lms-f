@@ -9,7 +9,7 @@ const TicketCard = ({ ticket }) => {
           {ticket.subject}
         </h3>
         <span
-          className={`px-2 mt-2 text-xs font-semibold rounded ${
+          className={`px-2 mt-2 text-xs font-semibold rounded line-clamp-2 ${
             ticket.status === "open"
               ? "bg-yellow-100 text-yellow-600"
               : "bg-green-100 text-green-600"

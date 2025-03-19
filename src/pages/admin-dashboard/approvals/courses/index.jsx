@@ -9,15 +9,8 @@ import React from "react";
 export default function index() {
   return (
     <StudentDashboardLayout>
-      <main className="  p-10">
-        <div className="dashboard-container">
-        <TitleComp
-          heading={"Courses Approval Requests"}
-          des={"following are the approval requests for all the courses."}
-        />
+      <main className="">
         <Course />
-        </div>
-   
       </main>
     </StudentDashboardLayout>
   );

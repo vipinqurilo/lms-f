@@ -19,13 +19,13 @@ const CourseDetails = () => {
   const { authUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const isEnrolled = enrolledCourses && enrolledCourses.some(
-    (item) => item?.courseId === data?.course?._id
-  );
+  const isEnrolled =
+    enrolledCourses &&
+    enrolledCourses.some((item) => item?.courseId === data?.course?._id);
 
-  const enrolledCourseData = enrolledCourses && enrolledCourses.find(
-    (item) => item?.courseId === data?.course?._id
-  );
+  const enrolledCourseData =
+    enrolledCourses &&
+    enrolledCourses.find((item) => item?.courseId === data?.course?._id);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -65,7 +65,12 @@ const CourseDetails = () => {
           <CourseReview data={data?.totalReviews} />
         </div>
         <div className="lg:block hidden w-full lg:!w-[30%] lg:-mt-80  lg:top-10">
-          <CourseHighLights data={data} isEnrolled={isEnrolled} enrollNowRef={enrollNowRef} enrolledCourseData={enrolledCourseData} />
+          <CourseHighLights
+            data={data}
+            isEnrolled={isEnrolled}
+            enrollNowRef={enrollNowRef}
+            enrolledCourseData={enrolledCourseData}
+          />
         </div>
       </div>
       {!isEnrolled && (
@@ -74,12 +79,12 @@ const CourseDetails = () => {
             <div className=" px-8 md:px-10 lg:px-20 py-4 flex items-center justify-between gap-5">
               <div className="flex items-center gap-2">
                 <h3 className="text-green-500 text-2xl font-bold">
-                  {data?.course?.coursePrice || "--"}
+                  {data?.course?.coursePrice || "--"} ZAR
                 </h3>
-                <p className="text-gray-500">
+                {/* <p className="text-gray-500">
                   <span className="line-through">₹1999.00</span>{" "}
                   <span>50% off</span>
-                </p>
+                </p> */}
               </div>
               <button
                 onClick={() => enrollNowRef.current?.click()}

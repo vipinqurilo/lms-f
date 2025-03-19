@@ -119,7 +119,8 @@ const InstructorMyCourses = () => {
       image: course?.courseImage,
       title: course?.courseTitle,
       des: course?.courseDescription,
-      value1: course?.entrolled || 425,
+      id: course?._id,
+      value1: course?.studentsEnrolled || "0",
       value2: course?.status,
       value3: (
         <div className="flex items-center gap-5 text-black">

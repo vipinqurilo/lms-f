@@ -8,29 +8,26 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { fetchAllTutorProfileAsync } from "@/store/slices/tutorsSlice";
-import { fetchCoursesAsync, getAllEnrolledCourses } from "@/store/slices/coursesSlice";
+import { getAllEnrolledCourses } from "@/store/slices/coursesSlice";
+import { getCardStats } from "@/store/slices/admin-dashboard/adminDashboardSlice";
 
 const GetLoggedInUser = () => {
   const dispatch = useDispatch();
   const { authUser, isAuthenticated } = useSelector((state) => state.user);
-  const userToken =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  const adminToken =
-    typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
+  // const userToken =
+  //   typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  // const adminToken =
+  //   typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
 
   useEffect(() => {
-    if (userToken || adminToken) {
-      dispatch(verifyLoggedInUser());
-    }
+    // if (userToken || adminToken) {
+    dispatch(verifyLoggedInUser());
+    // }
     dispatch(getSubjects());
     dispatch(getSubSubjects());
     dispatch(getLanguages());
     dispatch(fetchAllTutorProfileAsync({ search: "" }));
-    const requestData = {
-      page: 1,
-      status: "published",
-    };
-    dispatch(fetchCoursesAsync(requestData));
+    dispatch(getCardStats());
   }, [dispatch]);
 
   useEffect(() => {

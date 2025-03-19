@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { api } from "@/store/api/api";
 
-
 export const getAllSubCategories = CreateApiAsyncThunk(
   "GET/subcategory/getAllSubCategories",
   (formData) => {
@@ -58,11 +57,21 @@ export const manageSubjectsSubCategorySlice = createSlice({
         state.error["getAllSubCategories"] = action.payload;
         state.subcategories = [];
       })
+
+      .addCase(deleteSubCategoryById.pending, (state) => {
+        state.isLoading["deleteSubCategoryById"] = true;
+      })
       .addCase(deleteSubCategoryById.fulfilled, (state, action) => {
+        state.isLoading["deleteSubCategoryById"] = false;
         state.subcategories = state.subcategories.filter(
           (subcategory) => subcategory._id !== action.meta.arg
         );
       })
+      .addCase(deleteSubCategoryById.rejected, (state, action) => {
+        state.isLoading["deleteSubCategoryById"] = false;
+        state.error["deleteSubCategoryById"] = action.payload;
+      })
+
       .addCase(editSubCategoryById.pending, (state, action) => {
         state.isLoading["editSubCategoryById"] = true;
         state.error["editSubCategoryById"] = null;
