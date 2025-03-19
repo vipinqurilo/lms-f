@@ -38,8 +38,11 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
       setisRememberMe(true);
     }
   }, []);
+ 
 
   // const submitHandler = (data) => {
+  //   console.log("User Email:", data?.email); // Proper console log
+  
   //   if (isRememberMe) {
   //     localStorage.setItem("rememberedEmail", data?.email);
   //     localStorage.setItem("rememberedPassword", data?.password);
@@ -47,6 +50,7 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
   //     localStorage.removeItem("rememberedEmail");
   //     localStorage.removeItem("rememberedPassword");
   //   }
+  
   //   dispatch(userLoginAsync(data))
   //     .unwrap()
   //     .then((res) => {
@@ -72,15 +76,32 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
   //           router.push("/admin-dashboard");
   //         }
   //       }
+  
   //       if (isModal) {
   //         setisModalOpen(false);
   //       }
+  
   //       dispatch(verifyLoggedInUser());
   //     })
-  //     .catch(() => {
-  //       router.push("/sendloginverify-email");
+  //     .catch((err) => {
+  //       console.log("Login Error:", err); // Log the full error response
+  
+  //       if (err === "User is not verified. Please verify your account before logging in.") {
+  //         dispatch(resendVerificationEmailAsync(data?.email))
+  //           .unwrap()
+  //           .then(() => {
+  //             // alert("Verification email sent! Please check your inbox.");
+  //             router.push("/sendloginverify-email");
+  //           })
+  //           .catch(() => {
+  //             // alert("Failed to resend verification email. Please try again.");
+  //           });
+  //       } else {
+  //         alert(err?.message || "Login failed. Please try again.");
+  //       }
   //     });
   // };
+  
 
 
   const submitHandler = (data) => {
@@ -129,22 +150,37 @@ const LoginForm = ({ type, setisModalOpen, isModal = false }) => {
       .catch((err) => {
         console.log("Login Error:", err); // Log the full error response
   
+        if (typeof err === "string") {
+          console.log("Error String:", err);
+        } else if (err?.message) {
+          console.log("Error Message:", err.message);
+        }
+
+        console.log("Error:", ); // Debugging log
+  
         if (err === "User is not verified. Please verify your account before logging in.") {
           dispatch(resendVerificationEmailAsync(data?.email))
             .unwrap()
             .then(() => {
-              // alert("Verification email sent! Please check your inbox.");
               router.push("/sendloginverify-email");
             })
-            .catch(() => {
-              // alert("Failed to resend verification email. Please try again.");
+            .catch((err) => {
+              if (err === "Verification email has already been sent. Please check your email.") {
+                console.log("Navigating to /notverify"); // Debugging log
+                router.push("/notverify");
+              } 
+              console.log("Failed to resend verification email.");
             });
-        } else {
+        } 
+        
+        else {
           alert(err?.message || "Login failed. Please try again.");
         }
       });
   };
   
+  
+
 
   return (
     <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">

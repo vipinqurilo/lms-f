@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyEmailAsync } from "@/store/slices/userSlice";
 
-const Sendverifyemail = () => {
-    const router = useRouter();
+const Notverifymodel = () => {
+  const router = useRouter();
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 mt-12">
       <div className="bg-white p-8 rounded-2xl shadow-lg lg:w-5/12 text-center">
@@ -16,7 +16,10 @@ const Sendverifyemail = () => {
           className="mx-auto w-auto"
         />
 
-        <p className="text-gray-600 mt-5">Verification email sent again successfully bro.</p>
+        <p className="text-gray-600 mt-5">
+          Your verification email has been sent again successfully. Please check
+          your inbox .
+        </p>
 
         <button
           className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold hover:bg-black transition"
@@ -29,4 +32,4 @@ const Sendverifyemail = () => {
   );
 };
 
-export default Sendverifyemail;
+export default Notverifymodel;
