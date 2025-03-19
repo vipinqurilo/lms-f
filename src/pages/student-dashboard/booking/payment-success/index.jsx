@@ -16,7 +16,7 @@ const PaymentSuccessPage = () => {
             dispatch(createBookingAsync({ sessionId }))
                 .unwrap()
                 .then(res => {
-                    if(res.success){
+                    if (res.success) {
                         setBookingDetails(res.data);
                         setLoading(false);
                         setError("");
@@ -72,11 +72,15 @@ const PaymentSuccessPage = () => {
                                 </div>
                                 <div className="space-y-2">
                                     <p className="text-gray-600">Date</p>
-                                    <p className="font-semibold text-gray-800">{bookingDetails.sessionDate}</p>
+                                    <p className="font-semibold text-gray-800">
+                                        {new Date(bookingDetails.sessionDate).toLocaleDateString()}
+                                    </p>
                                 </div>
                                 <div className="space-y-2">
                                     <p className="text-gray-600">Time</p>
-                                    <p className="font-semibold text-gray-800">{bookingDetails.sessionStartTime}</p>
+                                    <p className="font-semibold text-gray-800">
+                                        {new Date(bookingDetails.sessionDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
                                 </div>
                             </div>
                             <div className="pt-4 border-t border-gray-200">

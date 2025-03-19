@@ -17,7 +17,6 @@ import BackgroundModal from "@/components/instructor/BackgroundModal";
 import CancelBookingModel from "@/components/common/CancelBookingModel";
 import RescheduleBookingModel from "@/components/common/RescheduleBookingModel";
 import EditMeetingLink from "@/components/common/EditMeetingLink";
-import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { rescheduleResponseAsync } from "@/store/slices/student-dashboard/bookingSlice";
 
@@ -304,6 +303,7 @@ const BookingList = ({ bookings, isLoading }) => {
                                   }
                                 }}
                               >
+                                
                                 <Video />
                               </button>
                               <button 
@@ -324,7 +324,11 @@ const BookingList = ({ bookings, isLoading }) => {
                                   setIsOpen("reschedule");
                                 }}
                               >
-                                <ListRestart />
+                                {isLoading["rescheduleResponseAsync"] ? (
+                                  <Loader />
+                                ) : (
+                                  <ListRestart />
+                                )}
                               </button>
 
                               <button
@@ -347,7 +351,11 @@ const BookingList = ({ bookings, isLoading }) => {
                                   setIsOpen("cancelation");
                                 }}
                               >
-                                <CircleX />
+                                {isLoading["cancelBookingAsync"] ? (
+                                  <Loader />
+                                ) : (
+                                  <CircleX />
+                                )}
                               </button>
                               {authUser?.role === "teacher" ||
                               authUser?.role === "admin" ? (
@@ -371,7 +379,11 @@ const BookingList = ({ bookings, isLoading }) => {
                                           : "text-gray-600"
                                       } cursor-pointer`}
                                     >
-                                      <FilePenLine />
+                                      {isLoading["updateBooking"] ? (
+                                        <Loader />
+                                      ) : (
+                                        <FilePenLine />
+                                      )}
                                     </button>
                                   ) : (
                                     <button
@@ -392,7 +404,11 @@ const BookingList = ({ bookings, isLoading }) => {
                                           : "text-gray-600"
                                       } cursor-pointer`}
                                     >
-                                      <CircleCheckBig />
+                                      {isLoading["confirmBooking"] ? (
+                                        <Loader />
+                                      ) : (
+                                        <CircleCheckBig />
+                                      )}
                                     </button>
                                   )}
                                 </>

@@ -41,6 +41,7 @@ export const rescheduleBooking = CreateApiAsyncThunk(
       reason,
     })
 );
+
 export const updateAvailabilityCalender = CreateApiAsyncThunk(
   "booking/updateAvailabilityCalender",
   (data) => api.put(`/profile/availability-calender`, data)
