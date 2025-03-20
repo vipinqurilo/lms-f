@@ -18,7 +18,7 @@ export default function Testimonial() {
       name: "Daziy Millar",
       position: "Founder of Awesomemux Technology",
       image:
-        "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user1.jpg", // Replace with the real image URL
+        "/assets/common/profile.png", // Replace with the real image URL
     },
     {
       quote: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -28,7 +28,7 @@ export default function Testimonial() {
       name: "Daziy Millar",
       position: "Founder of Awesomemux Technology",
       image:
-        "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user1.jpg", // Replace with the real image URL
+        "/assets/common/profile.png", // Replace with the real image URL
     },
     {
       quote: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -38,7 +38,7 @@ export default function Testimonial() {
       name: "Daziy Millar",
       position: "Founder of Awesomemux Technology",
       image:
-        "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user1.jpg", // Replace with the real image URL
+        "/assets/common/profile.png", // Replace with the real image URL
     },
     {
       quote: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -48,7 +48,7 @@ export default function Testimonial() {
       name: "Daziy Millar",
       position: "Founder of Awesomemux Technology",
       image:
-        "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user1.jpg", // Replace with the real image URL
+        "/assets/common/profile.png", // Replace with the real image URL
     },
     {
       quote: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -58,7 +58,7 @@ export default function Testimonial() {
       name: "Daziy Millar",
       position: "Founder of Awesomemux Technology",
       image:
-        "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user1.jpg", // Replace with the real image URL
+        "/assets/common/profile.png", // Replace with the real image URL
     },
     {
       quote: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -68,7 +68,7 @@ export default function Testimonial() {
       name: "Daziy Millar",
       position: "Founder of Awesomemux Technology",
       image:
-        "https://dreamslms.dreamstechnologies.com/html/assets/img/user/user1.jpg", // Replace with the real image URL
+        "/assets/common/profile.png", // Replace with the real image URL
     },
   ];
 
@@ -129,13 +129,12 @@ export default function Testimonial() {
                   <Image
                     width={50}
                     height={50}
-                    src="https://dreamslms.dreamstechnologies.com/html/assets/img/qute.png"
+                    src="https://dreamslms-wp.dreamstechnologies.com/wp-content/themes/dreamslms/assets/images/qute-01.png"
                     alt="Quote Icon"
+                    className="rotate-180"
                   />
                 </div>
-                <p
-                  className="md:text-xl text-[15px] font-semibold italic text-center md:mx-4 max-h-40 overflow-y-auto custom-scrollbar"
-                >
+                <p className="md:text-xl text-[15px] font-semibold italic text-center md:mx-4 max-h-40 overflow-y-auto custom-scrollbar">
                   {testimonial.quote}
                 </p>
 

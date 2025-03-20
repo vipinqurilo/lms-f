@@ -4,29 +4,29 @@ import Heading from "../common/Heading";
 
 export default function MasterSkill() {
   const masterskillData = {
-    heading: "Master the skills to drive your career",
-    desc: `Get certified, master modern tech skills, and level up your career — whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.`,
+    heading: "Master In-Demand Skills to Elevate Your Career",
+    desc: `Gain certifications, enhance your expertise, and stay ahead in the industry. 95% of learners report that our hands-on courses have significantly boosted their careers.`,
     img: `/assets/home/IMAGE01.png`,
     features: [
       {
         id: 1,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-1.svg`,
-        text: `Stay motivated with engaging instructors`,
+        img: `/assets/home/icon.svg`,
+        text: `Learn from industry-leading experts and real-world projects.`,
       },
       {
         id: 2,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-2.svg`,
-        text: `Stay motivated with engaging instructors`,
+        img: `/assets/home/icon.svg`,
+        text: `Develop practical skills with interactive lessons and exercises.`,
       },
       {
         id: 3,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-3.svg`,
-        text: `Stay motivated with engaging instructors`,
+        img: `/assets/home/icon.svg`,
+        text: `Stay ahead with the latest tools and technologies.`,
       },
       {
         id: 4,
-        img: `https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-4.svg`,
-        text: `Stay motivated with engaging instructors`,
+        img: `/assets/home/icon.svg`,
+        text: `Boost your career with recognized certifications and courses.`,
       },
     ],
   };
@@ -74,7 +74,10 @@ export default function MasterSkill() {
             priority
           />
         </div>
-        <div data-aos="fade-up" className="relative h-full w-full lg:block hidden">
+        <div
+          data-aos="fade-up"
+          className="relative h-full w-full lg:block hidden"
+        >
           <Image
             src={masterskillData.img}
             alt="Master Skills"
