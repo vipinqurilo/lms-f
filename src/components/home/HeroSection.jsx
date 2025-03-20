@@ -9,11 +9,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
+// import ScrollTrigger from "react-scroll-trigger";
 
 export default function HeroSection() {
   const [searchText, setSearchText] = useState("");
   const [selectedOption, setselectedOption] = useState("course");
   const router = useRouter();
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.2,
+  });
 
   const getButtonCss = (value) =>
     `${
@@ -215,7 +221,11 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="absolute hidden -bottom-10 lg:grid grid-cols-4 md:gap-16 gap-4 w-full px-20">
+
+      <div
+        ref={ref}
+        className="absolute hidden -bottom-10 lg:grid grid-cols-4 md:gap-16 gap-4 w-full px-20"
+      >
         {data.box.map((item, index) => (
           <div key={index} className="text-center shadow-md rounded-2xl w-full">
             <div className="flex items-center space-x-4 md:p-4 p-2 rounded-2xl px-8 text-left bg-white">
@@ -226,14 +236,18 @@ export default function HeroSection() {
               </div>
               <div>
                 <p className="text-xl font-bold text-black">
-                  <CountUp
-                    start={0}
-                    end={
-                      item.heading >= 1000 ? item.heading / 1000 : item.heading
-                    }
-                    duration={2.5}
-                    suffix={item.heading >= 1000 ? "K+" : ""}
-                  />
+                  {inView && (
+                    <CountUp
+                      start={0}
+                      end={
+                        item.heading >= 1000
+                          ? item.heading / 1000
+                          : item.heading
+                      }
+                      duration={2.5}
+                      suffix={item.heading >= 1000 ? "K+" : ""}
+                    />
+                  )}
                 </p>
                 <p className="text-xs  text-black font-bold">{item.desc}</p>
               </div>

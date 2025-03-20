@@ -38,7 +38,7 @@ export default function FeaturedCourses({ cardData = [] }) {
             {/* Render Paginated Courses */}
             <div
               data-aos="fade-up"
-              className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5 md:gap-10 lg:gap-16 md:mt-8"
+              className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-10 lg:gap-16 mt-8"
             >
               {cardData?.length > 0 ? (
                 cardData

@@ -1,11 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
 import CountUp from "react-countup";
 import { useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
 
 export default function UnlimitedAccess() {
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.2,
+  });
+
   const { data: statsData } = useSelector(
     (state) => state.admin.adminDashboard
   );
@@ -13,34 +18,34 @@ export default function UnlimitedAccess() {
     stats: [
       {
         id: 1,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-07.svg",
+        img: "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-17.svg",
         number: statsData?.totalStudents || 10,
         desc: "students enrolled",
       },
       {
         id: 2,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-08.svg",
+        img: "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-10.svg",
         number: statsData?.totalCourses || 10,
         desc: "total courses",
       },
       {
         id: 3,
-        img: "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-09.svg",
+        img: "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-09-1.svg",
         number: statsData?.totalTeachers || 10,
         desc: "total instructors",
       },
     ],
     heading: `Unlimited access to 360+ courses and 1,600+ hands-on labs`,
     logos: [
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-10.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-16.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-12.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-13.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-14.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-15.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-16.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-17.svg",
-      "https://dreamslms.dreamstechnologies.com/html/assets/img/icon/icon-18.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-09-1.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-10.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-17.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-13.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-14.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-15.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-16.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-17.svg",
+      "https://dreamslms-wp.dreamstechnologies.com/wp-content/uploads/2023/01/icon-18.svg",
     ],
   };
 
@@ -51,7 +56,10 @@ export default function UnlimitedAccess() {
     >
       {/* Statistics Section */}
       <div data-aos="fade-up">
-        <div className="flex md:flex-row flex-col md:justify-evenly py-2 bg-gradient-to-r from-blue-100 rounded-2xl to-blue-100 mb-10">
+        <div
+          ref={ref}
+          className="flex md:flex-row flex-col md:justify-evenly py-2 bg-gradient-to-r from-blue-100 rounded-2xl to-blue-100 mb-10"
+        >
           {data.stats.map((state) => (
             <div
               key={state.id}
@@ -65,7 +73,9 @@ export default function UnlimitedAccess() {
               </div>
               <div>
                 <p className="md:text-3xl text-2xl font-extrabold text-[#002058]">
-                  <CountUp start={0} end={state.number} duration={2.5} />
+                  {inView && (
+                    <CountUp start={0} end={state.number} duration={2.5} />
+                  )}
                 </p>
                 <p className="md:text-xl text-base font-medium text-black md:mt-6 uppercase bold">
                   {state.desc}
