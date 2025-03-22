@@ -18,7 +18,7 @@ export const verifyLoggedInUser = CreateApiAsyncThunk(
 );
 
 export const logout = CreateApiAsyncThunk("user/logout", () =>
-  api.post(`/auth/logout`)
+  api.get(`/auth/logout`)
 );
 
 export const userLoginForAdmin = CreateApiAsyncThunk(
@@ -26,13 +26,10 @@ export const userLoginForAdmin = CreateApiAsyncThunk(
   (userId) => api.get(`/auth/admin-usertoken?userId=${userId}`)
 );
 
-
-
 export const resendVerificationEmailAsync = CreateApiAsyncThunk(
   "user/resendVerificationEmailAsync",
   (email) => api.post("/auth/resendverificationemail", { email })
- );
-
+);
 
 const initialState = {
   authUser: null,
@@ -62,7 +59,6 @@ export const verifyEmailAsync = CreateApiAsyncThunk(
   "user/verifyEmailAsync",
   (token) => api.get(`/auth/verify-email/${token}`)
 );
-
 
 const userSlice = createSlice({
   name: "user",
@@ -203,7 +199,6 @@ const userSlice = createSlice({
           action.payload?.message || "Something went wrong";
       })
 
-
       .addCase(resendVerificationEmailAsync.pending, (state) => {
         state.isLoading["resendVerificationEmailAsync"] = true;
         state.error["resendVerificationEmailAsync"] = null;
@@ -218,10 +213,6 @@ const userSlice = createSlice({
         state.error["resendVerificationEmailAsync"] =
           action.payload?.message || "Something went wrong";
       });
-
-
-
-      
   },
 });
 
