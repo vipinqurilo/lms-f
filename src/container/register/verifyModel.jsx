@@ -16,9 +16,16 @@ const VerifyModel = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(verifyEmailAsync(token));
+      dispatch(verifyEmailAsync(token))
+        .unwrap()
+        .then(() => {
+          router.push("/login"); // Redirect to login after successful verification
+        })
+        .catch((error) => {
+          console.error("Verification error:", error);
+        });
     }
-  }, [dispatch, token]); // This should only run once when token is available
+  }, [dispatch, token, router]); // This should only run once when token is available
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 mt-12">
@@ -28,10 +35,10 @@ const VerifyModel = () => {
           alt="Logo"
           className="mx-auto w-auto"
         />
-        {isLoading ? (
+        {isLoading?.["verifyEmailAsync"] ? (
           <p className="text-gray-600 mt-5">Verifying email...</p>
-        ) : error ? (
-          <p className="text-red-600 mt-5">{error?.message || "Verification failed"}</p>
+        ) : error?.["verifyEmailAsync"] ? (
+          <p className="text-red-600 mt-5">{error?.["verifyEmailAsync"] || "Verification failed"}</p>
         ) : (
           <p className="text-gray-600 text-base px-8 mt-5">{successMessage}</p>
         )}

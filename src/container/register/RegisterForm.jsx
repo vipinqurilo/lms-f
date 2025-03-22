@@ -6,12 +6,14 @@ import SubmitButton from "@/components/login/SubmitButton";
 import { userRegisterAsync, verifyLoggedInUser } from "@/store/slices/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import Alertverifyemail from "./AlertSendEmail";
 
 const RegisterForm = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const loading = useSelector(
     (state) => state.user.isLoading.userRegisterAsync
   );
@@ -33,20 +35,12 @@ const RegisterForm = () => {
     dispatch(userRegisterAsync(formData))
       .unwrap()
       .then((res) => {
-        if (res?.data?.role === "student") {
-          dispatch(verifyLoggedInUser())
-          // localStorage.setItem("token", res?.token);
-          // localStorage.removeItem("adminToken");
-          router.push("/student-dashboard");
-          // localStorage.setItem("token", res?.token);
-          // localStorage.removeItem("adminToken");
-          // router.push("/student-dashboard");
-          // router.push("/alert-send-email");
-        }
+        setIsModalOpen(true);
       });
   };
   return (
-    <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">
+    <>
+      <div className="lg:w-1/2 w-full h-full overflow-y-auto flex flex-col">
       <div className="py-10 md:px-10 md:py-20 lg:px-20 px-6 w-full flex flex-col gap-8">
         <LogoHeader />
         <h1 className="text-2xl font-semibold">Create New Account</h1>
@@ -124,6 +118,9 @@ const RegisterForm = () => {
         <LoginOptions type={"register"} />
       </div>
     </div>
+    {isModalOpen && <Alertverifyemail />}
+    </>
+
   );
 };
 
