@@ -150,7 +150,7 @@ const ContactUs = () => {
                 href="mailto:hello@octavus.com"
                 className="text-orange-500 hover:text-orange-300 underline"
               >
-                info@steaminstitute.online
+                info@STEAMinstitute.online
               </a>
             </div>
           </div>

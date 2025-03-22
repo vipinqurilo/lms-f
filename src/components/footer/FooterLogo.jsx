@@ -13,7 +13,7 @@ const FooterLogo = ({ icons }) => {
         className="!object-cover object-center"
       />
       <p>
-        Steam Institute empowers learners with innovative tools, fostering
+        STEAM Institute empowers learners with innovative tools, fostering
         creativity and curiosity for a strong foundation in future innovation.
       </p>
       <div className=" flex items-center justify-start gap-2">
