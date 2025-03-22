@@ -6,7 +6,7 @@
   "socialLinks": [
     {
       "icon": "Mail",
-      "href": "mailto:contact@steaminstitute.com",
+      "href": "mailto:contact@STEAMinstitute.com",
       "label": "Email us"
     },
     {
@@ -16,12 +16,12 @@
     },
     {
       "icon": "Twitter",
-      "href": "https://twitter.com/steaminstitute",
+      "href": "https://twitter.com/STEAMinstitute",
       "label": "Twitter"
     },
     {
       "icon": "Instagram",
-      "href": "https://instagram.com/steaminstitute",
+      "href": "https://instagram.com/STEAMinstitute",
       "label": "Instagram"
     }
   ],
@@ -56,8 +56,8 @@
       "href": "/contactus"
     },
     {
-      "title": "Teach on Steam",
-      "href": "/teach-on-steam"
+      "title": "Teach on STEAM",
+      "href": "/teach-on-STEAM"
     }
   ]
 }

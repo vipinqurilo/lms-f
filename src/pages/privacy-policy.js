@@ -57,7 +57,7 @@ export default function PrivacyPolicy() {
     {
       title: "Contact Us",
       description:
-        "If you have any questions or concerns about privacy, please contact us at info@steaminstitute.online or call +27 82 766 8986.",
+        "If you have any questions or concerns about privacy, please contact us at info@STEAMinstitute.online or call +27 82 766 8986.",
     },
   ];
 

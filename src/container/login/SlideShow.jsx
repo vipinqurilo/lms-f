@@ -23,12 +23,12 @@ const SlideShow = () => {
     {
       h6: "Student Support",
       image: "/assets/login/student.webp",
-      des: "We offer a range of student support services, including career counseling, mentorship programs, and academic assistance to help you reach your full potential at Steam Institute.",
+      des: "We offer a range of student support services, including career counseling, mentorship programs, and academic assistance to help you reach your full potential at STEAM Institute.",
     },
     {
       h6: "Global Network",
       image: "/assets/login/global.jpg",
-      des: "As a student at Steam Institute, you gain access to a global network of alumni, professionals, and industry leaders, providing valuable opportunities for career growth and collaboration.",
+      des: "As a student at STEAM Institute, you gain access to a global network of alumni, professionals, and industry leaders, providing valuable opportunities for career growth and collaboration.",
     },
   ];
 

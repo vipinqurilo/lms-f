@@ -10,9 +10,8 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        // destination: "https://wq1jbb9k-8000.inc1.devtunnels.ms/api/:path*", // Correctly forwards the path
+        // destination: "https://dqhcwhfd-8000.inc1.devtunnels.ms/api/:path*", // Correctly forwards the path
         destination: "https://lms-backend-rho-pink.vercel.app/api/:path*", // Correctly forwards the path
-
       },
     ];
   },

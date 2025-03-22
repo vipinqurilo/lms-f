@@ -16,7 +16,7 @@ const TeachTopSecton = () => {
             <VscWorkspaceTrusted />
           </div>
           <h3 className="md:text-base text-base font-semibold border-b text-white mb-4">
-            Trusted by over 15K Users worldwide since 2024
+            Trusted by over 15K Users worldwide since 2016
           </h3>
         </div>
         <h1 className="text-3xl lg:text-5xl font-bold mt-2 text-white leading-tight md:mt-2 mb-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { logoutUser } from "@/store/slices/userSlice";
+import { logout, logoutUser } from "@/store/slices/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -111,11 +111,14 @@ const ProfileDropDown = () => {
       title: "Settings",
       href: "/instructor-dashboard/settings",
     },
-  ];
+  ];ProfileAvatar
 
   const handleLogOut = () => {
-    dispatch(logoutUser());
-    router.push("/");
+    dispatch(logout())
+      .unwrap()
+      .then(() => {
+        router.push("/");
+      });
   };
 
   return (

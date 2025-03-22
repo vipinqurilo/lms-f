@@ -8,7 +8,7 @@ import { AvatarUpload } from "../../../components/student-dashboard/settings/Ava
 import { EditProfile } from "../../../components/student-dashboard/settings/EditProfile";
 import { ChangePassword } from "../../../components/student-dashboard/settings/ChangePassword";
 import { SocialProfiles } from "../../../components/student-dashboard/settings/SocialProfiles";
-import { fetchProfileAsync } from "@/store/slices/student-dashboard/ProfileSlice";
+import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
 import { useDispatch } from "react-redux";
 
 export default function SettingsPage() {

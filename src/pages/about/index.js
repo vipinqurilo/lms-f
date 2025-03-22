@@ -18,9 +18,9 @@ export default function index() {
       subHeading:
         "Empowering innovation and creativity through STEAM education.",
       description: [
-        "The Steam Institute is dedicated to transforming education by integrating Science, Technology, Engineering, Arts, and Mathematics (STEAM) into a holistic learning experience. Our platform enables learners and educators to engage in interactive, innovative, and inspiring sessions designed to foster critical thinking, creativity, and problem-solving skills. With cutting-edge tools and resources, we create a dynamic ecosystem for learners to thrive in a digital world.",
+        "The STEAM Institute is dedicated to transforming education by integrating Science, Technology, Engineering, Arts, and Mathematics (STEAM) into a holistic learning experience. Our platform enables learners and educators to engage in interactive, innovative, and inspiring sessions designed to foster critical thinking, creativity, and problem-solving skills. With cutting-edge tools and resources, we create a dynamic ecosystem for learners to thrive in a digital world.",
 
-        "Our platform is equipped with advanced features such as live video sessions, interactive whiteboards, collaborative coding spaces, and digital art tools to facilitate immersive learning. Integrated with secure payment gateways and scalable infrastructure, it ensures seamless transactions and exceptional performance. Steam Institute also provides Progressive Web App (PWA) support, making education accessible across devices anytime, anywhere.",
+        "Our platform is equipped with advanced features such as live video sessions, interactive whiteboards, collaborative coding spaces, and digital art tools to facilitate immersive learning. Integrated with secure payment gateways and scalable infrastructure, it ensures seamless transactions and exceptional performance. STEAM Institute also provides Progressive Web App (PWA) support, making education accessible across devices anytime, anywhere.",
       ],
     },
     OurMission: {
@@ -30,7 +30,7 @@ export default function index() {
         {
           icon: "/assets/about/mission.png",
           title: "Innovative Education",
-          des: "At Steam Institute, we provide cutting-edge education through specialized programs that combine science, technology, engineering, arts, and mathematics. Our courses are designed to prepare students for the future.",
+          des: "At STEAM Institute, we provide cutting-edge education through specialized programs that combine science, technology, engineering, arts, and mathematics. Our courses are designed to prepare students for the future.",
         },
         {
           icon: "/assets/about/mission.png",

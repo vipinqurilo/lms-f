@@ -128,7 +128,7 @@ export default function HeroSection() {
             <VscWorkspaceTrusted />
           </div>
           <h3 className="md:text-xl text-base md:text-nowrap lg:font-semibold border-b text-white mb-4">
-            Trusted by over 15K Users worldwide since 2024
+            Trusted by over 15K Users worldwide since 2016
           </h3>
         </div>
         <h1 className="text-2xl lg:text-5xl  font-bold pt-4 text-white leading-tight md:pt-2 pb-6">

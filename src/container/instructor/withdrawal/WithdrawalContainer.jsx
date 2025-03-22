@@ -10,7 +10,7 @@ import { getWithDrawals } from "@/store/slices/withdrawalSlice";
 import UserFilter from "@/components/admin-dashboard/user/UserFilter";
 import Loader from "@/components/common/Loader";
 import WithdrawalsTable from "./WithdrawalsTable";
-import RejectModal from "@/components/admin-dashboard/withdrawrequests/rejectModal";
+import RejectModal from "@/components/admin-dashboard/withdrawrequests/RejectModal";
 import TitleComp from "@/components/instructor/TitleComp";
 
 const WithdrawalContainer = () => {
