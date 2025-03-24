@@ -6,6 +6,7 @@ import TitleComp from "@/components/instructor/TitleComp";
 import { AvatarUpload } from "@/components/student-dashboard/settings/AvatarUpload";
 import { ChangePassword } from "@/components/student-dashboard/settings/ChangePassword";
 import { EditProfile } from "@/components/student-dashboard/settings/EditProfile";
+import FooterSettings from "@/components/student-dashboard/settings/FooterSettings";
 import PriceTab from "@/components/student-dashboard/settings/PriceTab";
 import { SettingsTabs } from "@/components/student-dashboard/settings/SettingsTabs";
 import { SocialProfiles } from "@/components/student-dashboard/settings/SocialProfiles";
@@ -94,6 +95,7 @@ const DashboardSettingsContainer = () => {
           {activeTab === "change-password" && <ChangePassword />}
 
           {activeTab === "social-profiles" && <SocialProfiles />}
+          {activeTab === "footer-settings" && <FooterSettings />}
 
           {activeTab === "withdrawal" && <WithdrawalTabProfile />}
 
