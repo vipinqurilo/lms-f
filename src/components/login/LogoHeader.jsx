@@ -1,24 +1,23 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useSelector } from "react-redux";
 
 const LogoHeader = () => {
+  const frontendSettings = useSelector((state) => state.admin.settings?.frontendSettings || {});
+
   return (
-    <div className="w-full flex items-center justify-between">
-      <div className="relative w-[184px] h-16">
-        <Image
-          src={"/assets/common/logo.png"}
-          alt="logo"
-          fill={true}
-          className="w-full h-full object-cover object-center"
-        />
+    <div className="w-full h-20 bg-white shadow-sm">
+      <div className="custom-container h-full flex items-center justify-center">
+        <Link href="/" className="relative w-40 h-20">
+          <Image
+            src={frontendSettings?.logo || "/assets/common/logo.png"}
+            alt={frontendSettings?.title || "logo"}
+            fill={true}
+            className="w-full h-full object-cover object-center"
+          />
+        </Link>
       </div>
-      <Link
-        href={"/"}
-        className="text-light text-sm font-medium hover:text-black/80 hover:underline transition-custom"
-      >
-        Back to Home
-      </Link>
     </div>
   );
 };

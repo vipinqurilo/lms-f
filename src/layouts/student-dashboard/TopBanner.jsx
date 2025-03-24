@@ -13,6 +13,7 @@ const TopBanner = () => {
   const dispatch = useDispatch();
   const { isCollapsed } = useSelector((state) => state.instructor.dashboard);
   const { authUser } = useSelector((state) => state.user);
+  const frontendSettings = useSelector((state) => state.admin.settings?.frontendSettings || {});
 
   const handleToggle = () => dispatch(toggleIsCollapsed());
   return (
@@ -21,8 +22,8 @@ const TopBanner = () => {
         <div className=" relative w-60 h-20 border-r border-black/10 flex items-center justify-start px-2">
           <div className="w-full h-14 relative">
             <Image
-              src={"/assets/common/logo.png"}
-              alt="logo"
+              src={frontendSettings?.logo || "/assets/common/logo.png"}
+              alt={frontendSettings?.title || "logo"}
               fill={true}
               className="object-contain object-left"
             />

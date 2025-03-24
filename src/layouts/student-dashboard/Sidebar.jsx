@@ -189,6 +189,7 @@ const adminSidebarLinks = [
     icon: Globe2,
     href: "/admin-dashboard/languages",
   },
+
 ];
 
 export function Sidebar() {
@@ -275,6 +276,19 @@ export function Sidebar() {
                   title: "Settings",
                   icon: Settings,
                   href: "/instructor-dashboard/settings",
+                }}
+                handleIsHovered={handleIsHovered}
+                isCollapsed={isCollapsed}
+                isHovered={isHovered}
+              />
+            )}
+            {pathname?.startsWith("/admin-dashboard") && (
+              <LinkComponent
+                isActive={pathname === "/admin-dashboard/profile-settings"}
+                link={{
+                  title: "Profile Settings",
+                  icon: Settings,
+                  href: "/admin-dashboard/profile-settings",
                 }}
                 handleIsHovered={handleIsHovered}
                 isCollapsed={isCollapsed}

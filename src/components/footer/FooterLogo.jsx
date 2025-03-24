@@ -1,31 +1,32 @@
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 
-const FooterLogo = ({ icons }) => {
+const FooterLogo = ({ icons, logo, description }) => {
   return (
-    <div className=" w-full space-y-4 lg:w-[22%] h-full">
-      <Image
-        src={"/assets/common/logo.png"}
-        alt="logo"
-        width={200}
-        height={100}
-        className="!object-cover object-center"
-      />
-      <p>
-        STEAM Institute empowers learners with innovative tools, fostering
-        creativity and curiosity for a strong foundation in future innovation.
+    <div className="w-full lg:w-[30%] pr-10 flex flex-col items-start gap-4">
+      <Link href="/" className="relative w-40 h-20">
+        <Image
+          src={logo}
+          alt="Logo"
+          layout="fill"
+          objectFit="contain"
+          className="p-2"
+        />
+      </Link>
+      <p className="text-sm text-light">
+        {description}
       </p>
-      <div className=" flex items-center justify-start gap-2">
-        {icons.map(({ id, link, Icon, color }) => (
-          <div
-            key={id}
-            className={`w-8 h-8  flex items-center justify-center rounded-full ${color} hover:border hover:border-black/10 transition-custom`}
+      <div className="flex items-center gap-3">
+        {icons?.map((data) => (
+          <Link
+            href={data?.link}
+            key={data?.id}
+            target="_blank"
+            className={`${data?.color} w-8 h-8 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-custom`}
           >
-            <Link href={link}>
-              <Icon className={`text-[18px] text-white `} />
-            </Link>
-          </div>
+            <data.Icon />
+          </Link>
         ))}
       </div>
     </div>
