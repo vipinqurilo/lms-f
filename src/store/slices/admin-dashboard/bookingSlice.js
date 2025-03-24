@@ -11,7 +11,6 @@ export const fetchBookingsAsync = CreateApiAsyncThunk(
     if (teacherId !== "all") {
       params.teacherId = teacherId;
     }
-
     return api.get(`/bookings`, { params });
   }
 );

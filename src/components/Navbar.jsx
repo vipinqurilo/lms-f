@@ -16,6 +16,7 @@ const Navbar = () => {
   const toggleMenu = () => setisMenuOpen(!isMenuOpen);
   const menuRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const frontendSettings = useSelector((state) => state.admin.settings?.frontendSettings || {});
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -58,8 +59,8 @@ const Navbar = () => {
           </button>
           <Link href={"/"}>
             <Image
-              src={"/assets/common/logo.png"}
-              alt="logo"
+              src={frontendSettings?.logo || "/assets/common/logo.png"}
+              alt={frontendSettings?.title || "logo"}
               width={150}
               height={100}
               className="!object-cover object-center"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -11,26 +11,36 @@ import { FaXTwitter } from "react-icons/fa6";
 import FooterLogo from "./footer/FooterLogo";
 import FooterLinks from "./footer/FooterLinks";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { getFrontendSettings } from "@/store/slices/admin-dashboard/settingSlice";
 
 const Footer = () => {
+  const dispatch = useDispatch();
   const [date, setdate] = useState(new Date());
+  const frontendSettings = useSelector((state) => state.admin.settings?.frontendSettings || {});
+  const loading = useSelector((state) => state.admin.settings?.isLoading?.getFrontendSettings);
+
+  useEffect(() => {
+    dispatch(getFrontendSettings());
+  }, [dispatch]);
+
   const contactDetails = [
     {
       Icon: FaLocationArrow,
       title: "Office Location :",
-      value: "132 Dartmouth Street Boston, Massachusetts 02156 United States",
+      value: frontendSettings?.contactDetails?.[0]?.value || "Loading...",
       image: "/assets/contact-us/location.svg",
     },
     {
       Icon: FaMailBulk,
       title: "Email Address :",
-      value: "demo@gmail.com",
+      value: frontendSettings?.contactDetails?.[1]?.value || "Loading...",
       image: "/assets/contact-us/email.svg",
     },
     {
       Icon: FaPhone,
       title: "Phone Number :",
-      value: "+1012 3456 789",
+      value: frontendSettings?.contactDetails?.[2]?.value || "Loading...",
       image: "/assets/contact-us/phone.svg",
     },
   ];
@@ -39,25 +49,25 @@ const Footer = () => {
     {
       id: 1,
       Icon: FaInstagram,
-      link: "https://instagram.com",
+      link: frontendSettings?.socialLinks?.[3]?.link || "https://instagram.com",
       color: "bg-[#E1306C]",
     },
     {
       id: 2,
       Icon: FaLinkedinIn,
-      link: "https://linkedin.com",
+      link: frontendSettings?.socialLinks?.[2]?.link || "https://linkedin.com",
       color: "bg-[#0077B5]",
     },
     {
       id: 3,
       Icon: FaXTwitter,
-      link: "https://twitter.com",
+      link: frontendSettings?.socialLinks?.[1]?.link || "https://twitter.com",
       color: "bg-[#1DA1F2]",
     },
     {
       id: 4,
       Icon: FaFacebookF,
-      link: "https://facebook.com",
+      link: frontendSettings?.socialLinks?.[0]?.link || "https://facebook.com",
       color: "bg-[#1877F2]",
     },
   ];
@@ -128,10 +138,6 @@ const Footer = () => {
           name: "Terms of Service",
           link: "/terms-of-service",
         },
-        // {
-        //   name: "Blog",
-        //   link: "/blog",
-        // },
       ],
     },
   ];
@@ -139,7 +145,11 @@ const Footer = () => {
   return (
     <footer className="bg-white text-light shadow border-t-0 border-black/10 font-nunito">
       <div className="text-start flex flex-col gap-5 lg:gap-0 lg:flex-row items-start justify-between custom-container !py-10">
-        <FooterLogo icons={icons} />
+        <FooterLogo 
+          icons={icons} 
+          logo={frontendSettings?.logo || '/assets/common/logo.png'}
+          description={frontendSettings?.description || 'Loading...'}
+        />
 
         <div className="w-full lg:w-[70%] grid md:grid-cols-2 lg:grid-cols-4 lg:gap-1 gap-5">
           <FooterLinks data={footerLinks[0]} />
@@ -182,7 +192,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="w-full bg-gray-50 py-3 text-center">
-        © {date.getFullYear()} STEAM Institute. All rights reserved
+        © {date.getFullYear()} {frontendSettings?.title || 'STEAM Institute'}. All rights reserved
       </p>
     </footer>
   );
