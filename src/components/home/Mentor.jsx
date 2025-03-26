@@ -51,7 +51,7 @@ export default function Mentor() {
           ))}
         </ul>
 
-        <NavigationLink path="/teach-on-STEAM" text="Read More" />
+        <NavigationLink path="/teach-on-steam" text="Read More" />
       </div>
     </div>
   );

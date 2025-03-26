@@ -45,7 +45,7 @@ export default function Become() {
       <BecomeCard
         title="Join as an Instructor"
         description="Top instructors from around the world teach millions of students on Mentoring."
-        link="/teach-on-STEAM"
+        link="/teach-on-steam"
         linkText="Join Us"
         imgSrc="/assets/home/instructor.png"
         bgColor="#ffdeda"

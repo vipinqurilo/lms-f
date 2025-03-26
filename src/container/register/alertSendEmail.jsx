@@ -20,7 +20,7 @@ const AlertContent = () => {
       <button
         className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold hover:bg-black transition"
         onClick={() => router.push("/login")}
-      >
+      > 
         Ok
       </button>
     </div>
