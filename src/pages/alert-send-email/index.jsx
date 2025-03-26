@@ -1,12 +1,12 @@
-import Alertverifyemail from '@/container/register/AlertSendEmail'
+import AlertSendEmail from '@/container/register/alertSendEmail'
 import React from 'react'
 
-const index = () => {
+const AlertSendEmailPage = () => {
   return (
     <div>
-        <Alertverifyemail/>
+        <AlertSendEmail/>
     </div>
   )
 }
 
-export default index
+export default AlertSendEmailPage

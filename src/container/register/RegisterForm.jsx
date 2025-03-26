@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Alertverifyemail from "./AlertSendEmail";
+import AlertSendEmail from './alertSendEmail';
 
 const RegisterForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +118,7 @@ const RegisterForm = () => {
         <LoginOptions type={"register"} />
       </div>
     </div>
-    {isModalOpen && <Alertverifyemail />}
+    {isModalOpen && <AlertSendEmail />}
     </>
 
   );

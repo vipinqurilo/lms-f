@@ -21,13 +21,13 @@ export const fetchTeachers = CreateApiAsyncThunk(
 
 export const approveTeacher = CreateApiAsyncThunk(
   "upload/approveTeacher",
-  (teacherId) => api.put(`/teacher/approve/${teacherId}`)
+  (teacherId) => api.put(`/teachers/request/approve/${teacherId}`)
 );
 
 export const rejectTeacher = CreateApiAsyncThunk(
   "upload/rejectTeacher",
   ({ teacherId, reason }) =>
-    api.put(`/teacher/reject/${teacherId}`, { reason })
+    api.put(`/teachers/request/reject/${teacherId}`, { reason })
 );
 
 const teacherRequestSlice = createSlice({
