@@ -170,14 +170,14 @@ const Footer = () => {
             </div>
             <div className="!w-full text-black space-y-4">
               {contactDetails?.map((data, index) => (
-                <div className="flex items-start gap-2 w-full" key={index}>
+                <div className="flex items-center gap-2 w-full" key={index}>
                   <div className="">
                     <Image
                       src={data?.image}
                       alt={data?.title}
                       width={10}
                       height={10}
-                      layout="responsive"
+                      layout="responsive" 
                     />
                   </div>
                   <div className="w-full">
