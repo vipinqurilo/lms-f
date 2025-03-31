@@ -16,7 +16,7 @@ import { uploadImage } from "@/store/slices/uploadSlice";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import {
+  import {
     LuUser,
     LuLock,
     LuShare2,
@@ -26,6 +26,7 @@ import {
     LuBanknote,
   } from "react-icons/lu";
   import { Settings2 } from "lucide-react";
+
 const DashboardProfileSettingsContainer = () => {
   const [activeTab, setActiveTab] = useState("edit-profile");
   const [avatarUrl, setAvatarUrl] = useState("/assets/tutor/Marlenereilly.jpg");
@@ -72,6 +73,7 @@ const DashboardProfileSettingsContainer = () => {
   const handleAvatarDelete = () => {
     setAvatarUrl("/placeholder.svg");
   };
+
   const tabs = [
     {
       id: "edit-profile",
@@ -108,12 +110,8 @@ const DashboardProfileSettingsContainer = () => {
       label: "Price",
       Icon: LuBanknote,
     },
-    {
-      id: "footer-settings",
-      label: "Footer Settings",
-      Icon: Settings2,
-    },
   ];
+
   useEffect(() => {
     dispatch(getProfile());
   }, []);
@@ -154,7 +152,6 @@ const DashboardProfileSettingsContainer = () => {
               <SubjectAndLanguage />
             </div>
           )}
-
           {activeTab === "experience" && (
             <div className="p-4 px-8">
               <Experience />

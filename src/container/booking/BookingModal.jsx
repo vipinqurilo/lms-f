@@ -8,7 +8,7 @@ import { DurationSelection } from "./DurationSelection";
 import ScheduleCalendar from "./ScheduleCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
-import { createBookingAsync, createBookingPayment } from "@/store/slices/student-dashboard/bookingSlice";
+import { createBookingAsync, createBookingPayment } from "@/store/slices/bookingSlice";
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
 import { useRouter } from "next/router";
@@ -26,7 +26,7 @@ export function BookingModal({ onClose, tutor }) {
   const [duration, setDuration] = useState(
     tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : null
   );
-  const { bookingsByTutorId } = useSelector((state) => state.student.booking);
+  const { bookingsByTutorId } = useSelector((state) => state.booking);
   const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);

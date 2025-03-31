@@ -15,7 +15,7 @@ import {
 import { getInstructorTickets } from "@/store/slices/supportSlice";
 import { TbMoneybag } from "react-icons/tb";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
-import { getBookings } from "@/store/slices/instructor/bookingsSlice";
+import { getBookings } from "@/store/slices/bookingSlice";
 import dateFormat from "dateformat";
 import TicketsContainer from "./TicketsContainer";
 import { getCardStats } from "@/store/slices/instructor/dashboardSlice";
@@ -30,7 +30,7 @@ const InstructorDashboard = () => {
   const { courses } = useSelector((state) => state.instructor.course);
   const { data } = useSelector((state) => state.instructor.dashboard);
   const { bookings, isLoading } = useSelector(
-    (state) => state.instructor.booking
+    (state) => state.booking
   );
   const { tickets } = useSelector((state) => state.support);
   const filteredData = courses?.slice(0, 5)?.map((course) => ({

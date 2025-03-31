@@ -6,7 +6,7 @@ import ScheduleView from "@/components/student-dashboard/ScheduleView";
 import { StatsCard } from "../../components/student-dashboard/StatsCard";
 import StudentDashboardLayout from "../../layouts/student-dashboard/StudentDashboardLayout";
 import ContinueWatching from "@/components/student-dashboard/ContinueWatching";
-import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
 import { getInstructorTickets } from "@/store/slices/supportSlice";
 
@@ -20,9 +20,7 @@ export default function DashboardPage() {
 
   const [startDate, setStartDate] = useState(new Date());
 
-  const { bookings, isLoading: bookingLoading } = useSelector(
-    (state) => state.student.booking
-  );
+  const { bookings, isLoading } = useSelector((state) => state.booking);
 
   const stats = [
     {
@@ -99,7 +97,7 @@ export default function DashboardPage() {
 
           <div className="w-[30%] sticky top-0 z-[0] space-y-5">
             <ScheduleView
-              bookingLoading={bookingLoading?.["fetchBookingsAsync"]}
+              bookingLoading={isLoading?.["fetchBookingsAsync"]}
               startDate={startDate}
               setStartDate={setStartDate}
               bookings={bookings}

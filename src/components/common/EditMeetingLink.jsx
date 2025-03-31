@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { MoveLeft } from "lucide-react";
-import { updateBooking } from "@/store/slices/instructor/bookingsSlice";
+import { updateBooking } from "@/store/slices/bookingSlice";
 import { useDispatch } from "react-redux";
 
 const EditMeetingLink = ({ onClose, bookingId , meetingLink}) => {

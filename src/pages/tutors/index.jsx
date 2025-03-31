@@ -26,18 +26,20 @@ const index = () => {
     console.log(selectedSubjects, "selectedSubjects");
   }
   const { authUser } = useSelector((state) => state.user);
+  const { isLoading, error, tutorList, totalPages } = useSelector(
+    (state) => state.tutors
+  );
   const {
-    bookings: rawBookings,
-    isLoading: bookingLoading,
-    totalPages,
-    bookingsByTutorId
-  } = useSelector((state) => state.student.booking);
+    isLoading: bookingsLoading,
+    error: bookingsError,
+    bookingsByTutorId,
+  } = useSelector((state) => state.booking);
   const { timeRanges } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const { isAvailableModelOpen, isContactModelOpen } = useSelector(
     (state) => state.ui
   );
-  const { allTutorProfile, minPrice, maxPrice, gender, sortByRating, isLoading } = useSelector((state) => state.tutors);
+  const { allTutorProfile, minPrice, maxPrice, gender, sortByRating } = useSelector((state) => state.tutors);
   const [showBooking, setShowBooking] = useState(false);
   const [tutor, setTutor] = useState(null);
 
@@ -131,7 +133,7 @@ const index = () => {
               <h2 className="text-lg font-semibold">Availability Calendar</h2>
               <RxCross2 />
             </div>
-            {bookingLoading["fetchBookingsByTutorIdAsync"] ? <Loader isBig={true} color={"text-secondary"} /> : <AvailabilityCalendar
+            {bookingsLoading["fetchBookingsByTutorIdAsync"] ? <Loader isBig={true} color={"text-secondary"} /> : <AvailabilityCalendar
               calendar={tutor?.calendar}
               rawBookings={bookingsByTutorId}
             />}

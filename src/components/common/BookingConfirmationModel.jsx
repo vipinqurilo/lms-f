@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { MoveLeft } from "lucide-react";
-import { confirmBooking } from "@/store/slices/instructor/bookingsSlice";
-import { useDispatch } from "react-redux";
+import { confirmBooking } from "@/store/slices/bookingSlice";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "./Loader";
 
 const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
   const dispatch =useDispatch()
+  const {isLoading} = useSelector(state=>state.booking)
   const [showZoomDetails, setShowZoomDetails] = useState(false);
   const [showGoogleMeetDetails, setShowGoogleMeetDetails] = useState(false);
   const [link,setLink]=useState("");
@@ -119,7 +121,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
 
         {/* Confirm Button */}
         <button onClick={()=>handleConfirmation()} disabled={link===''} className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
-          Confirm
+          {isLoading?.["confirmBooking"] ? <Loader text={"Confirming..."} /> : "Confirm"}
         </button>
       </div>
         ) : (
@@ -156,7 +158,7 @@ const BookingConfirmationModel = ({ onClose,bookingId , type}) => {
             </div>
 
             <button onClick={()=>handleConfirmation()} disabled={link===''} className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-90 transition-colors">
-              Confirm
+              {isLoading?.["confirmBooking"] ? <Loader text={"Confirming..."} /> : "Confirm"}
             </button>
           </div>
         )}

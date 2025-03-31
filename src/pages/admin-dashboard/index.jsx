@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAdminTickets } from "@/store/slices/supportSlice";
 import TicketsContainer from "@/container/instructor/dashboard/TicketsContainer";
 import ScheduleView from "@/components/student-dashboard/ScheduleView";
-import { fetchBookingsAsync } from "@/store/slices/admin-dashboard/bookingSlice";
+import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import dateFormat from "dateformat";
 import { getCardStats } from "@/store/slices/admin-dashboard/adminDashboardSlice";
 import EarningsChart from "@/container/instructor/earning/EarningsChart";
@@ -18,7 +18,7 @@ import EarningsChart from "@/container/instructor/earning/EarningsChart";
 const index = () => {
   const dispatch = useDispatch();
   const { tickets } = useSelector((state) => state.support);
-  const { bookings, isLoading } = useSelector((state) => state.admin.booking);
+  const { bookings, isLoading } = useSelector((state) => state.booking);
   const [startDate, setstartDate] = useState(new Date());
 
   useEffect(() => {

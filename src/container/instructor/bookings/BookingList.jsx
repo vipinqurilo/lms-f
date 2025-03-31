@@ -18,9 +18,10 @@ import CancelBookingModel from "@/components/common/CancelBookingModel";
 import RescheduleBookingModel from "@/components/common/RescheduleBookingModel";
 import EditMeetingLink from "@/components/common/EditMeetingLink";
 import { useDispatch, useSelector } from "react-redux";
-import { rescheduleResponseAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { rescheduleResponseAsync } from "@/store/slices/bookingSlice";
+import { toast } from "react-hot-toast";
 
-const BookingList = ({ bookings, isLoading }) => {
+const BookingList = ({ bookings, isLoading}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const pathSegment = router.pathname.split("/")[1];
@@ -65,7 +66,7 @@ const BookingList = ({ bookings, isLoading }) => {
   return (
     <>
       <div className="space-y-6 ">
-        {isLoading ? (
+        {isLoading?.["fetchBookingsAsync"] ? (
           <div className="text-center py-12">
             <Loader color={"text-secondary"} isBig={true} />
           </div>
@@ -253,7 +254,7 @@ const BookingList = ({ bookings, isLoading }) => {
                             {/* Status */}
                             <div
                               className={`col-span-2 ${
-                                isAdmin ? "pl-2" : "pl-8"
+                                isAdmin ? "pl-1" : "pl-8"
                               }`}
                             >
                               <p className="mb-1 font-semibold">Status</p>
@@ -278,7 +279,7 @@ const BookingList = ({ bookings, isLoading }) => {
                             {/* Custom divider */}
                             <div
                               className={`absolute h-10 w-px bg-gray-300 top-1/2 -translate-y-1/2 ${
-                                isAdmin ? "left-[83.33%]" : "left-[80%]"
+                                isAdmin ? "left-[87%]" : "left-[80%]"
                               }`}
                             ></div>
 
@@ -306,16 +307,24 @@ const BookingList = ({ bookings, isLoading }) => {
                                 
                                 <Video />
                               </button>
-                              <button 
+                              {authUser?.role !== "admin"&&(<><button 
                                 disabled={
                                  ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
                                   (timeUntilStart <= 3600000 &&  
-                                    timeUntilStart > 0) || booking?.rescheduleRequest?.status==="pending" ||booking?.rescheduleRequest?.status === "accepted"
+                                    timeUntilStart > 0) || 
+                                  booking?.rescheduleRequest?.status==="pending" ||
+                                  booking?.rescheduleRequest?.status === "accepted_by_party" ||
+                                  booking?.rescheduleRequest?.status === "completed" ||
+                                  booking?.hasBeenRescheduled
                                 }
                                 className={`h-5 w-5 ${
                                   ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
                                   (timeUntilStart <= 3600000 && 
-                                    timeUntilStart > 0) || booking?.rescheduleRequest?.status==="pending" ||booking?.rescheduleRequest?.status === "accepted"
+                                    timeUntilStart > 0) || 
+                                  booking?.rescheduleRequest?.status==="pending" ||
+                                  booking?.rescheduleRequest?.status === "accepted_by_party" ||
+                                  booking?.rescheduleRequest?.status === "completed" ||
+                                  booking?.hasBeenRescheduled
                                     ? "text-gray-200"
                                     : "text-gray-600"
                                 }  cursor-pointer`}
@@ -324,7 +333,7 @@ const BookingList = ({ bookings, isLoading }) => {
                                   setIsOpen("reschedule");
                                 }}
                               >
-                                {isLoading["rescheduleResponseAsync"] ? (
+                                {isLoading?.["rescheduleResponseAsync"] ? (
                                   <Loader />
                                 ) : (
                                   <ListRestart />
@@ -351,14 +360,14 @@ const BookingList = ({ bookings, isLoading }) => {
                                   setIsOpen("cancelation");
                                 }}
                               >
-                                {isLoading["cancelBookingAsync"] ? (
+                                {isLoading?.["cancelBookingAsync"] ? (
                                   <Loader />
                                 ) : (
                                   <CircleX />
                                 )}
-                              </button>
-                              {authUser?.role === "teacher" ||
-                              authUser?.role === "admin" ? (
+                              </button></>)}
+                              
+                              {authUser?.role === "teacher" ? (
                                 <>
                                   {booking?.status === "confirmed" ? (
                                     <button
@@ -379,7 +388,7 @@ const BookingList = ({ bookings, isLoading }) => {
                                           : "text-gray-600"
                                       } cursor-pointer`}
                                     >
-                                      {isLoading["updateBooking"] ? (
+                                      {isLoading?.["updateBooking"] ? (
                                         <Loader />
                                       ) : (
                                         <FilePenLine />
@@ -404,7 +413,7 @@ const BookingList = ({ bookings, isLoading }) => {
                                           : "text-gray-600"
                                       } cursor-pointer`}
                                     >
-                                      {isLoading["confirmBooking"] ? (
+                                      {isLoading?.["confirmBooking"] ? (
                                         <Loader />
                                       ) : (
                                         <CircleCheckBig />
@@ -427,12 +436,20 @@ const BookingList = ({ bookings, isLoading }) => {
                             {booking?.rescheduleRequest?.rescheduleByUser?.role}
                           </span>
                         )}
+                        {booking?.rescheduleRequest?.status === "accepted_by_party" &&
+                        booking?.status !== "cancelled" && (
+                          <span className="px-3 py-1 text-sm rounded-full text-blue-600 bg-blue-50">
+                            Awaiting admin approval
+                          </span>
+                        )}
                         <span
                           className={`px-3 py-1 text-sm rounded-full ${
                             booking.status.toLowerCase() === "confirmed"
                               ? "text-green-600 bg-green-50"
-                              : booking.status.toLowerCase() === "scheduled" ||
-                              booking?.rescheduleRequest?.status === "pending"
+                              : booking.status.toLowerCase() === "scheduled" || booking.status.toLowerCase() === "rescheduled" ||
+                              (booking?.rescheduleRequest?.status === "pending" && booking.status.toLowerCase() !== "cancelled") ||
+                              (booking?.rescheduleRequest?.status === "accepted_by_party" && booking.status.toLowerCase() !== "cancelled") ||
+                              (booking?.rescheduleRequest?.status === "rescheduled" && booking.status.toLowerCase() !== "cancelled")
                               ? "text-yellow-600 bg-yellow-50"
                               : "text-red-600 bg-red-50"
                           }`}
@@ -441,9 +458,11 @@ const BookingList = ({ bookings, isLoading }) => {
                               booking.status.slice(1)}
                         </span>
                       </div>
-                      {/* buttons for reschedule and cancel */}
-                      {booking?.rescheduleRequest?.status === "pending" &&booking?.status !== "cancelled"&&
-                       ( booking?.rescheduleRequest?.rescheduleByUser?.role !== authUser?.role) && (
+                      {/* Reschedule approval UI */}
+                      {/* Party (student/teacher) approval section */}
+                      {booking?.rescheduleRequest?.status === "pending" &&
+                       booking?.status !== "cancelled" &&
+                       booking?.rescheduleRequest?.rescheduleByUser?.role !== authUser?.role && (
                           <div className="flex items-center gap-2 w-full justify-between pt-4 ">
                             <div className="flex items-center gap-2">
                               <h2 className="text-lg font-semibold">
@@ -466,7 +485,24 @@ const BookingList = ({ bookings, isLoading }) => {
                               })}
                             </div>
                             <div className="flex items-center gap-2">
-                              <button className="px-3 py-1 text-sm rounded-full text-red-50 bg-red-600">
+                              <button 
+                                onClick={() =>
+                                  dispatch(
+                                    rescheduleResponseAsync({
+                                      bookingId: booking?._id,
+                                      action: "deny",
+                                      reason: "Request denied by other party"
+                                    })
+                                  )
+                                    .unwrap()
+                                    .then(() => {
+                                      toast.success("Reschedule request denied");
+                                    })
+                                    .catch((error) => {
+                                      toast.error(error.message || "Failed to deny reschedule request");
+                                    })
+                                }
+                                className="px-3 py-1 text-sm rounded-full text-red-50 bg-red-600">
                                 Deny
                               </button>
                               <button
@@ -477,14 +513,175 @@ const BookingList = ({ bookings, isLoading }) => {
                                       action: "accept",
                                     })
                                   )
+                                    .unwrap()
+                                    .then(() => {
+                                      toast.success("Reschedule request accepted");
+                                    })
+                                    .catch((error) => {
+                                      toast.error(error.message || "Failed to accept reschedule request");
+                                    })
                                 }
                                 className="px-3 py-1 text-sm rounded-full text-green-50 bg-green-600"
                               >
-                                Accept
+                                {isLoading?.["rescheduleResponseAsync"] ? (
+                                  <Loader text={"Accepting..."} />
+                                ) : (
+                                  "Accept"
+                                )}
                               </button>
                             </div>
                           </div>
-                        )}
+                       )}
+                      
+                      {/* Admin approval section */}
+                      {booking?.rescheduleRequest?.status === "accepted_by_party" &&
+                       booking?.status !== "cancelled" &&
+                       authUser?.role === "admin" && (
+                          <div className="flex items-center gap-2 w-full justify-between pt-4 border-t mt-3">
+                            <div>
+                              <h2 className="text-lg font-semibold">
+                                Admin Approval Required
+                              </h2>
+                              <p className="text-sm text-gray-600">
+                                Reschedule from {new Date(
+                                  booking.sessionStartTime
+                                ).toLocaleDateString("en-GB", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })} at {new Date(
+                                  booking.sessionStartTime
+                                ).toLocaleTimeString("en-GB", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                To {new Date(
+                                  booking?.rescheduleRequest?.newTime
+                                ).toLocaleDateString("en-GB", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })} at {new Date(
+                                  booking?.rescheduleRequest?.newTime
+                                ).toLocaleTimeString("en-GB", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </p>
+                              <p className="text-sm text-gray-600 mt-1">
+                                <strong>Reason:</strong> {booking?.rescheduleRequest?.reason}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button 
+                                onClick={() =>
+                                  dispatch(
+                                    rescheduleResponseAsync({
+                                      bookingId: booking?._id,
+                                      action: "deny",
+                                      reason: "Request denied by admin"
+                                    })
+                                  )
+                                    .unwrap()
+                                    .then(() => {
+                                      toast.success("Reschedule request denied by admin");
+                                    })
+                                    .catch((error) => {
+                                      toast.error(error.message || "Failed to deny reschedule request");
+                                    })
+                                }
+                                className="px-3 py-1 text-sm rounded-full text-red-50 bg-red-600">
+                                Deny
+                              </button>
+                              <button
+                                onClick={() =>
+                                  dispatch(
+                                    rescheduleResponseAsync({
+                                      bookingId: booking?._id,
+                                      action: "accept",
+                                    })
+                                  )
+                                    .unwrap()
+                                    .then(() => {
+                                      toast.success("Reschedule request approved by admin");
+                                    })
+                                    .catch((error) => {
+                                      toast.error(error.message || "Failed to approve reschedule request");
+                                    })
+                                }
+                                className="px-3 py-1 text-sm rounded-full text-green-50 bg-green-600"
+                              >
+                                {isLoading?.["rescheduleResponseAsync"] ? <Loader text={"Accepting..."} /> : "Approve"}
+                              </button>
+                            </div>
+                          </div>
+                       )}
+                      
+                      {/* Reschedule info for users who requested it */}
+                      {booking?.rescheduleRequest?.status === "pending" &&
+                       booking?.status !== "cancelled" &&
+                       booking?.rescheduleRequest?.rescheduleByUser?.role === authUser?.role && (
+                          <div className="pt-4 border-t mt-3">
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">Reschedule requested to:</span> {new Date(
+                                booking?.rescheduleRequest?.newTime
+                              ).toLocaleDateString("en-GB", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              })} at {new Date(
+                                booking?.rescheduleRequest?.newTime
+                              ).toLocaleTimeString("en-GB", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              })}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">Status:</span> Waiting for {authUser?.role === "teacher" ? "student" : "teacher"} approval
+                            </p>
+                          </div>
+                       )}
+                       
+                      {/* Accepted by other party, waiting for admin */}
+                      {booking?.rescheduleRequest?.status === "accepted_by_party" &&
+                       booking?.status !== "cancelled" &&
+                       authUser?.role !== "admin" && (
+                          <div className="pt-4 border-t mt-3">
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">Reschedule request to:</span> {new Date(
+                                booking?.rescheduleRequest?.newTime
+                              ).toLocaleDateString("en-GB", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              })} at {new Date(
+                                booking?.rescheduleRequest?.newTime
+                              ).toLocaleTimeString("en-GB", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              })}
+                            </p>
+                            <p className="text-sm text-blue-600 font-medium">
+                              Approved by {booking?.rescheduleRequest?.rescheduleByUser?.role === "teacher" ? "student" : "teacher"} - Waiting for admin approval
+                            </p>
+                          </div>
+                       )}
+                       
+                      {/* Already rescheduled note */}
+                      {booking?.hasBeenRescheduled && 
+                       booking?.rescheduleRequest?.status === "completed" && (
+                          <div className="pt-2 mt-2">
+                            <p className="text-xs text-gray-500 italic">
+                              This booking has been rescheduled and cannot be rescheduled again.
+                            </p>
+                          </div>
+                       )}
                     </div>
                   );
                 })}

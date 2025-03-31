@@ -11,19 +11,21 @@ import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
 import BookingList from "@/container/instructor/bookings/BookingList";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { getAllTeachers } from "@/store/slices/admin-dashboard/teachersSlice";
-import { fetchBookingsAsync } from "@/store/slices/admin-dashboard/bookingSlice";
+import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 
 export default function index() {
   const dispatch = useDispatch();
   const { bookings, isLoading, totalPages } = useSelector(
-    (state) => state.admin.booking
+    (state) => state.booking
   );
 
   const [activeTab, setActiveTab] = useState("All lessons");
   const [activeTab2, setActiveTab2] = useState("listing");
   const [keyword, setKeyword] = useState("");
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(
+    () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  );
   const [endDateError, setEndDateError] = useState(false);
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const [currentPage, setCurrentPage] = useState(1);
@@ -78,9 +80,9 @@ export default function index() {
     dispatch(
       fetchBookingsAsync({
         status: activeTab === "All lessons" ? undefined : activeTab,
-        startDate: startDate.toISOString().split("T")[0],
-        endDate: endDate.toISOString().split("T")[0],
-        keyword: debouncedKeyword, // Use debounced keyword
+        startDate , // Start of today
+        endDate, // End of 7 days from today
+        search: debouncedKeyword, // Use debounced keyword
         page: currentPage,
         teacherId, 
       })
@@ -158,7 +160,7 @@ export default function index() {
           <BookingList
             bookings={bookings}
             currentPage={currentPage}
-            isLoading={isLoading?.fetchBookingsAsync}
+            isLoading={isLoading}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
           />

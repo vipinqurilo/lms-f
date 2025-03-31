@@ -3,28 +3,36 @@ import { fetchAvailabilityByIdAsync } from "@/store/slices/instructor/availabili
 import {
   confirmBooking,
   rescheduleBooking,
-} from "@/store/slices/instructor/bookingsSlice";
+} from "@/store/slices/bookingSlice";
 import { ArrowLeft, MoveLeft } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
+import { toast } from "react-hot-toast";
 
-const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
+const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
   const dispatch = useDispatch();
   // console.log(booking,'booking bookingbookingbookingbookingbooking')
   const [isOpen, setIsOpen] = useState(false);
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionEndTime, setSessionEndTime] = useState(null);
-  const  {currentAvailability, isLoading}  = useSelector(
+  const {currentAvailability, isLoading: availabilityLoading} = useSelector(
     (state) => state.instructor.availability  
   );
   
+  // Updated to use the unified booking slice
+  const {isLoading: bookingLoading} = useSelector((state) => state.booking);
   
   const [reason, setReason] = useState("");
   const hasFetchedRef = useRef(false);
 
   const handleReschedule = () => {
+    if (!canBeRescheduled) {
+      toast.error("This booking has already been rescheduled once");
+      return;
+    }
+    
     if (!sessionStartTime) {
       alert("Please select a new time.");
       return;
@@ -47,7 +55,11 @@ const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
     )
       .unwrap()
       .then(() => {
+        toast.success("Reschedule request sent successfully");
         onClose();
+      })
+      .catch((error) => {
+        toast.error(error.message || "Failed to send reschedule request");
       });
   };
   
@@ -57,6 +69,10 @@ const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
       hasFetchedRef.current = true;
     }
   }, [dispatch, booking?.teacher?._id]);
+
+  // Check if booking can be rescheduled
+  const canBeRescheduled = !booking?.hasBeenRescheduled && 
+                          booking?.rescheduleRequest?.status !== "completed";
 
   
   return (
@@ -96,14 +112,43 @@ const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                 <h2 className="text-2xl font-bold text-navy-900 mb-2">
                   Do You Want to Reschedule?
                 </h2>
-                <p className="text-gray-500 mb-6">
-                  Send a Video Link to the approved Students
-                </p>
+                
+                {!canBeRescheduled ? (
+                  <div className="bg-red-50 p-4 rounded-lg mb-6 text-center">
+                    <p className="text-red-700 font-medium mb-2">
+                      This booking has already been rescheduled once
+                    </p>
+                    <p className="text-red-600 text-sm">
+                      Each booking can only be rescheduled one time.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-gray-500 mb-6">
+                      Please note that a booking can only be rescheduled once
+                    </p>
+                    
+                    <div className="bg-blue-50 p-4 rounded-lg mb-6 text-left">
+                      <h3 className="font-medium text-blue-800 mb-2">Rescheduling Process:</h3>
+                      <ol className="list-decimal pl-5 text-sm text-blue-700 space-y-1">
+                        <li>You request a reschedule with a proposed new time</li>
+                        <li>The other party (student/teacher) must approve your request</li>
+                        <li>After their approval, an admin must review and give final approval</li>
+                        <li>Once approved, the booking will be rescheduled to the new time</li>
+                      </ol>
+                    </div>
+                  </>
+                )}
 
                 <div className="space-y-3">
                   <button
                     onClick={() => setIsOpen(true)}
-                    className="w-full py-3 bg-secondary text-white rounded-lg hover:bg-opacity-95 transition-colors"
+                    disabled={!canBeRescheduled}
+                    className={`w-full py-3 ${
+                      canBeRescheduled 
+                        ? "bg-secondary text-white hover:bg-opacity-95" 
+                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    } rounded-lg transition-colors`}
                   >
                     Reschedule
                   </button>
@@ -112,7 +157,7 @@ const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                     onClick={onClose}
                     className="w-full py-3 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    No
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -152,7 +197,7 @@ const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                 </div>
               </div>
               <div className="h-[65vh]">
-                {isLoading?.[fetchAvailabilityByIdAsync] ? (
+                {availabilityLoading?.[fetchAvailabilityByIdAsync] ? (
                   <div className="flex justify-center items-center h-full">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-secondary"></div>
                     <Loader isBig={true} color={"text-secondary"} />
@@ -188,9 +233,14 @@ const  RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
 
                 <button
                   onClick={() => handleReschedule()}
-                  className=" px-8 py-2 w-fit bg-secondary text-white rounded-lg hover:bg-opacity-95 transition-colors"
+                  disabled={!canBeRescheduled}
+                  className={`px-8 py-2 w-fit ${
+                    canBeRescheduled 
+                      ? "bg-secondary text-white hover:bg-opacity-95" 
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  } rounded-lg transition-colors`}
                 >
-                  Reschedule
+                  {bookingLoading?.["rescheduleBooking"] ? <Loader text={"Requesting reschedule"} /> : "Reschedule"}
                 </button>
               </div>
             </div>

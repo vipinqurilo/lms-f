@@ -10,11 +10,11 @@ const LogoHeader = () => {
     <div className="w-full h-20 bg-white shadow-sm">
       <div className="custom-container h-full flex items-center justify-center">
         <Link href="/" className="relative w-40 h-20">
-          <Image
+          <Image 
             src={frontendSettings?.logo || "/assets/common/logo.png"}
             alt={frontendSettings?.title || "logo"}
             fill={true}
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-contain object-center"
           />
         </Link>
       </div>

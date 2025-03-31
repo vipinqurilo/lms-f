@@ -4,7 +4,18 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function Calendar({ selectedDate, onDateSelect, minDate }) {
-  const [currentDate, setCurrentDate] = useState(selectedDate);
+  // Ensure we have a valid Date object
+  const ensureDate = (dateInput) => {
+    if (!dateInput) return new Date();
+    if (dateInput instanceof Date) return dateInput;
+    if (typeof dateInput === 'string' || typeof dateInput === 'number') {
+      const parsed = new Date(dateInput);
+      return isNaN(parsed.getTime()) ? new Date() : parsed;
+    }
+    return new Date();
+  };
+
+  const [currentDate, setCurrentDate] = useState(ensureDate(selectedDate));
 
   const months = [
     "Jan",
@@ -49,7 +60,7 @@ export function Calendar({ selectedDate, onDateSelect, minDate }) {
       day
     );
 
-    if (minDate && newDate < minDate) {
+    if (minDate && newDate < ensureDate(minDate)) {
       return;
     }
 
@@ -64,11 +75,13 @@ export function Calendar({ selectedDate, onDateSelect, minDate }) {
 
   const isDateDisabled = (date) => {
     if (!minDate) return false;
-    return date < minDate;
+    return date < ensureDate(minDate);
   };
 
-  const normalizeDate = (date) =>
-    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const normalizeDate = (date) => {
+    date = ensureDate(date);
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
 
   return (
     <div  className="bg-white rounded-lg p-4 w-[320px]">
@@ -149,8 +162,9 @@ export function Calendar({ selectedDate, onDateSelect, minDate }) {
             day
           );
           const isSelected =
+            selectedDate &&
             normalizeDate(selectedDate).getTime() ===
-            normalizeDate(currentDateObj).getTime();
+              normalizeDate(currentDateObj).getTime();
 
           const isDisabled = isDateDisabled(currentDateObj);
 

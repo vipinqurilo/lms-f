@@ -5,7 +5,7 @@ import { Clock, User } from "lucide-react";
 import StudentDashboardLayout from "@/layouts/student-dashboard/StudentDashboardLayout";
 import AvailabilityCalendar from "@/components/tutor/AvailabilityCalendar";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBookingsAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import BookingView from "@/container/instructor/bookings/BookingView";
 import BookingTabs from "@/container/instructor/bookings/BookingTabs";
 import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
@@ -16,7 +16,7 @@ import { Pagination } from "@/components/student-dashboard/Pagination";
 export default function BookingsPage() {
   const dispatch = useDispatch();
   const { bookings, isLoading, totalPages } = useSelector(
-    (state) => state.student.booking
+    (state) => state?.booking
   );
 
   const [activeTab, setActiveTab] = useState("All lessons");
@@ -109,7 +109,7 @@ export default function BookingsPage() {
           <BookingList
             bookings={bookings}
             currentPage={currentPage}
-            isLoading={isLoading?.fetchBookingsAsync}
+            isLoading={isLoading}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
           />
