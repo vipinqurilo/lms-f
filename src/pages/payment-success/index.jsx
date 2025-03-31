@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { createBookingAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { createBookingAsync } from "@/store/slices/bookingSlice";
 
 const PaymentSuccessPage = () => {
     const dispatch = useDispatch();

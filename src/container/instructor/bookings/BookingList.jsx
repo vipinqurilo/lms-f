@@ -133,7 +133,7 @@ const BookingList = ({ bookings, isLoading}) => {
                                     <Image
                                       width={28}
                                       height={28}
-                                      src="/assets/tutor/Marlenereilly.jpg"
+                                      src={booking?.student?.profilePhoto || "/assets/tutor/profile.png"}
                                       alt="Student"
                                       className="rounded-full"
                                     />
@@ -149,7 +149,7 @@ const BookingList = ({ bookings, isLoading}) => {
                                     <Image
                                       width={28}
                                       height={28}
-                                      src="/assets/tutor/Marlenereilly.jpg"
+                                      src={booking?.teacher?.profilePhoto || "/assets/tutor/profile.png"}
                                       alt="Tutor"
                                       className="rounded-full"
                                     />
