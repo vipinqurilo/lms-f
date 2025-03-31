@@ -7,7 +7,7 @@ import BookingView from "./BookingView";
 import BookingTabs from "./BookingTabs";
 import BookingsFilter from "./BookingsFilter";
 import BookingList from "./BookingList";
-import { getBookings } from "@/store/slices/instructor/bookingsSlice";
+import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 import { fetchAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
 import { Pagination } from "@/components/student-dashboard/Pagination";
@@ -26,35 +26,27 @@ const BookingsDashboard = () => {
   const { availability, isLoading: availabilityLoading } = useSelector(
     (state) => state.instructor.availability
   );
-  // Redux state
+  
+  // Redux state - updated to use unified booking slice
   const { bookings, isLoading, totalPages } = useSelector((state) => ({
-    bookings: state.instructor.booking.bookings || [],
-    isLoading: state.instructor.booking.isLoading?.getBookings || false,
-    totalPages: state.instructor.booking.totalPages || 1,
+    bookings: state.booking.bookings || [],
+    isLoading: state.booking.isLoading?.fetchBookingsAsync || false,
+    totalPages: state.booking.totalPages || 1,
   }));
 
-  // Fetch bookings on mount & when fi  lters change
+  // Fetch bookings on mount & when filters change
   useEffect(() => {
     const status = activeTab === "All lessons" ? undefined : activeTab;
-
     // Initialize the request data object
     const requestData = {
       page: currentPage,
+      status: status,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      search: debouncedKeyword,
     };
-    if (status) {
-      requestData.status = status;
-    }
-    if (startDate) {
-      requestData.startDate = startDate.toISOString();
-    }
-    if (endDate) {
-      requestData.endDate = endDate.toISOString();
-    }
-    if (debouncedKeyword) {
-      requestData.keyword = debouncedKeyword;
-    }
 
-    dispatch(getBookings(requestData));
+    dispatch(fetchBookingsAsync(requestData));
   }, [dispatch, activeTab, startDate, endDate, debouncedKeyword, currentPage]);
 
   useEffect(() => {
@@ -81,9 +73,11 @@ const BookingsDashboard = () => {
       setEndDate(date);
     }
   };
+  
   useEffect(() => {
     dispatch(fetchAvailabilityAsync());
   }, []);
+  
   return (
     <>
       <div className="px-5  flex flex-col   !p-10">

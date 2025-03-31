@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/router";
 import Rating from "./Rating";
 import { fetchReviewAsyncById, setTutorId, setUserID } from "@/store/slices/tutorsSlice";
-import { fetchBookingsByTutorIdAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { fetchBookingsByTutorIdAsync } from "@/store/slices/bookingSlice";
 import { useSelector } from "react-redux";
 
 const TutorCard = ({ tutor, setTutor, setShowBooking }) => {

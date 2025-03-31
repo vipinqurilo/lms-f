@@ -2,7 +2,6 @@ import { combineReducers } from "@reduxjs/toolkit";
 import instructorDashboardSlice from "./dashboardSlice";
 import instructorCourseSlice from "./courseSlice";
 import settingsSlice from "./settingsSlice";
-import bookingSlice from "./bookingsSlice";
 import availabilitySlice from "./availabilitySlice";
 import walletSlice from "./walletSlice";
 import earningSlice from "./earningSlice";
@@ -11,7 +10,6 @@ const instructorRootReducer = combineReducers({
   dashboard: instructorDashboardSlice,
   course: instructorCourseSlice,
   setting: settingsSlice,
-  booking: bookingSlice,
   availability: availabilitySlice,
   wallet: walletSlice,
   earning: earningSlice,

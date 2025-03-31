@@ -23,7 +23,7 @@ import { setIsContactModelOpen } from "@/store/slices/uiSlice";
 import ContactModal from "@/components/common/ContactModal"; 
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
-import { fetchBookingsByTutorIdAsync } from "@/store/slices/student-dashboard/bookingSlice";
+import { fetchBookingsByTutorIdAsync } from "@/store/slices/bookingSlice";
 
 export default function TeacherProfile() {
   const [activeTab, setActiveTab] = useState("newest");
@@ -36,9 +36,7 @@ export default function TeacherProfile() {
   const { tutorProfile, isLoading, error } = useSelector(
     (state) => state.tutors
   );
-  const { bookingsByTutorId, isLoading: bookingsLoading } = useSelector(
-    (state) => state.student.booking
-  );
+  const { bookingsByTutorId } = useSelector((state) => state.booking);
   const { startDate, endDate,isContactModelOpen } = useSelector((state) => state.ui);
   useEffect(() => {
     if (tutorId && userID) {

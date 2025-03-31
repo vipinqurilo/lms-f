@@ -1,9 +1,11 @@
-import { cancelBooking } from "@/store/slices/instructor/bookingsSlice";
+import { cancelBooking } from "@/store/slices/bookingSlice";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "./Loader";
 
 const CancelBookingModel = ({ date, onClose, bookingId }) => {
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.booking);
   const [reason, setReason] = useState("");
 
   return (
@@ -74,7 +76,7 @@ const CancelBookingModel = ({ date, onClose, bookingId }) => {
           }
           className="w-full bg-secondary text-white py-3 rounded-lg hover:bg-red-600 transition-colors"
         >
-          Cancel
+          {isLoading[`cancelBooking`] ? <Loader text={"Cancelling..."}/> : "Cancel"}
         </button>
       </div>
     </div>

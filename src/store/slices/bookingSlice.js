@@ -2,11 +2,58 @@ import { api } from "@/store/api/api";
 import { CreateApiAsyncThunk } from "@/store/CreateApiAsyncThunk/CreateApiAsyncThunk";
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state for bookings
 const initialState = {
   bookings: [],
+  bookingsByTutorId: [],
   isLoading: {},
   error: {},
+  totalPages: 1,
 };
+
+// ======= SHARED ACTIONS =======
+
+// Common fetch bookings action for all user types
+export const fetchBookingsAsync = CreateApiAsyncThunk(
+  "GET/booking/fetchBookingsAsync",
+  ({ status, startDate, endDate, search, page = 1, limit = 10, teacherId }) => {
+    const params = { status, startDate, endDate, search, page, limit };
+    
+    if (teacherId && teacherId !== "all") {
+      params.teacherId = teacherId;
+    }
+    
+    return api.get(`/bookings`, { params });
+  }
+);
+
+// ======= STUDENT ACTIONS =======
+
+export const fetchBookingsByTutorIdAsync = CreateApiAsyncThunk(
+  "GET/booking/fetchBookingsByTutorIdAsync",
+  ({ teacherId, startDate, endDate }) =>
+    api.get(`/bookings/teacher/`, {
+      params: { teacherId, startDate, endDate },
+    })
+);
+
+export const createBookingAsync = CreateApiAsyncThunk(
+  "booking/createBookingAsync",
+  (sessionId) => api.post("/bookings", sessionId)
+);
+
+export const createBookingPayment = CreateApiAsyncThunk(
+  "booking/createBookingPayment",
+  (bookingData) => api.post("/payment/stripe/booking", bookingData)
+);
+
+export const rescheduleResponseAsync = CreateApiAsyncThunk(
+  "booking/rescheduleResponseAsync",
+  ({ bookingId, action, reason }) =>
+    api.put(`/bookings/${bookingId}/reschedule-response`, { action, reason })
+);
+
+// ======= INSTRUCTOR ACTIONS =======
 
 export const getBookings = CreateApiAsyncThunk(
   "GET/booking/getBookings",
@@ -23,16 +70,19 @@ export const confirmBooking = CreateApiAsyncThunk(
   ({ bookingId, link, meetingPlatform }) =>
     api.put(`/bookings/${bookingId}/confirm`, { meetingLink: link, meetingPlatform })
 );
+
 export const updateBooking = CreateApiAsyncThunk(
   "booking/updateBooking",
   ({ bookingId, link }) =>
     api.put(`/bookings/${bookingId}/meetingInfo`, { meetingLink: link })
 );
+
 export const cancelBooking = CreateApiAsyncThunk(
   "booking/cancelBooking",
   ({ bookingId, reason }) =>
     api.put(`/bookings/${bookingId}/cancel`, { cancellationReason: reason })
 );
+
 export const rescheduleBooking = CreateApiAsyncThunk(
   "booking/rescheduleBooking",
   ({ bookingId, newTime, reason }) =>
@@ -47,25 +97,108 @@ export const updateAvailabilityCalender = CreateApiAsyncThunk(
   (data) => api.put(`/profile/availability-calender`, data)
 );
 
+// ======= ADMIN ACTIONS =======
+// Any admin-specific actions would go here
+
 const bookingSlice = createSlice({
   name: "booking",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state, action) => {
+      const errorKey = action.payload;
+      if (errorKey) {
+        delete state.error[errorKey];
+      } else {
+        state.error = {};
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // get bookings details
+      // ======= SHARED ACTIONS HANDLERS =======
+      
+      // fetchBookingsAsync (common fetch action)
+      .addCase(fetchBookingsAsync.pending, (state) => {
+        state.isLoading["fetchBookingsAsync"] = true;
+      })
+      .addCase(fetchBookingsAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchBookingsAsync"] = false;
+        state.bookings = action.payload?.data || [];
+        state.totalPages = action.payload?.totalPages || 1;
+      })
+      .addCase(fetchBookingsAsync.rejected, (state, action) => {
+        state.isLoading["fetchBookingsAsync"] = false;
+        state.error["fetchBookingsAsync"] = action.payload;
+      })
+      
+      // ======= STUDENT ACTIONS HANDLERS =======
+      
+      .addCase(createBookingAsync.pending, (state) => {
+        state.isLoading["createBookingAsync"] = true;
+      })
+      .addCase(createBookingAsync.fulfilled, (state, action) => {
+        state.isLoading["createBookingAsync"] = false;
+      })
+      .addCase(createBookingAsync.rejected, (state, action) => {
+        state.isLoading["createBookingAsync"] = false;
+        state.error["createBookingAsync"] = action.payload;
+      })
+      
+      .addCase(createBookingPayment.pending, (state) => {
+        state.isLoading["createBookingPayment"] = true;
+      })
+      .addCase(createBookingPayment.fulfilled, (state, action) => {
+        state.isLoading["createBookingPayment"] = false;
+      })
+      .addCase(createBookingPayment.rejected, (state, action) => {
+        state.isLoading["createBookingPayment"] = false;
+        state.error["createBookingPayment"] = action.payload;
+      })
+      
+      .addCase(fetchBookingsByTutorIdAsync.pending, (state) => {
+        state.isLoading["fetchBookingsByTutorIdAsync"] = true;
+      })
+      .addCase(fetchBookingsByTutorIdAsync.fulfilled, (state, action) => {
+        state.isLoading["fetchBookingsByTutorIdAsync"] = false;
+        state.bookingsByTutorId = action.payload?.data || [];
+      })
+      .addCase(fetchBookingsByTutorIdAsync.rejected, (state, action) => {
+        state.isLoading["fetchBookingsByTutorIdAsync"] = false;
+        state.error["fetchBookingsByTutorIdAsync"] = action.payload;
+      })
+      
+      .addCase(rescheduleResponseAsync.pending, (state) => {
+        state.isLoading["rescheduleResponseAsync"] = true;
+      })
+      .addCase(rescheduleResponseAsync.fulfilled, (state, action) => {
+        state.isLoading["rescheduleResponseAsync"] = false;
+        state.bookings = state.bookings.map((booking) =>
+          booking._id === action.payload.data._id
+            ? action.payload.data
+            : booking
+        );
+      })
+      .addCase(rescheduleResponseAsync.rejected, (state, action) => {
+        state.isLoading["rescheduleResponseAsync"] = false;
+        state.error["rescheduleResponseAsync"] = action.payload;
+      })
+      
+      // ======= INSTRUCTOR ACTIONS HANDLERS =======
+      
+      // get bookings details (instructor)
       .addCase(getBookings.pending, (state) => {
         state.isLoading["getBookings"] = true;
       })
       .addCase(getBookings.fulfilled, (state, action) => {
         state.isLoading["getBookings"] = false;
-        state.bookings = action.payload?.data;
-        state.totalPages = action.payload?.totalPages;
+        state.bookings = action.payload?.data || [];
+        state.totalPages = action.payload?.totalPages || 1;
       })
       .addCase(getBookings.rejected, (state, action) => {
         state.isLoading["getBookings"] = false;
         state.error["getBookings"] = action.payload;
       })
+      
       // availability calender update
       .addCase(updateAvailabilityCalender.pending, (state) => {
         state.isLoading["updateAvailabilityCalender"] = true;
@@ -77,6 +210,7 @@ const bookingSlice = createSlice({
         state.isLoading["updateAvailabilityCalender"] = false;
         state.error["updateAvailabilityCalender"] = action.payload;
       })
+      
       // confirm booking
       .addCase(confirmBooking.pending, (state) => {
         state.isLoading["confirmBooking"] = true;
@@ -86,8 +220,8 @@ const bookingSlice = createSlice({
         state.isLoading["confirmBooking"] = false;
         state.error["confirmBooking"] = null;
         state.bookings = state.bookings.map((booking) => {
-          if (booking._id === action.payload?.booking?._id) {
-            return action.payload?.booking;
+          if (booking._id === action.payload?.data?._id) {
+            return action.payload?.data
           } else {
             return booking;
           }
@@ -97,6 +231,8 @@ const bookingSlice = createSlice({
         state.isLoading["confirmBooking"] = false;
         state.error["confirmBooking"] = action.payload;
       })
+      
+      // update booking
       .addCase(updateBooking.pending, (state) => {
         state.isLoading["updateBooking"] = true;
         state.error["updateBooking"] = null;
@@ -116,6 +252,8 @@ const bookingSlice = createSlice({
         state.isLoading["updateBooking"] = false;
         state.error["updateBooking"] = action.payload;
       })
+      
+      // cancel booking
       .addCase(cancelBooking.pending, (state) => {
         state.isLoading["cancelBooking"] = true;
         state.error["cancelBooking"] = null;
@@ -135,6 +273,8 @@ const bookingSlice = createSlice({
         state.isLoading["cancelBooking"] = false;
         state.error["cancelBooking"] = action.payload;
       })
+      
+      // reschedule booking
       .addCase(rescheduleBooking.pending, (state) => {
         state.isLoading["rescheduleBooking"] = true;
         state.error["rescheduleBooking"] = null;
@@ -157,4 +297,6 @@ const bookingSlice = createSlice({
   },
 });
 
-export default bookingSlice.reducer;
+export const { clearError } = bookingSlice.actions;
+
+export default bookingSlice.reducer; 

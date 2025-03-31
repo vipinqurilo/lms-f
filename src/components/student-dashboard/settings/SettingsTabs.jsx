@@ -27,7 +27,7 @@ export function SettingsTabs({ activeTab, onTabChange,tabs, noOfTabs = 3 }) {
 
   return (  
     <div className="flex flex-wrap gap-2 border-b">
-      {getVisibleTabs().map((tab) => (
+      {getVisibleTabs()?.map((tab) => (
         <button
           key={tab?.id}
           onClick={() => onTabChange(tab?.id)}

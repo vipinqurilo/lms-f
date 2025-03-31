@@ -13,6 +13,8 @@ import supportSlice from "./slices/supportSlice";
 import categorySlice from "./slices/categorySlice";
 import withdrawalSlice from "./slices/withdrawalSlice";
 import paymentSlice from "./slices/paymentSlice";
+import bookingSlice from "./slices/bookingSlice";
+
 const rootReducer = combineReducers({
   courses: coursesReducer,
   tutors: tutorsReducer,
@@ -27,6 +29,7 @@ const rootReducer = combineReducers({
   support: supportSlice,
   category: categorySlice,
   withdrawal: withdrawalSlice,
+  booking: bookingSlice,
 });
 
 export default rootReducer;
