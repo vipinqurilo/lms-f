@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     const requestData = {
       page: 1,
-      status: "published",
+      status: "published",  
     };
     dispatch(fetchCoursesAsync(requestData));
   }, [dispatch]);

@@ -19,9 +19,11 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../common/Loader";
-import { createPaymentCourse } from "@/store/slices/paymentSlice";
+import { createPaymentCourse, createPayfastCourseCheckout, clearPayfastCheckoutData } from "@/store/slices/paymentSlice";
 import CourseByModal from "./CourseByModal";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
+import { CoursePaymentModal } from "../../components/courses/CoursePaymentModal";
+import PayfastCheckout from "../../components/payment/PayfastCheckout";
 
 const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
@@ -31,6 +33,8 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const { wishlist, isLoading: wishlistLoading } = useSelector(
     (state) => state.student.wishlist
   );
+  const payment = useSelector((state) => state.payment);
+  const { authUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const openModal = () => setisVideoModalOpen(true);
@@ -47,27 +51,47 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   };
 
   const [isModalOpen, setisModalOpen] = useState(false);
-  const [selectedMethod, setselectedMethod] = useState("stripe");
+  const [selectedMethod, setselectedMethod] = useState("payfast");
   const [checkoutUrl, setCheckoutUrl] = useState(null);
   const [isPaymentModal, setisPaymentModal] = useState(false);
 
   const handlePayment = () => {
     if (!selectedMethod) {
-      toast.error("Select Payment Method");
+      alert("Please select a payment method");
       return;
     }
 
     if (authUser?.role !== "teacher" && data) {
-      const paymentData = {
-        amount: data?.coursePrice,
-        courseId: data?._id,
-      };
-      dispatch(createPaymentCourse(paymentData))
-        .unwrap()
-        .then((res) => {
-          setCheckoutUrl(res?.url);
-          setisPaymentModal(true);
-        });
+      // Handle PayFast payment
+      if (selectedMethod === "payfast") {
+        const paymentData = {
+          courseId: data?._id,
+          userId: authUser?._id,
+          amount: data?.coursePrice,
+          courseTitle: data?.courseTitle,
+          email: authUser?.email,
+          name: `${authUser?.firstName} ${authUser?.lastName}`,
+          returnUrl: `${window.location.origin}/courses/payment-success`,
+          cancelUrl: `${window.location.origin}/courses/payment-failed`,
+          notifyUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"}/api/payment/payfast/notify`
+        };
+        
+        dispatch(createPayfastCourseCheckout(paymentData));
+      } 
+      // Handle Stripe payment
+      else if (selectedMethod === "stripe") {
+        const paymentData = {
+          amount: data?.coursePrice,
+          courseId: data?._id,
+        };
+        dispatch(createPaymentCourse(paymentData))
+          .unwrap()
+          .then((res) => {
+            setCheckoutUrl(res?.url);
+            setisPaymentModal(true);
+          });
+      }
+      // Handle other payment methods as needed
     }
   };
 
@@ -306,6 +330,63 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
         setisPaymentModal={setisPaymentModal}
         setselectedMethod={setselectedMethod}
       />
+
+      {/* Course Payment Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="relative w-[90%] max-w-2xl bg-white rounded-lg shadow-lg">
+            <button
+              onClick={() => setisModalOpen(false)}
+              className="absolute top-2 right-2 text-gray-600 text-lg"
+            >
+              ✕
+            </button>
+            
+            <CoursePaymentModal
+              selected={selectedMethod}
+              onSelect={setselectedMethod}
+              course={data}
+              applyCoupon={() => console.log('Apply coupon')}
+              handlePayment={handlePayment}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Stripe Checkout Modal */}
+      {isPaymentModal && checkoutUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="relative bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+            <button
+              onClick={() => setisPaymentModal(false)}
+              className="absolute top-2 right-2 text-gray-600 text-lg"
+            >
+              ✕
+            </button>
+            <h3 className="text-lg font-bold mb-4">Complete Your Payment</h3>
+            <p className="mb-4">You are being redirected to our secure payment gateway.</p>
+            <div className="flex justify-center">
+              <a
+                href={checkoutUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-secondary text-white px-6 py-2 rounded-lg hover:bg-opacity-90"
+              >
+                Go to Payment
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* PayFast Checkout Modal */}
+      {payment?.payfastCheckoutData && (
+        <PayfastCheckout 
+          paymentData={payment.payfastCheckoutData?.data?.paymentData}
+          paymentUrl={payment.payfastCheckoutData?.data?.paymentUrl}
+          fullPaymentUrl={payment.payfastCheckoutData?.data?.fullPaymentUrl}
+        />
+      )}
     </div>
   );
 };

@@ -5,11 +5,10 @@ import { FaTag } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const paymentMethods = [
-  { id: "bank", name: "Bank transfer" },
+  { id: "payfast", name: "PayFast" },
   { id: "stripe", name: "Stripe" },
-  { id: "paypal", name: "Paypal standard" },
-  { id: "paygate", name: "PayGate" },
-  { id: "paystack", name: "Paystack" },
+  { id: "paypal", name: "PayPal Standard" },
+  { id: "bank", name: "Bank Transfer" },
 ];
 
 export function PaymentSelection({
@@ -95,14 +94,19 @@ export function PaymentSelection({
 
           <button
             onClick={createBooking}
-            className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black"
+            disabled={!selected || isLoading.createPayfastBookingCheckout || isLoading.createPaymentIntent}
+            className={`w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg ${
+              !selected || isLoading.createPayfastBookingCheckout || isLoading.createPaymentIntent 
+              ? "opacity-70 cursor-not-allowed" 
+              : "hover:bg-black"
+            }`}
           >
-            {isLoading["createPaymentIntent"] ? "Processing..." : "Confirm payment"}
+            {isLoading.createPayfastBookingCheckout || isLoading.createPaymentIntent ? "Processing..." : "Confirm payment"}
           </button>
 
           <p className="text-sm text-gray-500 mt-4 text-center">
-            * All purchases are in USD Foreign transaction fees might apply
-            according to your bank policies
+            * All purchases are in ZAR. Foreign transaction fees might apply
+            according to your bank policies.
           </p>
         </div>
       </div>
