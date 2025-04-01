@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { createBookingAsync } from "@/store/slices/bookingSlice";
+import { verifyPayfastPayment } from "@/store/slices/paymentSlice";
 
 const PaymentSuccessPage = () => {
     const dispatch = useDispatch();
@@ -13,22 +14,58 @@ const PaymentSuccessPage = () => {
 
     useEffect(() => {
         if (sessionId) {
-            dispatch(createBookingAsync({ sessionId }))
-                .unwrap()
-                .then(res => {
-                    if (res.success) {
-                        setBookingDetails(res.data);
+            // Check if it's a PayFast payment (booking_ prefix)
+            if (sessionId.startsWith("booking_")) {
+                dispatch(verifyPayfastPayment(sessionId))
+                    .unwrap()
+                    .then(res => {
+                        console.log("Payment verification response:", res);
+                        if (res.success && res.data?.status === "succeeded") {
+                            // Now create the booking with the verified payment
+                            dispatch(createBookingAsync({ sessionId }))
+                                .unwrap()
+                                .then(bookingRes => {
+                                    if (bookingRes.success) {
+                                        setBookingDetails(bookingRes.data);
+                                        setLoading(false);
+                                        setError("");
+                                    } else {
+                                        setError("Booking failed. Please contact support.");
+                                        setLoading(false);
+                                    }
+                                })
+                                .catch(() => {
+                                    setError("Booking creation failed. Please contact support.");
+                                    setLoading(false);
+                                });
+                        } else {
+                            setError("Payment verification failed. Please contact support.");
+                            setLoading(false);
+                        }
+                    })
+                    .catch(() => {
+                        setError("Payment verification failed. Please contact support.");
                         setLoading(false);
-                        setError("");
-                    } else {
+                    });
+            } else {
+                // Handle Stripe or other payment providers
+                dispatch(createBookingAsync({ sessionId }))
+                    .unwrap()
+                    .then(res => {
+                        if (res.success) {
+                            setBookingDetails(res.data);
+                            setLoading(false);
+                            setError("");
+                        } else {
+                            setError("Booking failed. Please contact support.");
+                            setLoading(false);
+                        }
+                    })
+                    .catch(() => {
                         setError("Booking failed. Please contact support.");
                         setLoading(false);
-                    }
-                })
-                .catch(() => {
-                    setError("Booking failed. Please contact support.");
-                    setLoading(false);
-                });
+                    });
+            }
         }
     }, [sessionId, dispatch]);
 
@@ -45,7 +82,11 @@ const PaymentSuccessPage = () => {
                 {loading ? (
                     <div className="text-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-                        <p className="mt-4 text-lg text-gray-600">Processing your booking...</p>
+                        <p className="mt-4 text-lg text-gray-600">
+                            {sessionId && sessionId.startsWith("booking_") 
+                                ? "Verifying payment and processing your booking..." 
+                                : "Processing your booking..."}
+                        </p>
                     </div>
                 ) : error ? (
                     <div className="text-center">

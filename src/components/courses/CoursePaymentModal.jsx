@@ -5,11 +5,10 @@ import { FaTag } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const paymentMethods = [
+  { id: "payfast", name: "PayFast" },
   { id: "bank", name: "Bank Transfer" },
   { id: "stripe", name: "Stripe" },
   { id: "paypal", name: "PayPal Standard" },
-  { id: "paygate", name: "PayGate" },
-  { id: "paystack", name: "Paystack" },
 ];
 
 export function CoursePaymentModal({
@@ -21,7 +20,8 @@ export function CoursePaymentModal({
 }) {
   const { courseTitle, coursePrice } = course;
   const loading = useSelector(
-    (state) => state.payment?.isLoading?.createPaymentCourse
+    (state) => state.payment?.isLoading?.createPaymentCourse || 
+    state.payment?.isLoading?.createPayfastCourseCheckout
   );
 
   return (
@@ -86,25 +86,28 @@ export function CoursePaymentModal({
             </div>
             <div className="flex justify-between text-xs">
               <span>Item price:</span>
-              <span>${coursePrice.toFixed(2)}</span>
+              <span>ZAR {coursePrice.toFixed(2)}</span>
             </div>
             <div className="pt-4 border-t mt-4">
               <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>
-                <span>${coursePrice.toFixed(2)}</span>
+                <span>ZAR {coursePrice.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           <button
             onClick={handlePayment}
-            className="w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg hover:bg-black"
+            disabled={!selected || loading}
+            className={`w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg ${
+              !selected || loading ? "opacity-70 cursor-not-allowed" : "hover:bg-black"
+            }`}
           >
             {loading ? "Processing..." : "Confirm payment"}
           </button>
 
           <p className="text-sm text-gray-500 mt-4 text-center">
-            * All purchases are in USD. Foreign transaction fees might apply
+            * All purchases are in ZAR. Foreign transaction fees might apply
             according to your bank policies.
           </p>
         </div>

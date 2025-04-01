@@ -10,10 +10,11 @@ import { useSelector } from "react-redux";
 import CommonButton from "../common/CommonButton";
 import { useRouter } from "next/navigation";
 
-export default function PaymentStatus({ status }) {
+export default function PaymentStatus({ status, isLoading }) {
   const router = useRouter();
   const { perchasedCourse, error } = useSelector((state) => state.courses);
-  const loading = useSelector((state) => state.courses?.isLoading?.createOrder);
+  const courseLoading = useSelector((state) => state.courses?.isLoading?.createOrder);
+  const loading = isLoading || courseLoading;
   
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 font-nunito">
@@ -30,34 +31,30 @@ export default function PaymentStatus({ status }) {
 
             {loading ? (
               <p className="text-red-600 text-sm font-semibold flex items-center gap-2 animate-pulse">
-                ⏳ Creating your order... Please wait!
+                ⏳ {isLoading ? "Verifying payment..." : "Creating your order..."} Please wait!
               </p>
             ) : (
               <p className="text-gray-600">
-                Your Orer has been Created successfully.
+                Your Order has been created successfully.
               </p>
             )}
 
             {perchasedCourse && (
-              <div className=" border border-gray-200 rounded-lg p-4 flex flex-col gap-2 text-left">
+              <div className="border border-gray-200 rounded-lg p-4 flex flex-col gap-2 text-left">
                 <p>
                   <strong>Course:</strong>{" "}
                   {perchasedCourse?.course?.courseTitle}
                 </p>
                 <p>
-                  <strong>Price:</strong> {perchasedCourse?.course?.coursePrice}
+                  <strong>Price:</strong> {perchasedCourse?.course?.coursePrice} ZAR
                 </p>
                 <p>
-                  {/* note:change it later */}
                   <strong>Transaction ID:</strong>{" "}
                   {perchasedCourse?.transactionId}
-                  {/* {perchasedCourse?.transactionId} */}
                 </p>
                 <p>
-                  {/* note:change it later */}
                   <strong>Order ID:</strong>{" "}
                   {perchasedCourse?.orderId}
-                  {/* {perchasedCourse?.transactionId} */}
                 </p>
               </div>
             )}
