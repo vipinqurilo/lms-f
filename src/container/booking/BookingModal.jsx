@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
 import PayfastCheckout from "@/components/payment/PayfastCheckout";
 import { useRouter } from "next/router";
+import PayfastCheckoutForm from "../../components/payment/PayfastCheckoutForm";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();
@@ -237,10 +238,10 @@ export function BookingModal({ onClose, tutor }) {
           setisModalOpen={setisModalOpen} 
         />
       ) : payfastModal && payfastCheckoutData ? (
-        <PayfastCheckout 
-          paymentData={payfastCheckoutData?.data?.paymentData}
-          paymentUrl={payfastCheckoutData?.data?.paymentUrl}
-          fullPaymentUrl={payfastCheckoutData?.data?.fullPaymentUrl}
+        <PayfastCheckoutForm 
+          paymentUrl={payfastCheckoutData?.data?.fullPaymentUrl}
+          setPaymentModal={setPayfastModal}
+          setisModalOpen={setisModalOpen}
         />
       ) : (
         <BookingLayout
