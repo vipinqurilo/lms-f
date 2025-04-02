@@ -12,7 +12,6 @@ import { createBookingAsync, createBookingPayment } from "@/store/slices/booking
 import { createPayfastBookingCheckout, clearPayfastCheckoutData } from "@/store/slices/paymentSlice";    
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
-import PayfastCheckout from "@/components/payment/PayfastCheckout";
 import { useRouter } from "next/router";
 import PayfastCheckoutForm from "../../components/payment/PayfastCheckoutForm";
 
