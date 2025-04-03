@@ -12,8 +12,8 @@ import { createBookingAsync, createBookingPayment } from "@/store/slices/booking
 import { createPayfastBookingCheckout, clearPayfastCheckoutData } from "@/store/slices/paymentSlice";    
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
-import PayfastCheckout from "@/components/payment/PayfastCheckout";
 import { useRouter } from "next/router";
+import PayfastCheckoutForm from "../../components/payment/PayfastCheckoutForm";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();
@@ -29,7 +29,7 @@ export function BookingModal({ onClose, tutor }) {
   const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
   const [duration, setDuration] = useState(
     tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : null
-  );
+  );  
   const { bookingsByTutorId } = useSelector((state) => state.booking);
   const [paymentMethod, setPaymentMethod] = useState("payfast");
   const [scheduledDate, setScheduledDate] = useState(null);
@@ -237,10 +237,10 @@ export function BookingModal({ onClose, tutor }) {
           setisModalOpen={setisModalOpen} 
         />
       ) : payfastModal && payfastCheckoutData ? (
-        <PayfastCheckout 
-          paymentData={payfastCheckoutData?.data?.paymentData}
-          paymentUrl={payfastCheckoutData?.data?.paymentUrl}
-          fullPaymentUrl={payfastCheckoutData?.data?.fullPaymentUrl}
+        <PayfastCheckoutForm 
+          paymentUrl={payfastCheckoutData?.data?.fullPaymentUrl}
+          setPaymentModal={setPayfastModal}
+          setisModalOpen={setisModalOpen}
         />
       ) : (
         <BookingLayout

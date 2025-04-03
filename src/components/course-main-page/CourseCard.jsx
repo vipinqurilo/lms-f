@@ -24,6 +24,7 @@ import CourseByModal from "./CourseByModal";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { CoursePaymentModal } from "../../components/courses/CoursePaymentModal";
 import PayfastCheckout from "../../components/payment/PayfastCheckout";
+import PayfastCheckoutForm from "../payment/PayfastCheckoutForm";
 
 const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
@@ -381,10 +382,10 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
       
       {/* PayFast Checkout Modal */}
       {payment?.payfastCheckoutData && (
-        <PayfastCheckout 
-          paymentData={payment.payfastCheckoutData?.data?.paymentData}
-          paymentUrl={payment.payfastCheckoutData?.data?.paymentUrl}
-          fullPaymentUrl={payment.payfastCheckoutData?.data?.fullPaymentUrl}
+        <PayfastCheckoutForm 
+          paymentUrl={payment.payfastCheckoutData?.fullPaymentUrl}
+          setPaymentModal={setisPaymentModal}
+          setisModalOpen={setisModalOpen}
         />
       )}
     </div>
