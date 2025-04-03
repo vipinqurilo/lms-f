@@ -29,7 +29,7 @@ export function BookingModal({ onClose, tutor }) {
   const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
   const [duration, setDuration] = useState(
     tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : null
-  );
+  );  
   const { bookingsByTutorId } = useSelector((state) => state.booking);
   const [paymentMethod, setPaymentMethod] = useState("payfast");
   const [scheduledDate, setScheduledDate] = useState(null);
