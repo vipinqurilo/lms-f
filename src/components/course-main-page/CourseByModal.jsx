@@ -7,6 +7,7 @@ import SlideShow from "@/container/login/SlideShow";
 import LoginForm from "@/container/login/LoginForm";
 import BackgroundModal from "../instructor/BackgroundModal";
 import CheckoutForm from "../payment/CheckoutForm";
+import PayfastCheckoutForm from "../payment/PayfastCheckoutForm";
 import { useSelector } from "react-redux";
 
 const CourseByModal = ({
@@ -21,14 +22,23 @@ const CourseByModal = ({
   setselectedMethod,
 }) => {
   const { authUser } = useSelector((state) => state.user);
+  const { payfastCheckoutData } = useSelector((state) => state.payment);
   
   return (
     <>
-      {isPaymentModal && authUser !== null ? (
+      {isPaymentModal && authUser !== null && selectedMethod === "stripe" ? (
         <CheckoutForm
           checkoutUrl={checkoutUrl}
           setPaymentModal={setisPaymentModal}
           setisModalOpen={setisModalOpen}
+        />
+      ) : payfastCheckoutData && authUser !== null && selectedMethod === "payfast" ? (
+        <PayfastCheckoutForm
+          paymentFor="course"
+          mode="payfast"
+          onClose={() => setisModalOpen(false)}
+          paymentUrl={payfastCheckoutData?.data?.paymentUrl}
+          setPaymentModal={setisPaymentModal}
         />
       ) : (
         <>

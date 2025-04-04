@@ -8,7 +8,12 @@ import { DurationSelection } from "./DurationSelection";
 import ScheduleCalendar from "./ScheduleCalendar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
-import { createBookingAsync, createBookingPayment } from "@/store/slices/bookingSlice";
+import { 
+  createBookingAsync, 
+  createBookingPayment, 
+  setBookingData,
+  clearBookingData
+} from "@/store/slices/bookingSlice";
 import { createPayfastBookingCheckout, clearPayfastCheckoutData } from "@/store/slices/paymentSlice";    
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
@@ -17,24 +22,26 @@ import PayfastCheckoutForm from "../../components/payment/PayfastCheckoutForm";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();
-  const [isModalOpen, setisModalOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  
+  // Local state
+  const [step, setStep] = useState(1);
   const [paymentModal, setPaymentModal] = useState(false);
   const [payfastModal, setPayfastModal] = useState(false);
-  const dispatch = useDispatch();
-  const [step, setStep] = useState(1);
-  const { profile } = useSelector((state) => state.student.profile);
-  const { authUser } = useSelector((state) => state.user);
-  const { payfastCheckoutData } = useSelector((state) => state.payment);
   const [subject, setSubject] = useState(tutor?.subjectsTaught[0] || null);
   const [duration, setDuration] = useState(
     tutor?.tutionSlots && tutor?.tutionSlots[0] ? tutor?.tutionSlots[0] : null
   );  
-  const { bookingsByTutorId } = useSelector((state) => state.booking);
   const [paymentMethod, setPaymentMethod] = useState("payfast");
   const [scheduledDate, setScheduledDate] = useState(null);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionEndTime, setSessionEndTime] = useState(null);
+  
+  // Redux state
+  const { profile } = useSelector((state) => state.student.profile);
+  const { authUser } = useSelector((state) => state.user);
+  const { payfastCheckoutData } = useSelector((state) => state.payment);
+  const { bookingsByTutorId, bookingData, checkoutUrl, isLoading } = useSelector((state) => state.booking);
   
   const titles = {
     1: "Select subject and duration",
@@ -54,7 +61,6 @@ export function BookingModal({ onClose, tutor }) {
       setStep(step - 1);
     }
   };
-  const [checkoutUrl, setCheckoutUrl] = useState(null);
 
   const createBooking = () => {
     // Validate required fields
@@ -92,41 +98,31 @@ export function BookingModal({ onClose, tutor }) {
       return;
     }
 
-    // Common booking data for all payment methods
+    // Format dates
+    const formattedSessionDate = new Date(scheduledDate);
+    const formattedStartTime = new Date(sessionStartTime);
+    const formattedEndTime = new Date(sessionEndTime);
     const sessionTitle = `${duration} Minute Session on ${subject?.name}`;
+
+    // Common booking data for all payment methods
     const bookingData = {
-      sessionTitle: sessionTitle,
+      sessionTitle,
       subjectId: subject?._id,
       teacherId: tutor?.user?._id,
       studentId: profile?._id,
-      sessionDate: scheduledDate,
-      sessionStartTime,
-      sessionEndTime,
+      sessionDate: formattedSessionDate.toISOString(),
+      sessionStartTime: formattedStartTime.toISOString(),
+      sessionEndTime: formattedEndTime.toISOString(),
       sessionDuration: duration,
       amount: price,
     };
 
+    // Store booking data in Redux
+    dispatch(setBookingData(bookingData));
+
     // Process based on selected payment method
     if (paymentMethod === 'payfast') {
       // Handle PayFast payment
-      const formattedSessionDate = new Date(scheduledDate);
-      const formattedStartTime = new Date(sessionStartTime);
-      const formattedEndTime = new Date(sessionEndTime);
-      const price = ((subject?.pricePerHour * duration) / 60).toFixed(2);
-      const sessionTitle = `${duration} Minute Session on ${subject?.name}`;
-
-      // Create booking data first
-      const bookingDetails = {
-        teacherId: tutor?.user?._id,
-        studentId: profile?._id,
-        subjectId: subject?._id,
-        sessionDate: formattedSessionDate.toISOString(),
-        sessionStartTime: formattedStartTime.toISOString(),
-        sessionEndTime: formattedEndTime.toISOString(),
-        sessionDuration: duration,
-        sessionTitle: sessionTitle
-      };
-
       const payfastData = {
         // Required fields at root level
         teacherId: tutor?.user?._id,
@@ -143,7 +139,7 @@ export function BookingModal({ onClose, tutor }) {
         sessionStartTime: formattedStartTime.toISOString(),
         sessionEndTime: formattedEndTime.toISOString(),
         sessionDuration: duration,
-        sessionTitle: sessionTitle,
+        sessionTitle,
         
         // URLs
         returnUrl: `${window.location.origin}/student-dashboard/booking/payment-success`,
@@ -151,16 +147,12 @@ export function BookingModal({ onClose, tutor }) {
         notifyUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"}/api/payment/payfast/notify`
       };
       
-      console.log("Initiating PayFast checkout with data:", payfastData);
-      
       // Clear any previous checkout data
       dispatch(clearPayfastCheckoutData());
       
       dispatch(createPayfastBookingCheckout(payfastData))
         .unwrap()
         .then((response) => {
-          console.log("PayFast checkout response:", response);
-          
           if (!response.success) {
             throw new Error(response.message || "Failed to initialize payment");
           }
@@ -168,9 +160,6 @@ export function BookingModal({ onClose, tutor }) {
           if (!response.data || !response.data.paymentData) {
             throw new Error("Missing required PayFast data in response");
           }
-          
-          // The modal will be shown automatically by the useEffect watching payfastCheckoutData
-          console.log("PayFast checkout initialized successfully");
         })
         .catch((error) => {
           toast.error(error?.message || "Failed to initialize PayFast payment. Please try again.");
@@ -178,16 +167,12 @@ export function BookingModal({ onClose, tutor }) {
           setPayfastModal(false);
         });
     } else if (paymentMethod === 'stripe') {
-      // Handle Stripe payment
-      setPaymentModal(true);
-      
       dispatch(createBookingPayment(bookingData))
         .unwrap()
-        .then(async (res) => {
-          setCheckoutUrl(res.url);
+        .then(() => {
+          setPaymentModal(true);
         })
         .catch((error) => {
-          setPaymentModal(false);
           toast.error("Failed to initialize payment. Please try again.");
           console.error("Stripe payment error:", error);
         });
@@ -197,7 +182,7 @@ export function BookingModal({ onClose, tutor }) {
     }
   };
 
-  // Add useEffect to handle scroll locking
+  // Clean up when component unmounts
   useEffect(() => {
     // Disable scrolling on mount
     document.body.style.overflow = "hidden";
@@ -205,17 +190,18 @@ export function BookingModal({ onClose, tutor }) {
     // Re-enable scrolling on unmount
     return () => {
       document.body.style.overflow = "unset";
+      dispatch(clearBookingData());
+      dispatch(clearPayfastCheckoutData());
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchProfileAsync());
-  }, [authUser]);
+  }, [authUser, dispatch]);
 
   // Add effect to detect PayFast checkout data changes
   useEffect(() => {
     if (payfastCheckoutData) {
-      console.log("PayFast checkout data changed:", payfastCheckoutData);
       setPayfastModal(true);
     } else {
       setPayfastModal(false);
@@ -224,23 +210,18 @@ export function BookingModal({ onClose, tutor }) {
 
   return (
     <>
-      {console.log("Render state:", { 
-        paymentModal, 
-        payfastModal, 
-        hasPayfastData: !!payfastCheckoutData,
-        payfastCheckoutData 
-      })}
       {paymentModal ? (
         <CheckoutForm 
           checkoutUrl={checkoutUrl} 
           setPaymentModal={setPaymentModal} 
-          setisModalOpen={setisModalOpen} 
         />
       ) : payfastModal && payfastCheckoutData ? (
         <PayfastCheckoutForm 
+          paymentFor="booking"
+          mode="payfast"
+          onClose={onClose}
           paymentUrl={payfastCheckoutData?.data?.fullPaymentUrl}
           setPaymentModal={setPayfastModal}
-          setisModalOpen={setisModalOpen}
         />
       ) : (
         <BookingLayout
@@ -267,7 +248,7 @@ export function BookingModal({ onClose, tutor }) {
           )}
           
           {step === 3 && (
-            <div className=" h-[calc(100%-154px)]">
+            <div className="h-[calc(100%-154px)]">
               <ScheduleCalendar
                 rawBookings={bookingsByTutorId}
                 scheduledDate={scheduledDate}
@@ -292,6 +273,7 @@ export function BookingModal({ onClose, tutor }) {
               createBooking={createBooking}
               selected={paymentMethod}
               onSelect={setPaymentMethod}
+              isLoading={isLoading.createBookingPayment || isLoading.createPayfastBookingCheckout}
             />
           )}
 

@@ -18,8 +18,8 @@ export function PaymentSelection({
   onSelect,
   createBooking,
   price,
+  isLoading,
 }) {
-  const { isLoading, error } = useSelector((state) => state.payment);
   return (
     <div className="lg:grid grid-cols-2 gap-8 p-8 font-nunito">
       <div>
@@ -94,14 +94,14 @@ export function PaymentSelection({
 
           <button
             onClick={createBooking}
-            disabled={!selected || isLoading.createPayfastBookingCheckout || isLoading.createPaymentIntent}
+            disabled={!selected || isLoading}
             className={`w-full mt-4 px-4 py-2 bg-secondary text-white rounded-lg ${
-              !selected || isLoading.createPayfastBookingCheckout || isLoading.createPaymentIntent 
+              !selected || isLoading 
               ? "opacity-70 cursor-not-allowed" 
               : "hover:bg-black"
             }`}
           >
-            {isLoading.createPayfastBookingCheckout || isLoading.createPaymentIntent ? "Processing..." : "Confirm payment"}
+            {isLoading ? "Processing..." : "Confirm payment"}
           </button>
 
           <p className="text-sm text-gray-500 mt-4 text-center">
