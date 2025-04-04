@@ -7,7 +7,7 @@ import SlideShow from "@/container/login/SlideShow";
 import LoginForm from "@/container/login/LoginForm";
 import BackgroundModal from "../instructor/BackgroundModal";
 import CheckoutForm from "../payment/CheckoutForm";
-import PayfastCheckoutForm from "../payment/PayfastCheckoutForm";
+import PayfastCheckoutForCourse from "../payment/PayfastCheckoutForCourse";
 import { useSelector } from "react-redux";
 
 const CourseByModal = ({
@@ -33,12 +33,10 @@ const CourseByModal = ({
           setisModalOpen={setisModalOpen}
         />
       ) : payfastCheckoutData && authUser !== null && selectedMethod === "payfast" ? (
-        <PayfastCheckoutForm
-          paymentFor="course"
-          mode="payfast"
-          onClose={() => setisModalOpen(false)}
+        <PayfastCheckoutForCourse
           paymentUrl={payfastCheckoutData?.data?.paymentUrl}
           setPaymentModal={setisPaymentModal}
+          onClose={() => setisModalOpen(false)}
         />
       ) : (
         <>
