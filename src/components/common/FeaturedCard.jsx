@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { createPaymentCourse } from "@/store/slices/paymentSlice";
+import { createOrderPayfast, createPaymentCourse } from "@/store/slices/paymentSlice";
 import toast from "react-hot-toast";
 import Loader from "./Loader";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
@@ -30,7 +30,7 @@ export default function FeaturedCard({ data, isFull = false }) {
 
   const dispatch = useDispatch();
   const [isModalOpen, setisModalOpen] = useState(false);
-  const [selectedMethod, setselectedMethod] = useState("stripe");
+  const [selectedMethod, setselectedMethod] = useState("payfast");
   const [checkoutUrl, setCheckoutUrl] = useState(null);
   const [isPaymentModal, setisPaymentModal] = useState(false);
   const [wishlistLoading, setwishlistLoading] = useState(null);
@@ -46,12 +46,21 @@ export default function FeaturedCard({ data, isFull = false }) {
         amount: data?.coursePrice,
         courseId: data?._id,
       };
-      dispatch(createPaymentCourse(paymentData))
+      if (selectedMethod === "payfast") {
+        dispatch(createOrderPayfast(paymentData))
+          .unwrap()
+          .then((res) => {
+            setCheckoutUrl(res?.url);
+            setisPaymentModal(true);
+          });
+      } else {
+        dispatch(createPaymentCourse(paymentData))
         .unwrap()
         .then((res) => {
           setCheckoutUrl(res?.url);
           setisPaymentModal(true);
         });
+      }
     }
   };
 

@@ -28,8 +28,8 @@ export const addOrderAsync = CreateApiAsyncThunk(
 );
 
 // create order
-export const createOrder = CreateApiAsyncThunk("courses/createOrder", (data) =>
-  api.post(`/order/stripe`, data)
+export const createOrder = CreateApiAsyncThunk("courses/createOrder", ({sessionId, mode}) =>
+  api.post(`/order`, {sessionId, mode})
 );
 
 // add review

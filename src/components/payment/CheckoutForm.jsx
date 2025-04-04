@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import BackgroundModal from "../instructor/BackgroundModal";
+import { useDispatch } from "react-redux";
+import { clearBookingData } from "@/store/slices/bookingSlice";
 
-const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
+const CheckoutForm = ({ checkoutUrl, setPaymentModal }) => {
   const [popupBlocked, setPopupBlocked] = useState(false);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (checkoutUrl) {
-
       const stripeWindow = window.open(
         checkoutUrl,
         "Stripe Checkout",
@@ -21,24 +23,21 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
 
       // Monitor for window close
       const timer = setInterval(() => {
-
-     try {
-
+        try {
           if (stripeWindow.closed) {
             clearInterval(timer);
             setPaymentModal(false);
-            setisModalOpen(false);
+            dispatch(clearBookingData());
           }
         } catch (error) {
           // Handle any potential errors when checking window.closed
           clearInterval(timer);
-
         }
       }, 500);
 
       return () => clearInterval(timer);
     }
-  }, [checkoutUrl]);
+  }, [checkoutUrl, dispatch]);
 
   const handleOpenPaymentWindow = () => {
     const newWindow = window.open(
@@ -53,6 +52,11 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
     }
   };
 
+  const handleClose = () => {
+    setPaymentModal(false);
+    dispatch(clearBookingData());
+  };
+
   return (
     <BackgroundModal
       PropComponent={() => (
@@ -60,10 +64,7 @@ const CheckoutForm = ({ checkoutUrl, setPaymentModal, setisModalOpen }) => {
           <div className="absolute top-4 right-4">
             <button
               className="text-gray-500 hover:text-red-500"
-              onClick={() => {
-                setPaymentModal(false);
-                setisModalOpen(false);
-              }}
+              onClick={handleClose}
             >
               Close
             </button>

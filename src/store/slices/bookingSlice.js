@@ -9,6 +9,8 @@ const initialState = {
   isLoading: {},
   error: {},
   totalPages: 1,
+  bookingData: null,
+  checkoutUrl: null,
 };
 
 // ======= SHARED ACTIONS =======
@@ -39,7 +41,7 @@ export const fetchBookingsByTutorIdAsync = CreateApiAsyncThunk(
 
 export const createBookingAsync = CreateApiAsyncThunk(
   "booking/createBookingAsync",
-  (sessionId) => api.post("/bookings", sessionId)
+  ({sessionId, mode}) => api.post("/bookings", {sessionId, mode})
 );
 
 export const createBookingPayment = CreateApiAsyncThunk(
@@ -112,6 +114,16 @@ const bookingSlice = createSlice({
         state.error = {};
       }
     },
+    setBookingData: (state, action) => {
+      state.bookingData = action.payload;
+    },
+    clearBookingData: (state) => {
+      state.bookingData = null;
+      state.checkoutUrl = null;
+    },
+    setCheckoutUrl: (state, action) => {
+      state.checkoutUrl = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -149,6 +161,7 @@ const bookingSlice = createSlice({
       })
       .addCase(createBookingPayment.fulfilled, (state, action) => {
         state.isLoading["createBookingPayment"] = false;
+        state.checkoutUrl = action.payload?.url || null;
       })
       .addCase(createBookingPayment.rejected, (state, action) => {
         state.isLoading["createBookingPayment"] = false;
@@ -297,6 +310,6 @@ const bookingSlice = createSlice({
   },
 });
 
-export const { clearError } = bookingSlice.actions;
+export const { clearError, setBookingData, clearBookingData, setCheckoutUrl } = bookingSlice.actions;
 
 export default bookingSlice.reducer; 

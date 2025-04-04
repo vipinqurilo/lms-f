@@ -25,14 +25,19 @@ export const createPayfastBookingCheckout = CreateApiAsyncThunk(
   (data) => api.post("/payment/payfast/booking", data)
 );
 
+export const createOrderPayfast = CreateApiAsyncThunk("courses/createOrderPayfast", (data) =>
+  api.post(`/payment/payfast/course`, data)
+);
+
+
 export const createPayfastCourseCheckout = CreateApiAsyncThunk(
   "payment/createPayfastCourseCheckout",
   (data) => api.post("/payment/payfast/course", data)
 );
 
 export const verifyPayfastPayment = CreateApiAsyncThunk(
-  "payment/verifyPayfastPayment",
-  (paymentId) => api.post(`/payment/payfast/verify`, { paymentId })
+  "GET/payment/verifyPayfastPayment",
+  (paymentId) => api.post(`/payment/payfast/verify`, {paymentId})
 );
 
 const paymentSlice = createSlice({
@@ -101,6 +106,18 @@ const paymentSlice = createSlice({
       .addCase(createPayfastBookingCheckout.rejected, (state, action) => {
         state.isLoading["createPayfastBookingCheckout"] = false;
         state.error["createPayfastBookingCheckout"] = action.payload;
+        console.error("PayFast booking checkout error:", action.payload);
+      })
+      .addCase(createOrderPayfast.pending, (state) => {
+        state.isLoading["createOrderPayfast"] = true;
+      })
+      .addCase(createOrderPayfast.fulfilled, (state, action) => {
+        state.isLoading["createOrderPayfast"] = false;
+        state.payfastCheckoutData = action.payload;
+      })
+      .addCase(createOrderPayfast.rejected, (state, action) => {
+        state.isLoading["createOrderPayfast"] = false;
+        state.error["createOrderPayfast"] = action.payload;
         console.error("PayFast booking checkout error:", action.payload);
       })
       // PayFast course checkout

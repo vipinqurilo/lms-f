@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 const paymentMethods = [
   { id: "payfast", name: "PayFast" },
   { id: "bank", name: "Bank Transfer" },
-  { id: "stripe", name: "Stripe" },
+  // { id: "stripe", name: "Stripe" },
   { id: "paypal", name: "PayPal Standard" },
 ];
 
