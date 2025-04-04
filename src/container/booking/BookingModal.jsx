@@ -18,7 +18,7 @@ import { createPayfastBookingCheckout, clearPayfastCheckoutData } from "@/store/
 import { toast } from "react-hot-toast";
 import CheckoutForm from "@/components/payment/CheckoutForm";
 import { useRouter } from "next/router";
-import PayfastCheckoutForm from "../../components/payment/PayfastCheckoutForm";
+import PayfastCheckoutForBooking from "../../components/payment/PayfastCheckoutForBooking";
 
 export function BookingModal({ onClose, tutor }) {
   const router = useRouter();
@@ -216,12 +216,10 @@ export function BookingModal({ onClose, tutor }) {
           setPaymentModal={setPaymentModal} 
         />
       ) : payfastModal && payfastCheckoutData ? (
-        <PayfastCheckoutForm 
-          paymentFor="booking"
-          mode="payfast"
-          onClose={onClose}
+        <PayfastCheckoutForBooking 
           paymentUrl={payfastCheckoutData?.data?.fullPaymentUrl}
           setPaymentModal={setPayfastModal}
+          onClose={onClose}
         />
       ) : (
         <BookingLayout

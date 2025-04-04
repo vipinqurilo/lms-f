@@ -5,28 +5,34 @@ import {
   verifyPayfastPayment,
   clearPayfastCheckoutData,
 } from "../../store/slices/paymentSlice";
-import {
-  clearBookingData,
-  createBookingAsync,
-} from "../../store/slices/bookingSlice";
 import { useRouter } from "next/router";
 import Loader from "../common/Loader";
 import { createOrder, getAllEnrolledCourses } from "@/store/slices/coursesSlice";
 
-const PayfastCheckoutForm = ({
+/**
+ * PayfastCheckoutForCourse - A specialized component for handling PayFast checkouts for courses
+ * This component handles the course payment workflow specifically, with optimizations to prevent multiple API calls
+ */
+const PayfastCheckoutForCourse = ({
   paymentUrl,
   setPaymentModal,
-  onClose,
-  mode,
-  paymentFor,
+  onClose = () => {},
 }) => {
+  // Component state
   const [popupBlocked, setPopupBlocked] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [countdown, setCountdown] = useState(5);
   const [userClosedWindow, setUserClosedWindow] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const payfastWindowRef = useRef(null);
+  
+  // Interval references for proper cleanup
+  const verificationIntervalRef = useRef(null);
+  const windowCheckIntervalRef = useRef(null);
+  const initialCheckTimeoutRef = useRef(null);
+  const finalCheckTimeoutRef = useRef(null);
   
   const dispatch = useDispatch();
   const router = useRouter();
@@ -35,40 +41,38 @@ const PayfastCheckoutForm = ({
   const payfastCheckoutData = useSelector(
     (state) => state.payment.payfastCheckoutData
   );
-  const { isLoading } = useSelector((state) => state.booking);
   const { isLoading: isLoadingEnrolledCourses } = useSelector((state) => state.courses);
 
   // Extract payment ID from store data
   const paymentId = payfastCheckoutData?.data?.paymentId || null;
 
-  // Handle successful payment processing
+  // Handle successful payment processing - includes circuit breaker to prevent duplicate calls
   const handlePaymentSuccess = (responseData) => {
+    // Skip if already processing or completed payment
+    if (isProcessingPayment || paymentComplete) return;
+    
+    // Set processing flag to prevent duplicate calls
+    setIsProcessingPayment(true);
+    
     // Close PayFast window if still open
     if (payfastWindowRef.current && !payfastWindowRef.current.closed) {
       payfastWindowRef.current.close();
     }
     
-    const processPaymentType = (sessionId) => {
-      if (paymentFor === "booking") {
-        return dispatch(createBookingAsync({ sessionId, mode }))
-          .unwrap()
-          .then(response => {
-            completePaymentProcess(response.data);
-          });
-      } else {
-        return dispatch(createOrder({ sessionId, mode }))
-          .unwrap()
-          .then(response => {
-            dispatch(getAllEnrolledCourses());
-            completePaymentProcess(response.data);
-          });
-      }
-    };
-
-    processPaymentType(responseData?.sessionId)
+    // Process the course order
+    dispatch(createOrder({ sessionId: responseData?.sessionId, mode: "payfast" }))
+      .unwrap()
+      .then(response => {
+        // Only fetch enrolled courses once and if not already complete
+        if (!paymentComplete) {
+          dispatch(getAllEnrolledCourses());
+        }
+        completePaymentProcess(response.data);
+      })
       .catch(error => {
-        console.error(`${paymentFor} creation error:`, error);
+        console.error("Course order creation error:", error);
         setIsVerifying(false);
+        setIsProcessingPayment(false); // Reset processing flag on error
       });
   };
 
@@ -77,14 +81,23 @@ const PayfastCheckoutForm = ({
     setPaymentComplete(true);
     setPaymentDetails(data);
     setUserClosedWindow(true);
-    onClose();
+    if (onClose) onClose();
   };
 
   // Handle window closing
   const handleClose = () => {
+    cleanupAllIntervals();
     dispatch(clearPayfastCheckoutData());
-    dispatch(clearBookingData());
     setPaymentModal(false);
+  };
+
+  // Cleanup function for all intervals and timeouts
+  const cleanupAllIntervals = () => {
+    // Clear all intervals and timeouts
+    if (verificationIntervalRef.current) clearInterval(verificationIntervalRef.current);
+    if (windowCheckIntervalRef.current) clearInterval(windowCheckIntervalRef.current);
+    if (initialCheckTimeoutRef.current) clearTimeout(initialCheckTimeoutRef.current);
+    if (finalCheckTimeoutRef.current) clearTimeout(finalCheckTimeoutRef.current);
   };
 
   // Handle countdown and redirection after payment success
@@ -97,24 +110,21 @@ const PayfastCheckoutForm = ({
     } else if (paymentComplete && countdown === 0) {
       // Clear payment data from Redux store before redirecting
       dispatch(clearPayfastCheckoutData());
-      dispatch(clearBookingData());
-      onClose();
-      
-      const redirectPath = paymentFor === "booking" 
-        ? "/student-dashboard/booking" 
-        : "/student-dashboard/enrolled-courses";
-      
-      router.push(redirectPath);
+      if (onClose) onClose();
+      router.push("/student-dashboard/enrolled-courses");
     }
 
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [paymentComplete, countdown, router, dispatch, onClose, paymentFor]);
+  }, [paymentComplete, countdown, router, dispatch, onClose]);
 
   // Verify payment status
   const checkPaymentStatus = () => {
-    if (isVerifying || !paymentId) return;
+    // Skip verification if already verifying, processing, completed, or no payment ID
+    if (isVerifying || isProcessingPayment || paymentComplete || !paymentId) {
+      return;
+    }
 
     setIsVerifying(true);
 
@@ -122,10 +132,13 @@ const PayfastCheckoutForm = ({
     dispatch(verifyPayfastPayment(paymentId))
       .unwrap()
       .then((response) => {
+        // Check if payment is already paid and we haven't processed it yet
         if (
           response.status === "success" &&
           response.data &&
-          response.data.paymentStatus === "paid"
+          response.data.paymentStatus === "paid" &&
+          !isProcessingPayment &&
+          !paymentComplete
         ) {
           console.log("Payment is paid");
           handlePaymentSuccess(response.data);
@@ -141,13 +154,13 @@ const PayfastCheckoutForm = ({
 
   // Initialize popup window and set up verification interval
   useEffect(() => {
+    // Skip setup if payment is already complete or being processed
+    if (paymentComplete || isProcessingPayment) {
+      return;
+    }
+    
     // Only open the window automatically on first mount
-    if (
-      paymentUrl &&
-      !userClosedWindow &&
-      !paymentComplete &&
-      !window.paymentWindowOpened
-    ) {
+    if (paymentUrl && !userClosedWindow && !window.paymentWindowOpened) {
       window.paymentWindowOpened = true;
       payfastWindowRef.current = window.open(
         paymentUrl,
@@ -163,33 +176,46 @@ const PayfastCheckoutForm = ({
     }
 
     // Set up verification logic regardless of whether window opened
-    if (paymentUrl && !paymentComplete) {
+    if (paymentUrl && !paymentComplete && !isProcessingPayment) {
       // Start verification process after a short delay (let PayFast initialize)
-      let initialCheckTimeout = setTimeout(() => {
+      initialCheckTimeoutRef.current = setTimeout(() => {
         checkPaymentStatus();
       }, 5000);
 
-      // Set up recurring verification
-      const verificationInterval = setInterval(checkPaymentStatus, 10000);
+      // Set up recurring verification with a stored reference for proper cleanup
+      verificationIntervalRef.current = setInterval(() => {
+        // Only verify if not processing and not complete
+        if (!isProcessingPayment && !paymentComplete) {
+          checkPaymentStatus();
+        }
+      }, 10000);
 
       // Monitor for window close - only if we've opened a window
-      let windowCheckInterval;
       if (payfastWindowRef.current) {
-        windowCheckInterval = setInterval(() => {
+        windowCheckIntervalRef.current = setInterval(() => {
           try {
-            if (payfastWindowRef.current.closed && !paymentComplete) {
+            if (payfastWindowRef.current.closed && !paymentComplete && !isProcessingPayment) {
               // If window is closed without payment being completed,
               // mark as user closed and stop checking
               setUserClosedWindow(true);
-              clearInterval(windowCheckInterval);
-              clearInterval(verificationInterval);
+              
+              // Clear window check interval since window is now closed
+              if (windowCheckIntervalRef.current) {
+                clearInterval(windowCheckIntervalRef.current);
+                windowCheckIntervalRef.current = null;
+              }
+              
+              // Clear verification interval
+              if (verificationIntervalRef.current) {
+                clearInterval(verificationIntervalRef.current);
+                verificationIntervalRef.current = null;
+              }
 
               // Continue verification for a short period in case payment was completed
-              setTimeout(() => {
-                if (!paymentComplete) {
+              finalCheckTimeoutRef.current = setTimeout(() => {
+                if (!paymentComplete && !isProcessingPayment) {
                   // Only clear data if payment wasn't successful after final check
                   dispatch(clearPayfastCheckoutData());
-                  dispatch(clearBookingData());
                   setPaymentModal(false);
                 }
               }, 5000);
@@ -199,22 +225,23 @@ const PayfastCheckoutForm = ({
           }
         }, 1000);
       }
-
-      return () => {
-        clearTimeout(initialCheckTimeout);
-        clearInterval(verificationInterval);
-        if (windowCheckInterval) clearInterval(windowCheckInterval);
-      };
     }
+
+    // Cleanup function for unmounting or dependency changes
+    return cleanupAllIntervals;
   }, [
     paymentUrl,
     paymentId,
-    isVerifying,
     paymentComplete,
-    userClosedWindow,
+    isProcessingPayment,
+    userClosedWindow
   ]);
 
+  // Open PayFast window function
   const openPayfastWindow = () => {
+    // Skip if already processing or complete
+    if (isProcessingPayment || paymentComplete) return;
+    
     // Reset the userClosedWindow flag when manually opening
     setUserClosedWindow(false);
 
@@ -230,8 +257,11 @@ const PayfastCheckoutForm = ({
 
       // Set up tracking for manual window closure
       const checkWindowClosed = setInterval(() => {
-        if (newWindow.closed) {
+        if (newWindow.closed && !isProcessingPayment && !paymentComplete) {
           setUserClosedWindow(true);
+          clearInterval(checkWindowClosed);
+        } else if (isProcessingPayment || paymentComplete) {
+          // Clear interval if payment is being processed or complete
           clearInterval(checkWindowClosed);
         }
       }, 1000);
@@ -240,9 +270,10 @@ const PayfastCheckoutForm = ({
     }
   };
 
+  // Handler for opening payment window button
   const handleOpenPaymentWindow = () => {
-    // Don't open window if payment is already complete
-    if (paymentComplete) return;
+    // Skip if already processing or complete
+    if (isProcessingPayment || paymentComplete) return;
 
     // Check if payment is already being processed
     if (paymentId) {
@@ -254,7 +285,9 @@ const PayfastCheckoutForm = ({
           if (
             response.status === "success" &&
             response.data &&
-            response.data.paymentStatus === "paid"
+            response.data.paymentStatus === "paid" &&
+            !isProcessingPayment &&
+            !paymentComplete
           ) {
             handlePaymentSuccess(response.data);
             return;
@@ -269,21 +302,27 @@ const PayfastCheckoutForm = ({
             return;
           }
 
-          // Otherwise open a new window
-          openPayfastWindow();
+          // Otherwise open a new window if not processing
+          if (!isProcessingPayment && !paymentComplete) {
+            openPayfastWindow();
+          }
         })
         .catch(() => {
-          // If verification fails, allow opening a new window
-          openPayfastWindow();
+          // If verification fails, allow opening a new window if not processing
+          if (!isProcessingPayment && !paymentComplete) {
+            openPayfastWindow();
+          }
         });
     } else {
-      // If no payment ID, just open window
-      openPayfastWindow();
+      // If no payment ID, just open window if not processing
+      if (!isProcessingPayment && !paymentComplete) {
+        openPayfastWindow();
+      }
     }
   };
 
-  // Render loading state while booking is being created
-  const renderLoadingState = ({text}) => {
+  // Render loading state while processing payment
+  const renderLoadingState = () => {
     return (
       <div className="bg-white rounded-lg p-8 mt-4 w-3/4 max-w-xl text-center relative">
         <div className="absolute top-4 right-4">
@@ -304,7 +343,7 @@ const PayfastCheckoutForm = ({
             />
           </div>
           <p className="text-gray-600">
-            {text}
+            Please wait a second while we process your payment...
           </p>
         </div>
       </div>
@@ -345,7 +384,7 @@ const PayfastCheckoutForm = ({
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
             Payment Successful!
           </h2>
-          <p className="text-gray-600 mb-6">Your {paymentFor} has been confirmed.</p>
+          <p className="text-gray-600 mb-6">Your course purchase has been confirmed.</p>
 
           <div className="bg-gray-50 w-full p-4 rounded-lg mb-6">
             <div className="flex justify-between py-2 border-b border-gray-200">
@@ -364,29 +403,20 @@ const PayfastCheckoutForm = ({
               <span className="text-gray-600">Status:</span>
               <span className="font-semibold text-green-500">Paid</span>
             </div>
-            {paymentDetails?.metadata?.sessionTitle && (
-              <div className="flex justify-between py-2 border-t border-gray-200">
-                <span className="text-gray-600">Session:</span>
-                <span className="font-semibold">
-                  {paymentDetails.metadata.sessionTitle}
-                </span>
-              </div>
-            )}
           </div>
 
           <p className="text-gray-500 text-sm">
-            Redirecting to your {paymentFor === "booking" ? "bookings" : "courses"} in {countdown} seconds...
+            Redirecting to your courses in {countdown} seconds...
           </p>
 
           <button
             onClick={() => {
               dispatch(clearPayfastCheckoutData());
-              dispatch(clearBookingData());
-              router.push(paymentFor === "booking" ? "/student-dashboard/booking" : "/student-dashboard/enrolled-courses");
+              router.push("/student-dashboard/enrolled-courses");
             }}
             className="mt-4 px-6 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
           >
-            Go to My {paymentFor === "booking" ? "Bookings" : "Courses"}
+            Go to My Courses
           </button>
         </div>
       </div>
@@ -433,6 +463,7 @@ const PayfastCheckoutForm = ({
           <button
             className="mt-4 px-6 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
             onClick={handleOpenPaymentWindow}
+            disabled={isProcessingPayment || paymentComplete}
           >
             {popupBlocked
               ? "Open Payment Window"
@@ -447,10 +478,8 @@ const PayfastCheckoutForm = ({
   const renderModalContent = () => {
     if (paymentComplete) {
       return renderSuccessModal();
-    } else if (isLoading?.createBookingAsync) {
-      return renderLoadingState({text: "Please wait while we create your booking..."});
-    } else if (isLoadingEnrolledCourses?.getAllEnrolledCourses) {
-      return renderLoadingState({text: "Please wait a second while we process your payment..."});
+    } else if (isProcessingPayment || isLoadingEnrolledCourses?.getAllEnrolledCourses) {
+      return renderLoadingState();
     } else {
       return renderProcessingModal();
     }
@@ -461,4 +490,4 @@ const PayfastCheckoutForm = ({
   );
 };
 
-export default PayfastCheckoutForm;
+export default PayfastCheckoutForCourse; 

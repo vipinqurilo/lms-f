@@ -19,12 +19,11 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../common/Loader";
-import { createPaymentCourse, createPayfastCourseCheckout, clearPayfastCheckoutData } from "@/store/slices/paymentSlice";
+import { createPaymentCourse, createPayfastCourseCheckout } from "@/store/slices/paymentSlice";
 import CourseByModal from "./CourseByModal";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { CoursePaymentModal } from "../../components/courses/CoursePaymentModal";
-import PayfastCheckout from "../../components/payment/PayfastCheckout";
-import PayfastCheckoutForm from "../payment/PayfastCheckoutForm";
+import PayfastCheckoutForCourse from "../payment/PayfastCheckoutForCourse";
 
 const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
   const [isVideoModalOpen, setisVideoModalOpen] = useState(false);
@@ -382,10 +381,10 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
       
       {/* PayFast Checkout Modal */}
       {payment?.payfastCheckoutData && (
-        <PayfastCheckoutForm 
-          paymentUrl={payment.payfastCheckoutData?.fullPaymentUrl}
+        <PayfastCheckoutForCourse 
+          paymentUrl={payment.payfastCheckoutData?.data?.paymentUrl}
           setPaymentModal={setisPaymentModal}
-          setisModalOpen={setisModalOpen}
+          onClose={() => setisModalOpen(false)}
         />
       )}
     </div>
