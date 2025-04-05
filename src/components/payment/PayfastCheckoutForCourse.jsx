@@ -100,9 +100,10 @@ const PayfastCheckoutForCourse = ({
     mountedRef.current = true;
     
     // Ensure modal state is correct on mount based on existing states
+    // paymentComplete should have the highest priority
     if (paymentComplete) {
       setModalState('success');
-    } else if (isProcessingPayment ||isLoadingEnrolledCourses?.["createOrder"]) {
+    } else if (isProcessingPayment || isLoadingEnrolledCourses?.["createOrder"]) {
       setModalState('loading');
     } else {
       setModalState('processing');
@@ -121,6 +122,12 @@ const PayfastCheckoutForCourse = ({
     // Set loading state first
     setModalState('loading');
     setIsProcessingPayment(true);
+    
+    // Clear all verification intervals to prevent state changes
+    if (timerIdsRef.current.verification) {
+      clearInterval(timerIdsRef.current.verification);
+      timerIdsRef.current.verification = null;
+    }
     
     // Close PayFast window if still open
     if (payfastWindowRef.current && !payfastWindowRef.current.closed) {
@@ -228,7 +235,12 @@ const PayfastCheckoutForCourse = ({
 
   // Setup payment window and verification process - consolidated into a single useEffect
   useEffect(() => {
-    if (!mountedRef.current || isProcessingPayment || paymentComplete || !paymentUrl || !paymentId) {
+    if (!mountedRef.current || isProcessingPayment || !paymentUrl || !paymentId) {
+      return;
+    }
+    
+    // Don't do anything if payment is already complete - this prevents overriding the success state
+    if (paymentComplete) {
       return;
     }
     
@@ -259,16 +271,22 @@ const PayfastCheckoutForCourse = ({
 
     // Initial verification after a delay
     timerIdsRef.current.initialCheck = setTimeout(() => {
-      if (mountedRef.current) {
+      if (mountedRef.current && !paymentComplete) {
         checkPaymentStatus();
       }
     }, 5000);
 
     // Regular verification interval
     timerIdsRef.current.verification = setInterval(() => {
-      if (mountedRef.current && !isProcessingPayment && !paymentComplete) {
-        checkPaymentStatus();
+      if (!mountedRef.current || isProcessingPayment || paymentComplete) {
+        // If payment is complete, clear this interval
+        if (paymentComplete && timerIdsRef.current.verification) {
+          clearInterval(timerIdsRef.current.verification);
+          timerIdsRef.current.verification = null;
+        }
+        return;
       }
+      checkPaymentStatus();
     }, 10000);
 
     // Monitor for window close - only if we've opened a window
@@ -277,6 +295,16 @@ const PayfastCheckoutForCourse = ({
         try {
           if (!mountedRef.current) {
             clearAllTimers();
+            return;
+          }
+          
+          // Skip window checks if payment is already complete
+          if (paymentComplete) {
+            // Clear window check interval as it's no longer needed
+            if (timerIdsRef.current.windowCheck) {
+              clearInterval(timerIdsRef.current.windowCheck);
+              timerIdsRef.current.windowCheck = null;
+            }
             return;
           }
           
@@ -414,7 +442,7 @@ const PayfastCheckoutForCourse = ({
   // Completely rewritten modal implementation to fix overlapping issue
   return (
     <div className="w-full h-screen flex items-center justify-center bg-black bg-opacity-15 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
-      {modalState === 'success' ? (
+      {paymentComplete || modalState === 'success' ? (
         <div className="bg-white rounded-lg p-8 z-[1000] mt-4 w-3/4 max-w-xl text-center relative">
           <div className="absolute top-4 right-4">
             <button
