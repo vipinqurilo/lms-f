@@ -46,7 +46,7 @@ export default function PaymentStatus({ status, isLoading }) {
                   {perchasedCourse?.course?.courseTitle}
                 </p>
                 <p>
-                  <strong>Price:</strong> {perchasedCourse?.course?.coursePrice} ZAR
+                  <strong>Price:</strong> {perchasedCourse?.course?.coursePrice} R
                 </p>
                 <p>
                   <strong>Transaction ID:</strong>{" "}

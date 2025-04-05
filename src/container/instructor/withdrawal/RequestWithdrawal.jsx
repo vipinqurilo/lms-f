@@ -24,7 +24,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
 
   const submitHandler = (data) => {
     if (data?.amount < 100) {
-      return toast.error("Amount should be more than 100 ZAR")
+      return toast.error("Amount should be more than 100 R")
     }
     dispatch(requestWithdrawal(data))
       .unwrap()
@@ -49,7 +49,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
             <div className="grid grid-cols-2 mb-4 text-background">
               <div>
                 <p className="text-light text-sm">Withdrawal Balance</p>
-                <p className="text-lg font-semibold ">{balance} ZAR</p>
+                <p className="text-lg font-semibold ">{balance} R</p>
               </div>
               <div>
                 <p className="text-light text-sm">Selected</p>
@@ -82,7 +82,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                     required: "Amount is required",
                     validate: (value) => {
                       if (parseFloat(value) > balance) {
-                        return `Amount cannot be greater than ${balance} ZAR`;
+                        return `Amount cannot be greater than ${balance} R`;
                       }
                       return true;
                     },
@@ -97,7 +97,7 @@ const RequestWithdrawal = ({ handleClose, balance }) => {
                   {" "}
                   <CgCopyright size={20} />{" "}
                 </span>{" "}
-                Minimum withdrawal amount is <b className="ml-1">100 ZAR</b>
+                Minimum withdrawal amount is <b className="ml-1">100 R</b>
               </p>
             </div>
 

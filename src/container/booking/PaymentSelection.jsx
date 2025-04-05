@@ -79,15 +79,15 @@ export function PaymentSelection({
           <div className="space-y-2 leading-3 text-xs border p-3 px-6">
             <div className="flex justify-between text-xs">
               <span>Lesson Count: 1</span>
-              <span>ZAR {(price * duration / 60).toFixed(2)}</span>
+              <span>R {(price * duration / 60).toFixed(2)}</span>
             </div>
             <div>Lesson(s) Duration: {duration} Minutes</div>
-            <div>Item price: ZAR {(price * duration / 60).toFixed(2)}</div>
+            <div>Item price: R {(price * duration / 60).toFixed(2)}</div>
             <div>Teach subject: {subject?.name}</div>
             <div className="pt-4 border-t mt-4">
               <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>
-                <span className="">ZAR {(price * duration / 60).toFixed(2)}</span>
+                <span className="">R {(price * duration / 60).toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ export function PaymentSelection({
           </button>
 
           <p className="text-sm text-gray-500 mt-4 text-center">
-            * All purchases are in ZAR. Foreign transaction fees might apply
+            * All purchases are in R. Foreign transaction fees might apply
             according to your bank policies.
           </p>
         </div>
