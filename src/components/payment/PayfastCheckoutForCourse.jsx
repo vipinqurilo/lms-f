@@ -20,7 +20,7 @@ const verifyPaymentService = async (dispatch, paymentId, onSuccess, onError, onC
     const response = await dispatch(verifyPayfastPayment(paymentId)).unwrap();
     
     if (response.status === "success" && 
-        response.data && 
+        response.data &&  
         response.data.paymentStatus === "paid") {
       console.log(`[${new Date().toISOString()}] Payment successful`);
       if (onSuccess) onSuccess(response.data);
@@ -54,7 +54,7 @@ const PayfastCheckoutForCourse = ({
   const [userClosedWindow, setUserClosedWindow] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [modalState, setModalState] = useState('processing'); // 'processing', 'loading', 'success'
-  
+  console.log(modalState,"modalStatemodalStatemodalState")
   // Refs
   const payfastWindowRef = useRef(null);
   const timerIdsRef = useRef({
@@ -66,7 +66,7 @@ const PayfastCheckoutForCourse = ({
   });
   const mountedRef = useRef(false);
   const verificationAttemptsRef = useRef(0);
-  const maxVerificationAttempts = 5;  // Limit the number of verification attempts
+  const maxVerificationAttempts = 8;  // Limit the number of verification attempts
   
   const dispatch = useDispatch();
   const router = useRouter();
@@ -102,7 +102,7 @@ const PayfastCheckoutForCourse = ({
     // Ensure modal state is correct on mount based on existing states
     if (paymentComplete) {
       setModalState('success');
-    } else if (isProcessingPayment ||isLoadingEnrolledCourses?.[createOrder]) {
+    } else if (isProcessingPayment ||isLoadingEnrolledCourses?.["createOrder"]) {
       setModalState('loading');
     } else {
       setModalState('processing');
@@ -112,7 +112,7 @@ const PayfastCheckoutForCourse = ({
       mountedRef.current = false;
       clearAllTimers();
     };
-  }, [clearAllTimers, paymentComplete, isProcessingPayment]);
+  }, [clearAllTimers, paymentComplete, isProcessingPayment, isLoadingEnrolledCourses]);
 
   // Handle successful payment processing
   const handlePaymentSuccess = useCallback((responseData) => {
@@ -182,18 +182,6 @@ const PayfastCheckoutForCourse = ({
       timerIdsRef.current.countdown = setTimeout(() => {
         setCountdown(prev => prev - 1);
       }, 1000);
-    } else if (paymentComplete && countdown === 0) {
-      // Only redirect automatically if the component is still mounted
-      if (mountedRef.current) {
-        console.log(`[${new Date().toISOString()}] Redirecting after countdown completed`);
-        dispatch(clearPayfastCheckoutData());
-        
-        // Clear all timers before redirecting
-        clearAllTimers();
-        
-        if (onClose) onClose();
-        router.push("/student-dashboard/enrolled-courses");
-      }
     }
     
     // Cleanup timer on component unmount or countdown change
@@ -202,7 +190,7 @@ const PayfastCheckoutForCourse = ({
         clearTimeout(timerIdsRef.current.countdown);
       }
     };
-  }, [paymentComplete, countdown, router, dispatch, onClose, clearAllTimers]);
+  }, [paymentComplete, countdown]);
 
   // Setup payment verification function
   const checkPaymentStatus = useCallback(() => {
@@ -256,7 +244,7 @@ const PayfastCheckoutForCourse = ({
     verificationAttemptsRef.current = 0;
     
     // Only open the window automatically on first mount if not reopening
-    if (paymentUrl && !userClosedWindow) {
+    if (paymentUrl && !userClosedWindow && !payfastWindowRef.current) {
       payfastWindowRef.current = window.open(
         paymentUrl,
         "PayFast Checkout",
@@ -340,6 +328,17 @@ const PayfastCheckoutForCourse = ({
   const openPayfastWindow = useCallback(() => {
     if (isProcessingPayment || paymentComplete) return;
     
+    // If the window is already open, just focus it instead of opening a new one
+    if (payfastWindowRef.current && !payfastWindowRef.current.closed) {
+      try {
+        payfastWindowRef.current.focus();
+        return;
+      } catch (error) {
+        console.error("Error focusing window:", error);
+        // If focusing fails, we'll open a new window
+      }
+    }
+    
     // Reset the userClosedWindow flag when manually opening
     setUserClosedWindow(false);
 
@@ -376,6 +375,16 @@ const PayfastCheckoutForCourse = ({
   const handleOpenPaymentWindow = useCallback(() => {
     if (isProcessingPayment || paymentComplete || verificationInProgress) return;
     
+    // If window is already open, just focus it
+    if (payfastWindowRef.current && !payfastWindowRef.current.closed) {
+      try {
+        payfastWindowRef.current.focus();
+        return;
+      } catch (error) {
+        console.error("Error focusing window:", error);
+      }
+    }
+    
     if (!paymentId) {
       openPayfastWindow();
       return;
@@ -404,9 +413,9 @@ const PayfastCheckoutForCourse = ({
 
   // Completely rewritten modal implementation to fix overlapping issue
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-black/25 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
-      {modalState === 'success' && (
-        <div className="bg-white rounded-lg p-8 mt-4 w-3/4 max-w-xl text-center relative">
+    <div className="w-full h-screen flex items-center justify-center bg-black bg-opacity-15 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
+      {modalState === 'success' ? (
+        <div className="bg-white rounded-lg p-8 z-[1000] mt-4 w-3/4 max-w-xl text-center relative">
           <div className="absolute top-4 right-4">
             <button
               className="text-gray-500 hover:text-red-500"
@@ -466,10 +475,6 @@ const PayfastCheckoutForCourse = ({
               </div>
             )}
 
-            <p className="text-gray-500 text-sm">
-              Redirecting to your courses in {countdown} seconds...
-            </p>
-
             <button
               onClick={() => {
                 dispatch(clearPayfastCheckoutData());
@@ -482,9 +487,7 @@ const PayfastCheckoutForCourse = ({
             </button>
           </div>
         </div>
-      )}
-      
-      {modalState === 'loading' && (
+      ) :modalState === 'loading' ? (
         <div className="bg-white rounded-lg p-8 mt-4 w-3/4 max-w-xl text-center relative">
           <div className="absolute top-4 right-4">
             <button
@@ -508,9 +511,7 @@ const PayfastCheckoutForCourse = ({
             </p>
           </div>
         </div>
-      )}
-      
-      {modalState === 'processing' && (
+      ) :(
         <div className="bg-white rounded-lg p-4 mt-4 w-3/4 max-w-xl text-center relative">
           <div className="absolute top-4 right-4">
             <button
@@ -557,6 +558,7 @@ const PayfastCheckoutForCourse = ({
           </div>
         </div>
       )}
+      
     </div>
   );
 };
