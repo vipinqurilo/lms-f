@@ -41,7 +41,7 @@ export const fetchBookingsByTutorIdAsync = CreateApiAsyncThunk(
 
 export const createBookingAsync = CreateApiAsyncThunk(
   "booking/createBookingAsync",
-  ({sessionId, mode}) => api.post("/bookings", {sessionId, mode})
+  ({sessionId, mode="payfast"}) => api.post("/bookings", {sessionId, mode})
 );
 
 export const createBookingPayment = CreateApiAsyncThunk(

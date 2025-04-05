@@ -61,7 +61,7 @@ export function CoursePaymentModal({
       </div>
 
       <div>
-        <h2 className="text-sm mb-4 text-[#040404]">HAVE A COUPON?</h2>
+        {/* <h2 className="text-sm mb-4 text-[#040404]">HAVE A COUPON?</h2>
         <div className="flex gap-2 relative">
           <FaTag className="absolute top-[50%] text-gray-300 -translate-y-[50%] left-5" />
           <input
@@ -75,7 +75,7 @@ export function CoursePaymentModal({
           >
             Apply
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-8">
           <h2 className="text-sm mb-4">SUMMARY</h2>

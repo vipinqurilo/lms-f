@@ -59,7 +59,7 @@ const PayfastCheckoutForBooking = ({
     setIsProcessingPayment(true);
 
     // Process booking
-    dispatch(createBookingAsync({ sessionId: responseData?.sessionId || responseData?.id }))
+    dispatch(createBookingAsync({ sessionId: responseData?.sessionId || responseData?.id , mode:"payfast"}))
       .unwrap()
       .then(response => {
         // Update UI state
@@ -76,7 +76,7 @@ const PayfastCheckoutForBooking = ({
             if (prev <= 1) {
               clearInterval(countdownInterval);
               onClose();
-              router.push('/student/dashboard/bookings');
+              router.push('/student-dashboard/booking');
               return 0;
             }
             return prev - 1;
@@ -405,29 +405,50 @@ const PayfastCheckoutForBooking = ({
 
           <div className="bg-gray-50 w-full p-4 rounded-lg mb-6">
             <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Session:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionTitle || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Teacher:</span>
+              <span className="font-semibold">
+                {paymentDetails?.teacherName || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Date:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionDate ? new Date(paymentDetails.sessionDate).toLocaleDateString() : "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Time:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionStartTime ? new Date(paymentDetails.sessionStartTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "-"}
+                {" - "}
+                {paymentDetails?.sessionEndTime ? new Date(paymentDetails.sessionEndTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Duration:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionDuration ? `${paymentDetails.sessionDuration} minutes` : "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
               <span className="text-gray-600">Amount:</span>
               <span className="font-semibold">
                 R {paymentDetails?.amount || "-"}
               </span>
             </div>
-            <div className="flex justify-between py-2 border-b border-gray-200">
-              <span className="text-gray-600">Transaction ID:</span>
-              <span className="font-semibold">
-                {paymentDetails?.transactionId || "-"}
-              </span>
-            </div>
+           
             <div className="flex justify-between py-2">
               <span className="text-gray-600">Status:</span>
-              <span className="font-semibold text-green-500">Paid</span>
+              <span className="font-semibold text-green-500">
+                {paymentDetails?.status || "Paid"}
+              </span>
             </div>
-            {paymentDetails?.metadata?.sessionTitle && (
-              <div className="flex justify-between py-2 border-t border-gray-200">
-                <span className="text-gray-600">Session:</span>
-                <span className="font-semibold">
-                  {paymentDetails.metadata.sessionTitle}
-                </span>
-              </div>
-            )}
           </div>
 
           <p className="text-gray-500 text-sm">
@@ -441,7 +462,7 @@ const PayfastCheckoutForBooking = ({
               router.push("/student-dashboard/booking");
             }}
             className="mt-4 px-6 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
-          >
+          > 
             Go to My Bookings
           </button>
         </div>
