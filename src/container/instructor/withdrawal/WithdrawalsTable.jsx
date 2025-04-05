@@ -167,7 +167,7 @@ const WithdrawalsTable = ({ headingsData, withdrawals }) => {
                   </p>
                 </div>
               </td>
-              <td className="px-6 py-4 font-medium">{row?.amount} ZAR</td>
+              <td className="px-6 py-4 font-medium">{row?.amount} R</td>
               <td className={`px-6 py-4 font-medium`}>
                 <button
                   onClick={() => handleEdit(row?._id)}

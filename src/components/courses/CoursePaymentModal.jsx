@@ -61,7 +61,7 @@ export function CoursePaymentModal({
       </div>
 
       <div>
-        <h2 className="text-sm mb-4 text-[#040404]">HAVE A COUPON?</h2>
+        {/* <h2 className="text-sm mb-4 text-[#040404]">HAVE A COUPON?</h2>
         <div className="flex gap-2 relative">
           <FaTag className="absolute top-[50%] text-gray-300 -translate-y-[50%] left-5" />
           <input
@@ -75,7 +75,7 @@ export function CoursePaymentModal({
           >
             Apply
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-8">
           <h2 className="text-sm mb-4">SUMMARY</h2>
@@ -86,12 +86,12 @@ export function CoursePaymentModal({
             </div>
             <div className="flex justify-between text-xs">
               <span>Item price:</span>
-              <span>ZAR {coursePrice.toFixed(2)}</span>
+              <span>R {coursePrice.toFixed(2)}</span>
             </div>
             <div className="pt-4 border-t mt-4">
               <div className="flex justify-between font-medium text-secondary">
                 <span>Total</span>
-                <span>ZAR {coursePrice.toFixed(2)}</span>
+                <span>R {coursePrice.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ export function CoursePaymentModal({
           </button>
 
           <p className="text-sm text-gray-500 mt-4 text-center">
-            * All purchases are in ZAR. Foreign transaction fees might apply
+            * All purchases are in R. Foreign transaction fees might apply
             according to your bank policies.
           </p>
         </div>

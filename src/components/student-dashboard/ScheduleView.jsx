@@ -43,8 +43,8 @@ export default function ScheduleView({
             onClick={() => setShowCalendar(!showCalendar)}
             className="p-2 flex justify-center items-center hover:bg-gray-50 relative rounded-lg transition-colors"
           >
-            <span className="absolute top-[50%] -translate-y-1/2 right-[110%] text-sm text-gray-600">
-              {format(startDate, "MMM")}
+            <span className="absolute top-[50%] text-nowrap -translate-y-1/2 right-[110%] text-sm text-gray-600">
+              {format(startDate, "MMM yyyy")}
             </span>
             <svg
               width="20"

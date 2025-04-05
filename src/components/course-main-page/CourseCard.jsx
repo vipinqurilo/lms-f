@@ -124,12 +124,12 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
         </div>
       </div>
       <div className=" py-4 ">
-        <h3 className="text-xl font-bold pb-2">
+        {/* <h3 className="text-xl font-bold pb-2">
           {data?.courseTitle || "Course Title"}
-        </h3>
+        </h3> */}
         <div className="w-full flex justify-between items-center">
           <h3 className="text-green-500 text-2xl font-bold">
-            {data?.coursePrice || "--"} ZAR
+          R {data?.coursePrice || "--"} 
           </h3>
           {/* <p className="text-gray-500">
             <span className="line-through">₹1999.00</span> <span>50% off</span>

@@ -49,76 +49,91 @@ const PayfastCheckoutForBooking = ({
   // Extract payment ID from store data
   const paymentId = payfastCheckoutData?.data?.paymentId || null;
 
-  // Handle successful payment processing - includes circuit breaker to prevent duplicate calls
+  // Handle successful payment processing
   const handlePaymentSuccess = (responseData) => {
-    // Skip if already processing or completed payment
-    if (isProcessingPayment || paymentComplete) return;
-    
-    // Set processing flag to prevent duplicate calls
+    // Close PayFast window if still open
+    if (payfastWindowRef.current && !payfastWindowRef.current.closed) {
+      payfastWindowRef.current.close();
+    }
+
     setIsProcessingPayment(true);
+
+    // Process booking
+    dispatch(createBookingAsync({ sessionId: responseData?.sessionId || responseData?.id , mode:"payfast"}))
+      .unwrap()
+      .then(response => {
+        // Update UI state
+        setPaymentComplete(true);
+        setPaymentDetails(response.data);
+        
+        // Reset window flag for next payment
+        window.paymentWindowOpened = false;
+        
+        // Start countdown for automatic redirect
+        const countdownInterval = setInterval(() => {
+          setCountdown(prev => {
+            // Redirect when countdown reaches 0
+            if (prev <= 1) {
+              clearInterval(countdownInterval);
+              onClose();
+              router.push('/student-dashboard/booking');
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      })
+      .catch(error => {
+        console.error("Booking creation error:", error);
+        setIsProcessingPayment(false);
+      });
+  };
+
+  // Handle closing of the modal
+  const handleClose = () => {
+    // Clean up all intervals
+    cleanupAllIntervals();
+    
+    // Reset flags
+    window.paymentWindowOpened = false;
     
     // Close PayFast window if still open
     if (payfastWindowRef.current && !payfastWindowRef.current.closed) {
       payfastWindowRef.current.close();
     }
     
-    // Process the booking
-    dispatch(createBookingAsync({ sessionId: responseData?.sessionId, mode: "payfast" }))
-      .unwrap()
-      .then(response => {
-        completePaymentProcess(response.data);
-      })
-      .catch(error => {
-        console.error("Booking creation error:", error);
-        setIsVerifying(false);
-        setIsProcessingPayment(false); // Reset processing flag on error
-      });
-  };
-
-  // Complete the payment process
-  const completePaymentProcess = (data) => {
-    setPaymentComplete(true);
-    setPaymentDetails(data);
-    setUserClosedWindow(true);
-    if (onClose) onClose();
-  };
-
-  // Handle window closing
-  const handleClose = () => {
-    cleanupAllIntervals();
+    // Clear Redux data and close modal
     dispatch(clearPayfastCheckoutData());
     dispatch(clearBookingData());
     setPaymentModal(false);
   };
 
-  // Cleanup function for all intervals and timeouts
+  // Cleanup function for all intervals
   const cleanupAllIntervals = () => {
-    // Clear all intervals and timeouts
-    if (verificationIntervalRef.current) clearInterval(verificationIntervalRef.current);
-    if (windowCheckIntervalRef.current) clearInterval(windowCheckIntervalRef.current);
-    if (initialCheckTimeoutRef.current) clearTimeout(initialCheckTimeoutRef.current);
-    if (finalCheckTimeoutRef.current) clearTimeout(finalCheckTimeoutRef.current);
-  };
-
-  // Handle countdown and redirection after payment success
-  useEffect(() => {
-    let timer;
-    if (paymentComplete && countdown > 0) {
-      timer = setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
-    } else if (paymentComplete && countdown === 0) {
-      // Clear payment data from Redux store before redirecting
-      dispatch(clearPayfastCheckoutData());
-      dispatch(clearBookingData());
-      if (onClose) onClose();
-      router.push("/student-dashboard/booking");
+    // Clear all interval and timeout references
+    if (initialCheckTimeoutRef.current) {
+      clearTimeout(initialCheckTimeoutRef.current);
+      initialCheckTimeoutRef.current = null;
     }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [paymentComplete, countdown, router, dispatch, onClose]);
+    
+    if (finalCheckTimeoutRef.current) {
+      clearTimeout(finalCheckTimeoutRef.current);
+      finalCheckTimeoutRef.current = null;
+    }
+    
+    if (verificationIntervalRef.current) {
+      clearInterval(verificationIntervalRef.current);
+      verificationIntervalRef.current = null;
+    }
+    
+    if (windowCheckIntervalRef.current) {
+      clearInterval(windowCheckIntervalRef.current);
+      windowCheckIntervalRef.current = null;
+    }
+    
+    // Reset the flag for next payment
+    window.paymentWindowOpened = false;
+  };
 
   // Verify payment status
   const checkPaymentStatus = () => {
@@ -390,29 +405,50 @@ const PayfastCheckoutForBooking = ({
 
           <div className="bg-gray-50 w-full p-4 rounded-lg mb-6">
             <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Session:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionTitle || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Teacher:</span>
+              <span className="font-semibold">
+                {paymentDetails?.teacherName || "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Date:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionDate ? new Date(paymentDetails.sessionDate).toLocaleDateString() : "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Time:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionStartTime ? new Date(paymentDetails.sessionStartTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "-"}
+                {" - "}
+                {paymentDetails?.sessionEndTime ? new Date(paymentDetails.sessionEndTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
+              <span className="text-gray-600">Duration:</span>
+              <span className="font-semibold">
+                {paymentDetails?.sessionDuration ? `${paymentDetails.sessionDuration} minutes` : "-"}
+              </span>
+            </div>
+            <div className="flex justify-between py-2 border-b border-gray-200">
               <span className="text-gray-600">Amount:</span>
               <span className="font-semibold">
                 R {paymentDetails?.amount || "-"}
               </span>
             </div>
-            <div className="flex justify-between py-2 border-b border-gray-200">
-              <span className="text-gray-600">Transaction ID:</span>
-              <span className="font-semibold">
-                {paymentDetails?.transactionId || "-"}
-              </span>
-            </div>
+           
             <div className="flex justify-between py-2">
               <span className="text-gray-600">Status:</span>
-              <span className="font-semibold text-green-500">Paid</span>
+              <span className="font-semibold text-green-500">
+                {paymentDetails?.status || "Paid"}
+              </span>
             </div>
-            {paymentDetails?.metadata?.sessionTitle && (
-              <div className="flex justify-between py-2 border-t border-gray-200">
-                <span className="text-gray-600">Session:</span>
-                <span className="font-semibold">
-                  {paymentDetails.metadata.sessionTitle}
-                </span>
-              </div>
-            )}
           </div>
 
           <p className="text-gray-500 text-sm">
@@ -426,7 +462,7 @@ const PayfastCheckoutForBooking = ({
               router.push("/student-dashboard/booking");
             }}
             className="mt-4 px-6 py-2 bg-secondary text-white rounded-lg hover:bg-opacity-90"
-          >
+          > 
             Go to My Bookings
           </button>
         </div>

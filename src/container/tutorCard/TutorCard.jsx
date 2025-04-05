@@ -87,8 +87,8 @@ const TutorCard = ({ tutor, setTutor, setShowBooking }) => {
               {!tutor?.subjectsTaught?.length 
                 ? 'Price not set'
                 : tutor?.subjectsTaught?.length === 1 
-                  ? `ZAR ${tutor?.subjectsTaught[0]?.pricePerHour}`
-                  : `ZAR ${Math.min(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))} - ZAR ${Math.max(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))}`
+                  ? `R ${tutor?.subjectsTaught[0]?.pricePerHour}`
+                  : `R ${Math.min(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))} - R ${Math.max(...tutor?.subjectsTaught?.map(s => s?.pricePerHour))}`
               }
             </div>
                   

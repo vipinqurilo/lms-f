@@ -50,7 +50,7 @@ const WithdrawalTabProfile = () => {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
           Select a withdraw method{" "}
-          <span className="text-sm text-light">(Minimum withdraw 100 ZAR)</span>
+          <span className="text-sm text-light">(Minimum withdraw 100 R)</span>
         </h3>
 
         {/* <div className="w-full grid grid-cols-3 gap-5">

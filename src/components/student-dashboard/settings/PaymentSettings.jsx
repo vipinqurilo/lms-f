@@ -115,6 +115,18 @@ const PaymentSettings = ({ type = 'payment' }) => {
                 >
                   PayPal
                 </button>
+                {type === 'payout' && (
+                  <button
+                    onClick={() => handleTabChange('payfast')}
+                    className={`${
+                      activeTab === 'payfast'
+                        ? 'border-primary text-primary'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+                  >
+                    PayFast
+                  </button>
+                )}
               </nav>
             </div>
           </div>
@@ -289,6 +301,36 @@ const PaymentSettings = ({ type = 'payment' }) => {
                   </div>
                   {formErrors.paypal?.secret && (
                     <p className="text-red-500 text-xs mt-1">{formErrors.paypal.secret.message}</p>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* PayFast Settings - Only for Payout type */}
+            {type === 'payout' && activeTab === 'payfast' && (
+              <div className="space-y-6">
+                <h3 className="text-lg font-medium text-gray-900">PayFast Configuration</h3>
+                
+                {/* PayFast Registered Email */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Registered Email
+                  </label>
+                  <input
+                    type="email"
+                    {...register("payfast.email", { 
+                      required: "PayFast registered email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Invalid email address"
+                      }
+                    })}
+                    className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-primary focus:border-primary"
+                    placeholder="Enter PayFast registered email"
+                    disabled={isUpdating}
+                  />
+                  {formErrors.payfast?.email && (
+                    <p className="text-red-500 text-xs mt-1">{formErrors.payfast.email.message}</p>
                   )}
                 </div>
               </div>
