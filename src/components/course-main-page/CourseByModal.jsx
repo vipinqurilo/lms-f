@@ -32,11 +32,10 @@ const CourseByModal = ({
           setPaymentModal={setisPaymentModal}
           setisModalOpen={setisModalOpen}
         />
-      ) : payfastCheckoutData && authUser !== null && selectedMethod === "payfast" ? (
+      ) : payfastCheckoutData?.data?.paymentData?.item_name===data?._id && authUser !== null && selectedMethod === "payfast" ? (
         <PayfastCheckoutForCourse
           paymentUrl={payfastCheckoutData?.data?.paymentUrl}
-          setPaymentModal={setisPaymentModal}
-          onClose={() => setisModalOpen(false)}
+          onClose={()=>setisModalOpen(false)}
         />
       ) : (
         <>
