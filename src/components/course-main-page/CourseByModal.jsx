@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { CoursePaymentModal } from "../courses/CoursePaymentModal";
 import { IoClose } from "react-icons/io5";
 import SlideShow from "@/container/login/SlideShow";
 import LoginForm from "@/container/login/LoginForm";
 import BackgroundModal from "../instructor/BackgroundModal";
 import CheckoutForm from "../payment/CheckoutForm";
-import PayfastCheckoutForCourse from "../payment/PayfastCheckoutForCourse";
 import { useSelector } from "react-redux";
+import PayfastCheckoutForCourse from "../payment/PayfastCheckoutForCourse";
 
 const CourseByModal = ({
   isPaymentModal,

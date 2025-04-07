@@ -14,7 +14,9 @@ const LectureItem = ({ lecture, index, i, isAccessible }) => {
         }
       >
         {isAccessible ? (
-          <BiPlayCircle className="text-secondary text-lg" />
+          <>
+            {/* <BiPlayCircle className="text-secondary text-lg" /> */}
+          </>
         ) : (
           <BiSolidLockAlt className="text-black/60 text-lg" />
         )}

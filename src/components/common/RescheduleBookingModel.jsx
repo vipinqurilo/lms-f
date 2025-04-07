@@ -240,7 +240,7 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   } rounded-lg transition-colors`}
                 >
-                  {bookingLoading?.["rescheduleBooking"] ? <Loader text={"Requesting reschedule"} /> : "Reschedule"}
+                  {bookingLoading?.["rescheduleBooking"] ? <Loader text={"Requesting"} /> : "Reschedule"}
                 </button>
               </div>
             </div>

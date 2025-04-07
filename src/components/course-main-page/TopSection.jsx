@@ -58,7 +58,10 @@ const TopSection = ({ data }) => {
                 <p className="">{data?.courseInstructor?.role || "Teacher"}</p>
               </div>
             </div>
-            <div className="flex items-center text-xl gap-1">
+            <div 
+              className="flex items-center text-xl gap-1 cursor-pointer" 
+              onClick={() => document.getElementById('reviews').scrollIntoView({ behavior: 'smooth' })}
+            >
               {ratings && averageRating && (
                 <>
                   <RatingStars rating={averageRating} />

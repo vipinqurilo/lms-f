@@ -98,3 +98,13 @@
 .progress-bar {
   animation: progressAnimation 4s ease-in-out infinite;
 }
+
+.remove-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.remove-scrollbar {
+  scrollbar-width: none;
+}
+
+

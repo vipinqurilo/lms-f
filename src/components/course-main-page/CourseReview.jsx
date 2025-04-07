@@ -21,7 +21,7 @@ const CourseReview = ({ data }) => {
   };
 
   return (
-    <div className="course-sub-container">
+    <div className="course-sub-container" id="reviews">
       <Heading data={"Students Reviews"} />
       <div className="space-y-6">
         {data?.length === 0 ? (

@@ -20,6 +20,7 @@ import EditMeetingLink from "@/components/common/EditMeetingLink";
 import { useDispatch, useSelector } from "react-redux";
 import { rescheduleResponseAsync } from "@/store/slices/bookingSlice";
 import { toast } from "react-hot-toast";
+import Tooltip from "@/container/common/Tooltip";
 
 const BookingList = ({ bookings, isLoading}) => {
   const router = useRouter();
@@ -285,140 +286,209 @@ const BookingList = ({ bookings, isLoading}) => {
 
                             {/* Buttons */}
                             <div className="col-span-2 flex  items-center justify-center gap-4">
-                              <button
-                                disabled={
-                                  booking?.status === "cancelled" ||
-                                  (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0) || booking?.meetingLink === null
+                              <Tooltip 
+                                text={
+                                  booking?.status === "cancelled" 
+                                    ? "Booking is cancelled" 
+                                    : (timeUntilStart <= 3600000 && timeUntilStart > 0) 
+                                      ? "Meeting link available only before class starts" 
+                                      : booking?.meetingLink === null 
+                                        ? "No meeting link available" 
+                                        : "Join meeting"
                                 }
-                                className={`h-5 w-5 ${
-                                  booking?.status === "cancelled" ||
-                                  (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0) || booking?.meetingLink === null
-                                    ? "text-gray-200"
-                                    : "text-gray-600"
-                                } cursor-pointer`}
-                                onClick={() => {
-                                  if (booking?.meetingLink) {
-                                    window.open(booking.meetingLink, "_blank"); 
+                                position="top"
+                              >
+                                <button
+                                  disabled={
+                                    booking?.status === "cancelled" ||
+                                    (timeUntilStart <= 3600000 &&
+                                      timeUntilStart > 0) || booking?.meetingLink === null
                                   }
-                                }}
-                              >
-                                
-                                <Video />
-                              </button>
-                              {authUser?.role !== "admin"&&(<><button 
-                                disabled={
-                                 ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
-                                  (timeUntilStart <= 3600000 &&  
-                                    timeUntilStart > 0) || 
-                                  booking?.rescheduleRequest?.status==="pending" ||
-                                  booking?.rescheduleRequest?.status === "accepted_by_party" ||
-                                  booking?.rescheduleRequest?.status === "completed" ||
-                                  booking?.hasBeenRescheduled
-                                }
-                                className={`h-5 w-5 ${
-                                  ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
-                                  (timeUntilStart <= 3600000 && 
-                                    timeUntilStart > 0) || 
-                                  booking?.rescheduleRequest?.status==="pending" ||
-                                  booking?.rescheduleRequest?.status === "accepted_by_party" ||
-                                  booking?.rescheduleRequest?.status === "completed" ||
-                                  booking?.hasBeenRescheduled
-                                    ? "text-gray-200"
-                                    : "text-gray-600"
-                                }  cursor-pointer`}
-                                onClick={() => {
-                                  setBooking(booking);
-                                  setIsOpen("reschedule");
-                                }}
-                              >
-                                {isLoading?.["rescheduleResponseAsync"] ? (
-                                  <Loader />
-                                ) : (
-                                  <ListRestart />
-                                )}
-                              </button>
+                                  className={`h-5 w-5 ${
+                                    booking?.status === "cancelled" ||
+                                    (timeUntilStart <= 3600000 &&
+                                      timeUntilStart > 0) || booking?.meetingLink === null
+                                      ? "text-gray-200"
+                                      : "text-gray-600"
+                                  } cursor-pointer`}
+                                  onClick={() => {
+                                    if (booking?.meetingLink) {
+                                      window.open(booking.meetingLink, "_blank"); 
+                                    }
+                                  }}
+                                >
+                                  <Video />
+                                </button>
+                              </Tooltip>
+                              
+                              {authUser?.role !== "admin"&&(<>
+                                <Tooltip 
+                                  text={
+                                    (booking?.status !== "scheduled" && booking?.status !== "confirmed")
+                                      ? "Booking must be scheduled or confirmed"
+                                      : (timeUntilStart <= 3600000 && timeUntilStart > 0)
+                                        ? "Cannot reschedule within 1 hour of start time"
+                                        : booking?.rescheduleRequest?.status === "pending"
+                                          ? "Reschedule request already pending"
+                                          : booking?.rescheduleRequest?.status === "accepted_by_party" || 
+                                            booking?.rescheduleRequest?.status === "completed" ||
+                                            booking?.hasBeenRescheduled
+                                            ? "Booking already in reschedule process"
+                                            : "Request reschedule"
+                                  }
+                                  position="top"
+                                >
+                                  <button 
+                                    disabled={
+                                    ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
+                                      (timeUntilStart <= 3600000 &&  
+                                        timeUntilStart > 0) || 
+                                      booking?.rescheduleRequest?.status==="pending" ||
+                                      booking?.rescheduleRequest?.status === "accepted_by_party" ||
+                                      booking?.rescheduleRequest?.status === "completed" ||
+                                      booking?.hasBeenRescheduled
+                                    }
+                                    className={`h-5 w-5 ${
+                                      ( booking?.status !== "scheduled" && booking?.status !== "confirmed") ||
+                                      (timeUntilStart <= 3600000 && 
+                                        timeUntilStart > 0) || 
+                                      booking?.rescheduleRequest?.status==="pending" ||
+                                      booking?.rescheduleRequest?.status === "accepted_by_party" ||
+                                      booking?.rescheduleRequest?.status === "completed" ||
+                                      booking?.hasBeenRescheduled
+                                        ? "text-gray-200"
+                                        : "text-gray-600"
+                                    }  cursor-pointer`}
+                                    onClick={() => {
+                                      setBooking(booking);
+                                      setIsOpen("reschedule");
+                                    }}
+                                  >
+                                    {isLoading?.["rescheduleResponseAsync"] ? (
+                                      <Loader />
+                                    ) : (
+                                      <ListRestart />
+                                    )}
+                                  </button>
+                                </Tooltip>
 
-                              <button
-                                disabled={
-                                  booking?.status === "cancelled" ||
-                                  booking?.status === "rescheduled" ||
-                                  (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0)
-                                }
-                                className={`h-5 w-5 ${
-                                  booking?.status === "cancelled" ||
-                                  booking?.status === "rescheduled" ||
-                                  (timeUntilStart <= 3600000 &&
-                                    timeUntilStart > 0)
-                                    ? "text-gray-200"
-                                    : "text-gray-600"
-                                } cursor-pointer`}
-                                onClick={() => {
-                                  setBooking(booking);
-                                  setIsOpen("cancelation");
-                                }}
-                              >
-                                {isLoading?.["cancelBookingAsync"] ? (
-                                  <Loader />
-                                ) : (
-                                  <CircleX />
-                                )}
-                              </button></>)}
+                                <Tooltip 
+                                  text={
+                                    booking?.status === "cancelled"
+                                      ? "Booking is already cancelled"
+                                      : daysUntilStart <= 0
+                                        ? "Cannot cancel on the day of class"
+                                        : booking?.status === "rescheduled"
+                                          ? "Rescheduled booking cannot be cancelled"
+                                          : (timeUntilStart <= 3600000 && timeUntilStart > 0)
+                                            ? "Cannot cancel within 1 hour of start time"
+                                            : "Cancel booking"
+                                  }
+                                  position="top"
+                                >
+                                  <button
+                                    disabled={
+                                      booking?.status === "cancelled" || daysUntilStart <= 0 ||
+                                      booking?.status === "rescheduled" ||
+                                      (timeUntilStart <= 3600000 &&
+                                        timeUntilStart > 0)
+                                    }
+                                    className={`h-5 w-5 ${
+                                      booking?.status === "cancelled" || daysUntilStart <= 0 ||
+                                      booking?.status === "rescheduled" ||
+                                      (timeUntilStart <= 3600000 &&
+                                        timeUntilStart > 0)
+                                        ? "text-gray-200"
+                                        : "text-gray-600"
+                                    } cursor-pointer`}
+                                    onClick={() => {
+                                      setBooking(booking);
+                                      setIsOpen("cancelation");
+                                    }}
+                                  >
+                                    {isLoading?.["cancelBookingAsync"] ? (
+                                      <Loader />
+                                    ) : (
+                                      <CircleX />
+                                    )}
+                                  </button>
+                                </Tooltip>
+                              </>)}
                               
                               {authUser?.role === "teacher" ? (
                                 <>
                                   {booking?.status === "confirmed" ? (
-                                    <button
-                                      disabled={
-                                        booking?.status === "cancelled" ||
-                                        (timeUntilStart <= 3600000 &&
-                                          timeUntilStart > 0)
+                                    <Tooltip 
+                                      text={
+                                        booking?.status === "cancelled"
+                                          ? "Cannot edit cancelled booking"
+                                          : (timeUntilStart <= 3600000 && timeUntilStart > 0)
+                                            ? "Cannot edit within 1 hour of start time"
+                                            : "Edit meeting link"
                                       }
-                                      onClick={() => {
-                                        setBooking(booking);
-                                        setIsOpen("edit");
-                                      }}
-                                      className={`h-5 w-5 ${
-                                        booking?.status === "cancelled" ||
-                                        (timeUntilStart <= 3600000 &&
-                                          timeUntilStart > 0)
-                                          ? "text-gray-200"
-                                          : "text-gray-600"
-                                      } cursor-pointer`}
+                                      position="top"
                                     >
-                                      {isLoading?.["updateBooking"] ? (
-                                        <Loader />
-                                      ) : (
-                                        <FilePenLine />
-                                      )}
-                                    </button>
+                                      <button
+                                        disabled={
+                                          booking?.status === "cancelled" ||
+                                          (timeUntilStart <= 3600000 &&
+                                            timeUntilStart > 0)
+                                        }
+                                        onClick={() => {
+                                          setBooking(booking);
+                                          setIsOpen("edit");
+                                        }}
+                                        className={`h-5 w-5 ${
+                                          booking?.status === "cancelled" ||
+                                          (timeUntilStart <= 3600000 &&
+                                            timeUntilStart > 0)
+                                            ? "text-gray-200"
+                                            : "text-gray-600"
+                                        } cursor-pointer`}
+                                      >
+                                        {isLoading?.["updateBooking"] ? (
+                                          <Loader />
+                                        ) : (
+                                          <FilePenLine />
+                                        )}
+                                      </button>
+                                    </Tooltip>
                                   ) : (
-                                    <button
-                                      disabled={
-                                        booking?.status === "cancelled" ||
-                                        (timeUntilStart <= 3600000 &&
-                                          timeUntilStart > 0)
+                                    <Tooltip 
+                                      text={
+                                        booking?.status === "cancelled"
+                                          ? "Cannot confirm cancelled booking"
+                                          : (timeUntilStart <= 3600000 && timeUntilStart > 0)
+                                            ? "Cannot confirm within 1 hour of start time"
+                                            : "Confirm booking"
                                       }
-                                      onClick={() => {
-                                        setBooking(booking);
-                                        setIsOpen("confiramation");
-                                      }}
-                                      className={`h-5 w-5 ${
-                                        booking?.status === "cancelled" ||
-                                        (timeUntilStart <= 3600000 &&
-                                          timeUntilStart > 0)
-                                          ? "text-gray-200"
-                                          : "text-gray-600"
-                                      } cursor-pointer`}
+                                      position="top"
                                     >
-                                      {isLoading?.["confirmBooking"] ? (
-                                        <Loader />
-                                      ) : (
-                                        <CircleCheckBig />
-                                      )}
-                                    </button>
+                                      <button
+                                        disabled={
+                                          booking?.status === "cancelled" ||
+                                          (timeUntilStart <= 3600000 &&
+                                            timeUntilStart > 0)
+                                        }
+                                        onClick={() => {
+                                          setBooking(booking);
+                                          setIsOpen("confiramation");
+                                        }}
+                                        className={`h-5 w-5 ${
+                                          booking?.status === "cancelled" ||
+                                          (timeUntilStart <= 3600000 &&
+                                            timeUntilStart > 0)
+                                            ? "text-gray-200"
+                                            : "text-gray-600"
+                                        } cursor-pointer`}
+                                      >
+                                        {isLoading?.["confirmBooking"] ? (
+                                          <Loader />
+                                        ) : (
+                                          <CircleCheckBig />
+                                        )}
+                                      </button>
+                                    </Tooltip>
                                   )}
                                 </>
                               ) : null}
@@ -720,6 +790,7 @@ const BookingList = ({ bookings, isLoading}) => {
         <BackgroundModal
           PropComponent={
             <CancelBookingModel
+              booking={booking}
               date={booking?.scheduledDate}
               bookingId={booking?._id}
               onClose={() => setIsOpen("")}
