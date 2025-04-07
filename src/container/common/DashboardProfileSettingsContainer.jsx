@@ -110,6 +110,7 @@ const DashboardProfileSettingsContainer = () => {
       label: "Price",
       Icon: LuBanknote,
     },
+    
   ];
 
   useEffect(() => {

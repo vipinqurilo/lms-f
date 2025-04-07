@@ -6,16 +6,16 @@ import toast from 'react-hot-toast';
 
 const SuccessFailure = ({ data, isSuccess = true }) => {
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-black bg-opacity-15 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
+    <div className="w-full remove-scrollbar h-screen flex items-center justify-center bg-black bg-opacity-15 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 z-[1000] mt-4 w-3/4 max-w-xl text-center relative">
-        <div className="absolute top-4 right-4">
+        {/* <div className="absolute top-4 right-4">
           <button
             className="text-gray-500 hover:text-red-500"
-            onClick={() => window.location.href = '/dashboard'}
+            onClick={() => window.location.href = '/'}
           >
             Close
           </button>
-        </div>
+        </div> */}
         
         <div className="flex flex-col items-center justify-center gap-6 py-4">
           {isSuccess ? (
@@ -41,7 +41,7 @@ const SuccessFailure = ({ data, isSuccess = true }) => {
           {isSuccess ? (
             <div className="w-full bg-gray-50 rounded-lg p-4 mt-2">
               <div className="flex flex-col gap-3">
-                <h3 className="text-xl font-semibold text-gray-700">{data?.data?.course?.courseTitle}</h3>
+                {/* <h3 className="text-xl font-semibold text-gray-700">{data?.data?.course?.courseTitle}</h3> */}
                 <div className="flex justify-between text-sm text-gray-600 border-b pb-2">
                   <span>Amount Paid:</span>
                   <span className="font-medium">₹{data?.data?.amount}</span>
@@ -204,7 +204,7 @@ const PayfastCheckoutForCourse = ({ paymentUrl, onClose }) => {
       // Set up interval for checking payment status every 3 seconds
       checkIntervalRef.current = setInterval(() => {
         checkPaymentStatus(paymentId);
-      }, 3000);
+      }, 4000);
       
       // Cleanup function
       return () => {
@@ -296,6 +296,15 @@ const PayfastCheckoutForCourse = ({ paymentUrl, onClose }) => {
   
   // Show success/failure component based on payment and order status
   if (paymentStatus?.data?.paymentStatus === 'paid') {
+    useEffect(() => {
+      // Disable scrolling when modal is mounted
+      document.body.style.overflow = 'hidden';
+      
+      // Re-enable scrolling when modal is unmounted
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }, []);
     return (
       <SuccessFailure 
         data={{
@@ -318,6 +327,15 @@ const PayfastCheckoutForCourse = ({ paymentUrl, onClose }) => {
   }
 
   if (error) {
+    useEffect(() => {
+      // Disable scrolling when modal is mounted
+      document.body.style.overflow = 'hidden';
+      
+      // Re-enable scrolling when modal is unmounted
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }, []);
     return (
       <SuccessFailure 
         data={{
@@ -328,7 +346,15 @@ const PayfastCheckoutForCourse = ({ paymentUrl, onClose }) => {
       />
     );
   }
-
+  useEffect(() => {
+    // Disable scrolling when modal is mounted
+    document.body.style.overflow = 'hidden';
+    
+    // Re-enable scrolling when modal is unmounted
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
   return (
     <div className="w-full h-screen flex items-center justify-center bg-black bg-opacity-15 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 z-[1000] mt-4 w-3/4 max-w-xl text-center relative">

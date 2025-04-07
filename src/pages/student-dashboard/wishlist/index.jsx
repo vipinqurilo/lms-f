@@ -44,24 +44,6 @@ export default function WishlistPage() {
               {/* Course Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-4 mx-8">
                 {wishlist?.map((item) => (
-                  // <CourseCard
-                  //   key={item._id}
-                  //   course={{
-                  //     id: item.course._id,
-                  //     title: item.course.courseTitle,
-                  //     instructor: {
-                  //       name: item.course?.courseInstructor?.name,
-                  //       image: item.course.courseImage,
-                  //     },
-                  //     thumbnail: item.course.courseImage,
-                  //     lessons: item.course.courseContent.length,
-                  //     duration: "70hr 30min",
-                  //     rating: 4.0,
-                  //     price: item.course.coursePrice,
-                  //   }}
-                  //   onWishlist={true}
-                  //   onWishlistClick={() => dispatch(addToWishlistAsync({course:item.course._id}))}
-                  // />
                   <FeaturedCard data={item?.course} isFull={true} />
                 ))}
               </div>

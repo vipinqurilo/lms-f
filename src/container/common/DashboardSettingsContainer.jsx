@@ -23,32 +23,10 @@ import {
 import { Settings2 } from "lucide-react";
 import EmailSettings from "@/components/student-dashboard/settings/EmailSettings";
 import PaymentSettings from "@/components/student-dashboard/settings/PaymentSettings";
-const DashboardSettingsContainer = () => {
-  const [activeTab, setActiveTab] = useState("frontend-settings");
+const DashboardSettingsContainer = ({tabs}) => {
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
   const dispatch = useDispatch();
-  const tabs = [
-    {
-      id: "frontend-settings",
-      label: "Frontend Settings",
-      Icon: Settings2,
-    },
-    {
-      id: "email-settings",
-      label: "Email Settings",
-      Icon: LuMail,
-    },
-
-    {
-      id: "payment-settings",
-      label: "Payment Settings",
-      Icon: LuCreditCard,
-    },
-    {
-      id: "payout-settings",
-      label: "Payout Settings",
-      Icon: LuCreditCard,
-    },
-  ];
+  
   useEffect(() => {
     dispatch(getProfile());
   }, []);

@@ -84,31 +84,7 @@ export default function EnrolledCoursesPage() {
               </div>
             ) : (
               enrolledCourses?.map((enrollment) => (
-                // <CourseCard
-                //   key={enrollment?._id}
-                //   type="course"
-                //   course={{
-                //     id: enrollment?.courseId?._id,
-                //     title: enrollment?.courseId?.courseTitle,
-                //     instructor: {
-                //       name:
-                //         enrollment?.courseId?.courseInstructor?.email || "N/A",
-                //       image: enrollment?.courseId?.courseImage,
-                //     },
-                //     thumbnail: enrollment?.courseId?.courseImage,
-                //     lessons: enrollment?.courseId?.courseContent.reduce(
-                //       (acc, module) => acc + module.lessons.length,
-                //       0
-                //     ),
-                //     duration: "N/A", // Replace if duration data is available
-
-                //     originalPrice: "N/A", // Replace if original price is available
-                //   }}
-                //   onWishlist={false}
-                //   onWishlistClick={() => {}}
-                // />
                 <FeaturedCard data={enrollment?.courseId} isFull={true} />
-                // <p>Hello</p>
               ))
             )}
           </div>
