@@ -17,7 +17,6 @@ export default function SettingsPage() {
       label: "Email Settings",
       Icon: LuMail,
     },
-
     {
       id: "payment-settings",
       label: "Payment Settings",

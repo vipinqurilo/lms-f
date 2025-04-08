@@ -33,6 +33,7 @@ const WithdrawalTabProfile = () => {
           bankName: profile?.paymentInfo?.bankName || "",
           ifscCode: profile?.paymentInfo?.ifscCode || "",
           paypalEmail: profile?.paymentInfo?.paypalEmail || "",
+          payfastEmail: profile?.paymentInfo?.payfastEmail || "",
         });
       }
     }
@@ -125,6 +126,20 @@ const WithdrawalTabProfile = () => {
               />
               <p className="text-light mt-2">
                 We will use this email address to send the money to your Paypal
+                account
+              </p>
+            </div>
+
+            <div className="mt-8">
+              <SettingsInputField
+                label={"PayFast Email Address"}
+                name={"payfastEmail"}
+                placeholder={"Enter PayFast Email Address"}
+                register={register}
+                errors={errors}
+              />
+              <p className="text-light mt-2">
+                We will use this email address to send the money to your PayFast
                 account
               </p>
             </div>
