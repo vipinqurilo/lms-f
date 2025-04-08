@@ -78,12 +78,6 @@ const SuccessFailure = ({ data, isSuccess = true }) => {
                 >
                   Go to Course
                 </button>
-                <button 
-                  onClick={() => window.location.href = '/student-dashboard/enrolled-courses'}
-                  className="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-all"
-                >
-                  Go to Dashboard
-                </button>
               </>
             ) : (
               <>
@@ -328,10 +322,8 @@ const PayfastCheckoutForCourse = ({ paymentUrl, onClose }) => {
 
   if (error) {
     useEffect(() => {
-      // Disable scrolling when modal is mounted
       document.body.style.overflow = 'hidden';
       
-      // Re-enable scrolling when modal is unmounted
       return () => {
         document.body.style.overflow = 'unset';
       };
