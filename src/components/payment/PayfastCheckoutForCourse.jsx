@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearPayfastCheckoutData, verifyPayfastPayment } from '@/store/slices/paymentSlice';
 import { createOrder } from '@/store/slices/coursesSlice';
 import toast from 'react-hot-toast';
-
+import { useRouter } from 'next/router';
 const SuccessFailure = ({ data, isSuccess = true }) => {
+  const router = useRouter();
   return (
     <div className="w-full remove-scrollbar h-screen flex items-center justify-center bg-black bg-opacity-15 !z-[20] !fixed !top-0 !left-0 backdrop-blur-sm">
       <div className="bg-white rounded-lg p-8 z-[1000] mt-4 w-3/4 max-w-xl text-center relative">
@@ -73,7 +74,7 @@ const SuccessFailure = ({ data, isSuccess = true }) => {
             {isSuccess ? (
               <>
                 <button 
-                  onClick={() => window.location.href = `/courses/${data?.data?.course?._id}`}
+                  onClick={() => router.push(`/courses/${data?.data?.course?._id}`)}
                   className="px-6 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-all"
                 >
                   Go to Course
