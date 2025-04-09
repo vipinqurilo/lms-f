@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
@@ -15,6 +15,16 @@ export default function PaymentStatus({ status, isLoading }) {
   const { perchasedCourse, error } = useSelector((state) => state.courses);
   const courseLoading = useSelector((state) => state.courses?.isLoading?.createOrder);
   const loading = isLoading || courseLoading;
+  const [errorMessage, setErrorMessage] = useState("Payment was unsuccessful.");
+  
+  useEffect(() => {
+    // Get error from query params after component mounts
+    if (router.query?.error) {
+      setErrorMessage(router.query.error);
+    } else if (error["PaymentCourse"]) {
+      setErrorMessage(error["PaymentCourse"]);
+    }
+  }, [router.query, error]);
   
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 font-nunito">
@@ -77,21 +87,20 @@ export default function PaymentStatus({ status, isLoading }) {
         {status === "failure" && (
           <>
             <IoCloseCircleOutline className="text-red-500 text-6xl" />
-            <h1 className="text-2xl font-bold text-red-600">Payment Failed!</h1>
-            <p className="text-gray-600">
-              Something went wrong with your payment.
-            </p>
-            {error["PaymentCourse"] && (
-              <p className="text-red-500 mt-2">{error["PaymentCourse"]}</p>
-            )}
-
-            <Link href={"/courses"}>
-              <CommonButton label={"Back to Courses"} />
-            </Link>
+            <h1 className="text-4xl font-bold text-red-500 mb-4">Payment Failed</h1>
+            <p className="text-lg text-gray-600">{errorMessage}</p>
+            
+            <div className="flex mt-6">
+              
+              <button 
+                onClick={() => window.close()}
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-4"
+              >
+                Close Window
+              </button>
+            </div>
           </>
         )}
-
-        {/* Back to Courses Button */}
       </div>
     </div>
   );

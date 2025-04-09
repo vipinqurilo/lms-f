@@ -9,6 +9,7 @@ import BackgroundModal from "../instructor/BackgroundModal";
 import CheckoutForm from "../payment/CheckoutForm";
 import { useSelector } from "react-redux";
 import PayfastCheckoutForCourse from "../payment/PayfastCheckoutForCourse";
+import PayfastCheckoutForCourse1 from "../payment/PayfastCheckoutForCourse1";
 
 const CourseByModal = ({
   isPaymentModal,
@@ -33,8 +34,9 @@ const CourseByModal = ({
           setisModalOpen={setisModalOpen}
         />
       ) : payfastCheckoutData?.data?.paymentData?.item_name===data?._id && authUser !== null && selectedMethod === "payfast" ? (
-        <PayfastCheckoutForCourse
+        <PayfastCheckoutForCourse1
           paymentUrl={payfastCheckoutData?.data?.paymentUrl}
+          setPaymentModal={setisPaymentModal}
           onClose={()=>setisModalOpen(false)}
         />
       ) : (

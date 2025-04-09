@@ -6,7 +6,7 @@ import { verifyPayfastPayment } from "@/store/slices/paymentSlice";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+ 
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
