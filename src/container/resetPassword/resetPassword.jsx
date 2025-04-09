@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { resetPasswordAsync } from "@/store/slices/userSlice";
+import BackgroundModal from "@/components/instructor/BackgroundModal";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -12,10 +13,17 @@ const ResetPassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [token, setToken] = useState("");
   const [isExpired, setIsExpired] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state
-
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
+  
   const dispatch = useDispatch();
   const router = useRouter();
+  const { isLoading } = useSelector((state) => state.user);
+  
+  const isSubmitting = isLoading?.["resetPasswordAsync"] || false;
 
   useEffect(() => {
     if (router.isReady) {
@@ -25,37 +33,55 @@ const ResetPassword = () => {
     }
   }, [router.isReady, router.asPath]);
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      newPassword: "",
+      confirmPassword: "",
+    };
+
+    if (!newPassword.trim()) {
+      newErrors.newPassword = "Password is required";
+      isValid = false;
+    } else if (newPassword.length < 8) {
+      newErrors.newPassword = "Password must be at least 8 characters";
+      isValid = false;
+    }
+
+    if (!confirmPassword.trim()) {
+      newErrors.confirmPassword = "Please confirm your password";
+      isValid = false;
+    } else if (newPassword !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!token) {
-      alert("Invalid or missing token.");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await dispatch(
-        resetPasswordAsync({ token, newPassword, confirmPassword })
-      ).unwrap();
-
-      if (response.message === "Invalid or expired token") {
-        setIsExpired(true);
-      }
-    } catch (error) {
-      console.error("Error resetting password:", error);
       setIsExpired(true);
-    } finally {
-      setLoading(false);
+      return;
     }
+    
+    if (!validateForm()) {
+      return;
+    }
+    dispatch(
+      resetPasswordAsync({ token, newPassword, confirmPassword })
+    ).unwrap()
+      .then(() => setIsSuccess(true))
+      .catch(() => setIsExpired(true));
+    
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 mt-14">
-      <div className="bg-white shadow-lg rounded-2xl p-8  w-full lg:w-5/12">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full lg:w-5/12">
         <h2 className="text-2xl font-semibold mt-12 text-gray-900">
           New Password
         </h2>
@@ -71,7 +97,9 @@ const ResetPassword = () => {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full p-3 border-none ring-1 outline-none ring-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary ${
+                  errors.newPassword ? "border-red-500" : ""
+                }`}
                 placeholder="Enter new password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -88,6 +116,9 @@ const ResetPassword = () => {
                 )}
               </button>
             </div>
+            {errors.newPassword && (
+              <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
+            )}
           </div>
 
           <div className="mt-6">
@@ -95,7 +126,9 @@ const ResetPassword = () => {
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full p-3 border-none ring-1 outline-none ring-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary ${
+                  errors.confirmPassword ? "border-red-500" : ""
+                }`}
                 placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -112,35 +145,73 @@ const ResetPassword = () => {
                 )}
               </button>
             </div>
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full mt-6 bg-primary text-white p-3 rounded-md font-semibold hover:bg-black"
-            disabled={loading} // Disable button when loading
+            className="w-full mt-6 bg-secondary text-white p-3 rounded-md font-semibold hover:bg-black transition relative"
+            disabled={isSubmitting}
           >
-            {loading ? "Updating..." : "UPDATE PASSWORD"}
+            {isSubmitting ? (
+              <>
+                <span className="opacity-0">UPDATE PASSWORD</span>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              </>
+            ) : (
+              "UPDATE PASSWORD"
+            )}
           </button>
         </form>
       </div>
 
       {isExpired && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white shadow-lg rounded-2xl p-8 lg:w-5/12 text-center">
-            <h2 className="text-xl font-semibold text-gray-900 mt-12">
-              This link has expired or is not valid.
-            </h2>
-            <button
-              className="w-full mt-12 bg-primary text-white p-3 rounded-md font-semibold hover:bg-black"
-              onClick={() => {
-                setIsExpired(false);
-                router.push("/login");
-              }}
-            >
-              OK
-            </button>
-          </div>
-        </div>
+        <BackgroundModal
+          PropComponent={() => (
+            <div className="bg-white shadow-lg rounded-2xl p-8 lg:w-5/12 text-center">
+              <h2 className="text-xl font-semibold text-gray-900 mt-12">
+                This link has expired or is not valid.
+              </h2>
+              <button
+                className="w-full mt-12 bg-secondary text-white p-3 rounded-md font-semibold hover:bg-black"
+                onClick={() => {
+                  setIsExpired(false);
+                  router.push("/login");
+                }}
+              >
+                OK
+              </button>
+            </div>
+          )}
+        />
+      )}
+
+      {isSuccess && (
+        <BackgroundModal
+          PropComponent={() => (
+            <div className="bg-white shadow-lg rounded-2xl p-8 lg:w-5/12 text-center">
+              <h2 className="text-xl font-semibold text-gray-900 mt-12">
+                Password reset successful!
+              </h2>
+              <p className="text-gray-500 mt-4">
+                Your password has been updated. You can now log in with your new password.
+              </p>
+              <button
+                className="w-full mt-12 bg-secondary text-white p-3 rounded-md font-semibold hover:bg-black"
+                onClick={() => {
+                  setIsSuccess(false);
+                  router.push("/login");
+                }}
+              >
+                GO TO LOGIN
+              </button>
+            </div>
+          )}
+        />
       )}
     </div>
   );
