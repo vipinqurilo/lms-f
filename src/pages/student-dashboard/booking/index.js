@@ -9,7 +9,7 @@ import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import BookingView from "@/container/instructor/bookings/BookingView";
 import BookingTabs from "@/container/instructor/bookings/BookingTabs";
 import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
-import BookingList from "@/container/instructor/bookings/BookingList";
+import BookingList from "@/components/bookings/BookingList";
 import BookingReminder from "@/container/instructor/bookings/BookingReminder";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 

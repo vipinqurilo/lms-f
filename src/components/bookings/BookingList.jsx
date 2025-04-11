@@ -140,4 +140,4 @@ const BookingList = ({ bookings, isLoading }) => {
   );
 };
 
-export default BookingList; 
+export default BookingList;

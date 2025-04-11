@@ -69,6 +69,10 @@ const ProfileDropDown = () => {
       href: "/admin-dashboard/approvals/courses",
     },
     {
+      title:"Student",
+      href:"/admin-dashboard/manage-students",
+    },
+    {
       title: "Teachers",
       href: "/admin-dashboard/approvals/teachers",
     },
@@ -77,8 +81,8 @@ const ProfileDropDown = () => {
       href: "/admin-dashboard/approvals/withdrawals",
     },
     {
-      title: "Manage Courses",
-      href: "/admin-dashboard/manage-courses",
+      title: "Manage Bookings",
+      href: "/admin-dashboard/manage-booking",
     },
     {
       title: "Sales",

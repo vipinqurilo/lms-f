@@ -6,7 +6,7 @@ import BookingReminder from "./BookingReminder";
 import BookingView from "./BookingView";
 import BookingTabs from "./BookingTabs";
 import BookingsFilter from "./BookingsFilter";
-import BookingList from "./BookingList";
+import BookingList from "../../../components/bookings/BookingList";
 import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 import { fetchAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
