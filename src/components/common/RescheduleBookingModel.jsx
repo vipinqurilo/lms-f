@@ -20,7 +20,6 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
   const {currentAvailability, isLoading: availabilityLoading} = useSelector(
     (state) => state.instructor.availability  
   );
-  
   // Updated to use the unified booking slice
   const {isLoading: bookingLoading} = useSelector((state) => state.booking);
   
@@ -55,11 +54,9 @@ const RescheduleBookingModel = ({ onClose, booking, rowBookings }) => {
     )
       .unwrap()
       .then(() => {
-        toast.success("Reschedule request sent successfully");
         onClose();
       })
       .catch((error) => {
-        toast.error(error.message || "Failed to send reschedule request");
       });
   };
   

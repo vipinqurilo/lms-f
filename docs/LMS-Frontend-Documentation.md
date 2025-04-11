@@ -86,7 +86,7 @@ graph TD
    - Manage students
    - Manage instructors
    - User approvals
-   - Profile settings
+   - Manage Profile
 
 2. **Course Management**
    - Course Workflow:
@@ -249,7 +249,7 @@ graph TD
 
 ### Profile Management
 - Personal information
-- Profile settings
+- Manage Profile
 - Notification preferences
 - Security settings
 

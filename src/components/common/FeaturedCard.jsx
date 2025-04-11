@@ -159,12 +159,10 @@ export default function FeaturedCard({ data, isFull = false }) {
                       "N/A"
                     )}
                   </h3>
-                  <span className="text-sm font-medium text-gray-500">
-                    {data?.courseSubCategory?.name || "N/A"}
-                  </span>
+                  <span className="text-sm font-medium text-gray-500 truncate ">{data?.courseSubCategory?.name || "N/A"}</span>
                 </div>
               </div>
-              <button
+              {!isEnrolled && (<button
                 onClick={(e) => {
                   e.stopPropagation();
                   setwishlistLoading(data?._id);
@@ -183,10 +181,11 @@ export default function FeaturedCard({ data, isFull = false }) {
                 ) : (
                   <FaRegHeart className="text-xl hover:text-red-500" />
                 )}
-              </button>
+              </button>)}
+              
             </div>
 
-            <div className="!mt-2 text-lg text-gray-700 group-hover:text-secondary">
+            <div className="!mt-2 text-lg text-gray-700 group-hover:text-secondary truncate">
               {data?.courseTitle}
             </div>
             <p className="!mt-2 text-sm text-gray-500 line-clamp-2">

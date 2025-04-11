@@ -87,7 +87,6 @@ const OrderComp = () => {
                       </tr>
                     ) : (
                       <>
-
                         {orderHistory?.map((order, index) => (
 
                           <tr key={order._id} className="hover:bg-gray-50">
@@ -112,7 +111,7 @@ const OrderComp = () => {
                               {dateFormat(order?.createdAt, "mmm dd yyyy")}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-600 capitalize">
-                              {order?.amount} {order?.currency}
+                            {order?.currency==="zar"?"R":order?.currency} {order?.amount} 
                             </td>
                           </tr>
                         ))}

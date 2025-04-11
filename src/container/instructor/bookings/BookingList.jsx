@@ -19,7 +19,6 @@ import RescheduleBookingModel from "@/components/common/RescheduleBookingModel";
 import EditMeetingLink from "@/components/common/EditMeetingLink";
 import { useDispatch, useSelector } from "react-redux";
 import { rescheduleResponseAsync } from "@/store/slices/bookingSlice";
-import { toast } from "react-hot-toast";
 import Tooltip from "@/container/common/Tooltip";
 
 const BookingList = ({ bookings, isLoading}) => {
@@ -364,7 +363,7 @@ const BookingList = ({ bookings, isLoading}) => {
                                       setIsOpen("reschedule");
                                     }}
                                   >
-                                    {isLoading?.["rescheduleResponseAsync"] ? (
+                                    {isLoading?.["rescheduleBooking"] ? (
                                       <Loader />
                                     ) : (
                                       <ListRestart />
@@ -564,13 +563,6 @@ const BookingList = ({ bookings, isLoading}) => {
                                       reason: "Request denied by other party"
                                     })
                                   )
-                                    .unwrap()
-                                    .then(() => {
-                                      toast.success("Reschedule request denied");
-                                    })
-                                    .catch((error) => {
-                                      toast.error(error.message || "Failed to deny reschedule request");
-                                    })
                                 }
                                 className="px-3 py-1 text-sm rounded-full text-red-50 bg-red-600">
                                 Deny
@@ -583,17 +575,10 @@ const BookingList = ({ bookings, isLoading}) => {
                                       action: "accept",
                                     })
                                   )
-                                    .unwrap()
-                                    .then(() => {
-                                      toast.success("Reschedule request accepted");
-                                    })
-                                    .catch((error) => {
-                                      toast.error(error.message || "Failed to accept reschedule request");
-                                    })
                                 }
                                 className="px-3 py-1 text-sm rounded-full text-green-50 bg-green-600"
                               >
-                                {isLoading?.["rescheduleResponseAsync"] ? (
+                                {isLoading?.rescheduleResponseAsync ? (
                                   <Loader text={"Accepting..."} />
                                 ) : (
                                   "Accept"
@@ -656,13 +641,6 @@ const BookingList = ({ bookings, isLoading}) => {
                                       reason: "Request denied by admin"
                                     })
                                   )
-                                    .unwrap()
-                                    .then(() => {
-                                      toast.success("Reschedule request denied by admin");
-                                    })
-                                    .catch((error) => {
-                                      toast.error(error.message || "Failed to deny reschedule request");
-                                    })
                                 }
                                 className="px-3 py-1 text-sm rounded-full text-red-50 bg-red-600">
                                 Deny
@@ -675,13 +653,6 @@ const BookingList = ({ bookings, isLoading}) => {
                                       action: "accept",
                                     })
                                   )
-                                    .unwrap()
-                                    .then(() => {
-                                      toast.success("Reschedule request approved by admin");
-                                    })
-                                    .catch((error) => {
-                                      toast.error(error.message || "Failed to approve reschedule request");
-                                    })
                                 }
                                 className="px-3 py-1 text-sm rounded-full text-green-50 bg-green-600"
                               >

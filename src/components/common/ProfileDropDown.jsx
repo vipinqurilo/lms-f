@@ -89,8 +89,8 @@ const ProfileDropDown = () => {
       href: "/admin-dashboard/languages",
     },
     {
-      title: "Profile Settings",
-      href: "/admin-dashboard/profile-settings",
+      title: "Manage Profile",
+      href: "/admin-dashboard/manage-profile",
     },
     {
       title: "Settings",

@@ -121,7 +121,7 @@ const DashboardProfileSettingsContainer = () => {
     <div className="p-10">
       <div className="bg-white rounded-lg border">
         <TitleComp
-          heading={"Profile Settings"}
+          heading={"Manage Profile"}
           des={"You have full control to manage your own account settings"}
         />
 

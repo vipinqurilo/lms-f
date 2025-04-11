@@ -31,7 +31,6 @@ export default function index() {
   const [currentPage, setCurrentPage] = useState(1);
   const [teacherId, setTeacherId] = useState("all");
 
-  console.log(teacherId, "= teacher admin");
 
   // Validate end date whenever start date or end date changes
   useEffect(() => {

@@ -12,6 +12,7 @@ import {
   Settings,
   ListOrdered,
   Globe2,
+  UserPen 
 } from "lucide-react";
 import { useState } from "react";
 
@@ -273,7 +274,7 @@ export function Sidebar() {
               <LinkComponent
                 isActive={pathname === "/instructor-dashboard/settings"}
                 link={{
-                  title: "Settings",
+                  title: "Settings", 
                   icon: Settings,
                   href: "/instructor-dashboard/settings",
                 }}
@@ -284,11 +285,11 @@ export function Sidebar() {
             )}
             {pathname?.startsWith("/admin-dashboard") && (
               <LinkComponent
-                isActive={pathname === "/admin-dashboard/profile-settings"}
+                isActive={pathname === "/admin-dashboard/manage-profile"}
                 link={{
-                  title: "Profile Settings",
-                  icon: Settings,
-                  href: "/admin-dashboard/profile-settings",
+                  title: "Manage Profile",
+                  icon: UserPen ,
+                  href: "/admin-dashboard/manage-profile",
                 }}
                 handleIsHovered={handleIsHovered}
                 isCollapsed={isCollapsed}

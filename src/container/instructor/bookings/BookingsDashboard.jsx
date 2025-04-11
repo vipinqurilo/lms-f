@@ -28,11 +28,9 @@ const BookingsDashboard = () => {
   );
   
   // Redux state - updated to use unified booking slice
-  const { bookings, isLoading, totalPages } = useSelector((state) => ({
-    bookings: state.booking.bookings || [],
-    isLoading: state.booking.isLoading?.fetchBookingsAsync || false,
-    totalPages: state.booking.totalPages || 1,
-  }));
+  const { bookings, isLoading, totalPages } = useSelector(
+    (state) => state.booking
+  );
 
   // Fetch bookings on mount & when filters change
   useEffect(() => {
