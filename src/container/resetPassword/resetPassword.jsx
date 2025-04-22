@@ -75,7 +75,17 @@ const ResetPassword = () => {
       resetPasswordAsync({ token, newPassword, confirmPassword })
     ).unwrap()
       .then(() => setIsSuccess(true))
-      .catch(() => setIsExpired(true));
+      .catch((error) => {
+        console.log(error);
+        if (error === "New password cannot be the same as the old password") {
+          setErrors(prev => ({
+            ...prev,
+            newPassword: "New password cannot be the same as the old password"
+          }));
+        } else {
+          setIsExpired(true);
+        }
+      });
     
   };
 

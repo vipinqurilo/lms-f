@@ -6,7 +6,7 @@ import BookingReminder from "./BookingReminder";
 import BookingView from "./BookingView";
 import BookingTabs from "./BookingTabs";
 import BookingsFilter from "./BookingsFilter";
-import BookingList from "./BookingList";
+import BookingList from "../../../components/bookings/BookingList";
 import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
 import TutorAvailabilityCalendar from "@/components/instructor/TutorAvailabilityCalendar";
 import { fetchAvailabilityAsync } from "@/store/slices/instructor/availabilitySlice";
@@ -28,11 +28,9 @@ const BookingsDashboard = () => {
   );
   
   // Redux state - updated to use unified booking slice
-  const { bookings, isLoading, totalPages } = useSelector((state) => ({
-    bookings: state.booking.bookings || [],
-    isLoading: state.booking.isLoading?.fetchBookingsAsync || false,
-    totalPages: state.booking.totalPages || 1,
-  }));
+  const { bookings, isLoading, totalPages } = useSelector(
+    (state) => state.booking
+  );
 
   // Fetch bookings on mount & when filters change
   useEffect(() => {

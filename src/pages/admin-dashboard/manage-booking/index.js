@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BookingView from "@/container/instructor/bookings/BookingView";
 import BookingTabs from "@/container/instructor/bookings/BookingTabs";
 import BookingsFilter from "@/container/instructor/bookings/BookingsFilter";
-import BookingList from "@/container/instructor/bookings/BookingList";
+import BookingList from "@/components/bookings/BookingList";
 import { Pagination } from "@/components/student-dashboard/Pagination";
 import { getAllTeachers } from "@/store/slices/admin-dashboard/teachersSlice";
 import { fetchBookingsAsync } from "@/store/slices/bookingSlice";
@@ -31,7 +31,6 @@ export default function index() {
   const [currentPage, setCurrentPage] = useState(1);
   const [teacherId, setTeacherId] = useState("all");
 
-  console.log(teacherId, "= teacher admin");
 
   // Validate end date whenever start date or end date changes
   useEffect(() => {
