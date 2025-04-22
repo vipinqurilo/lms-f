@@ -17,7 +17,7 @@ const Home = () => {
   const courses = useSelector((state) => state?.courses?.courses);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() => { 
     const requestData = {
       page: 1,
       status: "published",  
