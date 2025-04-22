@@ -16,7 +16,7 @@ const Sendverifyemail = () => {
           className="mx-auto w-auto"
         />
 
-        <p className="text-gray-600 mt-5">Verification email sent again successfully bro.</p>
+        <p className="text-gray-600 mt-5">Verification email sent again successfully.</p>
 
         <button
           className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold hover:bg-black transition"
