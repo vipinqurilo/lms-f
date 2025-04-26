@@ -3,7 +3,6 @@
 import Experience from "@/components/instructor-request/Experience";
 import SubjectAndLanguage from "@/components/instructor-request/SubjectAndLanguage";
 import TitleComp from "@/components/instructor/TitleComp";
-import { AvatarUpload } from "@/components/student-dashboard/settings/AvatarUpload";
 import { ChangePassword } from "@/components/student-dashboard/settings/ChangePassword";
 import { EditProfile } from "@/components/student-dashboard/settings/EditProfile";
 import FrontendSettings from "@/components/student-dashboard/settings/FrontendSettings";
