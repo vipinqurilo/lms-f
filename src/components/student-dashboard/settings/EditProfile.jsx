@@ -1,5 +1,4 @@
 "use client";
-
 import SubmitButtonsComp from "@/components/instructor/addcourse/SubmitButtonsComp";
 import {
   updateProcessData,
@@ -392,7 +391,7 @@ export function EditProfile({ isInstructorRequest = null, profilePhoto }) {
             className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary ring-[1px] ring-gray-200 outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary disabled:cursor-not-allowed disabled:opacity-60"
             disabled={isLoading["updatePersonalInfoAsync"]}
           >
-            {isLoading["updatePersonalInfoAsync"] ? <Loader color={"text-white"} /> : "Update Profile"}
+            {isLoading["updatePersonalInfoAsync"] ? <Loader color={"text-white"} /> : "Save"}
           </button>
           {error?.updatePersonalInfoAsync && (
             <div className="text-red-500 mt-4">

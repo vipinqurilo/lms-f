@@ -119,7 +119,15 @@ const TeacherRegisterForm = () => {
               />
             )}
           </>
-        ) : null}
+        ) : (<RegistrationForm
+          register={register}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          errors={errors}
+          showPassword={showPassword}
+          togglePassword={togglePassword}
+          loading={isLoading?.instructorRegister}
+        />)}
       </div>
     </div>
   );

@@ -28,24 +28,8 @@
   "mainNavItems": [
     {
       "title": "Courses",
-      "href": "/courses",
-      "items": [
-        {
-          "title": "Browse All Courses",
-          "href": "/courses",
-          "description": "Explore our complete catalog of courses"
-        },
-        {
-          "title": "Popular Courses",
-          "href": "/courses/popular",
-          "description": "See what other students are learning"
-        },
-        {
-          "title": "New Courses",
-          "href": "/courses/new",
-          "description": "Check out our latest course offerings"
-        }
-      ]
+      "href": "/courses"
+      
     },
     {
       "title": "Find a Tutor",
@@ -53,7 +37,7 @@
     },
     {
       "title": "Contact us",
-      "href": "/contactus"
+      "href": "/contact-us"
     },
     {
       "title": "Teach on STEAM",

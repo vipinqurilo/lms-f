@@ -204,7 +204,7 @@ export default ProfileDropDown;
 
 const ProfileAvatar = ({ authUser }) => {
   const userName = authUser?.name || "User";
-  const userImage = authUser?.image; // Assuming the image URL is stored in authUser.image
+  const userImage = authUser?.profilePhoto; // Assuming the image URL is stored in authUser.image
   const firstInitial = userName.charAt(0).toUpperCase(); // Get first letter and capitalize
 
   return (

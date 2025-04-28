@@ -8,26 +8,53 @@ import { AvatarUpload } from "../../../components/student-dashboard/settings/Ava
 import { EditProfile } from "../../../components/student-dashboard/settings/EditProfile";
 import { ChangePassword } from "../../../components/student-dashboard/settings/ChangePassword";
 import { SocialProfiles } from "../../../components/student-dashboard/settings/SocialProfiles";
-import { fetchProfileAsync } from "@/store/slices/student-dashboard/profileSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadImage } from "@/store/slices/uploadSlice";
+import toast from "react-hot-toast";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("edit-profile");
-  const [avatarUrl, setAvatarUrl] = useState("/assets/tutor/Marlenereilly.jpg");
-  const dispatch = useDispatch();
+  const {profile,isLoading} = useSelector((state) => state.student?.profile);
+  const [avatarUrl, setAvatarUrl] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+  const dispatch = useDispatch(); 
+  const handleImageValidation = (imageFile) => {
+    const formData = new FormData();
+    formData.append("courseImage", imageFile);
 
-  const handleAvatarUpload = (file) => {
-    const url = URL.createObjectURL(file);
-    setAvatarUrl(url);
+    if (imageFile) {
+      if (imageFile.size > 1 * 1024 * 1024) {
+        toast.error("File size must be less than 1MB");
+        return;
+      }
+      dispatch(uploadImage(formData))
+        .unwrap()
+        .then((res) => {
+          if (res?.data) {
+            setAvatarUrl(res.data);
+          } else {
+            toast.error("Invalid image response", res);
+          }
+        })
+        .catch((error) => {
+          toast.error("Image upload failed:", error);
+        });
+    }
   };
 
   const handleAvatarDelete = () => {
-    setAvatarUrl("/placeholder.svg");
+    setAvatarUrl("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
   };
-
+  useEffect(() => {
+    if(profile){
+      setAvatarUrl(profile.profilePhoto)
+    }
+    return () => {
+    }
+  }, [profile])
+  
   return (
     <StudentDashboardLayout className="space-y-8">
-      <div className="bg-white rounded-lg border m-10 shadow rounded-lg border border-gray-200">
+      <div className="bg-white rounded-lg border m-10 shadow border-gray-200">
         {/* Header */}
         <div className="p-4 px-8 border-b">
           <h1 className="text-2xl font-semibold text-dark mb-2">Settings</h1>
@@ -45,10 +72,11 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <AvatarUpload
                 avatarUrl={avatarUrl}
-                onUpload={handleAvatarUpload}
+                onUpload={handleImageValidation}
                 onDelete={handleAvatarDelete}
               />
-              <EditProfile />
+              <EditProfile profilePhoto={avatarUrl} />
+              
             </div>
           )}
 

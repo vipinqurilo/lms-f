@@ -2,6 +2,8 @@
 import { usePathname } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
+import Image from "next/image";
+import Loader from "../../common/Loader";
 
 export function AvatarUpload({ avatarUrl, onUpload, onDelete }) {
   const path = usePathname();
@@ -14,11 +16,19 @@ export function AvatarUpload({ avatarUrl, onUpload, onDelete }) {
       }`}
     >
       <div className="relative">
-        <img
-          src={avatarUrl || "/placeholder.svg"}
-          alt="Profile"
-          className="!w-24 h-auto lg:!h-24 rounded-full object-cover"
-        />
+        {imageLoad ? (
+          <div className="!w-24 !h-24 rounded-full flex items-center justify-center bg-gray-100">
+            <Loader color="text-primary" />
+          </div>
+        ) : (
+          <Image
+            src={avatarUrl}
+            alt="Profile"
+            width={96}
+            height={96}
+            className="!w-24 h-auto lg:!h-24 rounded-full object-cover"
+          />
+        )}
 
         <input
           id="avatar-upload"
