@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("edit-profile");
   const {profile,isLoading} = useSelector((state) => state.student?.profile);
+  console.log(profile,'profileprofileprofileprofile')
   const [avatarUrl, setAvatarUrl] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
   const dispatch = useDispatch(); 
   const handleImageValidation = (imageFile) => {

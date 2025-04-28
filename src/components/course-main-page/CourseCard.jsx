@@ -19,7 +19,7 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../common/Loader";
-import { createPaymentCourse, createPayfastCourseCheckout } from "@/store/slices/paymentSlice";
+import { createPaymentCourse, createOrderPayfast } from "@/store/slices/paymentSlice";
 import CourseByModal from "./CourseByModal";
 import { addToWishlistAsync } from "@/store/slices/student-dashboard/wishlistSlice";
 import { CoursePaymentModal } from "../../components/courses/CoursePaymentModal";
@@ -65,19 +65,16 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
       // Handle PayFast payment
       if (selectedMethod === "payfast") {
         const paymentData = {
-          courseId: data?._id,
-          userId: authUser?._id,
           amount: data?.coursePrice,
-          courseTitle: data?.courseTitle,
-          email: authUser?.email,
-          name: `${authUser?.firstName} ${authUser?.lastName}`,
-          returnUrl: `${window.location.origin}/courses/payment-success`,
-          cancelUrl: `${window.location.origin}/courses/payment-failed`,
-          notifyUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000"}/api/payment/payfast/notify`
+          courseId: data?._id,
         };
-        
-        dispatch(createPayfastCourseCheckout(paymentData));
-      } 
+        dispatch(createOrderPayfast(paymentData))
+          .unwrap()
+          .then((res) => {
+            setCheckoutUrl(res?.url);
+            setisPaymentModal(true);
+          });
+      }
       // Handle Stripe payment
       else if (selectedMethod === "stripe") {
         const paymentData = {
@@ -331,29 +328,10 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
         setselectedMethod={setselectedMethod}
       />
 
-      {/* Course Payment Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="relative w-[90%] max-w-2xl bg-white rounded-lg shadow-lg">
-            <button
-              onClick={() => setisModalOpen(false)}
-              className="absolute top-2 right-2 text-gray-600 text-lg"
-            >
-              ✕
-            </button>
-            
-            <CoursePaymentModal
-              selected={selectedMethod}
-              onSelect={setselectedMethod}
-              course={data}
-              applyCoupon={() => console.log('Apply coupon')}
-              handlePayment={handlePayment}
-            />
-          </div>
-        </div>
-      )}
+    
 
       {/* Stripe Checkout Modal */}
+      {/* Payment Modal */}
       {isPaymentModal && checkoutUrl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
           <div className="relative bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
@@ -364,7 +342,7 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
               ✕
             </button>
             <h3 className="text-lg font-bold mb-4">Complete Your Payment</h3>
-            <p className="mb-4">You are being redirected to our secure payment gateway.</p>
+            <p className="mb-4">You will be redirected to PayFast to complete your payment.</p>
             <div className="flex justify-center">
               <a
                 href={checkoutUrl}
@@ -372,21 +350,14 @@ const CourseCard = ({ data, enrollNowRef, isEnrolled, enrolledCourseData }) => {
                 rel="noopener noreferrer"
                 className="bg-secondary text-white px-6 py-2 rounded-lg hover:bg-opacity-90"
               >
-                Go to Payment
+                Proceed to PayFast
               </a>
             </div>
           </div>
         </div>
       )}
       
-      {/* PayFast Checkout Modal */}
-      {payment?.payfastCheckoutData && (
-        <PayfastCheckoutForCourse 
-          paymentUrl={payment.payfastCheckoutData?.data?.paymentUrl}
-          setPaymentModal={setisPaymentModal}
-          onClose={() => setisModalOpen(false)}
-        />
-      )}
+      
     </div>
   );
 };

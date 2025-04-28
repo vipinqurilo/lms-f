@@ -18,7 +18,6 @@ const CourseDetails = () => {
   const { subjects, subSubjects } = useSelector((state) => state.category);
   const { authUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   const isEnrolled =
     enrolledCourses &&
     enrolledCourses.some((item) => item?.courseId === data?.course?._id);

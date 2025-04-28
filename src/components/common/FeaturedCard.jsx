@@ -69,14 +69,6 @@ export default function FeaturedCard({ data, isFull = false }) {
     }
   };
 
-  // const totalSeconds = data?.courseContent?.reduce((total, module) => {
-  //   return (
-  //     total +
-  //     module.lessons.reduce((sum, lesson) => {
-  //       return sum + parseInt(lesson?.duration);
-  //     }, 0)
-  //   );
-  // }, 0);
 
   return (
     <>
